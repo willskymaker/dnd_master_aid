@@ -1,16 +1,61 @@
-# dnd_master_aid
+# DnD MasterAid 🧙‍♂️🎲
 
-A new Flutter project.
+> Una toolkit Flutter per aiutare giocatori e master di D&D nella creazione e gestione di personaggi, tiri di dado e generatori vari. Semplice, modulare e open source!
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🔧 Funzionalità Implementate
 
-A few resources to get you started if this is your first Flutter project:
+- **🎲 Tira Dadi**: Lancio dei dadi classici (d4, d6, d8, d10, d12, d20, d100)
+- **🧙 Generatore di Nomi**: Generazione di nomi fantasy con prefisso/suffisso
+- **🧑‍🎓 Crea PG Base**: Sistema guidato per creare un personaggio con:
+  - Selezione specie e classe
+  - Point Buy semplificato
+  - Calcolo automatico HP e CA
+  - Scelta armi, armatura e competenze
+  - Esportazione in PDF su layout grafico
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🛠 Tecnologie
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **Flutter 3.19+** (supporto multi-piattaforma)
+- **Dart**
+- `pdf`, `printing` e `flutter_full_pdf_viewer` per il rendering dei PDF
+
+## 📂 Struttura del Progetto
+
+```
+lib/
+├── main.dart
+├── screens/
+│   ├── pg_base.dart
+│   ├── dice_roller.dart
+│   └── name_generator.dart
+├── utils/
+│   └── pdf_generator.dart
+├── assets/
+│   └── images/
+│       └── scheda_pg_base.png
+```
+
+## 🔜 Funzionalità Future (Roadmap)
+
+- [ ] Modalità avanzata di creazione PG (background, talenti, incantesimi)
+- [ ] Generatore di PNG con tratti di personalità
+- [ ] Generatore di Mostri e Mob
+- [ ] Salvataggio e caricamento personaggi
+- [ ] Modalità "Campagna" per gestire più personaggi insieme
+
+## 🧑‍💻 Contribuire
+
+1. Fai una fork del progetto
+2. Crea una nuova branch: `git checkout -b feature/NomeFunzione`
+3. Fai commit e push
+4. Apri una Pull Request 🚀
+
+## 📝 Licenza
+
+Questo progetto è distribuito sotto licenza **MIT**. Vedi il file `LICENSE` per dettagli.
+
+---
+
+> Realizzato con passione da William "willskymaker" e la community Nerd 🧠❤️
