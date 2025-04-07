@@ -1,42 +1,87 @@
 // lib/utils/pdf_generator.dart
 
+import 'dart:typed_data';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'dart:typed_data';
 import 'package:printing/printing.dart';
 
-Future<void> generaSchedaPersonaggioPDF(Map<String, dynamic> datiPG) async {
+Future<void> generaSchedaPersonaggioPDF(Map<String, dynamic> scheda) async {
   final pdf = pw.Document();
+
+  final ByteData imageData = await rootBundle.load('assets/images/scheda_pg_blank_base.png');
+  final Uint8List imageBytes = imageData.buffer.asUint8List();
+  final image = pw.MemoryImage(imageBytes);
 
   pdf.addPage(
     pw.Page(
-      build: (pw.Context context) {
-        return pw.Column(
-          crossAxisAlignment: pw.CrossAxisAlignment.start,
+      pageFormat: PdfPageFormat.a4,
+      build: (context) {
+        return pw.Stack(
           children: [
-            pw.Text("Scheda del Personaggio", style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-            pw.SizedBox(height: 16),
-            pw.Text("Nome: \${datiPG['nome'] ?? '-'}"),
-            pw.Text("Specie: \${datiPG['specie'] ?? '-'}"),
-            pw.Text("Classe: \${datiPG['classe'] ?? '-'}"),
-            pw.Text("Livello: \${datiPG['livello'] ?? 1}"),
-            pw.Text("Bonus Competenza: \${datiPG['bonusCompetenza'] ?? 2}"),
-            pw.SizedBox(height: 12),
-            pw.Text("Caratteristiche:", style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-            ...((datiPG['caratteristiche'] as Map<String, int>?)?.entries.map((e) =>
-              pw.Text("- \${e.key}: \${e.value} (mod: \${((e.value - 10) ~/ 2)})")) ?? []),
-            pw.SizedBox(height: 12),
-            pw.Text("Competenze:", style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-            pw.Text((datiPG['competenze'] as List<String>?)?.join(", ") ?? "-"),
-            pw.SizedBox(height: 12),
-            pw.Text("Armi:", style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-            pw.Text((datiPG['armi'] as List<String>?)?.join(", ") ?? "-"),
-            pw.SizedBox(height: 12),
-            pw.Text("Armatura: \${datiPG['armatura'] ?? '-'}"),
-            pw.SizedBox(height: 12),
-            pw.Text("Statistiche finali:", style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-            pw.Text("CA: \${datiPG['ca'] ?? '-'}"),
-            pw.Text("HP: \${datiPG['hp'] ?? '-'}"),
+            pw.Positioned.fill(
+              child: pw.Image(image, fit: pw.BoxFit.cover),
+            ),
+
+            // Intestazione
+            pw.Positioned(
+              left: 72,
+              top: 45,
+              child: pw.Text(scheda['nome'] ?? '', style: pw.TextStyle(fontSize: 12)),
+            ),
+            pw.Positioned(
+              left: 240,
+              top: 65,
+              child: pw.Text(scheda['specie'] ?? '', style: pw.TextStyle(fontSize: 12)),
+            ),
+            pw.Positioned(
+              left: 210,
+              top: 35,
+              child: pw.Text(scheda['classe'] ?? '', style: pw.TextStyle(fontSize: 12)),
+            ),
+            pw.Positioned(
+              left: 250,
+              top: 35,
+              child: pw.Text("Liv. ${scheda['livello']}", style: pw.TextStyle(fontSize: 12)),
+            ),
+
+            // Caratteristiche (FOR, DES, COS, INT, SAG, CAR)
+            ...['FOR', 'DES', 'COS', 'INT', 'SAG', 'CAR'].asMap().entries.map((entry) {
+              final index = entry.key;
+              final stat = entry.value;
+              final value = scheda['caratteristiche'][stat];
+              return pw.Positioned(
+                left: 10,
+                top: 145 + (index * 65),
+                child: pw.Text("$value", style: pw.TextStyle(fontSize: 14)),
+              );
+            }),
+
+            // Classe Armatura e HP
+            pw.Positioned(
+              left: 180,
+              top: 135,
+              child: pw.Text("${scheda['ca']}", style: pw.TextStyle(fontSize: 14)),
+            ),
+            pw.Positioned(
+              left: 240,
+              top: 180,
+              child: pw.Text("${scheda['hp']}", style: pw.TextStyle(fontSize: 14)),
+            ),
+
+            // Competenze
+            pw.Positioned(
+              left: 210,
+              top: 460,
+              child: pw.Text(scheda['competenze'].join(", "), style: pw.TextStyle(fontSize: 10)),
+            ),
+
+            // Equipaggiamento
+            pw.Positioned(
+              left: 210,
+              top: 485,
+              child: pw.Text("Armi: ${scheda['armi'].join(", ")}\nArmatura: ${scheda['armatura']}", style: pw.TextStyle(fontSize: 10)),
+            ),
           ],
         );
       },
@@ -45,4 +90,3 @@ Future<void> generaSchedaPersonaggioPDF(Map<String, dynamic> datiPG) async {
 
   await Printing.layoutPdf(onLayout: (PdfPageFormat format) async => pdf.save());
 }
-
