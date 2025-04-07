@@ -223,47 +223,56 @@ class _PgBaseScreenState extends State<PgBaseScreen> {
     );
   }
 
-  Widget _buildStep3() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text("Seleziona due armi:"),
-        ..._armiDisponibili.map((arma) => CheckboxListTile(
-          title: Text(arma),
-          value: _armiSelezionate.contains(arma),
-          onChanged: (val) => setState(() {
-            if (val == true && _armiSelezionate.length < 2) {
-              _armiSelezionate.add(arma);
-            } else if (val == false) {
-              _armiSelezionate.remove(arma);
-            }
-          })
-        )),
-        Divider(),
-        Text("Seleziona un'armatura:"),
-        ..._armatureDisponibili.map((arm) => RadioListTile<String>(
-          title: Text(arm),
-          value: arm,
-          groupValue: _armaturaSelezionata,
-          onChanged: (val) => setState(() => _armaturaSelezionata = val),
-        )),
-        Spacer(),
-        ElevatedButton(
-          onPressed: (_armiSelezionate.length == 2 && _armaturaSelezionata != null)
-              ? () {
-                  _calcolaStatisticheFinali();
-                  setState(() => _step = 4);
-                }
-              : null,
-          child: Text("Crea Personaggio"),
-        ),
-        SizedBox(height: 12),
-        ElevatedButton.icon(
-          onPressed: () async => await generaSchedaPersonaggioPDF(schedaPG),
-          icon: Icon(Icons.picture_as_pdf),
-          label: Text("Esporta in PDF"),
-        )
-      ],
-    );
-  }
+ Widget _buildStep3() {
+  return SafeArea(
+    child: SingleChildScrollView(
+      padding: const EdgeInsets.only(bottom: 80),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Seleziona due armi:"),
+          ..._armiDisponibili.map((arma) => CheckboxListTile(
+            title: Text(arma),
+            value: _armiSelezionate.contains(arma),
+            onChanged: (val) => setState(() {
+              if (val == true && _armiSelezionate.length < 2) {
+                _armiSelezionate.add(arma);
+              } else if (val == false) {
+                _armiSelezionate.remove(arma);
+              }
+            })
+          )),
+          Divider(),
+          Text("Seleziona un'armatura:"),
+          ..._armatureDisponibili.map((arm) => RadioListTile<String>(
+            title: Text(arm),
+            value: arm,
+            groupValue: _armaturaSelezionata,
+            onChanged: (val) => setState(() => _armaturaSelezionata = val),
+          )),
+          SizedBox(height: 20),
+          Center(
+            child: ElevatedButton(
+              onPressed: (_armiSelezionate.length == 2 && _armaturaSelezionata != null)
+                  ? () {
+                      setState(() => _step = 4);
+                    }
+                  : null,
+              child: Text("Crea Personaggio"),
+            ),
+          ),
+          SizedBox(height: 12),
+          Center(
+            child: ElevatedButton.icon(
+              onPressed: () async => await generaSchedaPersonaggioPDF(schedaPG),
+              icon: Icon(Icons.picture_as_pdf),
+              label: Text("Esporta in PDF"),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
 }
