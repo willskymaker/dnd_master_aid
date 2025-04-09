@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../factory_pg_base.dart';
 import 'steps/step_nome.dart';
 import 'steps/step_specie.dart';
-// import 'steps/step_classe.dart';
+import 'steps/step_classe.dart';
 
 class PGBaseWizard extends StatefulWidget {
   const PGBaseWizard({super.key});
@@ -33,11 +33,11 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
                 // STEP 1: Nome
                 await vaiAStepNome(context, factory);
 
-                // STEP 2 (prossimamente): Specie
+                // STEP 2: Specie
                 await vaiAStepSpecie(context, factory);
 
-                // STEP 3 (prossimamente): Classe
-                // await vaiAStepClasse(context, factory);
+                // STEP 3: Classe
+                await vaiAStepClasse(context, factory);
 
                 // Costruzione finale del PG
                 final PGBase pg = factory.build();
@@ -60,6 +60,7 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
           child: Text(
           "📝 Nome: ${pg.nome}\n"
           "🧬 Specie: ${pg.specie}\n"
+          "🧙 Classe: ${pg.classe}\n"
           "👣 Velocità: ${pg.velocita} m\n"
           "💬 Linguaggi: ${pg.linguaggi.join(', ')}\n"
           "🎯 Modificatori: ${pg.modificatori.entries.map((e) => "${e.key}+${e.value}").join(', ')}\n"
