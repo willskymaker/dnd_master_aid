@@ -60,6 +60,9 @@ class PGBaseFactory {
   List<String> _competenzeArmature = [];
   List<String> _competenzeStrumenti = [];
   List<String> _abilitaClasse = [];
+  Map<String, int> _caratteristiche = {};
+  bool _caratteristicheImpostate = false;
+  
 
 
   final List<String> _competenze = [];
@@ -107,7 +110,17 @@ class PGBaseFactory {
     final valore = _modificatori[caratteristica] ?? 10;
     return ((valore - 10) / 2).floor();
   }
+  bool get caratteristicheImpostate => _caratteristicheImpostate;
 
+  void setCaratteristiche(Map<String, int> valori) {
+    _caratteristiche = valori;
+    _caratteristicheImpostate = true;
+
+    _modificatori.clear();
+    valori.forEach((key, val) {
+      _modificatori[key] = ((val - 10) / 2).floor();
+    });
+  }
 
   // Tratti e caratteristiche
   void addCompetenza(String competenza) => _competenze.add(competenza);

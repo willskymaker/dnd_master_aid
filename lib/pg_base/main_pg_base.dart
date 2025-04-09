@@ -3,6 +3,8 @@ import '../factory_pg_base.dart';
 import 'steps/step_nome.dart';
 import 'steps/step_specie.dart';
 import 'steps/step_classe.dart';
+import 'steps/step_caratteristiche.dart';
+
 
 class PGBaseWizard extends StatefulWidget {
   const PGBaseWizard({super.key});
@@ -39,6 +41,9 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
                 // STEP 3: Classe
                 await vaiAStepClasse(context, factory);
 
+                // STEP 4: Caratteristiche
+                await vaiAStepCaratteristiche(context, factory);
+
                 // Costruzione finale del PG
                 final PGBase pg = factory.build();
                 _mostraScheda(pg);
@@ -64,7 +69,7 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
 🧙 Classe: ${pg.classe}
 👣 Velocità: ${pg.velocita} m
 💬 Linguaggi: ${pg.linguaggi.join(', ')}
-🎯 Modificatori: ${pg.modificatori.entries.map((e) => "${e.key}+${e.value}").join(', ')}
+${factory.caratteristicheImpostate ? '🎯 Modificatori: ${pg.modificatori.entries.map((e) => "${e.key}+${e.value}").join(', ')}\n' : ''}
 🎓 Competenze: ${pg.competenze.join(', ')}
 ✨ Abilità Innate: ${pg.capacitaSpeciali.join(', ')}
           ''',
