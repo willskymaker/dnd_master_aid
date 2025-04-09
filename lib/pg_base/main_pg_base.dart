@@ -52,29 +52,34 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
   }
 
   void _mostraScheda(PGBase pg) {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: const Text("Personaggio Generato"),
-        content: SingleChildScrollView(
-          child: Text(
-          "📝 Nome: ${pg.nome}\n"
-          "🧬 Specie: ${pg.specie}\n"
-          "🧙 Classe: ${pg.classe}\n"
-          "👣 Velocità: ${pg.velocita} m\n"
-          "💬 Linguaggi: ${pg.linguaggi.join(', ')}\n"
-          "🎯 Modificatori: ${pg.modificatori.entries.map((e) => "${e.key}+${e.value}").join(', ')}\n"
-          "🎓 Competenze: ${pg.competenze?.join(', ') ?? 'Nessuna'}\n"
-          "✨ Abilità Innate: ${pg.capacitaSpeciali.join(', ')}",
-          ),
+  showDialog(
+    context: context,
+    builder: (_) => AlertDialog(
+      title: const Text("Personaggio Generato"),
+      content: SingleChildScrollView(
+        child: Text(
+          '''
+📝 Nome: ${pg.nome}
+🧬 Specie: ${pg.specie}
+🧙 Classe: ${pg.classe}
+👣 Velocità: ${pg.velocita} m
+💬 Linguaggi: ${pg.linguaggi.join(', ')}
+🎯 Modificatori: ${pg.modificatori.entries.map((e) => "${e.key}+${e.value}").join(', ')}
+🎓 Competenze: ${pg.competenze.join(', ')}
+✨ Abilità Innate: ${pg.capacitaSpeciali.join(', ')}
+          ''',
+          textAlign: TextAlign.left,
+          style: const TextStyle(fontFamily: 'monospace'),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Chiudi"),
-          )
-        ],
       ),
-    );
-  }
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text("Chiudi"),
+        )
+      ],
+    ),
+  );
+}
+
 }

@@ -9,6 +9,13 @@ class PGBase {
   final int velocita;
   final List<String> linguaggi;
   final List<String> capacitaSpeciali;
+  final int dadoVita;
+  final int puntiVita;
+  final List<String> tiriSalvezza;
+  final List<String> competenzeArmi;
+  final List<String> competenzeArmature;
+  final List<String> competenzeStrumenti;
+  final List<String> abilitaClasse;
 
   PGBase({
     required this.nome,
@@ -21,12 +28,22 @@ class PGBase {
     required this.velocita,
     required this.linguaggi,
     required this.capacitaSpeciali,
+    required this.dadoVita,
+    required this.puntiVita,
+    required this.tiriSalvezza,
+    required this.competenzeArmi,
+    required this.competenzeArmature,
+    required this.competenzeStrumenti,
+    required this.abilitaClasse,
   });
 
   @override
   String toString() {
     return 'PGBase(nome: $nome, specie: $specie, classe: $classe, background: $background, allineamento: $allineamento, '
-        'competenze: $competenze, modificatori: $modificatori, velocità: $velocita, linguaggi: $linguaggi, capacità: $capacitaSpeciali)';
+        'modificatori: $modificatori, velocità: $velocita, linguaggi: $linguaggi, capacità: $capacitaSpeciali, '
+        'HP: $puntiVita (d${
+            dadoVita
+        }), TS: $tiriSalvezza, armi: $competenzeArmi, armature: $competenzeArmature, strumenti: $competenzeStrumenti, abilità: $abilitaClasse)';
   }
 }
 
@@ -36,6 +53,14 @@ class PGBaseFactory {
   String _classe = '';
   String _background = '';
   String _allineamento = '';
+  int _dadoVita = 0;
+  int _puntiVita = 0;
+  List<String> _tiriSalvezza = [];
+  List<String> _competenzeArmi = [];
+  List<String> _competenzeArmature = [];
+  List<String> _competenzeStrumenti = [];
+  List<String> _abilitaClasse = [];
+
 
   final List<String> _competenze = [];
   final Map<String, int> _modificatori = {
@@ -57,6 +82,32 @@ class PGBaseFactory {
   void setClasse(String classe) => _classe = classe;
   void setBackground(String background) => _background = background;
   void setAllineamento(String allineamento) => _allineamento = allineamento;
+  void setDadoVita(int dado) {
+    _dadoVita = dado;
+  }
+  void setPuntiVita(int hp) {
+    _puntiVita = hp;
+  }
+  void setTiriSalvezza(List<String> lista) {
+    _tiriSalvezza = lista;
+  }
+  void setCompetenzeArmi(List<String> lista) {
+    _competenzeArmi = lista;
+  }
+  void setCompetenzeArmature(List<String> lista) {
+    _competenzeArmature = lista;
+  }
+  void setCompetenzeStrumenti(List<String> lista) {
+    _competenzeStrumenti = lista;
+  }
+  void setAbilitaClasse(List<String> lista) {
+    _abilitaClasse = lista;
+  }
+  int getModificatore(String caratteristica) {
+    final valore = _modificatori[caratteristica] ?? 10;
+    return ((valore - 10) / 2).floor();
+  }
+
 
   // Tratti e caratteristiche
   void addCompetenza(String competenza) => _competenze.add(competenza);
@@ -91,6 +142,13 @@ class PGBaseFactory {
       velocita: _velocita,
       linguaggi: List.from(_linguaggi),
       capacitaSpeciali: List.from(_capacitaSpeciali),
+      dadoVita: _dadoVita,
+      puntiVita: _puntiVita,
+      tiriSalvezza: List.from(_tiriSalvezza),
+      competenzeArmi: List.from(_competenzeArmi),
+      competenzeArmature: List.from(_competenzeArmature),
+      competenzeStrumenti: List.from(_competenzeStrumenti),
+      abilitaClasse: List.from(_abilitaClasse),
     );
   }
 }
