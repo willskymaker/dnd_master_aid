@@ -2,19 +2,24 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 class DiceRollerScreen extends StatefulWidget {
+  const DiceRollerScreen({super.key});  // ✅ Costruttore const aggiunto
+
   @override
-  _DiceRollerScreenState createState() => _DiceRollerScreenState();
+  State<DiceRollerScreen> createState() => _DiceRollerScreenState();
 }
 
 class _DiceRollerScreenState extends State<DiceRollerScreen> {
-  final _random = Random();
+  final Random _random = Random();
   int _numeroDadi = 1;
   int _facceDado = 6;
   List<int> _risultati = [];
 
   void _lanciaDadi() {
     setState(() {
-      _risultati = List.generate(_numeroDadi, (_) => _random.nextInt(_facceDado) + 1);
+      _risultati = List.generate(
+        _numeroDadi,
+        (_) => _random.nextInt(_facceDado) + 1,
+      );
     });
   }
 
@@ -23,7 +28,7 @@ class _DiceRollerScreenState extends State<DiceRollerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Tira Dadi")),
+      appBar: AppBar(title: const Text("Tira Dadi")),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -31,8 +36,8 @@ class _DiceRollerScreenState extends State<DiceRollerScreen> {
           children: [
             Row(
               children: [
-                Text("Numero di dadi:"),
-                SizedBox(width: 10),
+                const Text("Numero di dadi:"),
+                const SizedBox(width: 10),
                 DropdownButton<int>(
                   value: _numeroDadi,
                   onChanged: (val) => setState(() => _numeroDadi = val!),
@@ -44,8 +49,8 @@ class _DiceRollerScreenState extends State<DiceRollerScreen> {
             ),
             Row(
               children: [
-                Text("Tipo di dado:"),
-                SizedBox(width: 10),
+                const Text("Tipo di dado:"),
+                const SizedBox(width: 10),
                 DropdownButton<int>(
                   value: _facceDado,
                   onChanged: (val) => setState(() => _facceDado = val!),
@@ -55,15 +60,18 @@ class _DiceRollerScreenState extends State<DiceRollerScreen> {
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _lanciaDadi,
               child: Text("Lancia $_numeroDadi d$_facceDado"),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             if (_risultati.isNotEmpty) ...[
-              Text("Risultati: ${_risultati.join(", ")}", style: TextStyle(fontSize: 18)),
-              Text("Somma: $_somma", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              Text("Risultati: ${_risultati.join(", ")}",
+                  style: const TextStyle(fontSize: 18)),
+              Text("Somma: $_somma",
+                  style: const TextStyle(
+                      fontSize: 22, fontWeight: FontWeight.bold)),
             ]
           ],
         ),

@@ -1,41 +1,85 @@
 import 'package:flutter/material.dart';
-import 'screens/pg_base.dart';
-import 'screens/coming_soon.dart';
-import 'screens/dice_roller.dart';
-import 'screens/name_generator.dart';
+
+// === IMPORTAZIONI ===
+import 'pg_base/main_pg_base.dart';          // PG Base Wizard
+import 'screens/coming_soon.dart';           // Schermata per funzionalità disattivate
+import 'screens/dice_roller.dart';           // Modulo dadi
+import 'screens/name_generator.dart';        // Generatore nomi (standalone)
+import 'package:dnd_master_aid/factory_pg_base.dart';
 
 void main() {
-  runApp(DnDMasterAidApp());
+  runApp(const DnDMasterAidApp());
 }
 
 class DnDMasterAidApp extends StatelessWidget {
+  const DnDMasterAidApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'DnD MasterAid',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
         useMaterial3: true,
       ),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }
 
 class HomePage extends StatelessWidget {
-  final funzioni = [
-    {'id': 'dadi', 'nome': 'Tira Dadi', 'icona': '🎲', 'descr': 'Lancia dadi classici', 'attivo': true},
-    {'id': 'nomi', 'nome': 'Generatore Nomi', 'icona': '🧙', 'descr': 'Crea nomi fantasy', 'attivo': true},
-    {'id': 'pgBase', 'nome': 'Crea PG Base', 'icona': '🧑‍🎓', 'descr': 'Generatore guidato di personaggio', 'attivo': true},
-    {'id': 'pgPro', 'nome': 'PG Avanzato', 'icona': '🧠', 'descr': 'Tutte le opzioni avanzate', 'attivo': false},
-    {'id': 'mob', 'nome': 'Generatore Mob', 'icona': '👹', 'descr': 'Crea mostri e creature', 'attivo': false},
-    {'id': 'npc', 'nome': 'Generatore NPC', 'icona': '🧑‍🌾', 'descr': 'Crea PNG con personalità', 'attivo': false},
+  const HomePage({super.key});
+
+  final funzioni = const [
+    {
+      'id': 'dadi',
+      'nome': 'Tira Dadi',
+      'icona': '🎲',
+      'descr': 'Lancia dadi classici',
+      'attivo': true
+    },
+    {
+      'id': 'nomi',
+      'nome': 'Generatore Nomi',
+      'icona': '🧙',
+      'descr': 'Crea nomi fantasy',
+      'attivo': true
+    },
+    {
+      'id': 'pgBase',
+      'nome': 'Crea PG Base',
+      'icona': '🧑‍🎓',
+      'descr': 'Generatore guidato di personaggio',
+      'attivo': true
+    },
+    {
+      'id': 'pgPro',
+      'nome': 'PG Avanzato',
+      'icona': '🧠',
+      'descr': 'Tutte le opzioni avanzate',
+      'attivo': false
+    },
+    {
+      'id': 'mob',
+      'nome': 'Generatore Mob',
+      'icona': '👹',
+      'descr': 'Crea mostri e creature',
+      'attivo': false
+    },
+    {
+      'id': 'npc',
+      'nome': 'Generatore NPC',
+      'icona': '🧑‍🌾',
+      'descr': 'Crea PNG con personalità',
+      'attivo': false
+    },
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('DnD MasterAid')),
+      appBar: AppBar(title: const Text('DnD MasterAid')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: GridView.count(
@@ -59,11 +103,11 @@ class HomePage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(funzione['icona'] as String, style: TextStyle(fontSize: 36)),
-                    SizedBox(height: 12),
-                    Text(funzione['nome'] as String, style: TextStyle(fontWeight: FontWeight.bold)),
-                    SizedBox(height: 8),
-                    Text(funzione['descr'] as String, textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
+                    Text(funzione['icona'] as String, style: const TextStyle(fontSize: 36)),
+                    const SizedBox(height: 12),
+                    Text(funzione['nome'] as String, style: const TextStyle(fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 8),
+                    Text(funzione['descr'] as String, textAlign: TextAlign.center, style: const TextStyle(fontSize: 12)),
                   ],
                 ),
               ),
@@ -75,19 +119,21 @@ class HomePage extends StatelessWidget {
   }
 
   void _navigateTo(BuildContext context, String id) {
-    Widget page;
+    late final Widget page;
+
     switch (id) {
       case 'pgBase':
-        page = PgBaseScreen();
+        page = const PGBaseWizard(); // ✅ Usa il nuovo flusso guidato
         break;
       case 'dadi':
-        page = DiceRollerScreen();
+        page = const DiceRollerScreen(); // 🎲 Modulo dadi
         break;
       case 'nomi':
-        page = NameGeneratorScreen();
+       page = NameGeneratorScreen(factory: PGBaseFactory());
+
         break;
       default:
-        page = ComingSoonScreen();
+        page = const ComingSoonScreen(); // 🕒 Placeholder
     }
 
     Navigator.push(
@@ -96,4 +142,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
