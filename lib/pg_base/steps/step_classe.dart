@@ -49,16 +49,10 @@ class StepClasseScreen extends StatelessWidget {
     factory.setCompetenzeArmature(classe.competenzeArmature);
     factory.setCompetenzeStrumenti(classe.competenzeStrumenti);
 
-    // Per ora scegliamo automaticamente le prime X abilità
     final abilitaScelte = classe.abilitaSelezionabili.take(classe.abilitaDaSelezionare).toList();
     factory.setAbilitaClasse(abilitaScelte);
 
-    // Calcolo HP iniziali = dado vita + mod COS (valutiamo dopo)
-    final modCos = factory.getModificatore("COS");
-    final hp = classe.dadoVita + modCos;
-    factory.setPuntiVita(hp);
-
-    Navigator.pop(context);
+    Navigator.pop(context, true);
   }
 }
 

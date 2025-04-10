@@ -2,9 +2,11 @@ class PGBase {
   final String nome;
   final String specie;
   final String classe;
+  final int livello;
   final String background;
   final String allineamento;
   final List<String> competenze;
+  final Map<String, int> caratteristiche;
   final Map<String, int> modificatori;
   final int velocita;
   final List<String> linguaggi;
@@ -21,9 +23,11 @@ class PGBase {
     required this.nome,
     required this.specie,
     required this.classe,
+    required this.livello,
     required this.background,
     required this.allineamento,
     required this.competenze,
+    required this.caratteristiche,
     required this.modificatori,
     required this.velocita,
     required this.linguaggi,
@@ -39,11 +43,9 @@ class PGBase {
 
   @override
   String toString() {
-    return 'PGBase(nome: $nome, specie: $specie, classe: $classe, background: $background, allineamento: $allineamento, '
+    return 'PGBase(nome: $nome, specie: $specie, classe: $classe, livello: $livello, background: $background, allineamento: $allineamento, '
         'modificatori: $modificatori, velocità: $velocita, linguaggi: $linguaggi, capacità: $capacitaSpeciali, '
-        'HP: $puntiVita (d${
-            dadoVita
-        }), TS: $tiriSalvezza, armi: $competenzeArmi, armature: $competenzeArmature, strumenti: $competenzeStrumenti, abilità: $abilitaClasse)';
+        'HP: $puntiVita (d${dadoVita}), TS: $tiriSalvezza, armi: $competenzeArmi, armature: $competenzeArmature, strumenti: $competenzeStrumenti, abilita: $abilitaClasse)';
   }
 }
 
@@ -51,20 +53,25 @@ class PGBaseFactory {
   String _nome = '';
   String _specie = '';
   String _classe = '';
+  int _livello = 1;
   String _background = '';
   String _allineamento = '';
-  int _dadoVita = 0;
+  int _dadoVita = 8;
   int _puntiVita = 0;
   List<String> _tiriSalvezza = [];
   List<String> _competenzeArmi = [];
   List<String> _competenzeArmature = [];
   List<String> _competenzeStrumenti = [];
   List<String> _abilitaClasse = [];
-  Map<String, int> _caratteristiche = {};
+  Map<String, int> _caratteristiche = {
+    'FOR': 8,
+    'DES': 8,
+    'COS': 8,
+    'INT': 8,
+    'SAG': 8,
+    'CAR': 8,
+  };
   bool _caratteristicheImpostate = false;
-  
-
-
   final List<String> _competenze = [];
   final Map<String, int> _modificatori = {
     'FOR': 0,
@@ -74,10 +81,11 @@ class PGBaseFactory {
     'SAG': 0,
     'CAR': 0,
   };
-
   int _velocita = 0;
   final List<String> _linguaggi = [];
   final List<String> _capacitaSpeciali = [];
+  int get livello => _livello;
+  int get dadoVita => _dadoVita;
 
   // Set base
   void setNome(String nome) => _nome = nome;
@@ -85,72 +93,37 @@ class PGBaseFactory {
   void setClasse(String classe) => _classe = classe;
   void setBackground(String background) => _background = background;
   void setAllineamento(String allineamento) => _allineamento = allineamento;
-  void setDadoVita(int dado) {
-    _dadoVita = dado;
-  }
-  void setPuntiVita(int hp) {
-    _puntiVita = hp;
-  }
-  void setTiriSalvezza(List<String> lista) {
-    _tiriSalvezza = lista;
-  }
-  void setCompetenzeArmi(List<String> lista) {
-    _competenzeArmi = lista;
-  }
-  void setCompetenzeArmature(List<String> lista) {
-    _competenzeArmature = lista;
-  }
-  void setCompetenzeStrumenti(List<String> lista) {
-    _competenzeStrumenti = lista;
-  }
-  void setAbilitaClasse(List<String> lista) {
-    _abilitaClasse = lista;
-  }
-  int getModificatore(String caratteristica) {
-    final valore = _modificatori[caratteristica] ?? 10;
-    return ((valore - 10) / 2).floor();
-  }
+  void setLivello(int livello) => _livello = livello;
+  void setDadoVita(int dado) => _dadoVita = dado;
+  void setPuntiVita(int hp) => _puntiVita = hp;
+  void setTiriSalvezza(List<String> lista) => _tiriSalvezza = lista;
+  void setCompetenzeArmi(List<String> lista) => _competenzeArmi = lista;
+  void setCompetenzeArmature(List<String> lista) => _competenzeArmature = lista;
+  void setCompetenzeStrumenti(List<String> lista) => _competenzeStrumenti = lista;
+  void setAbilitaClasse(List<String> lista) => _abilitaClasse = lista;
+  void setVelocita(int velocita) => _velocita = velocita;
+  void addCompetenza(String competenza) => _competenze.add(competenza);
+  void addLinguaggi(List<String> lingue) => _linguaggi.addAll(lingue.where((l) => !_linguaggi.contains(l)));
+  void addTrattiSpecie(List<String> tratti) => _capacitaSpeciali.addAll(tratti);
   bool get caratteristicheImpostate => _caratteristicheImpostate;
-
   void setCaratteristiche(Map<String, int> valori) {
     _caratteristiche = valori;
     _caratteristicheImpostate = true;
-
     _modificatori.clear();
     valori.forEach((key, val) {
       _modificatori[key] = ((val - 10) / 2).floor();
     });
   }
-
-  // Tratti e caratteristiche
-  void addCompetenza(String competenza) => _competenze.add(competenza);
-
-  void addBonusCaratteristiche(Map<String, int> bonus) {
-    bonus.forEach((caratteristica, valore) {
-      _modificatori.update(caratteristica, (v) => v + valore, ifAbsent: () => valore);
-    });
-  }
-
-  void setVelocita(int velocita) {
-    _velocita = velocita;
-  }
-
-  void addLinguaggi(List<String> lingue) {
-    _linguaggi.addAll(lingue.where((l) => !_linguaggi.contains(l)));
-  }
-
-  void addTrattiSpecie(List<String> tratti) {
-    _capacitaSpeciali.addAll(tratti);
-  }
-
   PGBase build() {
     return PGBase(
       nome: _nome,
       specie: _specie,
       classe: _classe,
+      livello: _livello,
       background: _background,
       allineamento: _allineamento,
       competenze: List.from(_competenze),
+      caratteristiche: Map.from(_caratteristiche),
       modificatori: Map.from(_modificatori),
       velocita: _velocita,
       linguaggi: List.from(_linguaggi),

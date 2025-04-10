@@ -39,7 +39,7 @@ class _StepNomeScreenState extends State<StepNomeScreen> {
     }
 
     widget.factory.setNome(nome);
-    Navigator.pop(context);
+    Navigator.pop(context, true);
   }
 
   @override

@@ -55,7 +55,7 @@ class StepSpecieScreen extends StatelessWidget {
   // Aggiungi linguaggi, evitando duplicati
   factory.addLinguaggi(specie.linguaggi);
 
-  Navigator.pop(context); // Torna al wizard
+  Navigator.pop(context, true); // Torna al wizard
 }
 }
 Future<void> vaiAStepSpecie(BuildContext context, PGBaseFactory factory) async {
