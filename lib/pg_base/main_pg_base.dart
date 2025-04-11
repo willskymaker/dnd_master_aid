@@ -5,6 +5,7 @@ import 'steps/step_specie.dart';
 import 'steps/step_classe.dart';
 import 'steps/step_livello.dart';
 import 'steps/step_caratteristiche.dart';
+import 'steps/step_abilita.dart';
 import 'steps/step_equip.dart';
 import 'steps/step_export.dart';
 
@@ -39,6 +40,7 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
                  if (!(await vaiAStepClasse(context, factory) ?? false)) return;
                  if (!(await vaiAStepLivello(context, factory) ?? false)) return;
                  if (!(await vaiAStepCaratteristiche(context, factory) ?? false)) return;
+                 if (!(await vaiAStepAbilita(context, factory) ?? false)) return;
                  if (!(await vaiAStepEquipaggiamento(context, factory) ?? false)) return;
 
                  PGBase pg = factory.build();
@@ -66,24 +68,26 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
         content: SingleChildScrollView(
           child: Text(
             '''
-📝 Nome: ${pg.nome}
-🧬 Specie: ${pg.specie}
-🧙 Classe: ${pg.classe}
-🔢 Livello: ${pg.livello}
-❤️ Punti Vita: ${pg.puntiVita} (d${pg.dadoVita}, COS ${pg.modificatori['COS']! >= 0 ? '+' : ''}${pg.modificatori['COS']})
-👣 Velocità: ${pg.velocita} m
-💬 Linguaggi: ${pg.linguaggi.join(', ')}
+Nome: ${pg.nome}
+Specie: ${pg.specie}
+Classe: ${pg.classe}
+Livello: ${pg.livello}
+Punti Vita: ${pg.puntiVita} (d${pg.dadoVita}, COS ${pg.modificatori['COS']! >= 0 ? '+' : ''}${pg.modificatori['COS']})
+Velocità: ${pg.velocita} m
+Linguaggi: ${pg.linguaggi.join(', ')}
 
-📊 Caratteristiche:
+Caratteristiche:
 ${pg.caratteristiche.entries.map((e) {
   final mod = pg.modificatori[e.key] ?? 0;
   final segno = mod >= 0 ? '+' : '';
   return "${e.key}: ${e.value} ($segno$mod)";
 }).join(', ')}
 
-🎓 Competenze: ${pg.competenze.join(', ')}
-✨ Abilità Innate: ${pg.capacitaSpeciali.join(', ')}
-🧰 Equipaggiamento: ${pg.equipaggiamento.isNotEmpty ? pg.equipaggiamento.map((e) => '• $e').join('\n') : '—'}
+Abilità: ${pg.abilitaClasse.join(', ')}
+
+Competenze: ${pg.competenze.join(', ')}
+Abilità Innate: ${pg.capacitaSpeciali.join(', ')}
+Equipaggiamento: ${pg.equipaggiamento.isNotEmpty ? pg.equipaggiamento.map((e) => '• $e').join('\n') : '—'}
             ''',
             textAlign: TextAlign.left,
             style: const TextStyle(fontFamily: 'monospace'),
@@ -145,6 +149,15 @@ Future<bool> vaiAStepCaratteristiche(BuildContext context, PGBaseFactory factory
     context,
     MaterialPageRoute(
       builder: (_) => StepCaratteristicheScreen(factory: factory),
+    ),
+  ) ?? false;
+  return result;
+}
+Future<bool> vaiAStepAbilita(BuildContext context, PGBaseFactory factory) async {
+  bool result = await Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => StepAbilitaScreen(factory: factory,)
     ),
   ) ?? false;
   return result;

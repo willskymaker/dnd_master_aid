@@ -75,6 +75,7 @@ class StepExportScreen extends StatelessWidget {
                   return "${e.key}: ${e.value} ($segno$mod)";
                 }).join(', ')),
                 pw.SizedBox(height: 8),
+                pw.Text("Abilità: ${pg.abilitaClasse.join(', ')}"),
                 pw.Text("Competenze: ${pg.competenze.join(', ')}"),
                 pw.Text("Abilità Innate: ${pg.capacitaSpeciali.join(', ')}"),
                 if (pg.equipaggiamento.isNotEmpty) ...[
