@@ -18,6 +18,8 @@ class PGBase {
   final List<String> competenzeArmature;
   final List<String> competenzeStrumenti;
   final List<String> abilitaClasse;
+  final List<String> equipaggiamento;
+
 
   PGBase({
     required this.nome,
@@ -39,14 +41,16 @@ class PGBase {
     required this.competenzeArmature,
     required this.competenzeStrumenti,
     required this.abilitaClasse,
+    required this.equipaggiamento,
   });
 
   @override
-  String toString() {
-    return 'PGBase(nome: $nome, specie: $specie, classe: $classe, livello: $livello, background: $background, allineamento: $allineamento, '
-        'modificatori: $modificatori, velocità: $velocita, linguaggi: $linguaggi, capacità: $capacitaSpeciali, '
-        'HP: $puntiVita (d${dadoVita}), TS: $tiriSalvezza, armi: $competenzeArmi, armature: $competenzeArmature, strumenti: $competenzeStrumenti, abilita: $abilitaClasse)';
-  }
+String toString() {
+  return 'PGBase(nome: $nome, specie: $specie, classe: $classe, livello: $livello, background: $background, allineamento: $allineamento, '
+      'modificatori: $modificatori, velocità: $velocita, linguaggi: $linguaggi, capacità: $capacitaSpeciali, '
+      'HP: $puntiVita (d${dadoVita}), TS: $tiriSalvezza, armi: $competenzeArmi, armature: $competenzeArmature, strumenti: $competenzeStrumenti, '
+      'abilita: $abilitaClasse, equipaggiamento: ${equipaggiamento.isNotEmpty ? equipaggiamento.join(', ') : 'Nessun equipaggiamento'})';
+}
 }
 
 class PGBaseFactory {
@@ -86,6 +90,7 @@ class PGBaseFactory {
   final List<String> _capacitaSpeciali = [];
   int get livello => _livello;
   int get dadoVita => _dadoVita;
+  final List <String> _equipaggiamento = [];
 
   // Set base
   void setNome(String nome) => _nome = nome;
@@ -114,27 +119,34 @@ class PGBaseFactory {
       _modificatori[key] = ((val - 10) / 2).floor();
     });
   }
+ void addEquipaggiamento(List<String> oggetti) {
+  _equipaggiamento.clear();  // Rimuove equipaggiamento precedente, se necessario
+  _equipaggiamento.addAll(oggetti);  // Aggiunge i nuovi oggetti
+}
+
   PGBase build() {
-    return PGBase(
-      nome: _nome,
-      specie: _specie,
-      classe: _classe,
-      livello: _livello,
-      background: _background,
-      allineamento: _allineamento,
-      competenze: List.from(_competenze),
-      caratteristiche: Map.from(_caratteristiche),
-      modificatori: Map.from(_modificatori),
-      velocita: _velocita,
-      linguaggi: List.from(_linguaggi),
-      capacitaSpeciali: List.from(_capacitaSpeciali),
-      dadoVita: _dadoVita,
-      puntiVita: _puntiVita,
-      tiriSalvezza: List.from(_tiriSalvezza),
-      competenzeArmi: List.from(_competenzeArmi),
-      competenzeArmature: List.from(_competenzeArmature),
-      competenzeStrumenti: List.from(_competenzeStrumenti),
-      abilitaClasse: List.from(_abilitaClasse),
-    );
-  }
+  return PGBase(
+    nome: _nome,
+    specie: _specie,
+    classe: _classe,
+    livello: _livello,
+    background: _background,
+    allineamento: _allineamento,
+    competenze: List.from(_competenze),
+    caratteristiche: Map.from(_caratteristiche),
+    modificatori: Map.from(_modificatori),
+    velocita: _velocita,
+    linguaggi: List.from(_linguaggi),
+    capacitaSpeciali: List.from(_capacitaSpeciali),
+    dadoVita: _dadoVita,
+    puntiVita: _puntiVita,
+    tiriSalvezza: List.from(_tiriSalvezza),
+    competenzeArmi: List.from(_competenzeArmi),
+    competenzeArmature: List.from(_competenzeArmature),
+    competenzeStrumenti: List.from(_competenzeStrumenti),
+    abilitaClasse: List.from(_abilitaClasse),
+    equipaggiamento: List.from(_equipaggiamento),
+  );
+}
+
 }

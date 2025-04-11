@@ -5,6 +5,8 @@ import 'steps/step_specie.dart';
 import 'steps/step_classe.dart';
 import 'steps/step_livello.dart';
 import 'steps/step_caratteristiche.dart';
+import 'steps/step_equip.dart';
+import 'steps/step_export.dart';
 
 class PGBaseWizard extends StatefulWidget {
   const PGBaseWizard({super.key});
@@ -32,15 +34,21 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                if (!(await vaiAStepNome(context, factory) ?? false)) return;
-                if (!(await vaiAStepSpecie(context, factory) ?? false)) return;
-                if (!(await vaiAStepClasse(context, factory) ?? false)) return;
-                if (!(await vaiAStepLivello(context, factory) ?? false)) return;
-                if (!(await vaiAStepCaratteristiche(context, factory) ?? false)) return;
+                 if (!(await vaiAStepNome(context, factory) ?? false)) return;
+                 if (!(await vaiAStepSpecie(context, factory) ?? false)) return;
+                 if (!(await vaiAStepClasse(context, factory) ?? false)) return;
+                 if (!(await vaiAStepLivello(context, factory) ?? false)) return;
+                 if (!(await vaiAStepCaratteristiche(context, factory) ?? false)) return;
+                 if (!(await vaiAStepEquipaggiamento(context, factory) ?? false)) return;
 
-                final PGBase pg = factory.build();
-                _mostraScheda(pg);
+                 PGBase pg = factory.build();
+                 print(pg.nome); // Verifica che il personaggio sia generato correttamente
+                 _mostraScheda(pg);
+
+                // 👉 Step per esportazione PDF
+                 await vaiAStepExportPDF(context, factory);
               },
+
               child: const Text("Inizia la creazione"),
             ),
           ],
@@ -50,6 +58,7 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
   }
 
   void _mostraScheda(PGBase pg) {
+    print("Mostrando la scheda del personaggio...");  // Debugging
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -74,6 +83,7 @@ ${pg.caratteristiche.entries.map((e) {
 
 🎓 Competenze: ${pg.competenze.join(', ')}
 ✨ Abilità Innate: ${pg.capacitaSpeciali.join(', ')}
+🧰 Equipaggiamento: ${pg.equipaggiamento.isNotEmpty ? pg.equipaggiamento.map((e) => '• $e').join('\n') : '—'}
             ''',
             textAlign: TextAlign.left,
             style: const TextStyle(fontFamily: 'monospace'),
@@ -90,47 +100,62 @@ ${pg.caratteristiche.entries.map((e) {
   }
 }
 
-Future<bool?> vaiAStepNome(BuildContext context, PGBaseFactory factory) async {
-  return await Navigator.push<bool>(
+Future<bool> vaiAStepNome(BuildContext context, PGBaseFactory factory) async {
+  bool result = await Navigator.push(
     context,
     MaterialPageRoute(
       builder: (_) => StepNomeScreen(factory: factory),
     ),
-  );
+  ) ?? false;  // Restituisce false se il risultato è null
+  return result;
 }
 
-Future<bool?> vaiAStepSpecie(BuildContext context, PGBaseFactory factory) async {
-  return await Navigator.push<bool>(
+Future<bool> vaiAStepSpecie(BuildContext context, PGBaseFactory factory) async {
+  bool result = await Navigator.push(
     context,
     MaterialPageRoute(
       builder: (_) => StepSpecieScreen(factory: factory),
     ),
-  );
+  ) ?? false;
+  return result;
 }
 
-Future<bool?> vaiAStepClasse(BuildContext context, PGBaseFactory factory) async {
-  return await Navigator.push<bool>(
+Future<bool> vaiAStepClasse(BuildContext context, PGBaseFactory factory) async {
+  bool result = await Navigator.push(
     context,
     MaterialPageRoute(
       builder: (_) => StepClasseScreen(factory: factory),
     ),
-  );
+  ) ?? false;
+  return result;
 }
 
-Future<bool?> vaiAStepLivello(BuildContext context, PGBaseFactory factory) async {
-  return await Navigator.push<bool>(
+Future<bool> vaiAStepLivello(BuildContext context, PGBaseFactory factory) async {
+  bool result = await Navigator.push(
     context,
     MaterialPageRoute(
       builder: (_) => StepLivelloScreen(factory: factory),
     ),
-  );
+  ) ?? false;
+  return result;
 }
 
-Future<bool?> vaiAStepCaratteristiche(BuildContext context, PGBaseFactory factory) async {
-  return await Navigator.push<bool>(
+Future<bool> vaiAStepCaratteristiche(BuildContext context, PGBaseFactory factory) async {
+  bool result = await Navigator.push(
     context,
     MaterialPageRoute(
       builder: (_) => StepCaratteristicheScreen(factory: factory),
     ),
-  );
+  ) ?? false;
+  return result;
+}
+
+Future<bool> vaiAStepEquipaggiamento(BuildContext context, PGBaseFactory factory) async {
+  bool result = await Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => StepEquipScreen(factory: factory),
+    ),
+  ) ?? false;
+  return result;
 }
