@@ -1,10 +1,13 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show kIsWeb; // <- AGGIUNTO
 import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
-import 'package:open_file/open_file.dart'; // <- IMPORTANTE PER MOBILE
+import 'package:open_file/open_file.dart';
 import '../../factory_pg_base.dart';
+import '../../utils/web_pdf_saver.dart'; // <- AGGIUNTO
 
 class StepExportScreen extends StatelessWidget {
   final PGBaseFactory factory;
@@ -20,12 +23,21 @@ class StepExportScreen extends StatelessWidget {
       body: Center(
         child: ElevatedButton.icon(
           onPressed: () async {
-            final file = await _generaPDF(pg);
+            final filename = "${pg.nome}_liv${pg.livello}.pdf".replaceAll(' ', '_');
+            final pdfData = await _generaPDF(pg);
 
+            if (kIsWeb) {
+              downloadPdfWeb(pdfData, filename);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("📥 PDF scaricato nel browser")),
+              );
+              return;
+            }
+
+            final file = await _salvaPDFLocale(pdfData, filename);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text("📄 PDF salvato in:\n${file.path}")),
             );
-
             await _apriPDF(file);
           },
           icon: const Icon(Icons.picture_as_pdf),
@@ -35,7 +47,7 @@ class StepExportScreen extends StatelessWidget {
     );
   }
 
-  Future<File> _generaPDF(PGBase pg) async {
+  Future<Uint8List> _generaPDF(PGBase pg) async {
     final pdf = pw.Document();
 
     pdf.addPage(
@@ -46,7 +58,7 @@ class StepExportScreen extends StatelessWidget {
             child: pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
-                pw.Text("🧙‍♂️ Scheda del Personaggio", style: pw.TextStyle(fontSize: 24)),
+                pw.Text("Scheda Personaggio", style: pw.TextStyle(fontSize: 24)),
                 pw.SizedBox(height: 12),
                 pw.Text("Nome: ${pg.nome}"),
                 pw.Text("Specie: ${pg.specie}"),
@@ -77,11 +89,13 @@ class StepExportScreen extends StatelessWidget {
       ),
     );
 
-    final dir = await getApplicationDocumentsDirectory();
-    final filename = "${pg.nome}_liv${pg.livello}.pdf".replaceAll(' ', '_');
-    final file = File('${dir.path}/$filename');
-    await file.writeAsBytes(await pdf.save());
+    return pdf.save();
+  }
 
+  Future<File> _salvaPDFLocale(Uint8List data, String filename) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File('${dir.path}/$filename');
+    await file.writeAsBytes(data);
     return file;
   }
 
@@ -99,7 +113,6 @@ class StepExportScreen extends StatelessWidget {
     }
   }
 }
-
 Future<void> vaiAStepExportPDF(BuildContext context, PGBaseFactory factory) async {
   await Navigator.push(
     context,
