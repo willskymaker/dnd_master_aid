@@ -1,61 +1,110 @@
-# DnD MasterAid 🧙‍♂️🎲
+# DnD_MasterAid
 
-> Una toolkit Flutter per aiutare giocatori e master di D&D nella creazione e gestione di personaggi, tiri di dado e generatori vari. Semplice, modulare e open source!
+🎲 **DnD_MasterAid** è un'app modulare per la creazione e gestione di personaggi Dungeons & Dragons 5.5e, pensata per essere leggera, responsive e perfetta sia per nuovi giocatori che per veterani del gioco di ruolo.
+
+## 🚀 Stato Attuale
+
+Il progetto è scritto in **Dart** con l'obiettivo di essere compatibile anche con **Flutter Web**. Attualmente si sta sviluppando il modulo **PG Base**, che permette la generazione guidata di un personaggio con i parametri fondamentali:
+
+### ✅ Moduli completati o in corso:
+- **Generatore Nome**: combinazione di prefissi/suffissi fantasy.
+- **Step Specie & Sottospecie**: selezione tra le specie principali della 5.5e con riepilogo abilità e bonus.
+- **Step Classe**: selezione della classe base con tiri salvezza, competenze, abilità e dado vita.
+- **Step Livello**: gestione livello personaggio e sue implicazioni.
+- **Step Caratteristiche**: inserimento caratteristiche base, evidenziazione delle principali in base alla classe scelta, supporto ASI.
+- **Step Equipaggiamento**: selezione di armi, armature e oggetti compatibili con la classe.
+- **Riepilogo Personaggio**: visione completa delle scelte effettuate (in corso di completamento).
+- **Database centralizzati**: per specie, classi, background, talenti, equipaggiamento, incantesimi e slot.
+
+
+```
+
+### 📦 Requisiti
+- Dart >= 3.2.0
+- Compatibile con Flutter Web (in corso di test)
+- Git per la gestione delle versioni
+- Editor consigliato: Visual Studio Code
 
 ---
 
-## 🔧 Funzionalità Implementate
+## 🧭 Roadmap & Implementazioni Future
 
-- **🎲 Tira Dadi**: Lancio dei dadi classici (d4, d6, d8, d10, d12, d20, d100)
-- **🧙 Generatore di Nomi**: Generazione di nomi fantasy con prefisso/suffisso
-- **🧑‍🎓 Crea PG Base**: Sistema guidato per creare un personaggio con:
-  - Selezione specie e classe
-  - Point Buy semplificato
-  - Calcolo automatico HP e CA
-  - Scelta armi, armatura e competenze
-  - Esportazione in PDF su layout grafico
+### 🔧 A breve
+- [ ] Completamento del riepilogo finale del PG
+- [ ] Gestione dei punti ferita in base a classe e livello
+- [ ] Gestione della Classe Armatura (CA)
+- [ ] Esportazione del personaggio in **PDF** su base grafica (`scheda_pg_blank_base.png`)
+- [ ] Modalità “Avanzata” per utenti esperti
 
-## 🛠 Tecnologie
+### 📘 Regole & Meccaniche
+- [ ] Implementazione ASI automatica in base al livello
+- [ ] Gestione dei talenti alternativi agli ASI
+- [ ] Calcolo incantesimi, trucchetti e slot in base a classe e livello
+- [ ] Background: selezione e impatto su competenze e linguaggi
+- [ ] Supporto multilingua (🇮🇹 / 🇺🇸)
 
-- **Flutter 3.19+** (supporto multi-piattaforma)
-- **Dart**
-- `pdf`, `printing` e `flutter_full_pdf_viewer` per il rendering dei PDF
-
-## 📂 Struttura del Progetto
-
-```
-lib/
-├── main.dart
-├── screens/
-│   ├── pg_base.dart
-│   ├── dice_roller.dart
-│   └── name_generator.dart
-├── utils/
-│   └── pdf_generator.dart
-├── assets/
-│   └── images/
-│       └── scheda_pg_base.png
-```
-
-## 🔜 Funzionalità Future (Roadmap)
-
-- [ ] Modalità avanzata di creazione PG (background, talenti, incantesimi)
-- [ ] Generatore di PNG con tratti di personalità
-- [ ] Generatore di Mostri e Mob
-- [ ] Salvataggio e caricamento personaggi
-- [ ] Modalità "Campagna" per gestire più personaggi insieme
-
-## 🧑‍💻 Contribuire
-
-1. Fai una fork del progetto
-2. Crea una nuova branch: `git checkout -b feature/NomeFunzione`
-3. Fai commit e push
-4. Apri una Pull Request 🚀
-
-## 📝 Licenza
-
-Questo progetto è distribuito sotto licenza **MIT**. Vedi il file `LICENSE` per dettagli.
+### 🎮 Tool aggiuntivi (extra modulabili)
+- [ ] **TiraDadi** con supporto a più dadi (es. 8d6)
+- [ ] **Gestione Campagna** (giocatori, sessioni, loot)
+- [ ] **Bestiario Interattivo** per master
+- [ ] **Foglio Note** e diario digitale
 
 ---
 
-> Realizzato con passione da William "willskymaker" e la community Nerd 🧠❤️
+## 🤝 Contribuire
+
+Il progetto è aperto a contributi! Puoi:
+- Aprire una Issue
+- Inviare una Pull Request
+- Segnalare bug o richieste via [GitHub Issues](https://github.com/tuo-username/DnD_MasterAid/issues)
+
+🎯 Issue "good first contribution"
+
+Stiamo creando una serie di issue etichettate come good first contribution, ideali per chi vuole iniziare a contribuire al progetto. Ecco alcune che puoi aprire:
+
+📌 [good first issue] Aggiungi nuove armi
+
+Popola db_equipaggiamento.dart con armi mancanti secondo lo schema esistente. Puoi includere anche armi homebrew.
+
+📌 [good first issue] Aggiungi nuove armature
+
+Inserisci nuove voci nel db_equipaggiamento.dart per completare le categorie di armature (leggere, medie, pesanti, scudi).
+
+📌 [good first issue] Estendi le specie disponibili
+
+Aggiungi specie o sottospecie mancanti al db_specie.dart, inclusi contenuti homebrew bilanciati.
+
+📌 [good first issue] Estendi le classi disponibili
+
+Integra nuove classi o sottoclassi nel db_classi.dart seguendo lo schema di quelle esistenti.
+
+📌 [good first issue] Inserisci talenti o background
+
+Completa il db_talenti.dart o db_background.dart con voci mancanti, utilizzando i dati ufficiali o homebrew coerenti.
+
+📌 [good first issue] Aggiungi trucchetti e incantesimi
+
+Popola db_incantesimi.dart con trucchetti (cantrip) e magie di livello 1, organizzati per classe.
+
+Per ogni issue:
+
+Segui la struttura dati esistente nel file corrispondente
+
+Assicurati che le modifiche non rompano il flusso PG Base
+
+Apri una PR chiara e motivata (screenshot benvenuti!)
+
+
+---
+
+## 📜 Licenza
+
+Questo progetto è distribuito sotto licenza **MIT**. Consulta il file `LICENSE` per i dettagli.
+
+---
+
+## 👑 Credits
+
+---
+
+> Realizzato con passione da William "willskymaker" e la community Nerd Friends 🧠❤️
