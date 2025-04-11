@@ -119,7 +119,11 @@ class _StepEquipScreenState extends State<StepEquipScreen> {
             ElevatedButton(
               onPressed: _conferma,
               child: const Text("Conferma Equipaggiamento"),
-            )
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text("Salta Step"),
+            ),
           ],
         ),
       ),
