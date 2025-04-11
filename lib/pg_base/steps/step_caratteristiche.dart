@@ -93,7 +93,7 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
     );
 
     print("🎲 Caratteristiche default: $defaultStats");
-    Navigator.pop(context);
+    Navigator.pop(context, true);
   }
 
   int calcolaPuntiVita({
@@ -160,10 +160,13 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
                 onPressed: _conferma,
                 child: const Text("Conferma Punteggi"),
               ),
-              TextButton(
-                onPressed: _saltaStep,
-                child: const Text("Salta Step"),
-              )
+            TextButton(
+              onPressed: () {
+                widget.factory.setCaratteristicheImpostate(false); // Imposta a false
+                Navigator.pop(context, true); // Procedi allo step successivo
+              },
+              child: const Text("Salta Step"),
+            ),
             ],
           ),
         ),

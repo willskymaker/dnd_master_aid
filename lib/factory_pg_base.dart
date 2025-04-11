@@ -8,6 +8,7 @@ class PGBase {
   final List<String> competenze;
   final Map<String, int> caratteristiche;
   final Map<String, int> modificatori;
+  final bool caratteristicheImpostate;
   final int velocita;
   final List<String> linguaggi;
   final List<String> capacitaSpeciali;
@@ -31,6 +32,7 @@ class PGBase {
     required this.competenze,
     required this.caratteristiche,
     required this.modificatori,
+    required this.caratteristicheImpostate,
     required this.velocita,
     required this.linguaggi,
     required this.capacitaSpeciali,
@@ -110,7 +112,7 @@ class PGBaseFactory {
   void addCompetenza(String competenza) => _competenze.add(competenza);
   void addLinguaggi(List<String> lingue) => _linguaggi.addAll(lingue.where((l) => !_linguaggi.contains(l)));
   void addTrattiSpecie(List<String> tratti) => _capacitaSpeciali.addAll(tratti);
-  bool get caratteristicheImpostate => _caratteristicheImpostate;
+  
   void setCaratteristiche(Map<String, int> valori) {
     _caratteristiche = valori;
     _caratteristicheImpostate = true;
@@ -119,10 +121,15 @@ class PGBaseFactory {
       _modificatori[key] = ((val - 10) / 2).floor();
     });
   }
- void addEquipaggiamento(List<String> oggetti) {
-  _equipaggiamento.clear();  // Rimuove equipaggiamento precedente, se necessario
-  _equipaggiamento.addAll(oggetti);  // Aggiunge i nuovi oggetti
-}
+  bool get caratteristicheImpostate => _caratteristicheImpostate;
+  void addEquipaggiamento(List<String> oggetti) {
+    _equipaggiamento.clear();  // Rimuove equipaggiamento precedente, se necessario
+    _equipaggiamento.addAll(oggetti);  // Aggiunge i nuovi oggetti
+  }
+  void setCaratteristicheImpostate(bool value) {
+    _caratteristicheImpostate = value;
+  }
+
 
   PGBase build() {
   return PGBase(
@@ -135,6 +142,7 @@ class PGBaseFactory {
     competenze: List.from(_competenze),
     caratteristiche: Map.from(_caratteristiche),
     modificatori: Map.from(_modificatori),
+    caratteristicheImpostate: _caratteristicheImpostate,
     velocita: _velocita,
     linguaggi: List.from(_linguaggi),
     capacitaSpeciali: List.from(_capacitaSpeciali),
