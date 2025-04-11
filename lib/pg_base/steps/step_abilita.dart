@@ -61,6 +61,8 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("🧠 Step Abilità caricato"); // <-- questo deve apparire in console
+
     return Scaffold(
       appBar: AppBar(title: const Text("Step: Abilità")),
       body: Padding(

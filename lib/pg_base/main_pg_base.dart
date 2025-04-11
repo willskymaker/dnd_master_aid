@@ -157,7 +157,7 @@ Future<bool> vaiAStepAbilita(BuildContext context, PGBaseFactory factory) async 
   bool result = await Navigator.push(
     context,
     MaterialPageRoute(
-      builder: (_) => StepAbilitaScreen(factory: factory,)
+      builder: (_) => StepAbilitaScreen(factory: factory),
     ),
   ) ?? false;
   return result;
