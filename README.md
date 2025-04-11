@@ -86,6 +86,8 @@ Completa il db_talenti.dart o db_background.dart con voci mancanti, utilizzando 
 
 Popola db_incantesimi.dart con trucchetti (cantrip) e magie di livello 1, organizzati per classe.
 
+Ci sono ancora tanti bug da risolvere e fix da fare, non abbiate timore, aprite issues e cerchiamo di risolvere!
+
 Per ogni issue:
 
 Segui la struttura dati esistente nel file corrispondente
