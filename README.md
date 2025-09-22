@@ -21,35 +21,63 @@ lib/
 
 **Attualmente si sta sviluppando il modulo **PG Base**, che permette la generazione guidata di un personaggio con i parametri fondamentali:**
 
-### ✅ Moduli completati o in corso:
-- **Generatore Nome**: combinazione di prefissi/suffissi fantasy.
-- **Step Specie & Sottospecie**: selezione tra le specie principali della 5.5e con riepilogo abilità e bonus.
-- **Step Classe**: selezione della classe base con tiri salvezza, competenze, abilità e dado vita.
-- **Step Livello**: gestione livello personaggio e sue implicazioni.
-- **Step Caratteristiche**: inserimento caratteristiche base, evidenziazione delle principali in base alla classe scelta, supporto ASI.
-- **Step Equipaggiamento**: selezione di armi, armature e oggetti compatibili con la classe.
-- **Riepilogo Personaggio**: visione completa delle scelte effettuate (in corso di completamento).
-- **Database centralizzati**: per specie, classi, background, talenti, equipaggiamento, incantesimi e slot.
+### ✅ Moduli completati:
+- **Generatore Nome**: combinazione di prefissi/suffissi fantasy
+- **Step Specie & Sottospecie**: selezione tra le specie principali della 5.5e con riepilogo abilità e bonus
+- **Step Classe**: selezione della classe base con tiri salvezza, competenze, abilità e dado vita
+- **Step Livello**: gestione livello personaggio e sue implicazioni
+- **Step Caratteristiche**: inserimento caratteristiche base, evidenziazione delle principali in base alla classe scelta, supporto ASI
+- **Step Equipaggiamento**: selezione di armi, armature e oggetti compatibili con la classe
+- **Riepilogo Personaggio**: visione completa delle scelte effettuate
+- **Export PDF**: esportazione del personaggio in formato PDF
+- **Database centralizzati**: per specie, classi, background, talenti, equipaggiamento, incantesimi e slot
+- **Sistema di validazione**: controllo consistenza dati e validazione input utente
+- **Gestione errori**: error handling robusto con logging strutturato
+- **State management**: architettura con Provider per gestione stato centralizzata
 
 
 ```
 
 ### 📦 Requisiti
-- Dart >= 3.2.0
-- Compatibile con Flutter Web (in corso di test)
+- **Dart** >= 3.7.2
+- **Flutter** >= 3.32.8
+- **Dipendenze principali**: `provider`, `logger`, `pdf`, `path_provider`
+- **Piattaforme supportate**: Web ✅, Desktop (Linux, Windows, macOS), Mobile (Android, iOS)
 - Git per la gestione delle versioni
 - Editor consigliato: Visual Studio Code
+
+### 🛠️ Installazione e Avvio
+
+```bash
+# Clone del repository
+git clone https://github.com/tuo-username/DnD_MasterAid.git
+cd DnD_MasterAid
+
+# Installazione dipendenze
+flutter pub get
+
+# Avvio in modalità debug
+flutter run -d chrome  # Per web
+flutter run -d linux   # Per desktop Linux
+flutter run -d android # Per Android
+
+# Build di produzione
+flutter build web --release
+```
 
 ---
 
 ## 🧭 Roadmap & Implementazioni Future
 
 ### 🔧 A breve
-- [ ] Completamento del riepilogo finale del PG
-- [ ] Gestione dei punti ferita in base a classe e livello
-- [ ] Gestione della Classe Armatura (CA)
-- [ ] Esportazione del personaggio in **PDF** su base grafica (`scheda_pg_blank_base.png`)
-- [ ] Modalità “Avanzata” per utenti esperti
+- [x] ~~Completamento del riepilogo finale del PG~~
+- [x] ~~Gestione dei punti ferita in base a classe e livello~~
+- [x] ~~Gestione della Classe Armatura (CA)~~
+- [x] ~~Esportazione del personaggio in **PDF**~~
+- [ ] Layout PDF migliorato con grafica (`scheda_pg_blank_base.png`)
+- [ ] Modalità "Avanzata" per utenti esperti
+- [ ] Salvataggio persistente dei personaggi
+- [ ] Sistema di undo/redo negli step
 
 ### 📘 Regole & Meccaniche
 - [ ] Implementazione ASI automatica in base al livello
