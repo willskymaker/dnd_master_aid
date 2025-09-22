@@ -1,0 +1,822 @@
+{
+  "version": "2.0.0",
+  "description": "Database completo delle specie di D&D 5e - Tutte le razze ufficiali",
+  "last_updated": "2025-01-22",
+  "sources": ["Player's Handbook", "Volo's Guide", "Xanathar's Guide", "Tasha's Cauldron", "Mordenkainen's"],
+  "species": [
+    {
+      "id": "aarakocra",
+      "nome": "Aarakocra",
+      "descrizione": "Umanoidi aviari dalle Montagne Elementali dell'Aria.",
+      "velocita": 25,
+      "velocita_volo": 50,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": [],
+      "abilitaInnate": ["Volo", "Artigli"],
+      "linguaggi": ["Comune", "Aarakocra", "Auran"],
+      "bonus_caratteristiche": {"DES": 2, "SAG": 1},
+      "eta_media": 30,
+      "allineamento_tipico": "Buono",
+      "tratti_speciali": [
+        "Volo: Velocità di volo 50 piedi",
+        "Artigli: 1d4 danni taglienti senza armi"
+      ],
+      "source": "Elemental Evil"
+    },
+    {
+      "id": "aasimar",
+      "nome": "Aasimar",
+      "descrizione": "Umani benedetti dall'influenza celeste.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": ["necrotico", "radiante"],
+      "abilitaInnate": ["Mani Guaritrici", "Portatore di Luce", "Trasformazione Celeste"],
+      "linguaggi": ["Comune", "Celeste"],
+      "bonus_caratteristiche": {"CAR": 2},
+      "eta_media": 160,
+      "allineamento_tipico": "Buono",
+      "sottospecie": [
+        {
+          "nome": "Aasimar Protettore",
+          "bonus_caratteristiche": {"SAG": 1},
+          "abilita_speciali": ["Ali Radianti"]
+        },
+        {
+          "nome": "Aasimar Vendicatore",
+          "bonus_caratteristiche": {"SAG": 1},
+          "abilita_speciali": ["Aspetto Radiante"]
+        },
+        {
+          "nome": "Aasimar Caduto",
+          "bonus_caratteristiche": {"FOR": 1},
+          "abilita_speciali": ["Sudario Necrotico"]
+        }
+      ],
+      "source": "Volo's Guide"
+    },
+    {
+      "id": "bugbear",
+      "nome": "Bugbear",
+      "descrizione": "Goblinoidi alti e pelosi, predatori silenziosi.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": ["Furtività"],
+      "resistenze": [],
+      "abilitaInnate": ["Portata Lunga", "Forza Possente", "Attacco a Sorpresa"],
+      "linguaggi": ["Comune", "Goblin"],
+      "bonus_caratteristiche": {"FOR": 2, "DES": 1},
+      "eta_media": 80,
+      "allineamento_tipico": "Caotico Malvagio",
+      "source": "Volo's Guide"
+    },
+    {
+      "id": "centaur",
+      "nome": "Centauro",
+      "descrizione": "Creature metà umano metà cavallo.",
+      "velocita": 40,
+      "taglia": "Media",
+      "tipo": "feata",
+      "competenze": ["Sopravvivenza"],
+      "resistenze": [],
+      "abilitaInnate": ["Carica", "Zoccoli", "Natura Equina"],
+      "linguaggi": ["Comune", "Silvano"],
+      "bonus_caratteristiche": {"FOR": 2, "SAG": 1},
+      "eta_media": 100,
+      "allineamento_tipico": "Neutrale",
+      "source": "Guildmaster's Guide to Ravnica"
+    },
+    {
+      "id": "changeling",
+      "nome": "Mutaforma",
+      "descrizione": "Creature in grado di alterare il proprio aspetto.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": ["Inganno"],
+      "resistenze": [],
+      "abilitaInnate": ["Mutaforma", "Instabilità Mutaforma"],
+      "linguaggi": ["Comune"],
+      "bonus_caratteristiche": {"CAR": 2},
+      "eta_media": 100,
+      "allineamento_tipico": "Caotico Neutrale",
+      "source": "Eberron"
+    },
+    {
+      "id": "dragonborn",
+      "nome": "Dragonide",
+      "descrizione": "Umanoidi dall'aspetto draconico, discendenti di antichi draghi.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": [],
+      "abilitaInnate": ["Arma del Soffio", "Resistenza ai Danni"],
+      "linguaggi": ["Comune", "Draconico"],
+      "bonus_caratteristiche": {"FOR": 2, "CAR": 1},
+      "eta_media": 80,
+      "allineamento_tipico": "Qualsiasi",
+      "sottospecie": [
+        {
+          "nome": "Dragonide Nero",
+          "resistenza_danni": "acido",
+          "soffio": {"tipo": "acido", "area": "linea_5x30", "tiro_salvezza": "destrezza"}
+        },
+        {
+          "nome": "Dragonide Blu",
+          "resistenza_danni": "fulmine",
+          "soffio": {"tipo": "fulmine", "area": "linea_5x30", "tiro_salvezza": "destrezza"}
+        },
+        {
+          "nome": "Dragonide di Ottone",
+          "resistenza_danni": "fuoco",
+          "soffio": {"tipo": "fuoco", "area": "linea_5x30", "tiro_salvezza": "destrezza"}
+        },
+        {
+          "nome": "Dragonide di Bronzo",
+          "resistenza_danni": "fulmine",
+          "soffio": {"tipo": "fulmine", "area": "linea_5x30", "tiro_salvezza": "destrezza"}
+        },
+        {
+          "nome": "Dragonide di Rame",
+          "resistenza_danni": "acido",
+          "soffio": {"tipo": "acido", "area": "linea_5x30", "tiro_salvezza": "destrezza"}
+        },
+        {
+          "nome": "Dragonide d'Oro",
+          "resistenza_danni": "fuoco",
+          "soffio": {"tipo": "fuoco", "area": "cono_15", "tiro_salvezza": "destrezza"}
+        },
+        {
+          "nome": "Dragonide Verde",
+          "resistenza_danni": "veleno",
+          "soffio": {"tipo": "veleno", "area": "cono_15", "tiro_salvezza": "costituzione"}
+        },
+        {
+          "nome": "Dragonide Rosso",
+          "resistenza_danni": "fuoco",
+          "soffio": {"tipo": "fuoco", "area": "cono_15", "tiro_salvezza": "destrezza"}
+        },
+        {
+          "nome": "Dragonide d'Argento",
+          "resistenza_danni": "freddo",
+          "soffio": {"tipo": "freddo", "area": "cono_15", "tiro_salvezza": "costituzione"}
+        },
+        {
+          "nome": "Dragonide Bianco",
+          "resistenza_danni": "freddo",
+          "soffio": {"tipo": "freddo", "area": "cono_15", "tiro_salvezza": "costituzione"}
+        }
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "dwarf",
+      "nome": "Nano",
+      "descrizione": "Robusti guerrieri delle montagne, maestri di forgia e battaglia.",
+      "velocita": 25,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": ["veleno"],
+      "abilitaInnate": ["Scurovisione", "Resistenza Nanica", "Addestramento da Combattimento", "Competenza con gli Strumenti"],
+      "linguaggi": ["Comune", "Nanico"],
+      "bonus_caratteristiche": {"COS": 2},
+      "eta_media": 350,
+      "allineamento_tipico": "Legale",
+      "sottospecie": [
+        {
+          "nome": "Nano della Collina",
+          "bonus_caratteristiche": {"SAG": 1},
+          "abilita_speciali": ["Tenacia Nanica: +1 PF per livello"]
+        },
+        {
+          "nome": "Nano della Montagna",
+          "bonus_caratteristiche": {"FOR": 1},
+          "abilita_speciali": ["Competenza con Armature: Leggere e Medie"]
+        },
+        {
+          "nome": "Duergar",
+          "bonus_caratteristiche": {"FOR": 1},
+          "abilita_speciali": ["Scurovisione Superiore", "Magia Duergar", "Resistenza al Sole"]
+        }
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "elf",
+      "nome": "Elfo",
+      "descrizione": "Graziosi e magici, con una lunga durata di vita e affinità naturale.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": ["Percezione"],
+      "resistenze": [],
+      "abilitaInnate": ["Scurovisione", "Sensi Acuti", "Ascendenza Fatata", "Trance"],
+      "linguaggi": ["Comune", "Elfico"],
+      "bonus_caratteristiche": {"DES": 2},
+      "eta_media": 750,
+      "allineamento_tipico": "Caotico Buono",
+      "sottospecie": [
+        {
+          "nome": "Alto Elfo",
+          "bonus_caratteristiche": {"INT": 1},
+          "abilita_speciali": ["Addestramento con Armi Elfiche", "Trucchetto", "Linguaggio Extra"]
+        },
+        {
+          "nome": "Elfo dei Boschi",
+          "bonus_caratteristiche": {"SAG": 1},
+          "abilita_speciali": ["Addestramento con Armi Elfiche", "Piede Veloce", "Maschera della Natura"]
+        },
+        {
+          "nome": "Drow",
+          "bonus_caratteristiche": {"CAR": 1},
+          "abilita_speciali": ["Scurovisione Superiore", "Sensibilità al Sole", "Magia Drow", "Addestramento con Armi Drow"]
+        },
+        {
+          "nome": "Eladrin",
+          "bonus_caratteristiche": {"CAR": 1},
+          "abilita_speciali": ["Passo Fatato", "Stagioni Cangianti"]
+        },
+        {
+          "nome": "Elfo del Mare",
+          "bonus_caratteristiche": {"COS": 1},
+          "abilita_speciali": ["Velocità di Nuoto", "Anfibio", "Addestramento con Armi Elfiche"]
+        },
+        {
+          "nome": "Shadar-kai",
+          "bonus_caratteristiche": {"COS": 1},
+          "abilita_speciali": ["Passo Benedetto", "Resistenza Necrotica"]
+        }
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "firbolg",
+      "nome": "Firbolg",
+      "descrizione": "Giganti benevoli della foresta, custodi della natura.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": [],
+      "abilitaInnate": ["Magia Firbolg", "Voce Nascosta", "Potente Corporatura"],
+      "linguaggi": ["Comune", "Elfico", "Gigante"],
+      "bonus_caratteristiche": {"SAG": 2, "FOR": 1},
+      "eta_media": 500,
+      "allineamento_tipico": "Neutrale Buono",
+      "source": "Volo's Guide"
+    },
+    {
+      "id": "genasi",
+      "nome": "Genasi",
+      "descrizione": "Umani con sangue elementale nelle vene.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": [],
+      "abilitaInnate": [],
+      "linguaggi": ["Comune", "Primordiale"],
+      "bonus_caratteristiche": {"COS": 2},
+      "eta_media": 120,
+      "allineamento_tipico": "Neutrale",
+      "sottospecie": [
+        {
+          "nome": "Genasi dell'Aria",
+          "bonus_caratteristiche": {"DES": 1},
+          "abilita_speciali": ["Respiro Senza Fine", "Mago Raffica"]
+        },
+        {
+          "nome": "Genasi della Terra",
+          "bonus_caratteristiche": {"FOR": 1},
+          "abilita_speciali": ["Camminare sulla Terra", "Fondersi con la Pietra"]
+        },
+        {
+          "nome": "Genasi del Fuoco",
+          "bonus_caratteristiche": {"INT": 1},
+          "abilita_speciali": ["Scurovisione", "Resistenza al Fuoco", "Raggiungere la Fiamma"]
+        },
+        {
+          "nome": "Genasi dell'Acqua",
+          "bonus_caratteristiche": {"SAG": 1},
+          "abilita_speciali": ["Resistenza all'Acido", "Anfibio", "Nuotare", "Chiamare le Onde"]
+        }
+      ],
+      "source": "Elemental Evil"
+    },
+    {
+      "id": "githyanki",
+      "nome": "Githyanki",
+      "descrizione": "Guerrieri psionici del Piano Astrale.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": [],
+      "abilitaInnate": ["Spade d'Argento", "Psionica Githyanki"],
+      "linguaggi": ["Comune", "Gith"],
+      "bonus_caratteristiche": {"FOR": 2, "INT": 1},
+      "eta_media": 100,
+      "allineamento_tipico": "Legale Malvagio",
+      "source": "Mordenkainen's"
+    },
+    {
+      "id": "githzerai",
+      "nome": "Githzerai",
+      "descrizione": "Monaci psionici del Limbo.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": [],
+      "abilitaInnate": ["Disciplina Mentale", "Psionica Githzerai"],
+      "linguaggi": ["Comune", "Gith"],
+      "bonus_caratteristiche": {"SAG": 2, "INT": 1},
+      "eta_media": 100,
+      "allineamento_tipico": "Legale Neutrale",
+      "source": "Mordenkainen's"
+    },
+    {
+      "id": "gnome",
+      "nome": "Gnomo",
+      "descrizione": "Piccoli e curiosi, con talento per la magia e l'invenzione.",
+      "velocita": 25,
+      "taglia": "Piccola",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": [],
+      "abilitaInnate": ["Scurovisione", "Astuzia Gnomesca"],
+      "linguaggi": ["Comune", "Gnomesco"],
+      "bonus_caratteristiche": {"INT": 2},
+      "eta_media": 400,
+      "allineamento_tipico": "Buono",
+      "sottospecie": [
+        {
+          "nome": "Gnomo della Foresta",
+          "bonus_caratteristiche": {"DES": 1},
+          "abilita_speciali": ["Illusionista Nato", "Parlare con le Bestie"]
+        },
+        {
+          "nome": "Gnomo delle Rocce",
+          "bonus_caratteristiche": {"COS": 1},
+          "abilita_speciali": ["Sapere dell'Artefice", "Bricoleur"]
+        },
+        {
+          "nome": "Gnomo Profondo",
+          "bonus_caratteristiche": {"DES": 1},
+          "abilita_speciali": ["Scurovisione Superiore", "Vantaggio su Furtività"]
+        }
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "goblin",
+      "nome": "Goblin",
+      "descrizione": "Piccoli umanoidi verdi, astuti e agili.",
+      "velocita": 30,
+      "taglia": "Piccola",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": [],
+      "abilitaInnate": ["Fuga Agile", "Nimble Escape"],
+      "linguaggi": ["Comune", "Goblin"],
+      "bonus_caratteristiche": {"DES": 2, "COS": 1},
+      "eta_media": 60,
+      "allineamento_tipico": "Neutrale Malvagio",
+      "source": "Volo's Guide"
+    },
+    {
+      "id": "goliath",
+      "nome": "Goliath",
+      "descrizione": "Giganti delle montagne, competitivi e resistenti.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": ["Atletica"],
+      "resistenze": ["freddo"],
+      "abilitaInnate": ["Resistenza di Pietra", "Potente Corporatura", "Acclimazione alle Montagne"],
+      "linguaggi": ["Comune", "Gigante"],
+      "bonus_caratteristiche": {"FOR": 2, "COS": 1},
+      "eta_media": 90,
+      "allineamento_tipico": "Neutrale",
+      "source": "Elemental Evil"
+    },
+    {
+      "id": "halfelf",
+      "nome": "Mezzelfo",
+      "descrizione": "Ibrido tra umano ed elfo, versatile e carismatico.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": [],
+      "abilitaInnate": ["Scurovisione", "Ascendenza Fatata", "Versatilità delle Abilità"],
+      "linguaggi": ["Comune", "Elfico"],
+      "bonus_caratteristiche": {"CAR": 2},
+      "eta_media": 180,
+      "allineamento_tipico": "Caotico Buono",
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "halfling",
+      "nome": "Halfling",
+      "descrizione": "Piccoli e coraggiosi, amanti del comfort e dell'avventura.",
+      "velocita": 25,
+      "taglia": "Piccola",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": [],
+      "abilitaInnate": ["Fortunato", "Coraggioso", "Agilità Halfling"],
+      "linguaggi": ["Comune", "Halfling"],
+      "bonus_caratteristiche": {"DES": 2},
+      "eta_media": 150,
+      "allineamento_tipico": "Legale Buono",
+      "sottospecie": [
+        {
+          "nome": "Piedelesto",
+          "bonus_caratteristiche": {"CAR": 1},
+          "abilita_speciali": ["Furtività Naturale"]
+        },
+        {
+          "nome": "Tozzo",
+          "bonus_caratteristiche": {"COS": 1},
+          "abilita_speciali": ["Resilienza Tozzo"]
+        },
+        {
+          "nome": "Ghostwise",
+          "bonus_caratteristiche": {"SAG": 1},
+          "abilita_speciali": ["Telepatia Silenziosa"]
+        }
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "halforc",
+      "nome": "Mezzorco",
+      "descrizione": "Ibrido tra umano e orco, con forza selvaggia e determinazione.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": ["Intimidire"],
+      "resistenze": [],
+      "abilitaInnate": ["Scurovisione", "Resistenza Implacabile", "Attacchi Selvaggi"],
+      "linguaggi": ["Comune", "Orchesco"],
+      "bonus_caratteristiche": {"FOR": 2, "COS": 1},
+      "eta_media": 75,
+      "allineamento_tipico": "Caotico Neutrale",
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "hobgoblin",
+      "nome": "Hobgoblin",
+      "descrizione": "Goblinoidi disciplinati e militaristici.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": [],
+      "abilitaInnate": ["Addestramento Marziale", "Salvare la Faccia"],
+      "linguaggi": ["Comune", "Goblin"],
+      "bonus_caratteristiche": {"COS": 2, "INT": 1},
+      "eta_media": 100,
+      "allineamento_tipico": "Legale Malvagio",
+      "source": "Volo's Guide"
+    },
+    {
+      "id": "human",
+      "nome": "Umano",
+      "descrizione": "Versatili e ambiziosi, adattabili a qualsiasi situazione.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": [],
+      "abilitaInnate": [],
+      "linguaggi": ["Comune"],
+      "bonus_caratteristiche": {"FOR": 1, "DES": 1, "COS": 1, "INT": 1, "SAG": 1, "CAR": 1},
+      "eta_media": 80,
+      "allineamento_tipico": "Qualsiasi",
+      "varianti": [
+        {
+          "nome": "Umano Variante",
+          "bonus_caratteristiche": {"scelta_2": 1},
+          "abilita_speciali": ["Talento Extra", "Competenza Extra"]
+        }
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "kalashtar",
+      "nome": "Kalashtar",
+      "descrizione": "Umani con spiriti del sogno nella loro mente.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": ["psichico"],
+      "abilitaInnate": ["Telepatia", "Resistenza Psichica", "Mente di Due Mondi"],
+      "linguaggi": ["Comune", "Quori"],
+      "bonus_caratteristiche": {"SAG": 2, "CAR": 1},
+      "eta_media": 100,
+      "allineamento_tipico": "Legale Buono",
+      "source": "Eberron"
+    },
+    {
+      "id": "kenku",
+      "nome": "Kenku",
+      "descrizione": "Umanoidi corvini senza volo, maestri dell'imitazione.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": ["Inganno", "Furtività"],
+      "resistenze": [],
+      "abilitaInnate": ["Imitazione Esperta", "Falsificazione"],
+      "linguaggi": ["Comune", "Auran"],
+      "bonus_caratteristiche": {"DES": 2, "SAG": 1},
+      "eta_media": 60,
+      "allineamento_tipico": "Caotico Neutrale",
+      "source": "Volo's Guide"
+    },
+    {
+      "id": "kobold",
+      "nome": "Coboldo",
+      "descrizione": "Piccoli rettili draconici, astuti e collaborativi.",
+      "velocita": 30,
+      "taglia": "Piccola",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": [],
+      "abilitaInnate": ["Scurovisione", "Sensibilità al Sole", "Tattiche da Branco"],
+      "linguaggi": ["Comune", "Draconico"],
+      "bonus_caratteristiche": {"DES": 2, "FOR": -2},
+      "eta_media": 120,
+      "allineamento_tipico": "Legale Malvagio",
+      "source": "Volo's Guide"
+    },
+    {
+      "id": "lizardfolk",
+      "nome": "Uomo Lucertola",
+      "descrizione": "Rettili primitivi delle paludi, pragmatici e selvaggi.",
+      "velocita": 30,
+      "velocita_nuoto": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": ["Percezione", "Furtività", "Sopravvivenza"],
+      "resistenze": [],
+      "abilitaInnate": ["Morso", "Cunning Artisan", "Resistere", "Trattenere il Respiro"],
+      "linguaggi": ["Comune", "Draconico"],
+      "bonus_caratteristiche": {"COS": 2, "SAG": 1},
+      "eta_media": 60,
+      "allineamento_tipico": "Neutrale",
+      "source": "Volo's Guide"
+    },
+    {
+      "id": "minotaur",
+      "nome": "Minotauro",
+      "descrizione": "Creature taurine possenti e fiere.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": [],
+      "abilitaInnate": ["Corna", "Carica Possente", "Labirinto"],
+      "linguaggi": ["Comune", "Minotauro"],
+      "bonus_caratteristiche": {"FOR": 2, "COS": 1},
+      "eta_media": 150,
+      "allineamento_tipico": "Caotico Neutrale",
+      "source": "Guildmaster's Guide to Ravnica"
+    },
+    {
+      "id": "orc",
+      "nome": "Orco",
+      "descrizione": "Guerrieri feroci e tribali con istinti selvaggi.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": ["Intimidire"],
+      "resistenze": [],
+      "abilitaInnate": ["Scurovisione", "Aggressivo", "Attacchi Potenti"],
+      "linguaggi": ["Comune", "Orchesco"],
+      "bonus_caratteristiche": {"FOR": 2, "COS": 1, "INT": -2},
+      "eta_media": 50,
+      "allineamento_tipico": "Caotico Malvagio",
+      "source": "Volo's Guide"
+    },
+    {
+      "id": "satyr",
+      "nome": "Satiro",
+      "descrizione": "Creature caprine delle terre fatate, amanti della festa.",
+      "velocita": 35,
+      "taglia": "Media",
+      "tipo": "feata",
+      "competenze": ["Intrattenere", "Persuasione"],
+      "resistenze": [],
+      "abilitaInnate": ["Magia Fatata", "Saltatore Miracoloso", "Spirito Fatato"],
+      "linguaggi": ["Comune", "Silvano"],
+      "bonus_caratteristiche": {"CAR": 2, "DES": 1},
+      "eta_media": 500,
+      "allineamento_tipico": "Caotico Neutrale",
+      "source": "Mythic Odysseys of Theros"
+    },
+    {
+      "id": "shifter",
+      "nome": "Mutante",
+      "descrizione": "Umanoidi con sangue licantropo, capaci di mutare parzialmente.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": [],
+      "abilitaInnate": ["Scurovisione", "Cambiamento", "Istinti Mutanti"],
+      "linguaggi": ["Comune"],
+      "bonus_caratteristiche": {},
+      "eta_media": 70,
+      "allineamento_tipico": "Neutrale",
+      "sottospecie": [
+        {
+          "nome": "Beasthide",
+          "bonus_caratteristiche": {"COS": 2, "FOR": 1}
+        },
+        {
+          "nome": "Longtooth",
+          "bonus_caratteristiche": {"FOR": 2, "DES": 1}
+        },
+        {
+          "nome": "Swiftstride",
+          "bonus_caratteristiche": {"DES": 2, "CAR": 1}
+        },
+        {
+          "nome": "Wildhunt",
+          "bonus_caratteristiche": {"SAG": 2, "DES": 1}
+        }
+      ],
+      "source": "Eberron"
+    },
+    {
+      "id": "tabaxi",
+      "nome": "Tabaxi",
+      "descrizione": "Felini curiosi e agili dalle giungle remote.",
+      "velocita": 30,
+      "velocita_arrampicata": 20,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": ["Percezione", "Furtività"],
+      "resistenze": [],
+      "abilitaInnate": ["Scurovisione", "Agilità Felina", "Artigli", "Curiosità Felina"],
+      "linguaggi": ["Comune"],
+      "bonus_caratteristiche": {"DES": 2, "CAR": 1},
+      "eta_media": 100,
+      "allineamento_tipico": "Caotico Buono",
+      "source": "Volo's Guide"
+    },
+    {
+      "id": "tiefling",
+      "nome": "Tiefling",
+      "descrizione": "Umani con sangue infernale, segnati dal loro retaggio demoniaco.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": ["fuoco"],
+      "abilitaInnate": ["Scurovisione", "Resistenza Infernale", "Retaggio Infernale"],
+      "linguaggi": ["Comune", "Infernale"],
+      "bonus_caratteristiche": {"CAR": 2},
+      "eta_media": 100,
+      "allineamento_tipico": "Caotico",
+      "sottospecie": [
+        {
+          "nome": "Tiefling Asmodeus",
+          "bonus_caratteristiche": {"INT": 1},
+          "abilita_speciali": ["Taumaturgia", "Rimprovero Infernale", "Oscurità"]
+        },
+        {
+          "nome": "Tiefling Baalzebul",
+          "bonus_caratteristiche": {"INT": 1},
+          "abilita_speciali": ["Taumaturgia", "Ragnatela", "Nuvola Maleodorante"]
+        },
+        {
+          "nome": "Tiefling Dispater",
+          "bonus_caratteristiche": {"DES": 1},
+          "abilita_speciali": ["Taumaturgia", "Disguise Self", "Detect Thoughts"]
+        },
+        {
+          "nome": "Tiefling Fierna",
+          "bonus_caratteristiche": {"SAG": 1},
+          "abilita_speciali": ["Amici", "Charm Person", "Suggestion"]
+        },
+        {
+          "nome": "Tiefling Glasya",
+          "bonus_caratteristiche": {"DES": 1},
+          "abilita_speciali": ["Minor Illusion", "Disguise Self", "Invisibility"]
+        },
+        {
+          "nome": "Tiefling Levistus",
+          "bonus_caratteristiche": {"COS": 1},
+          "abilita_speciali": ["Ray of Frost", "Armor of Agathys", "Darkness"]
+        },
+        {
+          "nome": "Tiefling Mammon",
+          "bonus_caratteristiche": {"INT": 1},
+          "abilita_speciali": ["Mage Hand", "Tenser's Floating Disk", "Arcane Lock"]
+        },
+        {
+          "nome": "Tiefling Mephistopheles",
+          "bonus_caratteristiche": {"INT": 1},
+          "abilita_speciali": ["Mage Hand", "Burning Hands", "Flame Blade"]
+        },
+        {
+          "nome": "Tiefling Zariel",
+          "bonus_caratteristiche": {"FOR": 1},
+          "abilita_speciali": ["Taumaturgia", "Searing Smite", "Branding Smite"]
+        }
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "tortle",
+      "nome": "Tortle",
+      "descrizione": "Umanoidi tartaruga saggi e pazienti.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": ["Sopravvivenza"],
+      "resistenze": [],
+      "abilitaInnate": ["Guscio Naturale", "Ritirata nel Guscio", "Trattenere il Respiro"],
+      "linguaggi": ["Comune", "Aquan"],
+      "bonus_caratteristiche": {"FOR": 2, "SAG": 1},
+      "eta_media": 50,
+      "allineamento_tipico": "Legale Buono",
+      "source": "Tortle Package"
+    },
+    {
+      "id": "triton",
+      "nome": "Tritone",
+      "descrizione": "Nobili guardiani degli abissi marini.",
+      "velocita": 30,
+      "velocita_nuoto": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": ["freddo"],
+      "abilitaInnate": ["Anfibio", "Controllo dell'Aria e dell'Acqua", "Emissario del Mare", "Guardiani delle Profondità"],
+      "linguaggi": ["Comune", "Primordiale"],
+      "bonus_caratteristiche": {"FOR": 1, "COS": 1, "CAR": 1},
+      "eta_media": 200,
+      "allineamento_tipico": "Legale Buono",
+      "source": "Volo's Guide"
+    },
+    {
+      "id": "warforged",
+      "nome": "Forgiato",
+      "descrizione": "Costrutti senzienti creati per la guerra, ora in cerca di scopo.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": [],
+      "resistenze": ["veleno"],
+      "immunità": ["malattia"],
+      "abilitaInnate": ["Costruzione Integrata", "Protezione Specializzata", "Sentinella"],
+      "linguaggi": ["Comune"],
+      "bonus_caratteristiche": {"COS": 2},
+      "eta_media": "immortale",
+      "allineamento_tipico": "Legale Neutrale",
+      "sottospecie": [
+        {
+          "nome": "Forgiato Scout",
+          "bonus_caratteristiche": {"DES": 1}
+        },
+        {
+          "nome": "Forgiato Soldier",
+          "bonus_caratteristiche": {"FOR": 1}
+        },
+        {
+          "nome": "Forgiato Sage",
+          "bonus_caratteristiche": {"INT": 1}
+        }
+      ],
+      "source": "Eberron"
+    },
+    {
+      "id": "yuan_ti",
+      "nome": "Yuan-ti Pureblood",
+      "descrizione": "Umanoidi serpentini con sangue di naga.",
+      "velocita": 30,
+      "taglia": "Media",
+      "tipo": "umanoide",
+      "competenze": ["Inganno", "Intuizione"],
+      "resistenze": [],
+      "immunità": ["veleno"],
+      "abilitaInnate": ["Scurovisione", "Magia Innata", "Resistenza Magica"],
+      "linguaggi": ["Comune", "Abissale", "Draconico"],
+      "bonus_caratteristiche": {"CAR": 2, "INT": 1},
+      "eta_media": 80,
+      "allineamento_tipico": "Neutrale Malvagio",
+      "source": "Volo's Guide"
+    }
+  ]
+}

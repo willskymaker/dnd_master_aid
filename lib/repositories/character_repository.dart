@@ -2,35 +2,35 @@ import '../data/db_specie.dart';
 import '../data/db_classi.dart';
 import '../data/db_abilita.dart';
 import '../data/db_equip.dart';
+import '../data/db_incantesimi.dart';
 import '../core/logger.dart';
+import 'json_data_repository.dart';
 
 abstract class ICharacterRepository {
-  List<Specie> getAllSpecies();
-  Specie? getSpecieById(String id);
-  List<Classe> getAllClasses();
-  Classe? getClasseById(String id);
+  Future<List<Specie>> getAllSpecies();
+  Future<Specie?> getSpecieById(String id);
+  Future<List<Classe>> getAllClasses();
+  Future<Classe?> getClasseById(String id);
   List<Abilita> getAllAbilities();
   List<OggettoEquip> getAllEquipment();
+  Future<List<Incantesimo>> getAllSpells();
 }
 
 class CharacterRepository implements ICharacterRepository {
-  // Cache per migliorare le performance
-  static List<Specie>? _cachedSpecies;
-  static List<Classe>? _cachedClasses;
+  // Cache per migliorare le performance (solo per dati statici)
   static List<Abilita>? _cachedAbilities;
   static List<OggettoEquip>? _cachedEquipment;
 
   @override
-  List<Specie> getAllSpecies() {
-    _cachedSpecies ??= List.from(specieList);
-    AppLogger.debug("Caricate ${_cachedSpecies!.length} specie");
-    return _cachedSpecies!;
+  Future<List<Specie>> getAllSpecies() async {
+    return await JsonDataRepository.loadSpecies();
   }
 
   @override
-  Specie? getSpecieById(String id) {
+  Future<Specie?> getSpecieById(String id) async {
     try {
-      return getAllSpecies().firstWhere((s) => s.nome == id);
+      final species = await getAllSpecies();
+      return species.firstWhere((s) => s.nome == id);
     } catch (e) {
       AppLogger.warning("Specie '$id' non trovata");
       return null;
@@ -38,20 +38,24 @@ class CharacterRepository implements ICharacterRepository {
   }
 
   @override
-  List<Classe> getAllClasses() {
-    _cachedClasses ??= List.from(classiList);
-    AppLogger.debug("Caricate ${_cachedClasses!.length} classi");
-    return _cachedClasses!;
+  Future<List<Classe>> getAllClasses() async {
+    return await JsonDataRepository.loadClasses();
   }
 
   @override
-  Classe? getClasseById(String id) {
+  Future<Classe?> getClasseById(String id) async {
     try {
-      return getAllClasses().firstWhere((c) => c.nome == id);
+      final classes = await getAllClasses();
+      return classes.firstWhere((c) => c.nome == id);
     } catch (e) {
       AppLogger.warning("Classe '$id' non trovata");
       return null;
     }
+  }
+
+  @override
+  Future<List<Incantesimo>> getAllSpells() async {
+    return await JsonDataRepository.loadSpells();
   }
 
   @override
@@ -71,33 +75,36 @@ class CharacterRepository implements ICharacterRepository {
   /// Metodi di ricerca avanzata
 
   /// Cerca specie per criterio
-  List<Specie> searchSpecies(String query) {
+  Future<List<Specie>> searchSpecies(String query) async {
     final lowercaseQuery = query.toLowerCase();
-    return getAllSpecies()
+    final species = await getAllSpecies();
+    return species
         .where((s) => s.nome.toLowerCase().contains(lowercaseQuery))
         .toList();
   }
 
   /// Cerca classi per criterio
-  List<Classe> searchClasses(String query) {
+  Future<List<Classe>> searchClasses(String query) async {
     final lowercaseQuery = query.toLowerCase();
-    return getAllClasses()
+    final classes = await getAllClasses();
+    return classes
         .where((c) => c.nome.toLowerCase().contains(lowercaseQuery))
         .toList();
   }
 
   /// Ottiene classi compatibili con determinate caratteristiche
-  List<Classe> getClassesForCharacteristics(List<String> preferredCharacteristics) {
+  Future<List<Classe>> getClassesForCharacteristics(List<String> preferredCharacteristics) async {
     // Implementazione semplificata - da espandere con logica più complessa
-    return getAllClasses().where((classe) {
+    final classes = await getAllClasses();
+    return classes.where((classe) {
       // Qui andrebbero implementati i controlli specifici
       return true;
     }).toList();
   }
 
   /// Ottiene equipaggiamento per classe
-  List<OggettoEquip> getEquipmentForClass(String className) {
-    final classe = getClasseById(className);
+  Future<List<OggettoEquip>> getEquipmentForClass(String className) async {
+    final classe = await getClasseById(className);
     if (classe == null) return [];
 
     return getAllEquipment().where((equip) {
@@ -130,18 +137,19 @@ class CharacterRepository implements ICharacterRepository {
 
   /// Pulisce la cache (utile per reload dei dati)
   static void clearCache() {
-    _cachedSpecies = null;
-    _cachedClasses = null;
     _cachedAbilities = null;
     _cachedEquipment = null;
+    JsonDataRepository.clearCache();
     AppLogger.info("Cache repository pulita");
   }
 
   /// Statistiche del repository
-  Map<String, int> getStats() {
+  Future<Map<String, int>> getStats() async {
+    final species = await getAllSpecies();
+    final classes = await getAllClasses();
     return {
-      'specie': getAllSpecies().length,
-      'classi': getAllClasses().length,
+      'specie': species.length,
+      'classi': classes.length,
       'abilita': getAllAbilities().length,
       'equipaggiamento': getAllEquipment().length,
     };

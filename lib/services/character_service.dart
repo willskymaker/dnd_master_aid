@@ -1,6 +1,7 @@
 import '../data/db_specie.dart';
 import '../data/db_classi.dart';
 import '../data/db_abilita.dart';
+import '../data/db_incantesimi.dart';
 import '../factory_pg_base.dart';
 import '../core/logger.dart';
 import '../core/exceptions.dart';
@@ -10,23 +11,28 @@ class CharacterService {
   static final CharacterRepository _repository = CharacterRepository();
 
   /// Ottiene tutte le specie disponibili
-  static List<Specie> getAllSpecies() {
-    return _repository.getAllSpecies();
+  static Future<List<Specie>> getAllSpecies() async {
+    return await _repository.getAllSpecies();
   }
 
   /// Ottiene una specie per nome
-  static Specie? getSpecieByName(String nome) {
-    return _repository.getSpecieById(nome);
+  static Future<Specie?> getSpecieByName(String nome) async {
+    return await _repository.getSpecieById(nome);
   }
 
   /// Ottiene tutte le classi disponibili
-  static List<Classe> getAllClasses() {
-    return _repository.getAllClasses();
+  static Future<List<Classe>> getAllClasses() async {
+    return await _repository.getAllClasses();
   }
 
   /// Ottiene una classe per nome
-  static Classe? getClasseByName(String nome) {
-    return _repository.getClasseById(nome);
+  static Future<Classe?> getClasseByName(String nome) async {
+    return await _repository.getClasseById(nome);
+  }
+
+  /// Ottiene tutti gli incantesimi disponibili
+  static Future<List<Incantesimo>> getAllSpells() async {
+    return await _repository.getAllSpells();
   }
 
   /// Ottiene tutte le abilità disponibili
@@ -35,8 +41,8 @@ class CharacterService {
   }
 
   /// Ottiene le abilità selezionabili per una classe
-  static List<String> getAvailableAbilitiesForClass(String className) {
-    final classe = getClasseByName(className);
+  static Future<List<String>> getAvailableAbilitiesForClass(String className) async {
+    final classe = await getClasseByName(className);
     if (classe == null) {
       throw DataException("Classe '$className' non trovata", "Abilità");
     }
@@ -109,8 +115,8 @@ class CharacterService {
   }
 
   /// Valida la selezione delle abilità per una classe
-  static bool validateAbilitySelection(String className, List<String> selectedAbilities) {
-    final classe = getClasseByName(className);
+  static Future<bool> validateAbilitySelection(String className, List<String> selectedAbilities) async {
+    final classe = await getClasseByName(className);
     if (classe == null) return false;
 
     // Verifica il numero corretto di abilità
@@ -150,11 +156,11 @@ class CharacterService {
   }
 
   /// Applica i bonus razziali alle caratteristiche
-  static Map<String, int> applyRacialBonuses(
+  static Future<Map<String, int>> applyRacialBonuses(
     Map<String, int> baseCharacteristics,
     String specieName,
-  ) {
-    final specie = getSpecieByName(specieName);
+  ) async {
+    final specie = await getSpecieByName(specieName);
     if (specie == null) {
       AppLogger.warning("Impossibile applicare bonus razziali: specie '$specieName' non trovata");
       return Map.from(baseCharacteristics);

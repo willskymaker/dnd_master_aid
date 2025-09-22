@@ -165,12 +165,13 @@ class CharacterProvider extends ChangeNotifier {
     }
   }
 
-  void setAbilita(List<String> abilita) {
+  Future<void> setAbilita(List<String> abilita) async {
     try {
       // Validazione con la classe corrente
       if (classe.isNotEmpty) {
-        final availableAbilities = CharacterService.getAvailableAbilitiesForClass(classe);
-        final requiredCount = CharacterService.getClasseByName(classe)?.abilitaDaSelezionare ?? 0;
+        final availableAbilities = await CharacterService.getAvailableAbilitiesForClass(classe);
+        final classeObj = await CharacterService.getClasseByName(classe);
+        final requiredCount = classeObj?.abilitaDaSelezionare ?? 0;
 
         final validation = ValidationService.validateAbilitySelection(
           abilita,
