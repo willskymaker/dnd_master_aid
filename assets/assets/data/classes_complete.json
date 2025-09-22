@@ -1,0 +1,854 @@
+{
+  "version": "2.0.0",
+  "description": "Database completo delle classi di D&D 5e - Tutte le 12 classi ufficiali",
+  "last_updated": "2025-01-22",
+  "sources": ["Player's Handbook", "Xanathar's Guide", "Tasha's Cauldron", "Sword Coast"],
+  "classes": [
+    {
+      "id": "artificer",
+      "nome": "Artefice",
+      "descrizione": "Maestro della magia tecnologica, che infonde oggetti con potere arcano.",
+      "dadoVita": 8,
+      "competenze_primarie": ["Intelligenza"],
+      "tiriSalvezza": ["Costituzione", "Intelligenza"],
+      "competenzeArmi": ["Armi semplici", "Armi da fuoco"],
+      "competenzeArmature": ["Armature leggere", "Armature medie", "Scudi"],
+      "competenzeStrumenti": ["Attrezzi da ladro", "Bricoleur", "Uno strumento da artigiano"],
+      "abilitaSelezionabili": ["Arcano", "Investigare", "Medicina", "Natura", "Percezione", "Prestidigitazione"],
+      "abilitaDaSelezionare": 2,
+      "caratteristiche_consigliate": ["INT", "COS"],
+      "incantatore": true,
+      "caratteristica_incantesimi": "Intelligenza",
+      "equipaggiamento_iniziale": [
+        "Balestra leggera e 20 quadrelli",
+        "Armatura di cuoio borchiato o cotta di maglia",
+        "Attrezzi da ladro e kit da esploratore"
+      ],
+      "sottoclassi": [
+        {
+          "id": "alchemist",
+          "nome": "Alchimista",
+          "descrizione": "Maestro di pozioni e elisir magici",
+          "abilita_speciali": ["Elisir Sperimentale", "Alchimia Curativa", "Elisir Casuale"]
+        },
+        {
+          "id": "armorer",
+          "nome": "Corazziere",
+          "descrizione": "Combattente che trasforma armature in armi magiche",
+          "abilita_speciali": ["Armatura Arcana", "Modello Armatura", "Incantesimi Extra"]
+        },
+        {
+          "id": "artillerist",
+          "nome": "Artigliere",
+          "descrizione": "Specialista in torrette magiche e armi a distanza",
+          "abilita_speciali": ["Torrette Eldritch", "Cannone Arcano", "Esplosivo Potenziato"]
+        },
+        {
+          "id": "battle_smith",
+          "nome": "Fabbro da Battaglia",
+          "descrizione": "Combattente con compagno costrutto",
+          "abilita_speciali": ["Prontezza Marziale", "Difensore d'Acciaio", "Costrutti Arcani"]
+        }
+      ],
+      "source": "Tasha's Cauldron"
+    },
+    {
+      "id": "barbarian",
+      "nome": "Barbaro",
+      "descrizione": "Guerriero selvaggio che scatena la rabbia primitiva in battaglia.",
+      "dadoVita": 12,
+      "competenze_primarie": ["Forza", "Costituzione"],
+      "tiriSalvezza": ["Forza", "Costituzione"],
+      "competenzeArmi": ["Armi semplici", "Armi da guerra"],
+      "competenzeArmature": ["Armature leggere", "Armature medie", "Scudi"],
+      "competenzeStrumenti": [],
+      "abilitaSelezionabili": ["Addestrare Animali", "Atletica", "Intimidire", "Natura", "Percezione", "Sopravvivenza"],
+      "abilitaDaSelezionare": 2,
+      "caratteristiche_consigliate": ["FOR", "COS"],
+      "equipaggiamento_iniziale": [
+        "Ascia bipenne o arma da mischia",
+        "Due accette o arma semplice",
+        "Kit da esploratore",
+        "4 giavellotti"
+      ],
+      "sottoclassi": [
+        {
+          "id": "berserker",
+          "nome": "Sentiero del Berserker",
+          "descrizione": "Barbaro che abbraccia completamente la furia",
+          "abilita_speciali": ["Frenesia", "Intimidazione Senza Mente", "Presenza Intimidatoria"]
+        },
+        {
+          "id": "totem_warrior",
+          "nome": "Sentiero del Guerriero Totemico",
+          "descrizione": "Barbaro guidato dagli spiriti animali",
+          "abilita_speciali": ["Ricercatore di Spiriti", "Spirito Totemico", "Aspetto della Bestia"]
+        },
+        {
+          "id": "ancestral_guardian",
+          "nome": "Sentiero del Guardiano Ancestrale",
+          "descrizione": "Barbaro protetto dagli spiriti degli antenati",
+          "abilita_speciali": ["Protettori Ancestrali", "Scudo degli Spiriti", "Consulto con gli Spiriti"]
+        },
+        {
+          "id": "storm_herald",
+          "nome": "Sentiero dell'Araldo della Tempesta",
+          "descrizione": "Barbaro che canalizza il potere elementale",
+          "abilita_speciali": ["Aura della Tempesta", "Anime della Tempesta", "Rabbia della Tempesta"]
+        },
+        {
+          "id": "zealot",
+          "nome": "Sentiero dello Zealota",
+          "descrizione": "Guerriero benedetto o maledetto dalle divinità",
+          "abilita_speciali": ["Guerriero Divino", "Zelo Oltre la Morte", "Presenza Fanatica"]
+        },
+        {
+          "id": "beast",
+          "nome": "Sentiero della Bestia",
+          "descrizione": "Barbaro che manifesta artigli, zanne o spine bestiali",
+          "abilita_speciali": ["Forma della Bestia", "Anima Bestiale", "Mutazione Infettiva"]
+        }
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "bard",
+      "nome": "Bardo",
+      "descrizione": "Maestro delle arti, della magia e dell'ispirazione.",
+      "dadoVita": 8,
+      "competenze_primarie": ["Carisma"],
+      "tiriSalvezza": ["Destrezza", "Carisma"],
+      "competenzeArmi": ["Armi semplici", "Balestre a mano", "Spade lunghe", "Stocchi", "Spade corte"],
+      "competenzeArmature": ["Armature leggere"],
+      "competenzeStrumenti": ["Tre strumenti musicali a scelta"],
+      "abilitaSelezionabili": "Tutte",
+      "abilitaDaSelezionare": 3,
+      "caratteristiche_consigliate": ["CAR", "DES"],
+      "incantatore": true,
+      "caratteristica_incantesimi": "Carisma",
+      "equipaggiamento_iniziale": [
+        "Stocco o spada lunga o arma semplice",
+        "Borsa da diplomatico o borsa da intrattenitore",
+        "Liuto o strumento musicale",
+        "Armatura di cuoio e pugnale"
+      ],
+      "sottoclassi": [
+        {
+          "id": "lore",
+          "nome": "Collegio della Conoscenza",
+          "descrizione": "Bardo studioso e erudito",
+          "abilita_speciali": ["Competenze Bonus", "Parole Taglienti", "Segreti Magici Aggiuntivi"]
+        },
+        {
+          "id": "valor",
+          "nome": "Collegio del Valore",
+          "descrizione": "Bardo guerriero e ispiratore",
+          "abilita_speciali": ["Competenze Marziali Bonus", "Ispirazione da Combattimento", "Attacco Extra"]
+        },
+        {
+          "id": "glamour",
+          "nome": "Collegio del Glamour",
+          "descrizione": "Bardo delle Terre Fatate",
+          "abilita_speciali": ["Presenza Ammaliante", "Manto di Maestà", "Fuga Incantevole"]
+        },
+        {
+          "id": "swords",
+          "nome": "Collegio delle Spade",
+          "descrizione": "Spadaccino acrobatico che combatte con eleganza",
+          "abilita_speciali": ["Stile di Combattimento", "Fioriture delle Lame", "Attacco Extra"]
+        },
+        {
+          "id": "whispers",
+          "nome": "Collegio dei Sussurri",
+          "descrizione": "Manipolatore che usa segreti e paure",
+          "abilita_speciali": ["Lame Psichiche", "Parole del Terrore", "Manto delle Ombre"]
+        },
+        {
+          "id": "creation",
+          "nome": "Collegio della Creazione",
+          "descrizione": "Bardo che materializza la magia attraverso l'arte",
+          "abilita_speciali": ["Nota della Potenzialità", "Concerto Animato", "Concerto Creativo"]
+        }
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "cleric",
+      "nome": "Chierico",
+      "descrizione": "Servitore divino dotato di poteri sacri.",
+      "dadoVita": 8,
+      "competenze_primarie": ["Saggezza"],
+      "tiriSalvezza": ["Saggezza", "Carisma"],
+      "competenzeArmi": ["Armi semplici"],
+      "competenzeArmature": ["Armature leggere", "Armature medie", "Scudi"],
+      "competenzeStrumenti": [],
+      "abilitaSelezionabili": ["Storia", "Intuizione", "Medicina", "Persuasione", "Religione"],
+      "abilitaDaSelezionare": 2,
+      "caratteristiche_consigliate": ["SAG", "COS"],
+      "incantatore": true,
+      "caratteristica_incantesimi": "Saggezza",
+      "equipaggiamento_iniziale": [
+        "Mazza o martello da guerra",
+        "Armatura di scaglie o armatura di cuoio o cotta di maglia",
+        "Balestra leggera e 20 quadrelli o arma semplice",
+        "Kit da sacerdote"
+      ],
+      "sottoclassi": [
+        {
+          "id": "life",
+          "nome": "Dominio della Vita",
+          "descrizione": "Chierico guaritore e protettore",
+          "abilita_speciali": ["Competenze Armature Pesanti", "Discepolo della Vita", "Preservare la Vita"],
+          "incantesimi_dominio": ["Benedire", "Cura Ferite", "Ripristinare Minore", "Arma Spirituale"]
+        },
+        {
+          "id": "war",
+          "nome": "Dominio della Guerra",
+          "descrizione": "Chierico guerriero e comandante",
+          "abilita_speciali": ["Competenze Marziali", "Sacerdote di Guerra", "Strike Guidato"],
+          "incantesimi_dominio": ["Favore Divino", "Scudo della Fede", "Arma Magica", "Arma Spirituale"]
+        },
+        {
+          "id": "light",
+          "nome": "Dominio della Luce",
+          "descrizione": "Chierico che brandisce il potere del sole",
+          "abilita_speciali": ["Torcia Benedetta", "Radianza dell'Alba", "Luce Accecante"],
+          "incantesimi_dominio": ["Luce Ardente", "Luce Fatua", "Sfera Infuocata", "Luce del Giorno"]
+        },
+        {
+          "id": "death",
+          "nome": "Dominio della Morte",
+          "descrizione": "Chierico che controlla morte e non morti",
+          "abilita_speciali": ["Bonus Competenza", "Tocco di Morte", "Inescapable Destruction"],
+          "incantesimi_dominio": ["Colpo Infetto", "Falsa Vita", "Raggio di Indebolimento", "Animare Morti"]
+        },
+        {
+          "id": "tempest",
+          "nome": "Dominio della Tempesta",
+          "descrizione": "Chierico del tuono e del fulmine",
+          "abilita_speciali": ["Bonus Competenze", "Ira Tempestosa", "Colpo del Tuono"],
+          "incantesimi_dominio": ["Nebbia Obscura", "Tuono", "Raffica di Vento", "Shatter"]
+        },
+        {
+          "id": "trickery",
+          "nome": "Dominio dell'Inganno",
+          "descrizione": "Chierico subdolo e misterioso",
+          "abilita_speciali": ["Benedizione dell'Imbroglione", "Invocazione Duplicato", "Passaggio Divino"],
+          "incantesimi_dominio": ["Charm Person", "Disguise Self", "Mirror Image", "Pass Without Trace"]
+        }
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "druid",
+      "nome": "Druido",
+      "descrizione": "Guardiano della natura con la capacità di trasformarsi in animali.",
+      "dadoVita": 8,
+      "competenze_primarie": ["Saggezza"],
+      "tiriSalvezza": ["Intelligenza", "Saggezza"],
+      "competenzeArmi": ["Club", "Pugnali", "Dardi", "Giavellotti", "Mazze", "Bastoni ferrati", "Scimitarre", "Falci", "Fionde", "Lance"],
+      "competenzeArmature": ["Armature leggere", "Armature medie", "Scudi (non metallici)"],
+      "competenzeStrumenti": ["Kit da erborista"],
+      "abilitaSelezionabili": ["Arcano", "Addestrare Animali", "Intuizione", "Medicina", "Natura", "Percezione", "Religione", "Sopravvivenza"],
+      "abilitaDaSelezionare": 2,
+      "caratteristiche_consigliate": ["SAG", "COS"],
+      "incantatore": true,
+      "caratteristica_incantesimi": "Saggezza",
+      "equipaggiamento_iniziale": [
+        "Scudo di legno o arma semplice",
+        "Scimitarra o arma da mischia semplice",
+        "Armatura di cuoio, kit da esploratore e 20 dardi"
+      ],
+      "sottoclassi": [
+        {
+          "id": "land",
+          "nome": "Circolo della Terra",
+          "descrizione": "Druido legato a specifici terreni naturali",
+          "abilita_speciali": ["Trucchetto Bonus", "Recupero Naturale", "Camminare sulla Terra", "Santuario della Natura"]
+        },
+        {
+          "id": "moon",
+          "nome": "Circolo della Luna",
+          "descrizione": "Druido maestro della forma selvaggia",
+          "abilita_speciali": ["Forma Selvaggia da Combattimento", "Forme Circolari", "Forma Selvaggia Primordiale"]
+        },
+        {
+          "id": "dreams",
+          "nome": "Circolo dei Sogni",
+          "descrizione": "Druido con connessione alle Terre Fatate",
+          "abilita_speciali": ["Pozza di Luce di Luna", "Sentieri Nascosti", "Camminatore dei Sogni"]
+        },
+        {
+          "id": "shepherd",
+          "nome": "Circolo del Pastore",
+          "descrizione": "Druido protettore di spiriti e animali",
+          "abilita_speciali": ["Linguaggio degli Spiriti", "Totem Spirituale", "Potente Evocazione"]
+        },
+        {
+          "id": "spores",
+          "nome": "Circolo delle Spore",
+          "descrizione": "Druido che abbraccia il ciclo di vita e morte",
+          "abilita_speciali": ["Alone Tossico", "Infusione Simbiotica", "Spore Fungine"]
+        },
+        {
+          "id": "stars",
+          "nome": "Circolo delle Stelle",
+          "descrizione": "Druido che trae potere dalle costellazioni",
+          "abilita_speciali": ["Mappa Stellare", "Forma Stellare", "Presagi Cosmici"]
+        }
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "fighter",
+      "nome": "Guerriero",
+      "descrizione": "Maestro delle armi e delle tattiche di combattimento.",
+      "dadoVita": 10,
+      "competenze_primarie": ["Forza", "Destrezza"],
+      "tiriSalvezza": ["Forza", "Costituzione"],
+      "competenzeArmi": ["Armi semplici", "Armi da guerra"],
+      "competenzeArmature": ["Tutte le armature", "Scudi"],
+      "competenzeStrumenti": [],
+      "abilitaSelezionabili": ["Acrobazia", "Addestrare Animali", "Atletica", "Storia", "Intuizione", "Intimidire", "Percezione", "Sopravvivenza"],
+      "abilitaDaSelezionare": 2,
+      "caratteristiche_consigliate": ["FOR", "DES"],
+      "equipaggiamento_iniziale": [
+        "Cotta di maglia o armatura di cuoio e arco lungo",
+        "Scudo e arma da guerra",
+        "Balestra leggera e 20 quadrelli o due accette",
+        "Kit da esploratore e arma semplice"
+      ],
+      "sottoclassi": [
+        {
+          "id": "champion",
+          "nome": "Campione",
+          "descrizione": "Guerriero che perfeziona le abilità di combattimento fisico",
+          "abilita_speciali": ["Critico Migliorato", "Atleta Straordinario", "Stile di Combattimento Aggiuntivo"]
+        },
+        {
+          "id": "battlemaster",
+          "nome": "Maestro di Battaglia",
+          "descrizione": "Combattente tattico che usa manovre speciali",
+          "abilita_speciali": ["Manovre da Combattimento", "Dado di Superiorità", "Conosci il Tuo Nemico"]
+        },
+        {
+          "id": "eldritch_knight",
+          "nome": "Cavaliere Mistico",
+          "descrizione": "Guerriero che combina magia arcana e abilità marziali",
+          "abilita_speciali": ["Lancio di Incantesimi", "Legame con l'Arma", "Attacco Extra con Incantesimo"]
+        },
+        {
+          "id": "arcane_archer",
+          "nome": "Arciere Arcano",
+          "descrizione": "Guerriero che infonde frecce con magia",
+          "abilita_speciali": ["Sapere Arcano", "Freccia Arcana", "Tiro Magico"]
+        },
+        {
+          "id": "cavalier",
+          "nome": "Cavaliere",
+          "descrizione": "Combattente nobile esperto nel combattimento montato",
+          "abilita_speciali": ["Marca del Cavaliere", "Protezione Implacabile", "Carica Feroce"]
+        },
+        {
+          "id": "samurai",
+          "nome": "Samurai",
+          "descrizione": "Guerriero con rigido codice d'onore",
+          "abilita_speciali": ["Spirito Combattivo", "Cortesia Elegante", "Forza Prima della Morte"]
+        }
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "monk",
+      "nome": "Monaco",
+      "descrizione": "Maestro delle arti marziali che canalizza il potere interiore.",
+      "dadoVita": 8,
+      "competenze_primarie": ["Destrezza", "Saggezza"],
+      "tiriSalvezza": ["Forza", "Destrezza"],
+      "competenzeArmi": ["Armi semplici", "Spade corte"],
+      "competenzeArmature": [],
+      "competenzeStrumenti": ["Strumento artigiano o strumento musicale"],
+      "abilitaSelezionabili": ["Acrobazia", "Atletica", "Storia", "Intuizione", "Religione", "Furtività"],
+      "abilitaDaSelezionare": 2,
+      "caratteristiche_consigliate": ["DES", "SAG"],
+      "equipaggiamento_iniziale": [
+        "Spada corta o arma semplice",
+        "Kit da esploratore o kit da intrattenitore",
+        "10 dardi"
+      ],
+      "sottoclassi": [
+        {
+          "id": "open_hand",
+          "nome": "Via della Mano Aperta",
+          "descrizione": "Monaco che perfeziona le arti marziali tradizionali",
+          "abilita_speciali": ["Tecnica della Mano Aperta", "Interezza del Corpo", "Tranquillità"]
+        },
+        {
+          "id": "shadow",
+          "nome": "Via dell'Ombra",
+          "descrizione": "Monaco ninja che si muove nelle tenebre",
+          "abilita_speciali": ["Arti delle Ombre", "Passo dell'Ombra", "Manto delle Ombre"]
+        },
+        {
+          "id": "four_elements",
+          "nome": "Via dei Quattro Elementi",
+          "descrizione": "Monaco che canalizza il potere elementale",
+          "abilita_speciali": ["Discepolo degli Elementi", "Discipline Elementali", "Forma Elementale"]
+        },
+        {
+          "id": "long_death",
+          "nome": "Via della Lunga Morte",
+          "descrizione": "Monaco ossessionato dalla comprensione della morte",
+          "abilita_speciali": ["Tocco della Lunga Morte", "Ora della Raccolta", "Mastery della Morte"]
+        },
+        {
+          "id": "sun_soul",
+          "nome": "Via dell'Anima Solare",
+          "descrizione": "Monaco che irradia energia solare",
+          "abilita_speciali": ["Dardo Radioso", "Esplosione Solare", "Scudo Solare"]
+        },
+        {
+          "id": "drunken_master",
+          "nome": "Via del Maestro Ubriaco",
+          "descrizione": "Monaco che combatte con movimenti imprevedibili",
+          "abilita_speciali": ["Tecnica Ubriaca", "Passo Ondeggiante", "Fortuna del Bevitore"]
+        },
+        {
+          "id": "kensei",
+          "nome": "Via del Kensei",
+          "descrizione": "Monaco maestro delle armi",
+          "abilita_speciali": ["Sentiero del Kensei", "Colpo con Una e Agile", "Colpo Magico"]
+        }
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "paladin",
+      "nome": "Paladino",
+      "descrizione": "Santo guerriero vincolato da sacri giuramenti.",
+      "dadoVita": 10,
+      "competenze_primarie": ["Forza", "Carisma"],
+      "tiriSalvezza": ["Saggezza", "Carisma"],
+      "competenzeArmi": ["Armi semplici", "Armi da guerra"],
+      "competenzeArmature": ["Tutte le armature", "Scudi"],
+      "competenzeStrumenti": [],
+      "abilitaSelezionabili": ["Atletica", "Intuizione", "Intimidire", "Medicina", "Persuasione", "Religione"],
+      "abilitaDaSelezionare": 2,
+      "caratteristiche_consigliate": ["FOR", "CAR"],
+      "incantatore": true,
+      "caratteristica_incantesimi": "Carisma",
+      "equipaggiamento_iniziale": [
+        "Arma da guerra e scudo o due armi da guerra",
+        "5 giavellotti o arma semplice da mischia",
+        "Cotta di maglia e kit da esploratore"
+      ],
+      "sottoclassi": [
+        {
+          "id": "devotion",
+          "nome": "Giuramento di Devozione",
+          "descrizione": "Paladino dedicato agli ideali di giustizia e virtù",
+          "abilita_speciali": ["Arma Sacra", "Protezione dalla Malvagità", "Aureola di Devozione"],
+          "incantesimi_giuramento": ["Protezione dal Bene e Male", "Santuario", "Ripristinare Minore", "Zona di Verità"]
+        },
+        {
+          "id": "ancients",
+          "nome": "Giuramento degli Antichi",
+          "descrizione": "Paladino che protegge la natura e la luce",
+          "abilita_speciali": ["Inimicizia della Natura", "Rifiutare i Non Morti", "Aureola di Protezione"],
+          "incantesimi_giuramento": ["Allarme", "Parlare con Animali", "Sprono di Luna", "Nebbia Obscura"]
+        },
+        {
+          "id": "vengeance",
+          "nome": "Giuramento di Vendetta",
+          "descrizione": "Paladino che insegue spietatamente la giustizia",
+          "abilita_speciali": ["Abiura del Nemico", "Voto di Inimicizia", "Anima di Vendetta"],
+          "incantesimi_giuramento": ["Benedire", "Cacciatore di Nemici", "Trattenere Persona", "Nebbia Obscura"]
+        },
+        {
+          "id": "crown",
+          "nome": "Giuramento della Corona",
+          "descrizione": "Paladino al servizio di legge e sovranità",
+          "abilita_speciali": ["Sfida del Campione", "Rifiutare Delinquenza", "Spirito Esaltato"],
+          "incantesimi_giuramento": ["Comando", "Costrizione", "Calmare Emozioni", "Zona di Verità"]
+        },
+        {
+          "id": "conquest",
+          "nome": "Giuramento di Conquista",
+          "descrizione": "Paladino che schiaccia i nemici del proprio credo",
+          "abilita_speciali": ["Presenza Conquistatrice", "Aura di Conquista", "Implacabile Vendicatore"],
+          "incantesimi_giuramento": ["Armatura di Agathys", "Comando", "Trattenere Persona", "Arma Spirituale"]
+        },
+        {
+          "id": "redemption",
+          "nome": "Giuramento di Redenzione",
+          "descrizione": "Paladino che cerca di redimere i malvagi",
+          "abilita_speciali": ["Emissario di Pace", "Aura di Guardia", "Aura di Protezione"],
+          "incantesimi_giuramento": ["Santuario", "Sonno", "Calmare Emozioni", "Trattenere Persona"]
+        }
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "ranger",
+      "nome": "Ranger",
+      "descrizione": "Guerriero delle terre selvagge, cacciatore e guardiano della natura.",
+      "dadoVita": 10,
+      "competenze_primarie": ["Destrezza", "Saggezza"],
+      "tiriSalvezza": ["Forza", "Destrezza"],
+      "competenzeArmi": ["Armi semplici", "Armi da guerra"],
+      "competenzeArmature": ["Armature leggere", "Armature medie", "Scudi"],
+      "competenzeStrumenti": [],
+      "abilitaSelezionabili": ["Addestrare Animali", "Atletica", "Intuizione", "Investigare", "Natura", "Percezione", "Furtività", "Sopravvivenza"],
+      "abilitaDaSelezionare": 3,
+      "caratteristiche_consigliate": ["DES", "SAG"],
+      "incantatore": true,
+      "caratteristica_incantesimi": "Saggezza",
+      "equipaggiamento_iniziale": [
+        "Armatura di scaglie o armatura di cuoio",
+        "Due spade corte o due armi semplici da mischia",
+        "Kit da esploratore e arco lungo con faretra di 20 frecce"
+      ],
+      "sottoclassi": [
+        {
+          "id": "beast_master",
+          "nome": "Signore delle Bestie",
+          "descrizione": "Ranger con compagno animale",
+          "abilita_speciali": ["Compagno Ranger", "Addestramento Eccezionale", "Furia Bestiale"]
+        },
+        {
+          "id": "hunter",
+          "nome": "Cacciatore",
+          "descrizione": "Ranger specializzato nell'eliminare specifici tipi di nemici",
+          "abilita_speciali": ["Preda del Cacciatore", "Tattiche di Difesa", "Multiattacco"]
+        },
+        {
+          "id": "gloom_stalker",
+          "nome": "Inseguitore delle Tenebre",
+          "descrizione": "Ranger specializzato nel combattimento nelle tenebre",
+          "abilita_speciali": ["Magia dell'Inseguitore delle Tenebre", "Attacco delle Tenebre", "Sensi di Ferro"]
+        },
+        {
+          "id": "horizon_walker",
+          "nome": "Camminatore dell'Orizzonte",
+          "descrizione": "Ranger che viaggia tra i piani",
+          "abilita_speciali": ["Individuare Portale", "Passo Planare", "Attacco Distante"]
+        },
+        {
+          "id": "monster_slayer",
+          "nome": "Uccisore di Mostri",
+          "descrizione": "Ranger specializzato nella caccia alle creature soprannaturali",
+          "abilita_speciali": ["Senso del Cacciatore", "Maledizione dell'Uccisore", "Sensi Soprannaturali"]
+        },
+        {
+          "id": "fey_wanderer",
+          "nome": "Vagabondo Fatato",
+          "descrizione": "Ranger con connessione alle Terre Fatate",
+          "abilita_speciali": ["Saggezza Fatata", "Viandante delle Terre Fatate", "Rinforzi Fatati"]
+        },
+        {
+          "id": "swarmkeeper",
+          "nome": "Custode dello Sciame",
+          "descrizione": "Ranger accompagnato da uno sciame di creature minuscole",
+          "abilita_speciali": ["Sciame Radunato", "Spiriti Protettivi", "Tempesta di Sciame"]
+        }
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "rogue",
+      "nome": "Ladro",
+      "descrizione": "Esperto di furtività, trappole e attacchi a sorpresa.",
+      "dadoVita": 8,
+      "competenze_primarie": ["Destrezza"],
+      "tiriSalvezza": ["Destrezza", "Intelligenza"],
+      "competenzeArmi": ["Armi semplici", "Balestre a mano", "Spade lunghe", "Stocchi", "Spade corte"],
+      "competenzeArmature": ["Armature leggere"],
+      "competenzeStrumenti": ["Attrezzi da ladro"],
+      "abilitaSelezionabili": ["Acrobazia", "Atletica", "Inganno", "Intuizione", "Intimidire", "Investigare", "Percezione", "Intrattenere", "Persuasione", "Rapidità di Mano", "Furtività"],
+      "abilitaDaSelezionare": 4,
+      "caratteristiche_consigliate": ["DES", "INT"],
+      "equipaggiamento_iniziale": [
+        "Stocco o spada corta",
+        "Arco corto e faretra di 20 frecce o spada corta",
+        "Kit da scassinatore, kit da esploratore o kit da intrattenitore",
+        "Armatura di cuoio, due pugnali e attrezzi da ladro"
+      ],
+      "sottoclassi": [
+        {
+          "id": "thief",
+          "nome": "Ladro",
+          "descrizione": "Esperto di furto e infiltrazione",
+          "abilita_speciali": ["Mani Veloci", "Lavoro di Seconda Storia", "Uso Oggetti Magici"]
+        },
+        {
+          "id": "assassin",
+          "nome": "Assassino",
+          "descrizione": "Killer letale specializzato in infiltrazione e veleni",
+          "abilita_speciali": ["Competenze Bonus", "Assassinare", "Infiltrazione"]
+        },
+        {
+          "id": "arcane_trickster",
+          "nome": "Imbroglione Arcano",
+          "descrizione": "Ladro che usa la magia per migliorare le proprie abilità",
+          "abilita_speciali": ["Lancio di Incantesimi", "Mano del Mago", "Ambush Magico"]
+        },
+        {
+          "id": "mastermind",
+          "nome": "Mente Superiore",
+          "descrizione": "Maestro di intrighi e manipolazione",
+          "abilita_speciali": ["Padrone dei Travestimenti", "Padrone delle Tattiche", "Anima degli Intrighi"]
+        },
+        {
+          "id": "swashbuckler",
+          "nome": "Spadaccino",
+          "descrizione": "Duellante carismatico e agile",
+          "abilita_speciali": ["Eleganza Fatale", "Panaché", "Maestro Duellante"]
+        },
+        {
+          "id": "inquisitive",
+          "nome": "Inquisitore",
+          "descrizione": "Detective esperto nell'osservazione e deduzione",
+          "abilita_speciali": ["Orecchio per l'Inganno", "Occhio per il Dettaglio", "Senso Implacabile"]
+        },
+        {
+          "id": "scout",
+          "nome": "Esploratore",
+          "descrizione": "Ricognitore esperto di sopravvivenza nelle terre selvagge",
+          "abilita_speciali": ["Esploratore", "Sopravvissuto", "Mobilità Superiore"]
+        },
+        {
+          "id": "phantom",
+          "nome": "Fantasma",
+          "descrizione": "Ladro con connessione ai morti e agli spiriti",
+          "abilita_speciali": ["Sussurri dei Morti", "Anime dei Morti", "Camminatore della Morte"]
+        },
+        {
+          "id": "soulknife",
+          "nome": "Lama d'Anima",
+          "descrizione": "Guerriero psichico che materializza armi dalla mente",
+          "abilita_speciali": ["Lame Psichiche", "Telepatia Psionica", "Velo Psichico"]
+        }
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "sorcerer",
+      "nome": "Stregone",
+      "descrizione": "Incantatore con magia innata che scorre nel sangue.",
+      "dadoVita": 6,
+      "competenze_primarie": ["Carisma"],
+      "tiriSalvezza": ["Costituzione", "Carisma"],
+      "competenzeArmi": ["Pugnali", "Dardi", "Fionde", "Bastoni ferrati", "Balestre leggere"],
+      "competenzeArmature": [],
+      "competenzeStrumenti": [],
+      "abilitaSelezionabili": ["Arcano", "Inganno", "Intuizione", "Intimidire", "Persuasione", "Religione"],
+      "abilitaDaSelezionare": 2,
+      "caratteristiche_consigliate": ["CAR", "COS"],
+      "incantatore": true,
+      "caratteristica_incantesimi": "Carisma",
+      "equipaggiamento_iniziale": [
+        "Balestra leggera e 20 quadrelli o arma semplice",
+        "Borsa per componenti o focus arcano",
+        "Kit da esploratore",
+        "Due pugnali"
+      ],
+      "sottoclassi": [
+        {
+          "id": "draconic_bloodline",
+          "nome": "Stirpe Draconica",
+          "descrizione": "Stregone con sangue di drago nelle vene",
+          "abilita_speciali": ["Resilienza Draconica", "Affinità Elementale", "Ali Draconiche"]
+        },
+        {
+          "id": "wild_magic",
+          "nome": "Magia Selvaggia",
+          "descrizione": "Stregone con magia caotica e imprevedibile",
+          "abilita_speciali": ["Magia Selvaggia", "Marea di Caos", "Caos Controllato"]
+        },
+        {
+          "id": "storm_sorcery",
+          "nome": "Stregoneria della Tempesta",
+          "descrizione": "Stregone nato dal potere delle tempeste",
+          "abilita_speciali": ["Magie del Vento", "Furia Tempestosa", "Anima del Vento"]
+        },
+        {
+          "id": "divine_soul",
+          "nome": "Anima Divina",
+          "descrizione": "Stregone con scintilla di potere divino",
+          "abilita_speciali": ["Magia Divina", "Guarigione Favorita", "Recupero Angelico"]
+        },
+        {
+          "id": "shadow_magic",
+          "nome": "Magia dell'Ombra",
+          "descrizione": "Stregone legato al Shadowfell",
+          "abilita_speciali": ["Forza dell'Ombra", "Segugio delle Tenebre", "Forma Umbrale"]
+        },
+        {
+          "id": "aberrant_mind",
+          "nome": "Mente Aberrante",
+          "descrizione": "Stregone toccato da poteri alieni e psichici",
+          "abilita_speciali": ["Incantesimi Telepatici", "Furia Psichica", "Trasformazione Aberrante"]
+        },
+        {
+          "id": "clockwork_soul",
+          "nome": "Anima Meccanica",
+          "descrizione": "Stregone con connessione all'ordine perfetto di Mechanus",
+          "abilita_speciali": ["Manifestazione dell'Ordine", "Bastion of Law", "Ristabilire Equilibrio"]
+        }
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "warlock",
+      "nome": "Warlock",
+      "descrizione": "Incantatore che ha fatto un patto con un'entità extraplanare.",
+      "dadoVita": 8,
+      "competenze_primarie": ["Carisma"],
+      "tiriSalvezza": ["Saggezza", "Carisma"],
+      "competenzeArmi": ["Armi semplici"],
+      "competenzeArmature": ["Armature leggere"],
+      "competenzeStrumenti": [],
+      "abilitaSelezionabili": ["Arcano", "Inganno", "Storia", "Intimidire", "Investigare", "Natura", "Religione"],
+      "abilitaDaSelezionare": 2,
+      "caratteristiche_consigliate": ["CAR", "COS"],
+      "incantatore": true,
+      "caratteristica_incantesimi": "Carisma",
+      "equipaggiamento_iniziale": [
+        "Balestra leggera e 20 quadrelli o arma semplice",
+        "Borsa per componenti o focus arcano",
+        "Kit da studioso",
+        "Armatura di cuoio, arma semplice e due pugnali"
+      ],
+      "sottoclassi": [
+        {
+          "id": "archfey",
+          "nome": "L'Arcifata",
+          "descrizione": "Patto con un signore delle Terre Fatate",
+          "abilita_speciali": ["Presenza Fatata", "Fuga Nebbiosa", "Delirio Affascinante"],
+          "incantesimi_patron": ["Sonno Fatato", "Calmare Emozioni", "Lampo", "Dominare Bestia"]
+        },
+        {
+          "id": "fiend",
+          "nome": "Il Demonio",
+          "descrizione": "Patto con un'entità dei Piani Inferiori",
+          "abilita_speciali": ["Benedizione del Signore Oscuro", "Resistenza del Signore Oscuro", "Lanciarsi Attraverso l'Ade"],
+          "incantesimi_patron": ["Mani Brucianti", "Raggio Rovente", "Palla di Fuoco", "Muro di Fuoco"]
+        },
+        {
+          "id": "great_old_one",
+          "nome": "Il Grande Antico",
+          "descrizione": "Patto con un'entità aliena e incomprensibile",
+          "abilita_speciali": ["Comunicazione Telepatica", "Crea Thrall", "Entropia di Pensiero"],
+          "incantesimi_patron": ["Disfunzione", "Calmare Emozioni", "Rallentare", "Dominare Bestia"]
+        },
+        {
+          "id": "celestial",
+          "nome": "Il Celestiale",
+          "descrizione": "Patto con un'entità dei Piani Superiori",
+          "abilita_speciali": ["Luce Curativa", "Anima Radiante", "Resistenza Celeste"],
+          "incantesimi_patron": ["Cura Ferite", "Lama Fiammeggiante", "Luce del Giorno", "Guardiano della Fede"]
+        },
+        {
+          "id": "hexblade",
+          "nome": "L'Hexblade",
+          "descrizione": "Patto con un'entità del Shadowfell manifestata in un'arma",
+          "abilita_speciali": ["Maledizione dell'Hexblade", "Guerriero Hex", "Maestro dell'Accursed"],
+          "incantesimi_patron": ["Scudo", "Passo Nebbioso", "Lampo", "Fantasmi Alucinatori"]
+        },
+        {
+          "id": "undying",
+          "nome": "L'Immortale",
+          "descrizione": "Patto con un'entità che ha sconfitto la morte",
+          "abilita_speciali": ["Tra i Morti", "Resistenza Immortale", "Natura Immortale"],
+          "incantesimi_patron": ["Falsa Vita", "Raggio di Indebolimento", "Parlare con i Morti", "Aura di Vita"]
+        }
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "id": "wizard",
+      "nome": "Mago",
+      "descrizione": "Studioso della magia arcana e maestro degli incantesimi.",
+      "dadoVita": 6,
+      "competenze_primarie": ["Intelligenza"],
+      "tiriSalvezza": ["Intelligenza", "Saggezza"],
+      "competenzeArmi": ["Pugnali", "Dardi", "Fionde", "Bastoni ferrati", "Balestre leggere"],
+      "competenzeArmature": [],
+      "competenzeStrumenti": [],
+      "abilitaSelezionabili": ["Arcano", "Storia", "Intuizione", "Investigare", "Medicina", "Religione"],
+      "abilitaDaSelezionare": 2,
+      "caratteristiche_consigliate": ["INT", "DES"],
+      "incantatore": true,
+      "caratteristica_incantesimi": "Intelligenza",
+      "equipaggiamento_iniziale": [
+        "Bastone ferrato o pugnale",
+        "Borsa per componenti o focus arcano",
+        "Kit da studioso",
+        "Libro degli incantesimi"
+      ],
+      "sottoclassi": [
+        {
+          "id": "evocation",
+          "nome": "Scuola di Evocazione",
+          "descrizione": "Specialista in magie di danno ed energia",
+          "abilita_speciali": ["Sculture Incantesimi", "Trucchetto Potenziato", "Evocazione Potenziata"]
+        },
+        {
+          "id": "abjuration",
+          "nome": "Scuola di Abjurazione",
+          "descrizione": "Specialista in magie protettive",
+          "abilita_speciali": ["Custode Arcano", "Custode Proiettato", "Resistenza Migliorata"]
+        },
+        {
+          "id": "divination",
+          "nome": "Scuola di Divinazione",
+          "descrizione": "Specialista nella predizione del futuro",
+          "abilita_speciali": ["Portento", "Divinazione Esperta", "Il Terzo Occhio"]
+        },
+        {
+          "id": "enchantment",
+          "nome": "Scuola di Ammaliamento",
+          "descrizione": "Specialista nel controllo mentale e influenza",
+          "abilita_speciali": ["Ammaliamento Ipnotico", "Schermo Mentale", "Charme Diviso"]
+        },
+        {
+          "id": "illusion",
+          "nome": "Scuola di Illusione",
+          "descrizione": "Maestro di inganni e false realtà",
+          "abilita_speciali": ["Illusioni Minori Migliorate", "Illusioni Malleabili", "Realtà Illusoria"]
+        },
+        {
+          "id": "necromancy",
+          "nome": "Scuola di Necromanzia",
+          "descrizione": "Studioso di morte e non morti",
+          "abilita_speciali": ["Mietitore Livido", "Non Morti Thrall", "Resistenza Necrotica"]
+        },
+        {
+          "id": "transmutation",
+          "nome": "Scuola di Trasmutazione",
+          "descrizione": "Esperto nel cambiare la natura delle cose",
+          "abilita_speciali": ["Alchimia Minore", "Pietra del Trasmutatore", "Maestro del Trasmutatore"]
+        },
+        {
+          "id": "conjuration",
+          "nome": "Scuola di Evocazione",
+          "descrizione": "Maestro nell'evocare creature e oggetti",
+          "abilita_speciali": ["Evocazione Minore", "Traslocazione Benevola", "Evocazione Focalizzata"]
+        },
+        {
+          "id": "bladesinger",
+          "nome": "Bladesinger",
+          "descrizione": "Mago elfico che combina magia e spadamanìa",
+          "abilita_speciali": ["Addestramento con Armi Elfiche", "Canzone delle Lame", "Attacco Extra"]
+        },
+        {
+          "id": "war_magic",
+          "nome": "Magia di Guerra",
+          "descrizione": "Mago addestrato per il combattimento",
+          "abilita_speciali": ["Deflessione Arcana", "Iniziativa Tattica", "Sopravvivenza di Potenza"]
+        }
+      ],
+      "source": "Player's Handbook"
+    }
+  ]
+}
