@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../../factory_pg_base.dart';
 import '../../data/db_abilita.dart';
 import '../../data/db_classi.dart';
+import '../../core/logger.dart';
+import '../../core/exceptions.dart';
 
 class StepAbilitaScreen extends StatefulWidget {
   final PGBaseFactory factory;
@@ -44,14 +46,45 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
   }
 
   void _conferma() {
+    try {
+      if (!_validaAbilita()) return;
+
+      widget.factory.setAbilitaClasse(abilitaSelezionate);
+      AppLogger.info("Abilità selezionate: $abilitaSelezionate");
+      Navigator.pop(context, true);
+    } catch (e) {
+      AppLogger.error("Errore nella selezione abilità", e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Errore: $e"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  bool _validaAbilita() {
     if (abilitaSelezionate.length != maxAbilita) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Seleziona esattamente $maxAbilita abilità.")),
+        SnackBar(
+          content: Text("Seleziona esattamente $maxAbilita abilità."),
+          backgroundColor: Colors.orange,
+        ),
       );
-      return;
+      return false;
     }
-    widget.factory.setAbilitaClasse(abilitaSelezionate);
-    Navigator.pop(context, true);
+
+    // Verifica che tutte le abilità selezionate siano valide per la classe
+    for (var abilita in abilitaSelezionate) {
+      if (!suggeriteClasse.contains(abilita)) {
+        throw ValidationException(
+          "L'abilità $abilita non è disponibile per questa classe",
+          "Abilità"
+        );
+      }
+    }
+
+    return true;
   }
 
   void _saltaStep() {
@@ -61,7 +94,7 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("🧠 Step Abilità caricato"); // <-- questo deve apparire in console
+    AppLogger.info("Step Abilità caricato");
 
     return Scaffold(
       appBar: AppBar(title: const Text("Step: Abilità")),

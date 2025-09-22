@@ -321,7 +321,7 @@ final List<Incantesimo> incantesimiList = [
   Incantesimo(
     nome: "Armatura di Agathys",
     livello: 1,
-    scuola: "Abiurazione",
+    scuola: "Abjurazione",
     classi: ["Warlock"],
     descrizione: "Uno strato di gelo ti avvolge, conferendoti 5 PF temporanei. Se vieni colpito, il gelo infligge 5 danni da freddo a chi ti ha colpito.",
     raggio: "Sé stesso",
@@ -410,7 +410,7 @@ final List<Incantesimo> incantesimiList = [
   Incantesimo(
     nome: "Ragnatela",
     livello: 2,
-    scuola: "Conjurazione",
+    scuola: "Invocazione",
     classi: ["Mago", "Stregone"],
     descrizione: "Lanci una ragnatela appiccicosa che intrappola le creature in un'area di 6 metri. Le creature devono effettuare un tiro salvezza su Destrezza o restano intrappolate.",
     raggio: "18 metri",
@@ -421,7 +421,7 @@ final List<Incantesimo> incantesimiList = [
   Incantesimo(
     nome: "Riflessi",
     livello: 0,
-    scuola: "Abiurazione",
+    scuola: "Abjurazione",
     classi: ["Stregone", "Mago"],
     descrizione: "Fino al tuo prossimo turno, ottieni +1 alla CA contro il primo attacco che ti colpisce.",
     raggio: "Sé stesso",
@@ -456,7 +456,7 @@ final List<Incantesimo> incantesimiList = [
   Incantesimo(
     nome: "Scudo Fedele",
     livello: 1,
-    scuola: "Abiurazione",
+    scuola: "Abjurazione",
     classi: ["Chierico", "Paladino"],
     descrizione: "Una creatura bersaglio ottiene +2 alla CA per la durata dell’incantesimo.",
     raggio: "18 metri",
@@ -501,7 +501,7 @@ final List<Incantesimo> incantesimiList = [
     Incantesimo(
     nome: "Dissolvi Magie",
     livello: 3,
-    scuola: "Abiurazione",
+    scuola: "Abjurazione",
     classi: ["Bardo", "Chierico", "Druido", "Mago", "Paladino", "Stregone", "Warlock"],
     descrizione: "Interrompe un incantesimo o effetto magico in corso. Rimuove automaticamente incantesimi di livello 3 o inferiore, tiro su CD per superiori.",
     raggio: "36 metri",
@@ -545,7 +545,7 @@ final List<Incantesimo> incantesimiList = [
   Incantesimo(
     nome: "Globo di Invulnerabilità",
     livello: 6,
-    scuola: "Abiurazione",
+    scuola: "Abjurazione",
     classi: ["Mago"],
     descrizione: "Una barriera magica protegge tutte le creature all'interno da incantesimi di livello 5 o inferiore lanciati dall’esterno.",
     raggio: "3 metri",
@@ -743,7 +743,7 @@ final List<Incantesimo> incantesimiList = [
   Incantesimo(
     nome: "Mente Interdetta",
     livello: 8,
-    scuola: "Abiurazione",
+    scuola: "Abjurazione",
     classi: ["Mago"],
     descrizione: "Proteggi la mente di un bersaglio da lettura del pensiero, individuazione e influenze mentali. Immunità al charm.",
     raggio: "Contatto",

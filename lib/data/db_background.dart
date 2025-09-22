@@ -3,7 +3,7 @@
 class Background {
   final String nome;
   final String descrizione;
-  final List<String> competenzeAbilità;
+  final List<String> competenzeAbilita;
   final List<String> competenzeStrumenti;
   final List<String> linguaggi;
   final String equipaggiamento;
@@ -15,7 +15,7 @@ class Background {
   Background({
     required this.nome,
     required this.descrizione,
-    required this.competenzeAbilità,
+    required this.competenzeAbilita,
     required this.competenzeStrumenti,
     required this.linguaggi,
     required this.equipaggiamento,
@@ -30,7 +30,7 @@ final List<Background> backgroundList = [
   Background(
     nome: "Eroe Popolare",
     descrizione: "Sei cresciuto tra la gente comune, ma il tuo destino ti ha portato a un cammino eroico.",
-    competenzeAbilità: ["Atletica", "Addestrare Animali"],
+    competenzeAbilita: ["Atletica", "Addestrare Animali"],
     competenzeStrumenti: ["Strumenti da artigiano (a scelta)", "Veicolo terrestre (a scelta)"],
     linguaggi: [],
     equipaggiamento: "Uno attrezzo da artigiano a scelta, una pala, una padella di ferro, vestiti da viandante e 10 monete d’oro.",
@@ -42,7 +42,7 @@ final List<Background> backgroundList = [
   Background(
     nome: "Criminale",
     descrizione: "Hai una storia di vita ai margini della legge. Sei esperto in furti, truffe e sopravvivenza urbana.",
-    competenzeAbilità: ["Furtività", "Inganno"],
+    competenzeAbilita: ["Furtività", "Inganno"],
     competenzeStrumenti: ["Attrezzi da ladro", "Gioco d’azzardo (a scelta)"],
     linguaggi: [],
     equipaggiamento: "Un attrezzo da ladro, un mantello scuro con cappuccio, una spada corta, un set di abiti comuni e 15 monete d’oro.",
@@ -54,7 +54,7 @@ final List<Background> backgroundList = [
   Background(
     nome: "Saggio",
     descrizione: "Hai passato anni a studiare le leggi del mondo, che siano arcane, divine o naturali.",
-    competenzeAbilità: ["Arcano", "Storia"],
+    competenzeAbilita: ["Arcano", "Storia"],
     competenzeStrumenti: [],
     linguaggi: ["A scelta", "A scelta"],
     equipaggiamento: "Un flacone d’inchiostro, una penna, un piccolo coltello, una lettera di un collega scomparso, abiti comuni e 10 monete d’oro.",
@@ -66,7 +66,7 @@ final List<Background> backgroundList = [
   Background(
     nome: "Soldato",
     descrizione: "Hai servito in un esercito, una milizia o come mercenario. Sei abituato alla disciplina e alla guerra.",
-    competenzeAbilità: ["Atletica", "Intimidazione"],
+    competenzeAbilita: ["Atletica", "Intimidazione"],
     competenzeStrumenti: ["Gioco d’azzardo (a scelta)", "Veicolo terrestre"],
     linguaggi: [],
     equipaggiamento: "Un trofeo di guerra, uniforme, set di dadi o carte, abiti comuni, 10 monete d’oro.",
@@ -78,7 +78,7 @@ final List<Background> backgroundList = [
   Background(
     nome: "Nobile",
     descrizione: "Sei cresciuto in una famiglia aristocratica, con privilegi e obblighi.",
-    competenzeAbilità: ["Storia", "Persuasione"],
+    competenzeAbilita: ["Storia", "Persuasione"],
     competenzeStrumenti: ["Gioco d’azzardo (a scelta)"],
     linguaggi: ["A scelta"],
     equipaggiamento: "Un anello con sigillo, lettere di nobiltà, vestiti eleganti e una borsa con 25 monete d’oro.",
@@ -90,7 +90,7 @@ final List<Background> backgroundList = [
   Background(
     nome: "Artigiano Gildato",
     descrizione: "Hai imparato un mestiere e ne sei diventato un membro riconosciuto all’interno di una gilda.",
-    competenzeAbilità: ["Intuizione", "Persuasione"],
+    competenzeAbilita: ["Intuizione", "Persuasione"],
     competenzeStrumenti: ["Strumenti da artigiano (a scelta)"],
     linguaggi: ["A scelta"],
     equipaggiamento: "Uno strumento da artigiano, una lettera di raccomandazione della tua gilda, abiti da viaggio, 15 monete d’oro.",
@@ -102,7 +102,7 @@ final List<Background> backgroundList = [
   Background(
     nome: "Eremita",
     descrizione: "Hai vissuto per anni in isolamento, esplorando il tuo io interiore o scoprendo verità profonde.",
-    competenzeAbilità: ["Medicina", "Religione"],
+    competenzeAbilita: ["Medicina", "Religione"],
     competenzeStrumenti: ["Kit da erborista"],
     linguaggi: ["A scelta"],
     equipaggiamento: "Un diario pieno di scoperte, una coperta invernale, un bastone, vestiti comuni, 5 monete d’oro.",
@@ -114,7 +114,7 @@ final List<Background> backgroundList = [
   Background(
     nome: "Intrattenitore",
     descrizione: "Hai vissuto intrattenendo il pubblico con talento e carisma.",
-    competenzeAbilità: ["Acrobazia", "Intrattenere"],
+    competenzeAbilita: ["Acrobazia", "Intrattenere"],
     competenzeStrumenti: ["Strumento musicale (a scelta)", "Kit per travestimenti"],
     linguaggi: [],
     equipaggiamento: "Uno strumento musicale, oggetto ricordo del pubblico, costumi scenici, 15 monete d’oro.",
@@ -126,7 +126,7 @@ final List<Background> backgroundList = [
   Background(
     nome: "Accolito",
     descrizione: "Hai servito una divinità o un tempio, vivendo sotto regole religiose e studiando testi sacri.",
-    competenzeAbilità: ["Intuizione", "Religione"],
+    competenzeAbilita: ["Intuizione", "Religione"],
     competenzeStrumenti: [],
     linguaggi: ["A scelta", "A scelta"],
     equipaggiamento: "Un simbolo sacro, un libro o preghiere, abiti comuni, 15 monete d’oro.",
@@ -138,7 +138,7 @@ final List<Background> backgroundList = [
   Background(
     nome: "Marinaio",
     descrizione: "Hai passato la tua vita a bordo di navi, affrontando tempeste, pirati e il vasto mare.",
-    competenzeAbilità: ["Atletica", "Percezione"],
+    competenzeAbilita: ["Atletica", "Percezione"],
     competenzeStrumenti: ["Veicoli acquatici", "Strumento musicale (a scelta)"],
     linguaggi: [],
     equipaggiamento: "Un arpione, una corda da 15 metri, un talismano marinaresco, abiti comuni, 10 monete d’oro.",
@@ -150,7 +150,7 @@ final List<Background> backgroundList = [
   Background(
     nome: "Vagabondo",
     descrizione: "Sei cresciuto per strada, imparando a sopravvivere tra i vicoli e le ombre della città.",
-    competenzeAbilità: ["Furtività", "Acrobazia"],
+    competenzeAbilita: ["Furtività", "Acrobazia"],
     competenzeStrumenti: ["Strumento musicale (a scelta)", "Gioco d’azzardo (a scelta)"],
     linguaggi: [],
     equipaggiamento: "Un coltellino, una mappa di un tesoro immaginario, abiti comuni, 10 monete d’oro.",
@@ -162,7 +162,7 @@ final List<Background> backgroundList = [
   Background(
     nome: "Forestiero",
     descrizione: "Vivi a contatto con la natura e hai poco a che fare con la civiltà.",
-    competenzeAbilità: ["Sopravvivenza", "Percezione"],
+    competenzeAbilita: ["Sopravvivenza", "Percezione"],
     competenzeStrumenti: ["Strumenti da intagliatore (a scelta)"],
     linguaggi: ["A scelta"],
     equipaggiamento: "Un trofeo di caccia, una trappola, vestiti da viandante, 10 monete d’oro.",
@@ -174,7 +174,7 @@ final List<Background> backgroundList = [
   Background(
     nome: "Spia",
     descrizione: "Hai operato nell'ombra, raccogliendo segreti e muovendoti tra bugie e doppigiochi.",
-    competenzeAbilità: ["Furtività", "Inganno"],
+    competenzeAbilita: ["Furtività", "Inganno"],
     competenzeStrumenti: ["Attrezzi da ladro", "Kit da travestimento"],
     linguaggi: [],
     equipaggiamento: "Un set di abiti scuri, un diario cifrato, attrezzi da ladro, 15 monete d’oro.",
@@ -186,7 +186,7 @@ final List<Background> backgroundList = [
   Background(
     nome: "Pirata",
     descrizione: "Hai solcato i mari depredando navi o vivendo da canaglia in mare aperto.",
-    competenzeAbilità: ["Atletica", "Intimidazione"],
+    competenzeAbilita: ["Atletica", "Intimidazione"],
     competenzeStrumenti: ["Veicoli acquatici", "Gioco d’azzardo (a scelta)"],
     linguaggi: [],
     equipaggiamento: "Un uncino, una bandana logora, un sacchetto con 15 monete d’oro.",
@@ -198,7 +198,7 @@ final List<Background> backgroundList = [
   Background(
     nome: "Disertore",
     descrizione: "Hai abbandonato l’esercito, per scelta o necessità, portandoti dietro segreti e cicatrici.",
-    competenzeAbilità: ["Furtività", "Sopravvivenza"],
+    competenzeAbilita: ["Furtività", "Sopravvivenza"],
     competenzeStrumenti: ["Veicoli terrestri"],
     linguaggi: [],
     equipaggiamento: "Una lettera non spedita a un familiare, un mantello militare strappato, 10 monete d’oro.",

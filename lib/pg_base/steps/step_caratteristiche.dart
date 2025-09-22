@@ -3,6 +3,8 @@ import '../../factory_pg_base.dart';
 import '../../data/db_classi.dart';
 import '../utils/pf_helper.dart';
 import '../utils/asi_helper.dart';
+import '../../core/logger.dart';
+import '../../core/exceptions.dart';
 
 final List<int> standardArray = [15, 14, 13, 12, 10, 8];
 final List<String> caratteristiche = ['FOR', 'DES', 'COS', 'INT', 'SAG', 'CAR'];
@@ -58,25 +60,71 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
   }
 
   void _conferma() {
-    final mod = <String, int>{};
-    baseStats.forEach((key, val) {
-      mod[key] = ((val - 10) / 2).floor();
-    });
+    try {
+      // Validazione caratteristiche
+      if (!_validaCaratteristiche()) return;
 
-    final pf = calcolaPuntiVita(
-      livello: widget.factory.livello,
-      dadoVita: widget.factory.dadoVita,
-      modificatoreCostituzione: mod['COS']!,
-    );
+      final mod = <String, int>{};
+      baseStats.forEach((key, val) {
+        mod[key] = ((val - 10) / 2).floor();
+      });
 
-    widget.factory.setCaratteristiche(baseStats);
-    widget.factory.setPuntiVita(pf);
+      final pf = calcolaPuntiVita(
+        livello: widget.factory.livello,
+        dadoVita: widget.factory.dadoVita,
+        modificatoreCostituzione: mod['COS']!,
+      );
 
-    print("🎲 Caratteristiche assegnate: $baseStats");
-    print("🎯 Modificatori calcolati: $mod");
-    print("❤️ PF: $pf");
+      if (pf <= 0) {
+        throw ValidationException("I punti vita non possono essere zero o negativi", "Caratteristiche");
+      }
 
-    Navigator.pop(context, true);
+      widget.factory.setCaratteristiche(baseStats);
+      widget.factory.setPuntiVita(pf);
+
+      AppLogger.info("Caratteristiche assegnate: $baseStats");
+      AppLogger.debug("Modificatori calcolati: $mod");
+      AppLogger.debug("PF: $pf");
+
+      Navigator.pop(context, true);
+    } catch (e) {
+      AppLogger.error("Errore nella conferma caratteristiche", e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Errore: $e"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  bool _validaCaratteristiche() {
+    // Verifica che tutte le caratteristiche siano nel range valido (3-20)
+    for (var entry in baseStats.entries) {
+      if (entry.value < 3 || entry.value > 20) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("${entry.key} deve essere tra 3 e 20 (attuale: ${entry.value})"),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return false;
+      }
+    }
+
+    // Verifica che il totale non superi i punti disponibili
+    final totaleUsato = baseStats.values.reduce((a, b) => a + b) - (8 * caratteristiche.length);
+    if (totaleUsato > asiDisponibili) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Hai usato $totaleUsato punti su $asiDisponibili disponibili"),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return false;
+    }
+
+    return true;
   }
 
   void _saltaStep() {
@@ -92,7 +140,7 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
       ),
     );
 
-    print("🎲 Caratteristiche default: $defaultStats");
+    AppLogger.debug("Caratteristiche default: $defaultStats");
     Navigator.pop(context, true);
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // === IMPORTAZIONI ===
 import 'pg_base/main_pg_base.dart';          // PG Base Wizard
@@ -6,6 +7,7 @@ import 'screens/coming_soon.dart';           // Schermata per funzionalità disa
 import 'screens/dice_roller.dart';           // Modulo dadi
 import 'screens/name_generator.dart';        // Generatore nomi (standalone)
 import 'package:dnd_master_aid/factory_pg_base.dart';
+import 'providers/character_provider.dart';
 
 void main() {
   runApp(const DnDMasterAidApp());
@@ -16,14 +18,19 @@ class DnDMasterAidApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'DnD MasterAid',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CharacterProvider()),
+      ],
+      child: MaterialApp(
+        title: 'DnD MasterAid',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.deepPurple,
+          useMaterial3: true,
+        ),
+        home: const HomePage(),
       ),
-      home: const HomePage(),
     );
   }
 }

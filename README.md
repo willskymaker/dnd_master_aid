@@ -4,7 +4,22 @@
 
 ## 🚀 Stato Attuale
 
-Il progetto è scritto in **Dart** con l'obiettivo di essere compatibile anche con **Flutter Web**. Attualmente si sta sviluppando il modulo **PG Base**, che permette la generazione guidata di un personaggio con i parametri fondamentali:
+Il progetto è scritto in **Dart** con **Flutter** e supporta completamente **Flutter Web**. Dispone di un'architettura robusta con state management (Provider), logging strutturato, gestione errori avanzata e separazione tra business logic e UI.
+
+### 🏗️ Architettura
+
+```
+lib/
+├── core/              # Utilities base (logger, exceptions)
+├── data/              # Database statici + enums standardizzati
+├── services/          # Business logic e validazione
+├── repositories/      # Accesso dati con cache
+├── providers/         # State management (Provider pattern)
+├── widgets/           # Widget riutilizzabili
+└── screens/           # UI screens
+```
+
+**Attualmente si sta sviluppando il modulo **PG Base**, che permette la generazione guidata di un personaggio con i parametri fondamentali:**
 
 ### ✅ Moduli completati o in corso:
 - **Generatore Nome**: combinazione di prefissi/suffissi fantasy.

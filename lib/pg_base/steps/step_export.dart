@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
 import '../../factory_pg_base.dart';
 import '../../utils/web_pdf_saver.dart';
+import '../../core/logger.dart';
 
 class StepExportScreen extends StatelessWidget {
   final PGBaseFactory factory;
@@ -82,7 +83,7 @@ class StepExportScreen extends StatelessWidget {
     pw.SizedBox(height: 8),
   ]);
   
-print("DEBUG: caratteristicheImpostate = ${pg.caratteristicheImpostate}");
+AppLogger.debug("caratteristicheImpostate = ${pg.caratteristicheImpostate}");
 
   if (pg.caratteristicheImpostate && pg.caratteristiche.isNotEmpty) {
   contenuto.add(pw.Text("Caratteristiche:", style: pw.TextStyle(fontWeight: pw.FontWeight.bold)));
@@ -138,11 +139,12 @@ print("DEBUG: caratteristicheImpostate = ${pg.caratteristicheImpostate}");
   }
 }
 
-Future<void> vaiAStepExportPDF(BuildContext context, PGBaseFactory factory) async {
-  await Navigator.push(
+Future<bool> vaiAStepExportPDF(BuildContext context, PGBaseFactory factory) async {
+  final result = await Navigator.push(
     context,
     MaterialPageRoute(
       builder: (_) => StepExportScreen(factory: factory),
     ),
   );
+  return result ?? true; // Export è opzionale, quindi true di default
 }

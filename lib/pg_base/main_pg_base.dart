@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../factory_pg_base.dart';
 import 'steps/step_nome.dart';
 import 'steps/step_specie.dart';
@@ -8,6 +9,9 @@ import 'steps/step_caratteristiche.dart';
 import 'steps/step_abilita.dart';
 import 'steps/step_equip.dart';
 import 'steps/step_export.dart';
+import '../core/logger.dart';
+import '../providers/character_provider.dart';
+import '../widgets/character_progress_indicator.dart';
 
 class PGBaseWizard extends StatefulWidget {
   const PGBaseWizard({super.key});
@@ -22,11 +26,54 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Creazione Personaggio Base")),
+      appBar: AppBar(
+        title: const Text("Creazione Personaggio Base"),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(80),
+          child: Consumer<CharacterProvider>(
+            builder: (context, provider, child) {
+              return const CharacterProgressIndicator();
+            },
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            // Mostra eventuali errori del provider
+            Consumer<CharacterProvider>(
+              builder: (context, provider, child) {
+                if (provider.errorMessage != null) {
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 16),
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.red.shade100,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.red),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.error, color: Colors.red),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            provider.errorMessage!,
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: provider.clearError,
+                          icon: const Icon(Icons.close, color: Colors.red),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                return const SizedBox();
+              },
+            ),
             const Text(
               "🧙‍♂️ Benvenuto nel generatore rapido di PG!",
               style: TextStyle(fontSize: 18),
@@ -34,23 +81,7 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () async {
-                 if (!(await vaiAStepNome(context, factory) ?? false)) return;
-                 if (!(await vaiAStepSpecie(context, factory) ?? false)) return;
-                 if (!(await vaiAStepClasse(context, factory) ?? false)) return;
-                 if (!(await vaiAStepLivello(context, factory) ?? false)) return;
-                 if (!(await vaiAStepCaratteristiche(context, factory) ?? false)) return;
-                 if (!(await vaiAStepAbilita(context, factory) ?? false)) return;
-                 if (!(await vaiAStepEquipaggiamento(context, factory) ?? false)) return;
-
-                 PGBase pg = factory.build();
-                 print(pg.nome); // Verifica che il personaggio sia generato correttamente
-                 _mostraScheda(pg);
-
-                // 👉 Step per esportazione PDF
-                 await vaiAStepExportPDF(context, factory);
-              },
-
+              onPressed: () => _iniziaCreazione(),
               child: const Text("Inizia la creazione"),
             ),
           ],
@@ -59,8 +90,65 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
     );
   }
 
+  Future<void> _iniziaCreazione() async {
+    try {
+      AppLogger.info("Iniziando creazione personaggio");
+
+      if (!await _eseguiStep("Nome", () => vaiAStepNome(context, factory))) return;
+      if (!await _eseguiStep("Specie", () => vaiAStepSpecie(context, factory))) return;
+      if (!await _eseguiStep("Classe", () => vaiAStepClasse(context, factory))) return;
+      if (!await _eseguiStep("Livello", () => vaiAStepLivello(context, factory))) return;
+      if (!await _eseguiStep("Caratteristiche", () => vaiAStepCaratteristiche(context, factory))) return;
+      if (!await _eseguiStep("Abilità", () => vaiAStepAbilita(context, factory))) return;
+      if (!await _eseguiStep("Equipaggiamento", () => vaiAStepEquipaggiamento(context, factory))) return;
+
+      final pg = factory.build();
+      AppLogger.debug("Personaggio generato: ${pg.nome}");
+      _mostraScheda(pg);
+
+      await _eseguiStep("Export PDF", () => vaiAStepExportPDF(context, factory));
+
+    } catch (e, stackTrace) {
+      AppLogger.error("Errore durante la creazione del personaggio", e, stackTrace);
+      _mostraErrore("Errore durante la creazione del personaggio: $e");
+    }
+  }
+
+  Future<bool> _eseguiStep(String nomeStep, Future<bool> Function() stepFunction) async {
+    try {
+      AppLogger.debug("Eseguendo step: $nomeStep");
+      final result = await stepFunction();
+      if (!result) {
+        AppLogger.info("Step $nomeStep annullato dall'utente");
+      }
+      return result;
+    } catch (e, stackTrace) {
+      AppLogger.error("Errore nello step $nomeStep", e, stackTrace);
+      _mostraErrore("Errore nello step $nomeStep: $e");
+      return false;
+    }
+  }
+
+  void _mostraErrore(String messaggio) {
+    if (mounted) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text("Errore", style: TextStyle(color: Colors.red)),
+          content: Text(messaggio),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("OK"),
+            )
+          ],
+        ),
+      );
+    }
+  }
+
   void _mostraScheda(PGBase pg) {
-    print("Mostrando la scheda del personaggio...");  // Debugging
+    AppLogger.debug("Mostrando la scheda del personaggio");
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
