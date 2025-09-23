@@ -11,6 +11,10 @@ class JsonDataRepository {
   static Map<String, dynamic>? _cachedSpecies;
   static Map<String, dynamic>? _cachedClasses;
   static Map<String, dynamic>? _cachedSpells;
+  static Map<String, dynamic>? _cachedEquipment;
+  static Map<String, dynamic>? _cachedBackgrounds;
+  static Map<String, dynamic>? _cachedFeats;
+  static Map<String, dynamic>? _cachedMonsters;
 
   /// Carica le specie dal file JSON
   static Future<List<Specie>> loadSpecies() async {
@@ -90,6 +94,63 @@ class JsonDataRepository {
 
     AppLogger.info("Caricati ${spells.length} incantesimi dal JSON");
     return spells;
+  }
+
+  /// Carica l'equipaggiamento dal file JSON
+  static Future<Map<String, dynamic>> loadEquipment() async {
+    if (_cachedEquipment == null) {
+      AppLogger.info("Caricando equipaggiamento da JSON");
+      final String jsonString = await rootBundle.loadString('assets/data/equipment.json');
+      _cachedEquipment = json.decode(jsonString);
+    }
+
+    AppLogger.info("Caricato equipaggiamento dal JSON");
+    return _cachedEquipment!;
+  }
+
+  /// Carica i background dal file JSON
+  static Future<List<Map<String, dynamic>>> loadBackgrounds() async {
+    if (_cachedBackgrounds == null) {
+      AppLogger.info("Caricando background da JSON");
+      final String jsonString = await rootBundle.loadString('assets/data/backgrounds.json');
+      _cachedBackgrounds = json.decode(jsonString);
+    }
+
+    final List<dynamic> backgroundsData = _cachedBackgrounds!['backgrounds'];
+    final List<Map<String, dynamic>> backgrounds = backgroundsData.cast<Map<String, dynamic>>();
+
+    AppLogger.info("Caricati ${backgrounds.length} background dal JSON");
+    return backgrounds;
+  }
+
+  /// Carica i talenti dal file JSON
+  static Future<List<Map<String, dynamic>>> loadFeats() async {
+    if (_cachedFeats == null) {
+      AppLogger.info("Caricando talenti da JSON");
+      final String jsonString = await rootBundle.loadString('assets/data/feats.json');
+      _cachedFeats = json.decode(jsonString);
+    }
+
+    final List<dynamic> featsData = _cachedFeats!['feats'];
+    final List<Map<String, dynamic>> feats = featsData.cast<Map<String, dynamic>>();
+
+    AppLogger.info("Caricati ${feats.length} talenti dal JSON");
+    return feats;
+  }
+
+  /// Carica i mostri dal file JSON
+  static Future<List<Map<String, dynamic>>> loadMonsters() async {
+    if (_cachedMonsters == null) {
+      AppLogger.info("Caricando mostri da JSON");
+      final String jsonString = await rootBundle.loadString('assets/data/monsters.json');
+      _cachedMonsters = json.decode(jsonString);
+    }
+
+    final List<dynamic> monstersData = _cachedMonsters!['monsters'];
+    final List<Map<String, dynamic>> monsters = monstersData.cast<Map<String, dynamic>>();
+
+    AppLogger.info("Caricati ${monsters.length} mostri dal JSON");
+    return monsters;
   }
 
   /// Converte dati JSON in oggetto Specie
@@ -181,6 +242,10 @@ class JsonDataRepository {
     _cachedSpecies = null;
     _cachedClasses = null;
     _cachedSpells = null;
+    _cachedEquipment = null;
+    _cachedBackgrounds = null;
+    _cachedFeats = null;
+    _cachedMonsters = null;
     AppLogger.info("Cache JSON repository pulita");
   }
 
@@ -206,6 +271,30 @@ class JsonDataRepository {
         _cachedSpells = json.decode(spellsJson);
       }
       versions['spells'] = _cachedSpells!['version'] ?? 'unknown';
+
+      if (_cachedEquipment == null) {
+        final String equipmentJson = await rootBundle.loadString('assets/data/equipment.json');
+        _cachedEquipment = json.decode(equipmentJson);
+      }
+      versions['equipment'] = _cachedEquipment!['version'] ?? 'unknown';
+
+      if (_cachedBackgrounds == null) {
+        final String backgroundsJson = await rootBundle.loadString('assets/data/backgrounds.json');
+        _cachedBackgrounds = json.decode(backgroundsJson);
+      }
+      versions['backgrounds'] = _cachedBackgrounds!['version'] ?? 'unknown';
+
+      if (_cachedFeats == null) {
+        final String featsJson = await rootBundle.loadString('assets/data/feats.json');
+        _cachedFeats = json.decode(featsJson);
+      }
+      versions['feats'] = _cachedFeats!['version'] ?? 'unknown';
+
+      if (_cachedMonsters == null) {
+        final String monstersJson = await rootBundle.loadString('assets/data/monsters.json');
+        _cachedMonsters = json.decode(monstersJson);
+      }
+      versions['monsters'] = _cachedMonsters!['version'] ?? 'unknown';
     } catch (e) {
       AppLogger.error("Errore nel recupero versioni dati", e);
     }
@@ -277,5 +366,146 @@ class JsonDataRepository {
 
       return true;
     }).toList();
+  }
+
+  /// Cerca background per nome o descrizione
+  static Future<List<Map<String, dynamic>>> searchBackgrounds(String query) async {
+    final backgrounds = await loadBackgrounds();
+    final lowercaseQuery = query.toLowerCase();
+
+    return backgrounds.where((background) {
+      final name = background['name']?.toLowerCase() ?? '';
+      final italianName = background['italian_name']?.toLowerCase() ?? '';
+      final description = background['description']?.toLowerCase() ?? '';
+
+      return name.contains(lowercaseQuery) ||
+             italianName.contains(lowercaseQuery) ||
+             description.contains(lowercaseQuery);
+    }).toList();
+  }
+
+  /// Cerca talenti per nome o descrizione
+  static Future<List<Map<String, dynamic>>> searchFeats(String query) async {
+    final feats = await loadFeats();
+    final lowercaseQuery = query.toLowerCase();
+
+    return feats.where((feat) {
+      final name = feat['name']?.toLowerCase() ?? '';
+      final italianName = feat['italian_name']?.toLowerCase() ?? '';
+      final description = feat['description']?.toLowerCase() ?? '';
+
+      return name.contains(lowercaseQuery) ||
+             italianName.contains(lowercaseQuery) ||
+             description.contains(lowercaseQuery);
+    }).toList();
+  }
+
+  /// Cerca mostri con filtri
+  static Future<List<Map<String, dynamic>>> searchMonsters({
+    String? query,
+    String? size,
+    String? type,
+    String? challengeRating,
+  }) async {
+    final monsters = await loadMonsters();
+
+    return monsters.where((monster) {
+      // Filtro per query di testo
+      if (query != null && query.isNotEmpty) {
+        final lowercaseQuery = query.toLowerCase();
+        final name = monster['name']?.toLowerCase() ?? '';
+        final italianName = monster['italian_name']?.toLowerCase() ?? '';
+
+        if (!name.contains(lowercaseQuery) && !italianName.contains(lowercaseQuery)) {
+          return false;
+        }
+      }
+
+      // Filtro per taglia
+      if (size != null && monster['size'] != size) {
+        return false;
+      }
+
+      // Filtro per tipo
+      if (type != null && !monster['type'].toString().contains(type)) {
+        return false;
+      }
+
+      // Filtro per grado di sfida
+      if (challengeRating != null && monster['challenge_rating'] != challengeRating) {
+        return false;
+      }
+
+      return true;
+    }).toList();
+  }
+
+  /// Cerca equipaggiamento per categoria
+  static Future<List<Map<String, dynamic>>> searchEquipment({
+    String? query,
+    String? category, // 'weapons', 'armor', 'adventuring_gear', 'tools', 'kits'
+    String? weaponType, // 'simple_melee', 'simple_ranged', 'martial_melee', 'martial_ranged'
+    String? armorType, // 'light', 'medium', 'heavy', 'shields'
+  }) async {
+    final equipment = await loadEquipment();
+    final List<Map<String, dynamic>> results = [];
+
+    // Cerca in tutte le categorie se non specificata
+    List<String> categoriesToSearch = [];
+    if (category != null) {
+      categoriesToSearch = [category];
+    } else {
+      categoriesToSearch = ['weapons', 'armor', 'adventuring_gear', 'tools', 'kits'];
+    }
+
+    for (String cat in categoriesToSearch) {
+      if (equipment.containsKey(cat)) {
+        if (cat == 'weapons' && weaponType != null) {
+          // Cerca solo nel tipo di arma specificato
+          if (equipment[cat].containsKey(weaponType)) {
+            final List<dynamic> items = equipment[cat][weaponType];
+            results.addAll(_filterEquipmentItems(items.cast<Map<String, dynamic>>(), query, cat));
+          }
+        } else if (cat == 'armor' && armorType != null) {
+          // Cerca solo nel tipo di armatura specificato
+          if (equipment[cat].containsKey(armorType)) {
+            final List<dynamic> items = equipment[cat][armorType];
+            results.addAll(_filterEquipmentItems(items.cast<Map<String, dynamic>>(), query, cat));
+          }
+        } else if (cat == 'weapons' || cat == 'armor') {
+          // Cerca in tutti i sottotipi
+          final Map<String, dynamic> categoryData = equipment[cat];
+          for (String subtype in categoryData.keys) {
+            final List<dynamic> items = categoryData[subtype];
+            results.addAll(_filterEquipmentItems(items.cast<Map<String, dynamic>>(), query, cat));
+          }
+        } else {
+          // Categorie semplici (adventuring_gear, tools, kits)
+          final List<dynamic> items = equipment[cat];
+          results.addAll(_filterEquipmentItems(items.cast<Map<String, dynamic>>(), query, cat));
+        }
+      }
+    }
+
+    return results;
+  }
+
+  /// Filtra gli oggetti dell'equipaggiamento per query
+  static List<Map<String, dynamic>> _filterEquipmentItems(
+    List<Map<String, dynamic>> items,
+    String? query,
+    String category
+  ) {
+    if (query == null || query.isEmpty) {
+      return items.map((item) => {...item, 'category': category}).toList();
+    }
+
+    final lowercaseQuery = query.toLowerCase();
+    return items.where((item) {
+      final name = item['name']?.toLowerCase() ?? '';
+      final italianName = item['italian_name']?.toLowerCase() ?? '';
+
+      return name.contains(lowercaseQuery) || italianName.contains(lowercaseQuery);
+    }).map((item) => {...item, 'category': category}).toList();
   }
 }
