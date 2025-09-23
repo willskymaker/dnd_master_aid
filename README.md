@@ -1,12 +1,18 @@
 # D&D Master Aid
 
-🎲 **D&D Master Aid** è un'app modulare per la creazione e gestione di personaggi Dungeons & Dragons 5e, pensata per essere leggera, responsive e perfetta sia per nuovi giocatori che per veterani del gioco di ruolo.
+🎲 **D&D Master Aid** è un'app modulare OPEN SOURCE BETA per la creazione e gestione di personaggi Dungeons & Dragons 5e, pensata per essere leggera, responsive e perfetta sia per nuovi giocatori che per veterani del gioco di ruolo.
+
+⚠️ **VERSIONE BETA** - App in sviluppo attivo con la community! Contributi benvenuti su GitHub.
 
 ## 📱 Download Android APK
 
-**🚀 Ultima versione: v1.0.0**
+**🚀 Ultima versione: v1.0.4 BETA**
 
-[**📥 Scarica APK Android**](https://github.com/willskymaker/dnd_master_aid/releases/latest/download/dnd-master-aid-v1.0.0.apk) (25.8 MB)
+🎯 **Google Play Store**: In fase di pubblicazione (account sviluppatore in verifica)
+
+📥 **Download diretto APK**:
+- [**dnd-master-aid-v1.0.4-balanced.apk**](https://github.com/willskymaker/dnd_master_aid/releases/latest/download/dnd-master-aid-v1.0.4-balanced.apk) (25.8 MB) - **CONSIGLIATA**
+- [**dnd-master-aid-v1.0.4-googleplay-final.apk**](https://github.com/willskymaker/dnd_master_aid/releases/latest/download/dnd-master-aid-v1.0.4-googleplay-final.apk) (25.9 MB) - **Google Play Version**
 
 ### 📋 Installazione Android
 
@@ -193,6 +199,17 @@ Questo progetto è distribuito sotto licenza **MIT**. Consulta il file `LICENSE`
 
 ## 👑 Credits
 
+**Sviluppatore**: William Donzelli (alias **Willskymaker**)
+**Collaborazione**: **APS FareZero Makers FabLab**
+**Community**: Contributori GitHub e beta testers
+**Status**: Progetto Open Source in sviluppo attivo
+
+**🔗 Collegamenti**:
+- **GitHub**: https://github.com/willskymaker/dnd_master_aid
+- **Google Play Store**: In pubblicazione
+- **FareZero Makers**: Supporto tecnico e community
+- **Licenza**: MIT License - Libero per tutti
+
 ---
 
-> Realizzato con passione da William "willskymaker" e la community Nerd Friends 🧠❤️
+> Realizzato con passione dalla community open source per i giocatori di D&D 🎲❤️
