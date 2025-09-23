@@ -1,0 +1,721 @@
+{
+  "version": "1.0.0",
+  "description": "Database completo dei background di D&D 5e - Tutti i background ufficiali",
+  "sources": ["Player's Handbook", "Sword Coast Adventurer's Guide", "Xanathar's Guide to Everything", "Tasha's Cauldron of Everything"],
+  "last_updated": "2025-09-22",
+  "backgrounds": [
+    {
+      "name": "Acolyte",
+      "italian_name": "Accolito",
+      "description": "Hai servito in un tempio come intermediario tra il regno divino e quello mortale.",
+      "skill_proficiencies": ["Insight", "Religion"],
+      "languages": 2,
+      "equipment": [
+        "Holy symbol",
+        "Prayer book or prayer wheel",
+        "5 sticks of incense",
+        "Vestments",
+        "Set of common clothes",
+        "Belt pouch with 15 gp"
+      ],
+      "feature": {
+        "name": "Shelter of the Faithful",
+        "description": "Puoi ricevere cura gratuita presso templi della tua fede e chi condivide la tua religione ti supporterà (solo lifestyle modesto)."
+      },
+      "suggested_characteristics": {
+        "personality_traits": [
+          "Idolatro un particolare eroe della mia fede e faccio costantemente riferimento ai suoi atti e al suo esempio.",
+          "Riesco a trovare un terreno comune tra i nemici più acerrimi, avendo compassione per loro e sempre lavorando per la pace.",
+          "Vedo presagi in ogni evento e azione. Gli dei cercano di parlarci, dobbiamo solo ascoltare.",
+          "Nulla può scuotere la mia fiducia ottimistica.",
+          "Cito (o traviso) testi sacri e proverbi in quasi ogni situazione.",
+          "Sono tollerante (o intollerante) verso altre fedi e rispetto (o condanno) il culto di altri dei.",
+          "Ho goduto del cibo raffinato, dell'alcol e dell'alta società tra l'élite del mio tempio. La vita rozza mi dà fastidio.",
+          "Ho passato così tanto tempo nel tempio che ho poca esperienza pratica nel trattare con le persone nel mondo esterno."
+        ],
+        "ideals": [
+          "Tradizione. Le antiche tradizioni di culto e sacrificio devono essere preservate e sostenute. (Legale)",
+          "Carità. Cerco sempre di aiutare chi ha bisogno, non importa il costo personale. (Buono)",
+          "Cambiamento. Dobbiamo aiutare a portare i cambiamenti che gli dei stanno costantemente lavorando nel mondo. (Caotico)",
+          "Potere. Spero un giorno di salire ai vertici della gerarchia della mia fede. (Legale)",
+          "Fede. Confido che la mia divinità guiderà le mie azioni. Ho fede che se lavoro sodo, le cose andranno bene. (Legale)",
+          "Aspirazione. Cerco di dimostrarmi degno del favore della mia divinità abbinando le mie azioni ai suoi insegnamenti. (Qualsiasi)"
+        ]
+      },
+      "source": "Player's Handbook"
+    },
+    {
+      "name": "Criminal",
+      "italian_name": "Criminale",
+      "description": "Sei un criminale esperto con una storia di violazioni della legge.",
+      "skill_proficiencies": ["Deception", "Stealth"],
+      "tool_proficiencies": ["Gaming set", "Thieves' tools"],
+      "equipment": [
+        "Crowbar",
+        "Set of dark common clothes including a hood",
+        "Belt pouch with 15 gp"
+      ],
+      "feature": {
+        "name": "Criminal Contact",
+        "description": "Hai un contatto affidabile che funge da collegamento con una rete di altri criminali."
+      },
+      "specialties": [
+        "Blackmailer",
+        "Burglar",
+        "Enforcer",
+        "Fence",
+        "Highway robber",
+        "Hired killer",
+        "Pickpocket",
+        "Smuggler"
+      ],
+      "variant": {
+        "name": "Spy",
+        "description": "Anche se le tue capacità sono simili a quelle di un criminale, le hai acquisite al servizio di spionaggio piuttosto che crimine."
+      },
+      "source": "Player's Handbook"
+    },
+    {
+      "name": "Folk Hero",
+      "italian_name": "Eroe Popolare",
+      "description": "Vieni da un rango sociale umile, ma sei destinato a molto di più.",
+      "skill_proficiencies": ["Animal Handling", "Survival"],
+      "tool_proficiencies": ["Artisan's tools", "Vehicles (land)"],
+      "equipment": [
+        "Set of artisan's tools",
+        "Shovel",
+        "Set of artisan's clothes",
+        "Belt pouch with 10 gp"
+      ],
+      "feature": {
+        "name": "Rustic Hospitality",
+        "description": "Poiché vieni dai ranghi del popolo comune, ti adatti facilmente tra di loro."
+      },
+      "defining_events": [
+        "Mi sono opposto ad un tiranno.",
+        "Ho salvato la gente durante un disastro naturale.",
+        "Mi sono ribellato solitario contro un mostro terribile.",
+        "Ho rubato ai ricchi per dare ai poveri.",
+        "Ho condotto una milizia per combattere un esercito invasore.",
+        "Ho fatto irruzione nella fortezza di un tiranno e ho rubato armi per dare al popolo.",
+        "Ho addestrato i contadini per usare attrezzi da fattoria come armi contro i soldati di un tiranno.",
+        "Un nobile ha ferito la mia famiglia, quindi ho preso vendetta.",
+        "Un mostro terrorizzava la mia città natale, quindi l'ho rintracciato e sconfitto.",
+        "Sono stato falsamente accusato di un crimine e ho dovuto dimostrare la mia innocenza."
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "name": "Noble",
+      "italian_name": "Nobile",
+      "description": "Comprendi ricchezza, potere e privilegio.",
+      "skill_proficiencies": ["History", "Persuasion"],
+      "tool_proficiencies": ["Gaming set"],
+      "languages": 1,
+      "equipment": [
+        "Set of fine clothes",
+        "Signet ring",
+        "Scroll of pedigree",
+        "Purse with 25 gp"
+      ],
+      "feature": {
+        "name": "Position of Privilege",
+        "description": "Grazie al tuo nobile lignaggio, le persone sono inclini a pensare il meglio di te."
+      },
+      "variant": {
+        "name": "Knight",
+        "description": "Un cavaliere è tra i più bassi titoli nobiliari nella maggior parte delle società, ma può rappresentare un grande onore per un comune."
+      },
+      "source": "Player's Handbook"
+    },
+    {
+      "name": "Sage",
+      "italian_name": "Saggio",
+      "description": "Hai passato anni ad apprendere la conoscenza del multiverso.",
+      "skill_proficiencies": ["Arcana", "History"],
+      "languages": 2,
+      "equipment": [
+        "Bottle of black ink",
+        "Quill",
+        "Small knife",
+        "Letter from dead colleague",
+        "Set of common clothes",
+        "Belt pouch with 10 gp"
+      ],
+      "feature": {
+        "name": "Researcher",
+        "description": "Quando cerchi di imparare qualcosa, sai dove e da chi ottenere informazioni."
+      },
+      "specialties": [
+        "Alchemist",
+        "Astronomer",
+        "Discredited academic",
+        "Librarian",
+        "Professor",
+        "Researcher",
+        "Wizard's apprentice",
+        "Scribe"
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "name": "Soldier",
+      "italian_name": "Soldato",
+      "description": "Hai avuto una carriera militare come soldato.",
+      "skill_proficiencies": ["Athletics", "Intimidation"],
+      "tool_proficiencies": ["Gaming set", "Vehicles (land)"],
+      "equipment": [
+        "Insignia of rank",
+        "Trophy from fallen enemy",
+        "Deck of cards",
+        "Set of common clothes",
+        "Belt pouch with 10 gp"
+      ],
+      "feature": {
+        "name": "Military Rank",
+        "description": "Hai un grado militare dalla tua carriera come soldato."
+      },
+      "specialties": [
+        "Officer",
+        "Scout",
+        "Infantry",
+        "Cavalry",
+        "Healer",
+        "Quartermaster",
+        "Standard bearer",
+        "Support staff"
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "name": "Charlatan",
+      "italian_name": "Ciarlatano",
+      "description": "Hai sempre avuto un modo con le persone.",
+      "skill_proficiencies": ["Deception", "Sleight of Hand"],
+      "tool_proficiencies": ["Forgery kit", "Disguise kit"],
+      "equipment": [
+        "Set of fine clothes",
+        "Disguise kit",
+        "Tools of con of choice",
+        "Belt pouch with 15 gp"
+      ],
+      "feature": {
+        "name": "False Identity",
+        "description": "Hai creato una seconda identità che include documentazione, conoscenti stabiliti e travestimenti."
+      },
+      "favorite_schemes": [
+        "Mi atteggio a persona di alto lignaggio",
+        "Vendo pozioni 'miracolose'",
+        "Sono un sacerdote di un tempio falso",
+        "Faccio cambiavalute con monete false",
+        "Sono un nobile in esilio",
+        "Posseggo una nave che non esiste",
+        "Sono un agente della Corona",
+        "Sono l'erede di una ricca famiglia mercantile"
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "name": "Entertainer",
+      "italian_name": "Intrattenitore",
+      "description": "Prosperi davanti a un pubblico.",
+      "skill_proficiencies": ["Acrobatics", "Performance"],
+      "tool_proficiencies": ["Disguise kit", "Musical instrument"],
+      "equipment": [
+        "Musical instrument",
+        "Favor of an admirer",
+        "Costume",
+        "Belt pouch with 15 gp"
+      ],
+      "feature": {
+        "name": "By Popular Demand",
+        "description": "Puoi sempre trovare un posto dove esibirti, solitamente in una locanda o taverna."
+      },
+      "entertainer_routines": [
+        "Actor",
+        "Dancer",
+        "Fire-eater",
+        "Jester",
+        "Juggler",
+        "Instrumentalist",
+        "Poet",
+        "Singer",
+        "Storyteller",
+        "Tumbler"
+      ],
+      "variant": {
+        "name": "Gladiator",
+        "description": "Un gladiatore è tanto un intrattenitore quanto qualsiasi menestrello, ma combatte per intrattenere."
+      },
+      "source": "Player's Handbook"
+    },
+    {
+      "name": "Guild Artisan",
+      "italian_name": "Artigiano di Gilda",
+      "description": "Sei membro di una gilda di artigiani.",
+      "skill_proficiencies": ["Insight", "Persuasion"],
+      "tool_proficiencies": ["Artisan's tools"],
+      "languages": 1,
+      "equipment": [
+        "Set of artisan's tools",
+        "Letter of introduction from guild",
+        "Set of traveler's clothes",
+        "Belt pouch with 15 gp"
+      ],
+      "feature": {
+        "name": "Guild Membership",
+        "description": "Come membro stabilito e rispettato di una gilda, puoi fare affidamento su certi benefici."
+      },
+      "guild_business": [
+        "Alchemists and apothecaries",
+        "Armorers, locksmiths, and finesmiths",
+        "Brewers, distillers, and vintners",
+        "Calligraphers, scribes, and scriveners",
+        "Carpenters, roofers, and plasterers",
+        "Cartographers, surveyors, and chart-makers",
+        "Cobblers and shoemakers",
+        "Cooks and bakers",
+        "Glassblowers and glaziers",
+        "Jewelers and gemcutters",
+        "Leatherworkers, skinners, and tanners",
+        "Masons and stonecutters",
+        "Painters, limners, and sign-makers",
+        "Potters and tile-makers",
+        "Shipwrights and sailmakers",
+        "Smiths and metal-forgers",
+        "Tinkers, pewterers, and casters",
+        "Wagon-makers and wheelwrights",
+        "Weavers and dyers",
+        "Woodcarvers, coopers, and bowyers"
+      ],
+      "variant": {
+        "name": "Guild Merchant",
+        "description": "Invece di una gilda di artigiani, potresti appartenere a una gilda di commercianti, carovane o bottegai."
+      },
+      "source": "Player's Handbook"
+    },
+    {
+      "name": "Hermit",
+      "italian_name": "Eremita",
+      "description": "Hai vissuto in reclusione per un periodo formativo della tua vita.",
+      "skill_proficiencies": ["Medicine", "Religion"],
+      "tool_proficiencies": ["Herbalism kit"],
+      "languages": 1,
+      "equipment": [
+        "Herbalism kit",
+        "Scroll case with spiritual writing",
+        "Winter blanket",
+        "Set of common clothes",
+        "Belt pouch with 5 gp"
+      ],
+      "feature": {
+        "name": "Discovery",
+        "description": "Il tempo tranquillo della tua reclusione prolungata ti ha dato accesso a una scoperta unica e potente."
+      },
+      "life_of_seclusion": [
+        "Ero alla ricerca dell'illuminazione spirituale.",
+        "Stavo vivendo una vita semplice in armonia con la natura.",
+        "Ero in esilio per un crimine che non ho commesso.",
+        "Mi sono ritirato dalla società dopo un evento che cambiava la vita.",
+        "Avevo bisogno di un posto tranquillo per lavorare sulla mia arte, letteratura, musica o manifesto.",
+        "Dovevo comunque con la natura selvaggia lontano dalla decadenza della civiltà.",
+        "Ero il guardiano di un antico ruin o reliquia.",
+        "Ero un pellegrino alla ricerca di una persona, un luogo o una reliquia di significato spirituale."
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "name": "Outlander",
+      "italian_name": "Straniero",
+      "description": "Hai passato del tempo nella natura selvaggia.",
+      "skill_proficiencies": ["Athletics", "Survival"],
+      "tool_proficiencies": ["Musical instrument"],
+      "languages": 1,
+      "equipment": [
+        "Staff",
+        "Hunting trap",
+        "Traveler's clothes",
+        "Belt pouch with 10 gp"
+      ],
+      "feature": {
+        "name": "Wanderer",
+        "description": "Hai un'eccellente memoria per mappe e geografia, e puoi sempre ricordare la disposizione generale del terreno."
+      },
+      "origin": [
+        "Forester",
+        "Trapper",
+        "Homesteader",
+        "Guide",
+        "Exile or outcast",
+        "Bounty hunter",
+        "Pilgrim",
+        "Tribal nomad",
+        "Hunter-gatherer",
+        "Tribal marauder"
+      ],
+      "source": "Player's Handbook"
+    },
+    {
+      "name": "Sailor",
+      "italian_name": "Marinaio",
+      "description": "Hai navigato su una nave per anni.",
+      "skill_proficiencies": ["Athletics", "Perception"],
+      "tool_proficiencies": ["Navigator's tools", "Vehicles (water)"],
+      "equipment": [
+        "Belaying pin (club)",
+        "Silk rope (50 feet)",
+        "Lucky charm",
+        "Set of common clothes",
+        "Belt pouch with 10 gp"
+      ],
+      "feature": {
+        "name": "Ship's Passage",
+        "description": "Quando hai bisogno di, puoi ottenere il passaggio gratuito su una nave per te e i tuoi compagni avventurieri."
+      },
+      "variant": {
+        "name": "Pirate",
+        "description": "Hai passato la tua giovinezza sotto l'influenza di un terribile pirata, un implacabile tagliagole che ti ha insegnato come sopravvivere in un mondo di squali e selvaggi."
+      },
+      "source": "Player's Handbook"
+    },
+    {
+      "name": "Urchin",
+      "italian_name": "Monello",
+      "description": "Sei cresciuto per le strade da solo, orfano e povero.",
+      "skill_proficiencies": ["Sleight of Hand", "Stealth"],
+      "tool_proficiencies": ["Disguise kit", "Thieves' tools"],
+      "equipment": [
+        "Small knife",
+        "Map of the city",
+        "Pet mouse",
+        "Token to remember parents",
+        "Set of common clothes",
+        "Belt pouch with 10 gp"
+      ],
+      "feature": {
+        "name": "City Secrets",
+        "description": "Conosci i modelli segreti delle città e puoi trovare passaggi attraverso l'ambiente urbano che altri perderebbero."
+      },
+      "source": "Player's Handbook"
+    },
+    {
+      "name": "City Watch",
+      "italian_name": "Guardia Cittadina",
+      "description": "Hai servito la comunità dove sei cresciuto, stando di guardia contro il crimine cittadino.",
+      "skill_proficiencies": ["Athletics", "Insight"],
+      "languages": 2,
+      "equipment": [
+        "Uniform in the style of your unit",
+        "Horn with which to summon help",
+        "Set of manacles",
+        "Pouch with 10 gp"
+      ],
+      "feature": {
+        "name": "Watcher's Eye",
+        "description": "I tuoi anni di esperienza nell'applicazione della legge, e il tuo contatto con altri guardiani, ti danno una conoscenza dei crimini locali."
+      },
+      "variant": {
+        "name": "Investigator",
+        "description": "I roughs e tumble della vita criminale non ti attraggono, ma hai passato anni a guardare la sottopancia della società nel tuo ruolo come investigatore."
+      },
+      "source": "Sword Coast Adventurer's Guide"
+    },
+    {
+      "name": "Clan Crafter",
+      "italian_name": "Artigiano del Clan",
+      "description": "Le fortezze rocciose e le grandi sale dei nani echeggiavano del suono di martelli sulla forma metallica.",
+      "skill_proficiencies": ["History", "Insight"],
+      "tool_proficiencies": ["Artisan's tools"],
+      "languages": ["Dwarvish or one other"],
+      "equipment": [
+        "Set of artisan's tools",
+        "Maker's mark chisel",
+        "Set of traveler's clothes",
+        "Belt pouch with 5 gp and gem worth 10 gp"
+      ],
+      "feature": {
+        "name": "Respect of the Stout Folk",
+        "description": "Come ben noto e rispettato membro di un clan, hai accesso agli hold di montagna dei nani e alle persone che li abitano."
+      },
+      "source": "Sword Coast Adventurer's Guide"
+    },
+    {
+      "name": "Cloistered Scholar",
+      "italian_name": "Studioso Isolato",
+      "description": "Come bambino, eri innamorato degli atti di eroi leggendari e supereroi.",
+      "skill_proficiencies": ["History", "Religion or Nature or Arcana"],
+      "languages": 2,
+      "equipment": [
+        "Scholar's pack containing writing materials",
+        "Little bag of sand",
+        "Small knife",
+        "Set of common clothes",
+        "Belt pouch with 10 gp"
+      ],
+      "feature": {
+        "name": "Library Access",
+        "description": "Anche se altri devono condurre ricerche in biblioteche pubbliche o pagare per l'accesso a collezioni private, hai l'accesso gratuito e facile alla maggior parte delle biblioteche."
+      },
+      "library": [
+        "Biblioteca alchemica",
+        "Università",
+        "Scriptorium monastico",
+        "Biblioteca del mago",
+        "Biblioteca di corte",
+        "Biblioteca di organizzazione mercantile"
+      ],
+      "source": "Sword Coast Adventurer's Guide"
+    },
+    {
+      "name": "Courtier",
+      "italian_name": "Cortigiano",
+      "description": "Nel tuo primo giorni, hai fatto parte della vita nella corte, sia come nobile che come uno dei tanti servitori, impiegati, e altri assistenti.",
+      "skill_proficiencies": ["Insight", "Persuasion"],
+      "languages": 2,
+      "equipment": [
+        "Set of fine clothes",
+        "Ring, insignia, pendant, or other adornment that marks your status",
+        "Scroll bearing your letters of mark",
+        "Purse with 5 gp"
+      ],
+      "feature": {
+        "name": "Court Functionary",
+        "description": "La tua conoscenza di come funzionano le burocrazie ti permette di ottenere accesso ai registri e alle persone chiuse."
+      },
+      "source": "Sword Coast Adventurer's Guide"
+    },
+    {
+      "name": "Faction Agent",
+      "italian_name": "Agente di Fazione",
+      "description": "Molte organizzazioni attive attraverso il Nord e attraverso i piani multiversi reclutano agenti tra le file degli avventurieri.",
+      "skill_proficiencies": ["Insight", "special (see factions)"],
+      "languages": 2,
+      "equipment": [
+        "Badge or emblem of your faction",
+        "Copy of seminal faction text",
+        "Set of common clothes",
+        "Pouch with 15 gp"
+      ],
+      "feature": {
+        "name": "Safe Haven",
+        "description": "Come agente di fazione, hai accesso a una rete segreta di sostenitori e operativi che possono fornire assistenza nei tuoi sforzi."
+      },
+      "factions": [
+        "The Harpers",
+        "The Order of the Gauntlet",
+        "The Emerald Enclave",
+        "The Lords' Alliance",
+        "The Zhentarim"
+      ],
+      "source": "Sword Coast Adventurer's Guide"
+    },
+    {
+      "name": "Far Traveler",
+      "italian_name": "Viaggiatore Distante",
+      "description": "Quasi tutti i comuni folk e altri abitanti del Realms Nord hanno una cosa in comune: vivono le loro intere vite senza mai viaggiare più di qualche miglia dal dove sono nati.",
+      "skill_proficiencies": ["Insight", "Perception"],
+      "tool_proficiencies": ["Musical instrument or gaming set"],
+      "languages": 1,
+      "equipment": [
+        "Set of traveler's clothes",
+        "Jewelry worth 5 gp",
+        "Poorly wrought maps from your homeland",
+        "Small piece of jewelry worth 10 gp",
+        "Pouch with 5 gp"
+      ],
+      "feature": {
+        "name": "All Eyes on You",
+        "description": "La tua natura accenta, manierismenti, figure di discorso, e forse anche la tua apparenza sono tutti estranei alle persone del Nord."
+      },
+      "why_are_you_here": [
+        "Emissary",
+        "Exile",
+        "Fugitive",
+        "Pilgrim",
+        "Sightseer",
+        "Wanderer"
+      ],
+      "source": "Sword Coast Adventurer's Guide"
+    },
+    {
+      "name": "Inheritor",
+      "italian_name": "Erede",
+      "description": "Hai ereditato qualcosa di significativo da qualcuno importante nella tua vita.",
+      "skill_proficiencies": ["Survival", "special"],
+      "tool_proficiencies": ["Gaming set or musical instrument"],
+      "languages": 1,
+      "equipment": [
+        "Your inheritance",
+        "Set of traveler's clothes",
+        "Any items with which you are proficient",
+        "Pouch with 15 gp"
+      ],
+      "feature": {
+        "name": "Inheritance",
+        "description": "Scegli o tira casualmente un'eredità dalla tabella delle eredità."
+      },
+      "inheritance": [
+        "Documento ufficiale",
+        "Gioielli",
+        "Chiave",
+        "Mappa",
+        "Memento",
+        "Set di strumenti"
+      ],
+      "source": "Sword Coast Adventurer's Guide"
+    },
+    {
+      "name": "Knight of the Order",
+      "italian_name": "Cavaliere dell'Ordine",
+      "description": "Appartieni a un ordine di cavalieri che si è costituito per uno scopo specifico.",
+      "skill_proficiencies": ["Persuasion", "special"],
+      "tool_proficiencies": ["Gaming set or musical instrument"],
+      "languages": 1,
+      "equipment": [
+        "Set of traveler's clothes",
+        "Signet, banner, or seal representing your place in the order",
+        "Pouch with 15 gp"
+      ],
+      "feature": {
+        "name": "Knightly Regard",
+        "description": "Ricevi alloggio e pasti da persone che sono leali al tuo ordine, organizzazioni alleate, e spesso da cittadini che guardano favorevolmente al tuo ordine."
+      },
+      "knightly_orders": [
+        "Order of the Gauntlet",
+        "Knights of Solamnia",
+        "Knights of the Unicorn",
+        "Rose Knights",
+        "Purple Dragons"
+      ],
+      "source": "Sword Coast Adventurer's Guide"
+    },
+    {
+      "name": "Mercenary Veteran",
+      "italian_name": "Veterano Mercenario",
+      "description": "Come soldato di fortuna, la tua lealtà, una volta comprata, era assoluta.",
+      "skill_proficiencies": ["Athletics", "Persuasion"],
+      "tool_proficiencies": ["Gaming set", "Vehicles (land)"],
+      "equipment": [
+        "Uniform of your company",
+        "Insignia of your rank",
+        "Gaming set",
+        "Pouch with remainder of last wages (10 gp)"
+      ],
+      "feature": {
+        "name": "Mercenary Life",
+        "description": "Conosci la vita del mercenario come una barca sa galleggiare."
+      },
+      "source": "Sword Coast Adventurer's Guide"
+    },
+    {
+      "name": "Urban Bounty Hunter",
+      "italian_name": "Cacciatore di Taglie Urbano",
+      "description": "Prima della tua carriera avventuriera, la tua vita era già piena di conflitti, emozioni e pericoli.",
+      "skill_proficiencies": ["Choose two from Deception, Insight, Persuasion, and Stealth"],
+      "tool_proficiencies": ["Choose two from Gaming set, Musical instrument, and Thieves' tools"],
+      "equipment": [
+        "Set of clothes appropriate to your duties",
+        "Belt pouch with 20 gp"
+      ],
+      "feature": {
+        "name": "Ear to the Ground",
+        "description": "Sei in contatto frequente con persone del segmento della società che la tua preda prescelta move through."
+      },
+      "source": "Sword Coast Adventurer's Guide"
+    },
+    {
+      "name": "Uthgardt Tribe Member",
+      "italian_name": "Membro Tribù Uthgardt",
+      "description": "Anche se hai lasciato la tua tribù, le tue esperienze giovanili tra gli Uthgardt ti hanno plasmato per sempre.",
+      "skill_proficiencies": ["Athletics", "Survival"],
+      "tool_proficiencies": ["Artisan's tools or musical instrument"],
+      "languages": 1,
+      "equipment": [
+        "Hunting trap",
+        "Totemic token or tattoos marking your loyalty to Uthgar",
+        "Set of traveler's clothes",
+        "Pouch with 10 gp"
+      ],
+      "feature": {
+        "name": "Uthgardt Heritage",
+        "description": "Hai un eccellente conoscenza non solo della tua tribù particolare ma anche delle altre tribù Uthgardt del Nord."
+      },
+      "uthgardt_tribes": [
+        "Black Lion",
+        "Black Raven",
+        "Blue Bear",
+        "Elk",
+        "Gray Wolf",
+        "Great Worm",
+        "Griffon",
+        "Red Tiger",
+        "Sky Pony",
+        "Thunderbeast",
+        "Tree Ghost"
+      ],
+      "source": "Sword Coast Adventurer's Guide"
+    },
+    {
+      "name": "Waterdhavian Noble",
+      "italian_name": "Nobile di Waterdeep",
+      "description": "Sei un membro di una delle famiglie nobili di Waterdeep.",
+      "skill_proficiencies": ["History", "Persuasion"],
+      "tool_proficiencies": ["Gaming set or musical instrument"],
+      "languages": 1,
+      "equipment": [
+        "Set of fine clothes",
+        "Signet ring",
+        "Scroll of pedigree",
+        "Skin of fine zzar or wine",
+        "Purse with 20 gp"
+      ],
+      "feature": {
+        "name": "Kept in Style",
+        "description": "Mentre vivi come un nobile attivo e contributivo di Waterdeep, puoi mantenere uno stile di vita ricco senza costare te stesso."
+      },
+      "source": "Sword Coast Adventurer's Guide"
+    },
+    {
+      "name": "Anthropologist",
+      "italian_name": "Antropologo",
+      "description": "Hai sempre avuto fascino per altre culture, dal più distante tribus dei reclusi nella giungla ai curiosi abitanti di civiltà sotterranee.",
+      "skill_proficiencies": ["Insight", "Religion"],
+      "languages": 2,
+      "equipment": [
+        "Leather-bound diary",
+        "Ink and quill",
+        "Set of traveler's clothes",
+        "Trinket of cultural significance",
+        "Pouch with 10 gp"
+      ],
+      "feature": {
+        "name": "Adept Linguist",
+        "description": "Puoi comunicare semplici idee con qualsiasi umanoide che parla almeno una lingua."
+      },
+      "source": "Tomb of Annihilation"
+    },
+    {
+      "name": "Archaeologist",
+      "italian_name": "Archeologo",
+      "description": "Un'ossessione per il passato che ti ha portato attraverso paesi innumerevoli e innumerevoli rovina, alla ricerca di artefatti e conoscenza che altrimenti sarebbero perduti per le età.",
+      "skill_proficiencies": ["History", "Survival"],
+      "tool_proficiencies": ["Cartographer's tools or navigator's tools"],
+      "languages": 1,
+      "equipment": [
+        "Case with maps and charts",
+        "Bullseye lantern",
+        "Miner's pick",
+        "Set of traveler's clothes",
+        "Shovel",
+        "Two-person tent",
+        "Trinket recovered from a dig site",
+        "Pouch with 25 gp"
+      ],
+      "feature": {
+        "name": "Dust Digger",
+        "description": "Prima dell'avventura, hai passato la maggior parte della tua giovane vita crawling around in the dust, pigging attraverso shard pottery e frammenti di metallo arrugginito."
+      },
+      "source": "Tomb of Annihilation"
+    }
+  ]
+}
