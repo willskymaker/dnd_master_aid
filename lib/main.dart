@@ -83,7 +83,7 @@ class HomePage extends StatelessWidget {
       'nome': 'Database D&D',
       'icona': '📚',
       'descr': 'Sfoglia tutte le opzioni',
-      'attivo': true
+      'attivo': false
     },
     {
       'id': 'pgPro',

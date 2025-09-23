@@ -18,10 +18,17 @@ class JsonDataRepository {
 
   /// Carica le specie dal file JSON
   static Future<List<Specie>> loadSpecies() async {
-    if (_cachedSpecies == null) {
-      AppLogger.info("Caricando specie da JSON");
-      final String jsonString = await rootBundle.loadString('assets/data/species.json');
-      _cachedSpecies = json.decode(jsonString);
+    try {
+      if (_cachedSpecies == null) {
+        AppLogger.info("Caricando specie da JSON");
+        final String jsonString = await rootBundle.loadString('assets/data/species.json');
+        _cachedSpecies = json.decode(jsonString);
+        AppLogger.info("Specie caricate correttamente dal JSON");
+      }
+    } catch (e) {
+      AppLogger.error("Errore nel caricamento specie da JSON, usando fallback", e);
+      // Fallback ai dati hardcoded se il JSON non è disponibile
+      return _getHardcodedSpecies();
     }
 
     final List<dynamic> speciesData = _cachedSpecies!['species'];
@@ -50,10 +57,16 @@ class JsonDataRepository {
 
   /// Carica le classi dal file JSON
   static Future<List<Classe>> loadClasses() async {
-    if (_cachedClasses == null) {
-      AppLogger.info("Caricando classi da JSON");
-      final String jsonString = await rootBundle.loadString('assets/data/classes.json');
-      _cachedClasses = json.decode(jsonString);
+    try {
+      if (_cachedClasses == null) {
+        AppLogger.info("Caricando classi da JSON");
+        final String jsonString = await rootBundle.loadString('assets/data/classes.json');
+        _cachedClasses = json.decode(jsonString);
+        AppLogger.info("Classi caricate correttamente dal JSON");
+      }
+    } catch (e) {
+      AppLogger.error("Errore nel caricamento classi da JSON, usando fallback", e);
+      return _getHardcodedClasses();
     }
 
     final List<dynamic> classesData = _cachedClasses!['classes'];
@@ -507,5 +520,71 @@ class JsonDataRepository {
 
       return name.contains(lowercaseQuery) || italianName.contains(lowercaseQuery);
     }).map((item) => {...item, 'category': category}).toList();
+  }
+
+  /// Fallback method per specie hardcoded
+  static List<Specie> _getHardcodedSpecies() {
+    return [
+      Specie(
+        nome: 'Umano',
+        descrizione: 'Versatili e ambiziosi, gli umani sono una delle razze più diffuse.',
+        velocita: 30,
+        competenze: [],
+        resistenze: [],
+        abilitaInnate: [],
+        linguaggi: ['Comune'],
+        personalizzazionePunteggi: true,
+      ),
+      Specie(
+        nome: 'Elfo',
+        descrizione: 'Creature magiche ed eleganti con una lunga vita.',
+        velocita: 30,
+        competenze: ['Percezione'],
+        resistenze: [],
+        abilitaInnate: ['Scurovisione', 'Sensi Acuti'],
+        linguaggi: ['Comune', 'Elfico'],
+        personalizzazionePunteggi: false,
+      ),
+      Specie(
+        nome: 'Nano',
+        descrizione: 'Robusti guerrieri delle montagne, esperti forgiatori.',
+        velocita: 25,
+        competenze: [],
+        resistenze: ['Veleno'],
+        abilitaInnate: ['Scurovisione', 'Resistenza Nanica'],
+        linguaggi: ['Comune', 'Nanico'],
+        personalizzazionePunteggi: false,
+      ),
+    ];
+  }
+
+  /// Fallback method per classi hardcoded
+  static List<Classe> _getHardcodedClasses() {
+    return [
+      Classe(
+        nome: 'Guerriero',
+        descrizione: 'Maestro delle armi e della tattica di combattimento.',
+        dadoVita: 10,
+        competenzeArmi: ['Armi semplici', 'Armi da guerra'],
+        competenzeArmature: ['Tutte le armature', 'Scudi'],
+        competenzeStrumenti: [],
+        tiriSalvezza: ['Forza', 'Costituzione'],
+        abilitaSelezionabili: ['Acrobazia', 'Addestrare Animali', 'Atletica', 'Storia', 'Intuizione', 'Intimidire', 'Percezione', 'Sopravvivenza'],
+        abilitaDaSelezionare: 2,
+        sottoclassi: ['Campione', 'Maestro di Battaglia', 'Cavaliere Mistico'],
+      ),
+      Classe(
+        nome: 'Mago',
+        descrizione: 'Studioso delle arti arcane e della magia.',
+        dadoVita: 6,
+        competenzeArmi: ['Pugnali', 'Dardi', 'Fionde', 'Bastoni ferrati', 'Balestre leggere'],
+        competenzeArmature: [],
+        competenzeStrumenti: [],
+        tiriSalvezza: ['Intelligenza', 'Saggezza'],
+        abilitaSelezionabili: ['Arcano', 'Storia', 'Intuizione', 'Investigare', 'Medicina', 'Religione'],
+        abilitaDaSelezionare: 2,
+        sottoclassi: ['Scuola di Evocazione', 'Scuola di Divinazione', 'Scuola di Incantamento'],
+      ),
+    ];
   }
 }
