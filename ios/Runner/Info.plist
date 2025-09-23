@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Dnd Master Aid</string>
+	<string>D&amp;D Master Aid</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>dnd_master_aid</string>
+	<string>D&amp;D Master Aid</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -45,5 +45,15 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>L'app ha bisogno di accedere ai documenti per salvare i tuoi personaggi D&amp;D</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>L'app può salvare le schede personaggi come immagini nella tua libreria foto</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>arm64</string>
+	</array>
 </dict>
 </plist>

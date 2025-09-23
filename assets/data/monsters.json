@@ -1,0 +1,591 @@
+{
+  "version": "1.0.0",
+  "description": "Database completo dei mostri di D&D 5e - Bestiary ufficiale",
+  "sources": ["Monster Manual", "Volo's Guide to Monsters", "Mordenkainen's Tome of Foes", "Fizban's Treasury of Dragons"],
+  "last_updated": "2025-09-22",
+  "monsters": [
+    {
+      "name": "Goblin",
+      "italian_name": "Goblin",
+      "size": "Small",
+      "type": "humanoid (goblinoid)",
+      "alignment": "neutral evil",
+      "armor_class": 15,
+      "armor_description": "(Leather Armor, Shield)",
+      "hit_points": 7,
+      "hit_dice": "2d6",
+      "speed": {
+        "walk": "30 ft"
+      },
+      "ability_scores": {
+        "strength": 8,
+        "dexterity": 14,
+        "constitution": 10,
+        "intelligence": 10,
+        "wisdom": 8,
+        "charisma": 8
+      },
+      "skills": {
+        "stealth": "+6"
+      },
+      "senses": {
+        "darkvision": "60 ft",
+        "passive_perception": 9
+      },
+      "languages": ["Common", "Goblin"],
+      "challenge_rating": "1/4",
+      "experience_points": 50,
+      "special_abilities": [
+        {
+          "name": "Nimble Escape",
+          "description": "Il goblin può effettuare l'azione Disengage o Hide come azione bonus in ogni turno."
+        }
+      ],
+      "actions": [
+        {
+          "name": "Scimitar",
+          "attack_bonus": "+4",
+          "damage": "1d6 + 2 slashing",
+          "description": "Attacco con arma da mischia: +4 al tiro per colpire, portata 5 ft., un bersaglio."
+        },
+        {
+          "name": "Shortbow",
+          "attack_bonus": "+4",
+          "damage": "1d6 + 2 piercing",
+          "range": "80/320 ft",
+          "description": "Attacco con arma a distanza: +4 al tiro per colpire, gittata 80/320 ft., un bersaglio."
+        }
+      ],
+      "source": "Monster Manual"
+    },
+    {
+      "name": "Orc",
+      "italian_name": "Orco",
+      "size": "Medium",
+      "type": "humanoid (orc)",
+      "alignment": "chaotic evil",
+      "armor_class": 13,
+      "armor_description": "(Studded Leather)",
+      "hit_points": 15,
+      "hit_dice": "2d8 + 2",
+      "speed": {
+        "walk": "30 ft"
+      },
+      "ability_scores": {
+        "strength": 16,
+        "dexterity": 12,
+        "constitution": 13,
+        "intelligence": 7,
+        "wisdom": 11,
+        "charisma": 10
+      },
+      "skills": {
+        "intimidation": "+2"
+      },
+      "senses": {
+        "darkvision": "60 ft",
+        "passive_perception": 10
+      },
+      "languages": ["Common", "Orc"],
+      "challenge_rating": "1/2",
+      "experience_points": 100,
+      "special_abilities": [
+        {
+          "name": "Aggressive",
+          "description": "Come azione bonus, l'orco può muoversi fino alla sua velocità verso una creatura ostile che può vedere."
+        }
+      ],
+      "actions": [
+        {
+          "name": "Greataxe",
+          "attack_bonus": "+5",
+          "damage": "1d12 + 3 slashing",
+          "description": "Attacco con arma da mischia: +5 al tiro per colpire, portata 5 ft., un bersaglio."
+        },
+        {
+          "name": "Javelin",
+          "attack_bonus": "+5",
+          "damage": "1d6 + 3 piercing",
+          "range": "30/120 ft",
+          "description": "Attacco con arma da mischia o a distanza: +5 al tiro per colpire, portata 5 ft. o gittata 30/120 ft., un bersaglio."
+        }
+      ],
+      "source": "Monster Manual"
+    },
+    {
+      "name": "Skeleton",
+      "italian_name": "Scheletro",
+      "size": "Medium",
+      "type": "undead",
+      "alignment": "lawful evil",
+      "armor_class": 13,
+      "armor_description": "(Armor Scraps)",
+      "hit_points": 13,
+      "hit_dice": "2d8 + 2",
+      "speed": {
+        "walk": "30 ft"
+      },
+      "ability_scores": {
+        "strength": 10,
+        "dexterity": 14,
+        "constitution": 15,
+        "intelligence": 6,
+        "wisdom": 8,
+        "charisma": 5
+      },
+      "damage_vulnerabilities": ["bludgeoning"],
+      "damage_immunities": ["poison"],
+      "condition_immunities": ["exhaustion", "poisoned"],
+      "senses": {
+        "darkvision": "60 ft",
+        "passive_perception": 9
+      },
+      "languages": ["understands all languages it knew in life but can't speak"],
+      "challenge_rating": "1/4",
+      "experience_points": 50,
+      "actions": [
+        {
+          "name": "Shortsword",
+          "attack_bonus": "+4",
+          "damage": "1d6 + 2 piercing",
+          "description": "Attacco con arma da mischia: +4 al tiro per colpire, portata 5 ft., un bersaglio."
+        },
+        {
+          "name": "Shortbow",
+          "attack_bonus": "+4",
+          "damage": "1d6 + 2 piercing",
+          "range": "80/320 ft",
+          "description": "Attacco con arma a distanza: +4 al tiro per colpire, gittata 80/320 ft., un bersaglio."
+        }
+      ],
+      "source": "Monster Manual"
+    },
+    {
+      "name": "Zombie",
+      "italian_name": "Zombie",
+      "size": "Medium",
+      "type": "undead",
+      "alignment": "neutral evil",
+      "armor_class": 8,
+      "hit_points": 22,
+      "hit_dice": "3d8 + 3",
+      "speed": {
+        "walk": "20 ft"
+      },
+      "ability_scores": {
+        "strength": 13,
+        "dexterity": 6,
+        "constitution": 16,
+        "intelligence": 3,
+        "wisdom": 6,
+        "charisma": 5
+      },
+      "saving_throws": {
+        "wisdom": "+0"
+      },
+      "damage_immunities": ["poison"],
+      "condition_immunities": ["poisoned"],
+      "senses": {
+        "darkvision": "60 ft",
+        "passive_perception": 8
+      },
+      "languages": ["understands the languages it knew in life but can't speak"],
+      "challenge_rating": "1/4",
+      "experience_points": 50,
+      "special_abilities": [
+        {
+          "name": "Undead Fortitude",
+          "description": "Se il danno riduce lo zombie a 0 punti ferita, deve effettuare un tiro salvezza di Costituzione con CD 5 + il danno subito, a meno che il danno non sia radiante o da un colpo critico. In caso di successo, lo zombie scende a 1 punto ferita invece."
+        }
+      ],
+      "actions": [
+        {
+          "name": "Slam",
+          "attack_bonus": "+3",
+          "damage": "1d6 + 1 bludgeoning",
+          "description": "Attacco con arma da mischia: +3 al tiro per colpire, portata 5 ft., un bersaglio."
+        }
+      ],
+      "source": "Monster Manual"
+    },
+    {
+      "name": "Wolf",
+      "italian_name": "Lupo",
+      "size": "Medium",
+      "type": "beast",
+      "alignment": "unaligned",
+      "armor_class": 13,
+      "armor_description": "(Natural Armor)",
+      "hit_points": 11,
+      "hit_dice": "2d8 + 2",
+      "speed": {
+        "walk": "40 ft"
+      },
+      "ability_scores": {
+        "strength": 12,
+        "dexterity": 15,
+        "constitution": 12,
+        "intelligence": 3,
+        "wisdom": 12,
+        "charisma": 6
+      },
+      "skills": {
+        "perception": "+3",
+        "stealth": "+4"
+      },
+      "senses": {
+        "passive_perception": 13
+      },
+      "languages": [],
+      "challenge_rating": "1/4",
+      "experience_points": 50,
+      "special_abilities": [
+        {
+          "name": "Keen Hearing and Smell",
+          "description": "Il lupo ha vantaggio alle prove di Saggezza (Percezione) che si basano su udito o olfatto."
+        },
+        {
+          "name": "Pack Tactics",
+          "description": "Il lupo ha vantaggio sui tiri per attaccare contro una creatura se almeno uno degli alleati del lupo è entro 5 piedi dalla creatura e l'alleato non è incapacitato."
+        }
+      ],
+      "actions": [
+        {
+          "name": "Bite",
+          "attack_bonus": "+4",
+          "damage": "2d4 + 2 piercing",
+          "description": "Attacco con arma da mischia: +4 al tiro per colpire, portata 5 ft., un bersaglio. Se il bersaglio è una creatura, deve riuscire in un tiro salvezza di Forza CD 11 o essere abbattuto prono."
+        }
+      ],
+      "source": "Monster Manual"
+    },
+    {
+      "name": "Giant Spider",
+      "italian_name": "Ragno Gigante",
+      "size": "Large",
+      "type": "beast",
+      "alignment": "unaligned",
+      "armor_class": 14,
+      "armor_description": "(Natural Armor)",
+      "hit_points": 26,
+      "hit_dice": "4d10 + 4",
+      "speed": {
+        "walk": "30 ft",
+        "climb": "30 ft"
+      },
+      "ability_scores": {
+        "strength": 14,
+        "dexterity": 16,
+        "constitution": 12,
+        "intelligence": 2,
+        "wisdom": 11,
+        "charisma": 4
+      },
+      "skills": {
+        "stealth": "+7"
+      },
+      "senses": {
+        "blindsight": "10 ft",
+        "darkvision": "60 ft",
+        "passive_perception": 10
+      },
+      "languages": [],
+      "challenge_rating": "1",
+      "experience_points": 200,
+      "special_abilities": [
+        {
+          "name": "Spider Climb",
+          "description": "Il ragno può scalare superfici difficili, compreso a testa in giù sui soffitti, senza dover effettuare prove di caratteristica."
+        },
+        {
+          "name": "Web Sense",
+          "description": "Mentre è in contatto con una ragnatela, il ragno conosce l'esatta posizione di qualsiasi altra creatura in contatto con la stessa ragnatela."
+        },
+        {
+          "name": "Web Walker",
+          "description": "Il ragno ignora le restrizioni di movimento causate dalle ragnatele."
+        }
+      ],
+      "actions": [
+        {
+          "name": "Bite",
+          "attack_bonus": "+5",
+          "damage": "1d8 + 3 piercing",
+          "description": "Attacco con arma da mischia: +5 al tiro per colpire, portata 5 ft., un bersaglio. Il bersaglio deve effettuare un tiro salvezza di Costituzione CD 11, subendo 2d8 danni da veleno se fallisce, o la metà se riesce. Se il veleno riduce i punti ferita del bersaglio a 0, il bersaglio è stabile ma avvelenato per 1 ora, anche dopo aver riguadagnato punti ferita, ed è paralizzato finché resta avvelenato in questo modo."
+        },
+        {
+          "name": "Web",
+          "recharge": "5-6",
+          "range": "30/60 ft",
+          "description": "Attacco con arma a distanza: +5 al tiro per colpire, gittata 30/60 ft., una creatura. Il bersaglio è trattenuto da ragnatele. Come azione, la creatura trattenuta può effettuare una prova di Forza CD 12, liberandosi dalla ragnatela in caso di successo. L'effetto termina anche se la ragnatela viene distrutta. La ragnatela ha CA 10, 5 punti ferita, vulnerabilità ai danni da fuoco e immunità ai danni contundenti, perforanti e psichici."
+        }
+      ],
+      "source": "Monster Manual"
+    },
+    {
+      "name": "Owlbear",
+      "italian_name": "Guforso",
+      "size": "Large",
+      "type": "monstrosity",
+      "alignment": "unaligned",
+      "armor_class": 13,
+      "armor_description": "(Natural Armor)",
+      "hit_points": 59,
+      "hit_dice": "7d10 + 21",
+      "speed": {
+        "walk": "40 ft"
+      },
+      "ability_scores": {
+        "strength": 20,
+        "dexterity": 12,
+        "constitution": 17,
+        "intelligence": 3,
+        "wisdom": 12,
+        "charisma": 7
+      },
+      "skills": {
+        "perception": "+3"
+      },
+      "senses": {
+        "darkvision": "60 ft",
+        "passive_perception": 13
+      },
+      "languages": [],
+      "challenge_rating": "3",
+      "experience_points": 700,
+      "special_abilities": [
+        {
+          "name": "Keen Sight and Smell",
+          "description": "Il guforso ha vantaggio alle prove di Saggezza (Percezione) che si basano su vista o olfatto."
+        }
+      ],
+      "actions": [
+        {
+          "name": "Multiattack",
+          "description": "Il guforso effettua due attacchi: uno con il becco e uno con gli artigli."
+        },
+        {
+          "name": "Beak",
+          "attack_bonus": "+7",
+          "damage": "1d10 + 5 piercing",
+          "description": "Attacco con arma da mischia: +7 al tiro per colpire, portata 5 ft., un bersaglio."
+        },
+        {
+          "name": "Claws",
+          "attack_bonus": "+7",
+          "damage": "2d8 + 5 slashing",
+          "description": "Attacco con arma da mischia: +7 al tiro per colpire, portata 5 ft., un bersaglio."
+        }
+      ],
+      "source": "Monster Manual"
+    },
+    {
+      "name": "Troll",
+      "italian_name": "Troll",
+      "size": "Large",
+      "type": "giant",
+      "alignment": "chaotic evil",
+      "armor_class": 15,
+      "armor_description": "(Natural Armor)",
+      "hit_points": 84,
+      "hit_dice": "8d12 + 32",
+      "speed": {
+        "walk": "30 ft"
+      },
+      "ability_scores": {
+        "strength": 18,
+        "dexterity": 13,
+        "constitution": 20,
+        "intelligence": 7,
+        "wisdom": 9,
+        "charisma": 7
+      },
+      "skills": {
+        "perception": "+2"
+      },
+      "senses": {
+        "darkvision": "60 ft",
+        "passive_perception": 12
+      },
+      "languages": ["Giant"],
+      "challenge_rating": "5",
+      "experience_points": 1800,
+      "special_abilities": [
+        {
+          "name": "Keen Smell",
+          "description": "Il troll ha vantaggio alle prove di Saggezza (Percezione) che si basano sull'olfatto."
+        },
+        {
+          "name": "Regeneration",
+          "description": "Il troll riguadagna 10 punti ferita all'inizio del suo turno. Se il troll subisce danni da acido o fuoco, questa capacità non funziona all'inizio del suo prossimo turno. Il troll muore solo se inizia il suo turno con 0 punti ferita e non rigenera."
+        }
+      ],
+      "actions": [
+        {
+          "name": "Multiattack",
+          "description": "Il troll effettua tre attacchi: uno con il morso e due con gli artigli."
+        },
+        {
+          "name": "Bite",
+          "attack_bonus": "+7",
+          "damage": "1d6 + 4 piercing",
+          "description": "Attacco con arma da mischia: +7 al tiro per colpire, portata 5 ft., un bersaglio."
+        },
+        {
+          "name": "Claw",
+          "attack_bonus": "+7",
+          "damage": "2d6 + 4 slashing",
+          "description": "Attacco con arma da mischia: +7 al tiro per colpire, portata 5 ft., un bersaglio."
+        }
+      ],
+      "source": "Monster Manual"
+    },
+    {
+      "name": "Dragon, Young Red",
+      "italian_name": "Drago Rosso Giovane",
+      "size": "Large",
+      "type": "dragon",
+      "alignment": "chaotic evil",
+      "armor_class": 18,
+      "armor_description": "(Natural Armor)",
+      "hit_points": 178,
+      "hit_dice": "17d12 + 68",
+      "speed": {
+        "walk": "40 ft",
+        "climb": "40 ft",
+        "fly": "80 ft"
+      },
+      "ability_scores": {
+        "strength": 23,
+        "dexterity": 10,
+        "constitution": 19,
+        "intelligence": 14,
+        "wisdom": 11,
+        "charisma": 19
+      },
+      "saving_throws": {
+        "dexterity": "+4",
+        "constitution": "+8",
+        "wisdom": "+4",
+        "charisma": "+8"
+      },
+      "skills": {
+        "deception": "+8",
+        "perception": "+8",
+        "stealth": "+4"
+      },
+      "damage_immunities": ["fire"],
+      "senses": {
+        "blindsight": "30 ft",
+        "darkvision": "120 ft",
+        "passive_perception": 18
+      },
+      "languages": ["Common", "Draconic"],
+      "challenge_rating": "10",
+      "experience_points": 5900,
+      "actions": [
+        {
+          "name": "Multiattack",
+          "description": "Il drago può usare la sua Presenza Spaventosa. Poi effettua tre attacchi: uno con il morso e due con gli artigli."
+        },
+        {
+          "name": "Bite",
+          "attack_bonus": "+10",
+          "damage": "2d10 + 6 piercing plus 1d6 fire",
+          "description": "Attacco con arma da mischia: +10 al tiro per colpire, portata 10 ft., un bersaglio."
+        },
+        {
+          "name": "Claw",
+          "attack_bonus": "+10",
+          "damage": "2d6 + 6 slashing",
+          "description": "Attacco con arma da mischia: +10 al tiro per colpire, portata 5 ft., un bersaglio."
+        },
+        {
+          "name": "Fire Breath",
+          "recharge": "5-6",
+          "description": "Il drago esala fuoco in un cono di 30 piedi. Ogni creatura in quell'area deve effettuare un tiro salvezza di Destrezza CD 17, subendo 56 (16d6) danni da fuoco se fallisce, o la metà se riesce."
+        }
+      ],
+      "legendary_actions": [
+        {
+          "name": "Detect",
+          "description": "Il drago effettua una prova di Saggezza (Percezione)."
+        },
+        {
+          "name": "Tail Attack",
+          "description": "Il drago effettua un attacco con la coda."
+        },
+        {
+          "name": "Wing Attack",
+          "cost": 2,
+          "description": "Il drago batte le ali. Ogni creatura entro 10 piedi dal drago deve riuscire un tiro salvezza di Destrezza CD 18 o subire 13 (2d6 + 6) danni contundenti ed essere abbattuta prona. Il drago può poi volare fino a metà della sua velocità di volo."
+        }
+      ],
+      "source": "Monster Manual"
+    },
+    {
+      "name": "Beholder",
+      "italian_name": "Osservatore",
+      "size": "Large",
+      "type": "aberration",
+      "alignment": "lawful evil",
+      "armor_class": 18,
+      "armor_description": "(Natural Armor)",
+      "hit_points": 180,
+      "hit_dice": "19d12 + 76",
+      "speed": {
+        "walk": "0 ft",
+        "fly": "20 ft (hover)"
+      },
+      "ability_scores": {
+        "strength": 10,
+        "dexterity": 14,
+        "constitution": 18,
+        "intelligence": 17,
+        "wisdom": 15,
+        "charisma": 17
+      },
+      "saving_throws": {
+        "intelligence": "+8",
+        "wisdom": "+7",
+        "charisma": "+8"
+      },
+      "skills": {
+        "perception": "+12"
+      },
+      "condition_immunities": ["prone"],
+      "senses": {
+        "darkvision": "120 ft",
+        "passive_perception": 22
+      },
+      "languages": ["Deep Speech", "Undercommon"],
+      "challenge_rating": "13",
+      "experience_points": 10000,
+      "special_abilities": [
+        {
+          "name": "Antimagic Cone",
+          "description": "L'occhio centrale dell'osservatore crea un'area di antimagia, come nell'incantesimo antimagic field, in un cono di 150 piedi. All'inizio di ogni turno, l'osservatore decide in quale direzione punta il cono e se il cono è attivo."
+        }
+      ],
+      "actions": [
+        {
+          "name": "Bite",
+          "attack_bonus": "+5",
+          "damage": "4d6 + 5 piercing",
+          "description": "Attacco con arma da mischia: +5 al tiro per colpire, portata 5 ft., un bersaglio."
+        },
+        {
+          "name": "Eye Rays",
+          "description": "L'osservatore spara tre dei seguenti raggi magici a caso (tira nuovamente i duplicati), scegliendo uno a tre bersagli che può vedere entro 120 piedi da sé: 1. Charm Ray, 2. Paralyzing Ray, 3. Fear Ray, 4. Slowing Ray, 5. Enervation Ray, 6. Telekinetic Ray, 7. Sleep Ray, 8. Petrification Ray, 9. Disintegration Ray, 10. Death Ray."
+        }
+      ],
+      "legendary_actions": [
+        {
+          "name": "Eye Ray",
+          "description": "L'osservatore usa uno dei suoi raggi oculari."
+        }
+      ],
+      "source": "Monster Manual"
+    }
+  ]
+}

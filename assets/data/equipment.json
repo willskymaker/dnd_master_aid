@@ -1,0 +1,1309 @@
+{
+  "version": "1.0.0",
+  "description": "Database completo dell'equipaggiamento di D&D 5e - Armi, armature, oggetti",
+  "sources": ["Player's Handbook", "Dungeon Master's Guide", "Xanathar's Guide to Everything"],
+  "last_updated": "2025-09-22",
+  "weapons": {
+    "simple_melee": [
+      {
+        "name": "Club",
+        "italian_name": "Randello",
+        "cost": "1 sp",
+        "damage": "1d4",
+        "damage_type": "bludgeoning",
+        "weight": "2 lb",
+        "properties": ["light"]
+      },
+      {
+        "name": "Dagger",
+        "italian_name": "Pugnale",
+        "cost": "2 gp",
+        "damage": "1d4",
+        "damage_type": "piercing",
+        "weight": "1 lb",
+        "properties": ["finesse", "light", "thrown"],
+        "range": "20/60"
+      },
+      {
+        "name": "Dart",
+        "italian_name": "Dardo",
+        "cost": "5 cp",
+        "damage": "1d4",
+        "damage_type": "piercing",
+        "weight": "1/4 lb",
+        "properties": ["finesse", "thrown"],
+        "range": "20/60"
+      },
+      {
+        "name": "Handaxe",
+        "italian_name": "Ascia a Mano",
+        "cost": "5 gp",
+        "damage": "1d6",
+        "damage_type": "slashing",
+        "weight": "2 lb",
+        "properties": ["light", "thrown"],
+        "range": "20/60"
+      },
+      {
+        "name": "Javelin",
+        "italian_name": "Giavellotto",
+        "cost": "5 sp",
+        "damage": "1d6",
+        "damage_type": "piercing",
+        "weight": "2 lb",
+        "properties": ["thrown"],
+        "range": "30/120"
+      },
+      {
+        "name": "Light Hammer",
+        "italian_name": "Martello Leggero",
+        "cost": "2 gp",
+        "damage": "1d4",
+        "damage_type": "bludgeoning",
+        "weight": "2 lb",
+        "properties": ["light", "thrown"],
+        "range": "20/60"
+      },
+      {
+        "name": "Mace",
+        "italian_name": "Mazza",
+        "cost": "5 gp",
+        "damage": "1d6",
+        "damage_type": "bludgeoning",
+        "weight": "4 lb",
+        "properties": []
+      },
+      {
+        "name": "Quarterstaff",
+        "italian_name": "Bastone Ferrato",
+        "cost": "2 sp",
+        "damage": "1d6",
+        "damage_type": "bludgeoning",
+        "weight": "4 lb",
+        "properties": ["versatile (1d8)"]
+      },
+      {
+        "name": "Sickle",
+        "italian_name": "Falcetto",
+        "cost": "1 gp",
+        "damage": "1d4",
+        "damage_type": "slashing",
+        "weight": "2 lb",
+        "properties": ["light"]
+      },
+      {
+        "name": "Spear",
+        "italian_name": "Lancia",
+        "cost": "1 gp",
+        "damage": "1d6",
+        "damage_type": "piercing",
+        "weight": "3 lb",
+        "properties": ["thrown", "versatile (1d8)"],
+        "range": "20/60"
+      }
+    ],
+    "simple_ranged": [
+      {
+        "name": "Crossbow, light",
+        "italian_name": "Balestra Leggera",
+        "cost": "25 gp",
+        "damage": "1d8",
+        "damage_type": "piercing",
+        "weight": "5 lb",
+        "properties": ["ammunition", "loading", "two-handed"],
+        "range": "80/320"
+      },
+      {
+        "name": "Shortbow",
+        "italian_name": "Arco Corto",
+        "cost": "25 gp",
+        "damage": "1d6",
+        "damage_type": "piercing",
+        "weight": "2 lb",
+        "properties": ["ammunition", "two-handed"],
+        "range": "80/320"
+      },
+      {
+        "name": "Sling",
+        "italian_name": "Fionda",
+        "cost": "1 sp",
+        "damage": "1d4",
+        "damage_type": "bludgeoning",
+        "weight": "—",
+        "properties": ["ammunition"],
+        "range": "30/120"
+      }
+    ],
+    "martial_melee": [
+      {
+        "name": "Battleaxe",
+        "italian_name": "Ascia da Battaglia",
+        "cost": "10 gp",
+        "damage": "1d8",
+        "damage_type": "slashing",
+        "weight": "4 lb",
+        "properties": ["versatile (1d10)"]
+      },
+      {
+        "name": "Flail",
+        "italian_name": "Mazzafrusto",
+        "cost": "10 gp",
+        "damage": "1d8",
+        "damage_type": "bludgeoning",
+        "weight": "2 lb",
+        "properties": []
+      },
+      {
+        "name": "Glaive",
+        "italian_name": "Alabarda",
+        "cost": "20 gp",
+        "damage": "1d10",
+        "damage_type": "slashing",
+        "weight": "6 lb",
+        "properties": ["heavy", "reach", "two-handed"]
+      },
+      {
+        "name": "Greataxe",
+        "italian_name": "Ascia Grande",
+        "cost": "30 gp",
+        "damage": "1d12",
+        "damage_type": "slashing",
+        "weight": "7 lb",
+        "properties": ["heavy", "two-handed"]
+      },
+      {
+        "name": "Greatsword",
+        "italian_name": "Spadone",
+        "cost": "50 gp",
+        "damage": "2d6",
+        "damage_type": "slashing",
+        "weight": "6 lb",
+        "properties": ["heavy", "two-handed"]
+      },
+      {
+        "name": "Halberd",
+        "italian_name": "Alabarda",
+        "cost": "20 gp",
+        "damage": "1d10",
+        "damage_type": "slashing",
+        "weight": "6 lb",
+        "properties": ["heavy", "reach", "two-handed"]
+      },
+      {
+        "name": "Lance",
+        "italian_name": "Lancia da Cavaliere",
+        "cost": "10 gp",
+        "damage": "1d12",
+        "damage_type": "piercing",
+        "weight": "6 lb",
+        "properties": ["reach", "special"]
+      },
+      {
+        "name": "Longsword",
+        "italian_name": "Spada Lunga",
+        "cost": "15 gp",
+        "damage": "1d8",
+        "damage_type": "slashing",
+        "weight": "3 lb",
+        "properties": ["versatile (1d10)"]
+      },
+      {
+        "name": "Maul",
+        "italian_name": "Maglio",
+        "cost": "10 gp",
+        "damage": "2d6",
+        "damage_type": "bludgeoning",
+        "weight": "10 lb",
+        "properties": ["heavy", "two-handed"]
+      },
+      {
+        "name": "Morningstar",
+        "italian_name": "Stella del Mattino",
+        "cost": "15 gp",
+        "damage": "1d8",
+        "damage_type": "piercing",
+        "weight": "4 lb",
+        "properties": []
+      },
+      {
+        "name": "Pike",
+        "italian_name": "Picca",
+        "cost": "5 gp",
+        "damage": "1d10",
+        "damage_type": "piercing",
+        "weight": "18 lb",
+        "properties": ["heavy", "reach", "two-handed"]
+      },
+      {
+        "name": "Rapier",
+        "italian_name": "Stocco",
+        "cost": "25 gp",
+        "damage": "1d8",
+        "damage_type": "piercing",
+        "weight": "2 lb",
+        "properties": ["finesse"]
+      },
+      {
+        "name": "Scimitar",
+        "italian_name": "Scimitarra",
+        "cost": "25 gp",
+        "damage": "1d6",
+        "damage_type": "slashing",
+        "weight": "3 lb",
+        "properties": ["finesse", "light"]
+      },
+      {
+        "name": "Shortsword",
+        "italian_name": "Spada Corta",
+        "cost": "10 gp",
+        "damage": "1d6",
+        "damage_type": "piercing",
+        "weight": "2 lb",
+        "properties": ["finesse", "light"]
+      },
+      {
+        "name": "Trident",
+        "italian_name": "Tridente",
+        "cost": "5 gp",
+        "damage": "1d6",
+        "damage_type": "piercing",
+        "weight": "4 lb",
+        "properties": ["thrown", "versatile (1d8)"],
+        "range": "20/60"
+      },
+      {
+        "name": "War Pick",
+        "italian_name": "Piccone da Guerra",
+        "cost": "5 gp",
+        "damage": "1d8",
+        "damage_type": "piercing",
+        "weight": "2 lb",
+        "properties": []
+      },
+      {
+        "name": "Warhammer",
+        "italian_name": "Martello da Guerra",
+        "cost": "15 gp",
+        "damage": "1d8",
+        "damage_type": "bludgeoning",
+        "weight": "2 lb",
+        "properties": ["versatile (1d10)"]
+      },
+      {
+        "name": "Whip",
+        "italian_name": "Frusta",
+        "cost": "2 gp",
+        "damage": "1d4",
+        "damage_type": "slashing",
+        "weight": "3 lb",
+        "properties": ["finesse", "reach"]
+      }
+    ],
+    "martial_ranged": [
+      {
+        "name": "Blowgun",
+        "italian_name": "Cerbottana",
+        "cost": "10 gp",
+        "damage": "1",
+        "damage_type": "piercing",
+        "weight": "1 lb",
+        "properties": ["ammunition", "loading"],
+        "range": "25/100"
+      },
+      {
+        "name": "Crossbow, hand",
+        "italian_name": "Balestra a Mano",
+        "cost": "75 gp",
+        "damage": "1d6",
+        "damage_type": "piercing",
+        "weight": "3 lb",
+        "properties": ["ammunition", "light", "loading"],
+        "range": "30/120"
+      },
+      {
+        "name": "Crossbow, heavy",
+        "italian_name": "Balestra Pesante",
+        "cost": "50 gp",
+        "damage": "1d10",
+        "damage_type": "piercing",
+        "weight": "18 lb",
+        "properties": ["ammunition", "heavy", "loading", "two-handed"],
+        "range": "100/400"
+      },
+      {
+        "name": "Longbow",
+        "italian_name": "Arco Lungo",
+        "cost": "50 gp",
+        "damage": "1d8",
+        "damage_type": "piercing",
+        "weight": "2 lb",
+        "properties": ["ammunition", "heavy", "two-handed"],
+        "range": "150/600"
+      },
+      {
+        "name": "Net",
+        "italian_name": "Rete",
+        "cost": "1 gp",
+        "damage": "—",
+        "damage_type": "—",
+        "weight": "3 lb",
+        "properties": ["special", "thrown"],
+        "range": "5/15"
+      }
+    ]
+  },
+  "armor": {
+    "light": [
+      {
+        "name": "Padded",
+        "italian_name": "Imbottita",
+        "cost": "5 gp",
+        "armor_class": "11 + Dex modifier",
+        "weight": "8 lb",
+        "properties": ["disadvantage on Stealth"]
+      },
+      {
+        "name": "Leather",
+        "italian_name": "Cuoio",
+        "cost": "10 gp",
+        "armor_class": "11 + Dex modifier",
+        "weight": "10 lb",
+        "properties": []
+      },
+      {
+        "name": "Studded leather",
+        "italian_name": "Cuoio Borchiato",
+        "cost": "45 gp",
+        "armor_class": "12 + Dex modifier",
+        "weight": "13 lb",
+        "properties": []
+      }
+    ],
+    "medium": [
+      {
+        "name": "Hide",
+        "italian_name": "Pelli",
+        "cost": "10 gp",
+        "armor_class": "12 + Dex modifier (max 2)",
+        "weight": "12 lb",
+        "properties": []
+      },
+      {
+        "name": "Chain shirt",
+        "italian_name": "Camicia di Maglia",
+        "cost": "50 gp",
+        "armor_class": "13 + Dex modifier (max 2)",
+        "weight": "20 lb",
+        "properties": []
+      },
+      {
+        "name": "Scale mail",
+        "italian_name": "Corazza a Scaglie",
+        "cost": "50 gp",
+        "armor_class": "14 + Dex modifier (max 2)",
+        "weight": "45 lb",
+        "properties": ["disadvantage on Stealth"]
+      },
+      {
+        "name": "Breastplate",
+        "italian_name": "Corazza",
+        "cost": "400 gp",
+        "armor_class": "14 + Dex modifier (max 2)",
+        "weight": "20 lb",
+        "properties": []
+      },
+      {
+        "name": "Half plate",
+        "italian_name": "Mezza Piastra",
+        "cost": "750 gp",
+        "armor_class": "15 + Dex modifier (max 2)",
+        "weight": "40 lb",
+        "properties": ["disadvantage on Stealth"]
+      }
+    ],
+    "heavy": [
+      {
+        "name": "Ring mail",
+        "italian_name": "Maglia ad Anelli",
+        "cost": "30 gp",
+        "armor_class": "14",
+        "weight": "40 lb",
+        "properties": ["disadvantage on Stealth"]
+      },
+      {
+        "name": "Chain mail",
+        "italian_name": "Cotta di Maglia",
+        "cost": "75 gp",
+        "armor_class": "16",
+        "weight": "55 lb",
+        "properties": ["Str 13", "disadvantage on Stealth"]
+      },
+      {
+        "name": "Splint",
+        "italian_name": "Corazza a Strisce",
+        "cost": "200 gp",
+        "armor_class": "17",
+        "weight": "60 lb",
+        "properties": ["Str 15", "disadvantage on Stealth"]
+      },
+      {
+        "name": "Plate",
+        "italian_name": "Armatura a Piastre",
+        "cost": "1,500 gp",
+        "armor_class": "18",
+        "weight": "65 lb",
+        "properties": ["Str 15", "disadvantage on Stealth"]
+      }
+    ],
+    "shields": [
+      {
+        "name": "Shield",
+        "italian_name": "Scudo",
+        "cost": "10 gp",
+        "armor_class": "+2",
+        "weight": "6 lb",
+        "properties": []
+      }
+    ]
+  },
+  "adventuring_gear": [
+    {
+      "name": "Abacus",
+      "italian_name": "Abaco",
+      "cost": "2 gp",
+      "weight": "2 lb"
+    },
+    {
+      "name": "Acid (vial)",
+      "italian_name": "Acido (fiala)",
+      "cost": "25 gp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Alchemist's supplies",
+      "italian_name": "Strumenti da Alchimista",
+      "cost": "50 gp",
+      "weight": "8 lb"
+    },
+    {
+      "name": "Ammunition (arrows 20)",
+      "italian_name": "Munizioni (frecce 20)",
+      "cost": "1 gp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Ammunition (crossbow bolts 20)",
+      "italian_name": "Munizioni (quadrelli 20)",
+      "cost": "1 gp",
+      "weight": "1.5 lb"
+    },
+    {
+      "name": "Ammunition (sling bullets 20)",
+      "italian_name": "Munizioni (proiettili fionda 20)",
+      "cost": "4 cp",
+      "weight": "1.5 lb"
+    },
+    {
+      "name": "Antitoxin (vial)",
+      "italian_name": "Antidoto (fiala)",
+      "cost": "50 gp",
+      "weight": "—"
+    },
+    {
+      "name": "Arcane focus (crystal)",
+      "italian_name": "Focus Arcano (cristallo)",
+      "cost": "10 gp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Arcane focus (orb)",
+      "italian_name": "Focus Arcano (sfera)",
+      "cost": "20 gp",
+      "weight": "3 lb"
+    },
+    {
+      "name": "Arcane focus (rod)",
+      "italian_name": "Focus Arcano (bacchetta)",
+      "cost": "10 gp",
+      "weight": "2 lb"
+    },
+    {
+      "name": "Arcane focus (staff)",
+      "italian_name": "Focus Arcano (bastone)",
+      "cost": "5 gp",
+      "weight": "4 lb"
+    },
+    {
+      "name": "Arcane focus (wand)",
+      "italian_name": "Focus Arcano (verga)",
+      "cost": "10 gp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Backpack",
+      "italian_name": "Zaino",
+      "cost": "2 gp",
+      "weight": "5 lb"
+    },
+    {
+      "name": "Ball bearings (bag of 1,000)",
+      "italian_name": "Sfere Metalliche (sacca da 1.000)",
+      "cost": "1 gp",
+      "weight": "2 lb"
+    },
+    {
+      "name": "Barrel",
+      "italian_name": "Barile",
+      "cost": "2 gp",
+      "weight": "70 lb"
+    },
+    {
+      "name": "Basket",
+      "italian_name": "Cesto",
+      "cost": "4 sp",
+      "weight": "2 lb"
+    },
+    {
+      "name": "Bedroll",
+      "italian_name": "Sacco a Pelo",
+      "cost": "1 gp",
+      "weight": "7 lb"
+    },
+    {
+      "name": "Bell",
+      "italian_name": "Campanella",
+      "cost": "1 gp",
+      "weight": "—"
+    },
+    {
+      "name": "Blanket",
+      "italian_name": "Coperta",
+      "cost": "5 sp",
+      "weight": "3 lb"
+    },
+    {
+      "name": "Block and tackle",
+      "italian_name": "Paranco",
+      "cost": "2 gp",
+      "weight": "5 lb"
+    },
+    {
+      "name": "Book",
+      "italian_name": "Libro",
+      "cost": "25 gp",
+      "weight": "5 lb"
+    },
+    {
+      "name": "Bottle, glass",
+      "italian_name": "Bottiglia di Vetro",
+      "cost": "2 gp",
+      "weight": "2 lb"
+    },
+    {
+      "name": "Bucket",
+      "italian_name": "Secchio",
+      "cost": "5 cp",
+      "weight": "2 lb"
+    },
+    {
+      "name": "Caltrops (bag of 20)",
+      "italian_name": "Triboli (sacca da 20)",
+      "cost": "1 gp",
+      "weight": "2 lb"
+    },
+    {
+      "name": "Candle",
+      "italian_name": "Candela",
+      "cost": "1 cp",
+      "weight": "—"
+    },
+    {
+      "name": "Case, crossbow bolt",
+      "italian_name": "Custodia Quadrelli",
+      "cost": "1 gp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Case, map or scroll",
+      "italian_name": "Custodia Mappe/Pergamene",
+      "cost": "1 gp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Chain (10 feet)",
+      "italian_name": "Catena (3 metri)",
+      "cost": "5 gp",
+      "weight": "10 lb"
+    },
+    {
+      "name": "Chalk (1 piece)",
+      "italian_name": "Gesso (1 pezzo)",
+      "cost": "1 cp",
+      "weight": "—"
+    },
+    {
+      "name": "Chest",
+      "italian_name": "Baule",
+      "cost": "5 gp",
+      "weight": "25 lb"
+    },
+    {
+      "name": "Climber's kit",
+      "italian_name": "Kit da Scalatore",
+      "cost": "25 gp",
+      "weight": "12 lb"
+    },
+    {
+      "name": "Clothes, common",
+      "italian_name": "Vestiti Comuni",
+      "cost": "5 sp",
+      "weight": "3 lb"
+    },
+    {
+      "name": "Clothes, costume",
+      "italian_name": "Costume",
+      "cost": "5 gp",
+      "weight": "4 lb"
+    },
+    {
+      "name": "Clothes, fine",
+      "italian_name": "Vestiti Eleganti",
+      "cost": "15 gp",
+      "weight": "6 lb"
+    },
+    {
+      "name": "Clothes, traveler's",
+      "italian_name": "Vestiti da Viaggio",
+      "cost": "2 gp",
+      "weight": "4 lb"
+    },
+    {
+      "name": "Component pouch",
+      "italian_name": "Borsa Componenti",
+      "cost": "25 gp",
+      "weight": "2 lb"
+    },
+    {
+      "name": "Crowbar",
+      "italian_name": "Piede di Porco",
+      "cost": "2 gp",
+      "weight": "5 lb"
+    },
+    {
+      "name": "Druidcraft focus",
+      "italian_name": "Focus Druidico",
+      "cost": "1 gp",
+      "weight": "—"
+    },
+    {
+      "name": "Fishing tackle",
+      "italian_name": "Attrezzi da Pesca",
+      "cost": "1 gp",
+      "weight": "4 lb"
+    },
+    {
+      "name": "Flask or tankard",
+      "italian_name": "Fiaschetta o Boccale",
+      "cost": "2 cp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Grappling hook",
+      "italian_name": "Rampino",
+      "cost": "2 gp",
+      "weight": "4 lb"
+    },
+    {
+      "name": "Hammer",
+      "italian_name": "Martello",
+      "cost": "1 gp",
+      "weight": "3 lb"
+    },
+    {
+      "name": "Hammer, sledge",
+      "italian_name": "Mazza",
+      "cost": "2 gp",
+      "weight": "10 lb"
+    },
+    {
+      "name": "Healer's kit",
+      "italian_name": "Kit del Guaritore",
+      "cost": "5 gp",
+      "weight": "3 lb"
+    },
+    {
+      "name": "Holy symbol (amulet)",
+      "italian_name": "Simbolo Sacro (amuleto)",
+      "cost": "5 gp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Holy symbol (emblem)",
+      "italian_name": "Simbolo Sacro (emblema)",
+      "cost": "5 gp",
+      "weight": "—"
+    },
+    {
+      "name": "Holy symbol (reliquary)",
+      "italian_name": "Simbolo Sacro (reliquiario)",
+      "cost": "5 gp",
+      "weight": "2 lb"
+    },
+    {
+      "name": "Holy water (flask)",
+      "italian_name": "Acqua Santa (fiaschetta)",
+      "cost": "25 gp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Hourglass",
+      "italian_name": "Clessidra",
+      "cost": "25 gp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Hunting trap",
+      "italian_name": "Trappola da Caccia",
+      "cost": "5 gp",
+      "weight": "25 lb"
+    },
+    {
+      "name": "Ink (1 ounce bottle)",
+      "italian_name": "Inchiostro (bottiglia 30ml)",
+      "cost": "10 gp",
+      "weight": "—"
+    },
+    {
+      "name": "Ink pen",
+      "italian_name": "Penna",
+      "cost": "2 cp",
+      "weight": "—"
+    },
+    {
+      "name": "Jug or pitcher",
+      "italian_name": "Brocca",
+      "cost": "2 cp",
+      "weight": "4 lb"
+    },
+    {
+      "name": "Ladder (10-foot)",
+      "italian_name": "Scala (3 metri)",
+      "cost": "1 sp",
+      "weight": "25 lb"
+    },
+    {
+      "name": "Lamp",
+      "italian_name": "Lampada",
+      "cost": "5 sp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Lantern, bullseye",
+      "italian_name": "Lanterna Direzionale",
+      "cost": "10 gp",
+      "weight": "2 lb"
+    },
+    {
+      "name": "Lantern, hooded",
+      "italian_name": "Lanterna Coperta",
+      "cost": "5 gp",
+      "weight": "2 lb"
+    },
+    {
+      "name": "Lock",
+      "italian_name": "Lucchetto",
+      "cost": "10 gp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Magnifying glass",
+      "italian_name": "Lente d'Ingrandimento",
+      "cost": "100 gp",
+      "weight": "—"
+    },
+    {
+      "name": "Manacles",
+      "italian_name": "Manette",
+      "cost": "2 gp",
+      "weight": "6 lb"
+    },
+    {
+      "name": "Mess kit",
+      "italian_name": "Gavetta",
+      "cost": "2 sp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Mirror, steel",
+      "italian_name": "Specchio d'Acciaio",
+      "cost": "5 gp",
+      "weight": "1/2 lb"
+    },
+    {
+      "name": "Oil (flask)",
+      "italian_name": "Olio (fiaschetta)",
+      "cost": "1 sp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Paper (one sheet)",
+      "italian_name": "Carta (un foglio)",
+      "cost": "2 sp",
+      "weight": "—"
+    },
+    {
+      "name": "Parchment (one sheet)",
+      "italian_name": "Pergamena (un foglio)",
+      "cost": "1 sp",
+      "weight": "—"
+    },
+    {
+      "name": "Perfume (vial)",
+      "italian_name": "Profumo (fiala)",
+      "cost": "5 gp",
+      "weight": "—"
+    },
+    {
+      "name": "Pick, miner's",
+      "italian_name": "Piccone da Minatore",
+      "cost": "2 gp",
+      "weight": "10 lb"
+    },
+    {
+      "name": "Piton",
+      "italian_name": "Chiodo da Roccia",
+      "cost": "5 cp",
+      "weight": "1/4 lb"
+    },
+    {
+      "name": "Poison, basic (vial)",
+      "italian_name": "Veleno Base (fiala)",
+      "cost": "100 gp",
+      "weight": "—"
+    },
+    {
+      "name": "Pole (10-foot)",
+      "italian_name": "Pertica (3 metri)",
+      "cost": "5 cp",
+      "weight": "7 lb"
+    },
+    {
+      "name": "Pot, iron",
+      "italian_name": "Pentola di Ferro",
+      "cost": "2 gp",
+      "weight": "10 lb"
+    },
+    {
+      "name": "Potion of healing",
+      "italian_name": "Pozione di Cura",
+      "cost": "50 gp",
+      "weight": "1/2 lb"
+    },
+    {
+      "name": "Pouch",
+      "italian_name": "Borsa",
+      "cost": "5 sp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Quiver",
+      "italian_name": "Faretra",
+      "cost": "1 gp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Ram, portable",
+      "italian_name": "Ariete Portatile",
+      "cost": "4 gp",
+      "weight": "35 lb"
+    },
+    {
+      "name": "Rations (1 day)",
+      "italian_name": "Razioni (1 giorno)",
+      "cost": "2 sp",
+      "weight": "2 lb"
+    },
+    {
+      "name": "Robes",
+      "italian_name": "Vesti",
+      "cost": "1 gp",
+      "weight": "4 lb"
+    },
+    {
+      "name": "Rope, hempen (50 feet)",
+      "italian_name": "Corda di Canapa (15 metri)",
+      "cost": "2 gp",
+      "weight": "10 lb"
+    },
+    {
+      "name": "Rope, silk (50 feet)",
+      "italian_name": "Corda di Seta (15 metri)",
+      "cost": "10 gp",
+      "weight": "5 lb"
+    },
+    {
+      "name": "Sack",
+      "italian_name": "Sacco",
+      "cost": "1 cp",
+      "weight": "1/2 lb"
+    },
+    {
+      "name": "Scale, merchant's",
+      "italian_name": "Bilancia del Mercante",
+      "cost": "5 gp",
+      "weight": "3 lb"
+    },
+    {
+      "name": "Sealing wax",
+      "italian_name": "Ceralacca",
+      "cost": "5 sp",
+      "weight": "—"
+    },
+    {
+      "name": "Shovel",
+      "italian_name": "Pala",
+      "cost": "2 gp",
+      "weight": "5 lb"
+    },
+    {
+      "name": "Signal whistle",
+      "italian_name": "Fischietto",
+      "cost": "5 cp",
+      "weight": "—"
+    },
+    {
+      "name": "Signet ring",
+      "italian_name": "Anello con Sigillo",
+      "cost": "5 gp",
+      "weight": "—"
+    },
+    {
+      "name": "Soap",
+      "italian_name": "Sapone",
+      "cost": "2 cp",
+      "weight": "—"
+    },
+    {
+      "name": "Spellbook",
+      "italian_name": "Libro degli Incantesimi",
+      "cost": "50 gp",
+      "weight": "3 lb"
+    },
+    {
+      "name": "Spikes, iron (10)",
+      "italian_name": "Chiodi di Ferro (10)",
+      "cost": "1 gp",
+      "weight": "5 lb"
+    },
+    {
+      "name": "Spyglass",
+      "italian_name": "Cannocchiale",
+      "cost": "1,000 gp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "String (10 feet)",
+      "italian_name": "Spago (3 metri)",
+      "cost": "1 sp",
+      "weight": "—"
+    },
+    {
+      "name": "Tent, two-person",
+      "italian_name": "Tenda (2 persone)",
+      "cost": "2 gp",
+      "weight": "20 lb"
+    },
+    {
+      "name": "Tinderbox",
+      "italian_name": "Acciarino",
+      "cost": "5 sp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Torch",
+      "italian_name": "Torcia",
+      "cost": "1 cp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Vial",
+      "italian_name": "Fiala",
+      "cost": "1 gp",
+      "weight": "—"
+    },
+    {
+      "name": "Waterskin",
+      "italian_name": "Otre",
+      "cost": "2 gp",
+      "weight": "5 lb (full)"
+    },
+    {
+      "name": "Whetstone",
+      "italian_name": "Cote",
+      "cost": "1 cp",
+      "weight": "1 lb"
+    }
+  ],
+  "tools": [
+    {
+      "name": "Alchemist's supplies",
+      "italian_name": "Strumenti da Alchimista",
+      "cost": "50 gp",
+      "weight": "8 lb"
+    },
+    {
+      "name": "Brewer's supplies",
+      "italian_name": "Strumenti da Birraio",
+      "cost": "20 gp",
+      "weight": "9 lb"
+    },
+    {
+      "name": "Calligrapher's supplies",
+      "italian_name": "Strumenti da Calligrafo",
+      "cost": "10 gp",
+      "weight": "5 lb"
+    },
+    {
+      "name": "Carpenter's tools",
+      "italian_name": "Strumenti da Falegname",
+      "cost": "8 gp",
+      "weight": "6 lb"
+    },
+    {
+      "name": "Cartographer's tools",
+      "italian_name": "Strumenti da Cartografo",
+      "cost": "15 gp",
+      "weight": "6 lb"
+    },
+    {
+      "name": "Cobbler's tools",
+      "italian_name": "Strumenti da Calzolaio",
+      "cost": "5 gp",
+      "weight": "5 lb"
+    },
+    {
+      "name": "Cook's utensils",
+      "italian_name": "Utensili da Cuoco",
+      "cost": "1 gp",
+      "weight": "8 lb"
+    },
+    {
+      "name": "Glassblower's tools",
+      "italian_name": "Strumenti del Vetraio",
+      "cost": "30 gp",
+      "weight": "5 lb"
+    },
+    {
+      "name": "Jeweler's tools",
+      "italian_name": "Strumenti del Gioielliere",
+      "cost": "25 gp",
+      "weight": "2 lb"
+    },
+    {
+      "name": "Leatherworker's tools",
+      "italian_name": "Strumenti del Pellettiere",
+      "cost": "5 gp",
+      "weight": "5 lb"
+    },
+    {
+      "name": "Mason's tools",
+      "italian_name": "Strumenti del Muratore",
+      "cost": "10 gp",
+      "weight": "8 lb"
+    },
+    {
+      "name": "Painter's supplies",
+      "italian_name": "Strumenti del Pittore",
+      "cost": "10 gp",
+      "weight": "5 lb"
+    },
+    {
+      "name": "Potter's tools",
+      "italian_name": "Strumenti del Vasaio",
+      "cost": "10 gp",
+      "weight": "3 lb"
+    },
+    {
+      "name": "Smith's tools",
+      "italian_name": "Strumenti del Fabbro",
+      "cost": "20 gp",
+      "weight": "8 lb"
+    },
+    {
+      "name": "Tinker's tools",
+      "italian_name": "Strumenti del Riparatore",
+      "cost": "50 gp",
+      "weight": "10 lb"
+    },
+    {
+      "name": "Weaver's tools",
+      "italian_name": "Strumenti del Tessitore",
+      "cost": "1 gp",
+      "weight": "5 lb"
+    },
+    {
+      "name": "Woodcarver's tools",
+      "italian_name": "Strumenti dell'Intagliatore",
+      "cost": "1 gp",
+      "weight": "5 lb"
+    },
+    {
+      "name": "Disguise kit",
+      "italian_name": "Kit da Travestimento",
+      "cost": "25 gp",
+      "weight": "3 lb"
+    },
+    {
+      "name": "Forgery kit",
+      "italian_name": "Kit da Falsario",
+      "cost": "15 gp",
+      "weight": "5 lb"
+    },
+    {
+      "name": "Gaming set (dice)",
+      "italian_name": "Set da Gioco (dadi)",
+      "cost": "1 sp",
+      "weight": "—"
+    },
+    {
+      "name": "Gaming set (dragonchess)",
+      "italian_name": "Set da Gioco (scacchi drago)",
+      "cost": "1 gp",
+      "weight": "1/2 lb"
+    },
+    {
+      "name": "Gaming set (playing cards)",
+      "italian_name": "Set da Gioco (carte)",
+      "cost": "5 sp",
+      "weight": "—"
+    },
+    {
+      "name": "Herbalism kit",
+      "italian_name": "Kit da Erborista",
+      "cost": "5 gp",
+      "weight": "3 lb"
+    },
+    {
+      "name": "Musical instrument (bagpipes)",
+      "italian_name": "Strumento Musicale (cornamusa)",
+      "cost": "30 gp",
+      "weight": "6 lb"
+    },
+    {
+      "name": "Musical instrument (drum)",
+      "italian_name": "Strumento Musicale (tamburo)",
+      "cost": "6 gp",
+      "weight": "3 lb"
+    },
+    {
+      "name": "Musical instrument (dulcimer)",
+      "italian_name": "Strumento Musicale (dulcimer)",
+      "cost": "25 gp",
+      "weight": "10 lb"
+    },
+    {
+      "name": "Musical instrument (flute)",
+      "italian_name": "Strumento Musicale (flauto)",
+      "cost": "2 gp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Musical instrument (lute)",
+      "italian_name": "Strumento Musicale (liuto)",
+      "cost": "35 gp",
+      "weight": "2 lb"
+    },
+    {
+      "name": "Musical instrument (lyre)",
+      "italian_name": "Strumento Musicale (lira)",
+      "cost": "30 gp",
+      "weight": "2 lb"
+    },
+    {
+      "name": "Musical instrument (horn)",
+      "italian_name": "Strumento Musicale (corno)",
+      "cost": "3 gp",
+      "weight": "2 lb"
+    },
+    {
+      "name": "Musical instrument (pan flute)",
+      "italian_name": "Strumento Musicale (flauto di pan)",
+      "cost": "12 gp",
+      "weight": "2 lb"
+    },
+    {
+      "name": "Musical instrument (shawm)",
+      "italian_name": "Strumento Musicale (ciaramella)",
+      "cost": "2 gp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Musical instrument (viol)",
+      "italian_name": "Strumento Musicale (viola)",
+      "cost": "30 gp",
+      "weight": "1 lb"
+    },
+    {
+      "name": "Navigator's tools",
+      "italian_name": "Strumenti da Navigatore",
+      "cost": "25 gp",
+      "weight": "2 lb"
+    },
+    {
+      "name": "Poisoner's kit",
+      "italian_name": "Kit da Avvelenatore",
+      "cost": "50 gp",
+      "weight": "2 lb"
+    },
+    {
+      "name": "Thieves' tools",
+      "italian_name": "Strumenti da Scasso",
+      "cost": "25 gp",
+      "weight": "1 lb"
+    }
+  ],
+  "kits": [
+    {
+      "name": "Burglar's Pack",
+      "italian_name": "Pacco del Borseggiatore",
+      "cost": "16 gp",
+      "contents": ["backpack", "bag of 1,000 ball bearings", "10 feet of string", "bell", "5 candles", "crowbar", "hammer", "10 pitons", "hooded lantern", "2 flasks of oil", "5 days rations", "tinderbox", "waterskin", "50 feet hempen rope"]
+    },
+    {
+      "name": "Diplomat's Pack",
+      "italian_name": "Pacco del Diplomatico",
+      "cost": "39 gp",
+      "contents": ["chest", "2 cases for maps and scrolls", "set of fine clothes", "bottle of ink", "ink pen", "lamp", "2 flasks of oil", "5 sheets of paper", "vial of perfume", "sealing wax", "soap"]
+    },
+    {
+      "name": "Dungeoneer's Pack",
+      "italian_name": "Pacco dell'Esploratore",
+      "cost": "12 gp",
+      "contents": ["backpack", "crowbar", "hammer", "10 pitons", "10 torches", "tinderbox", "10 days of rations", "waterskin", "50 feet of hempen rope"]
+    },
+    {
+      "name": "Entertainer's Pack",
+      "italian_name": "Pacco dell'Intrattenitore",
+      "cost": "40 gp",
+      "contents": ["backpack", "bedroll", "2 costumes", "5 candles", "5 days of rations", "waterskin", "disguise kit"]
+    },
+    {
+      "name": "Explorer's Pack",
+      "italian_name": "Pacco dell'Esploratore",
+      "cost": "10 gp",
+      "contents": ["backpack", "bedroll", "mess kit", "tinderbox", "10 torches", "10 days of rations", "waterskin", "50 feet of hempen rope"]
+    },
+    {
+      "name": "Priest's Pack",
+      "italian_name": "Pacco del Sacerdote",
+      "cost": "19 gp",
+      "contents": ["backpack", "blanket", "10 candles", "tinderbox", "alms box", "2 blocks of incense", "censer", "vestments", "2 days of rations", "waterskin"]
+    },
+    {
+      "name": "Scholar's Pack",
+      "italian_name": "Pacco dello Studioso",
+      "cost": "40 gp",
+      "contents": ["backpack", "book of lore", "bottle of ink", "ink pen", "10 sheets of parchment", "little bag of sand", "small knife"]
+    }
+  ]
+}
