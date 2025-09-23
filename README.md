@@ -1,6 +1,29 @@
-# DnD_MasterAid
+# D&D Master Aid
 
-🎲 **DnD_MasterAid** è un'app modulare per la creazione e gestione di personaggi Dungeons & Dragons 5.5e, pensata per essere leggera, responsive e perfetta sia per nuovi giocatori che per veterani del gioco di ruolo.
+🎲 **D&D Master Aid** è un'app modulare per la creazione e gestione di personaggi Dungeons & Dragons 5e, pensata per essere leggera, responsive e perfetta sia per nuovi giocatori che per veterani del gioco di ruolo.
+
+## 📱 Download Android APK
+
+**🚀 Ultima versione: v1.0.0**
+
+[**📥 Scarica APK Android**](https://github.com/willskymaker/dnd_master_aid/releases/latest/download/dnd-master-aid-v1.0.0.apk) (25.8 MB)
+
+### 📋 Installazione Android
+
+1. **Scarica l'APK** dal link sopra
+2. **Abilita installazione da fonti sconosciute**:
+   - Vai in `Impostazioni > Sicurezza > Installa app sconosciute`
+   - Abilita per il browser o file manager che stai usando
+3. **Installa l'APK** toccando il file scaricato
+4. **Goditi l'app!** 🎉
+
+### ⚠️ Note di Sicurezza
+- L'APK è firmato e sicuro da installare
+- Android mostrerà un avviso per le "app non verificate" - è normale per APK non distribuiti via Play Store
+- Tocca "Installa comunque" per procedere
+
+### 🔄 Aggiornamenti
+Gli aggiornamenti verranno rilasciati come nuove release su GitHub. Controlla regolarmente per le nuove versioni!
 
 ## 🚀 Stato Attuale
 
@@ -21,28 +44,48 @@ lib/
 
 **Attualmente si sta sviluppando il modulo **PG Base**, che permette la generazione guidata di un personaggio con i parametri fondamentali:**
 
-### ✅ Moduli completati:
+### ✅ Funzionalità Disponibili:
+
+#### 🧙‍♂️ **Creazione Personaggi**
 - **Generatore Nome**: combinazione di prefissi/suffissi fantasy
-- **Step Specie & Sottospecie**: selezione tra le specie principali della 5.5e con riepilogo abilità e bonus
-- **Step Classe**: selezione della classe base con tiri salvezza, competenze, abilità e dado vita
-- **Step Livello**: gestione livello personaggio e sue implicazioni
-- **Step Caratteristiche**: inserimento caratteristiche base, evidenziazione delle principali in base alla classe scelta, supporto ASI
-- **Step Equipaggiamento**: selezione di armi, armature e oggetti compatibili con la classe
-- **Riepilogo Personaggio**: visione completa delle scelte effettuate
-- **Export PDF**: esportazione del personaggio in formato PDF
-- **Database centralizzati**: per specie, classi, background, talenti, equipaggiamento, incantesimi e slot
-- **Sistema di validazione**: controllo consistenza dati e validazione input utente
-- **Gestione errori**: error handling robusto con logging strutturato
-- **State management**: architettura con Provider per gestione stato centralizzata
+- **Selezione Specie**: 30+ razze con sottospecie e abilità complete
+- **Selezione Classe**: 12 classi con 80+ sottoclassi ufficiali
+- **Gestione Livello**: progression e abilità per livello
+- **Caratteristiche**: inserimento con ASI e modificatori automatici
+- **Equipaggiamento**: 200+ oggetti (armi, armature, gear)
+- **Riepilogo & Export PDF**: personaggio completo in formato stampabile
+
+#### 📚 **Database D&D 5e Completo**
+- **500+ Incantesimi**: cantrip fino a 9° livello con meccaniche complete
+- **30+ Specie**: tutte le razze ufficiali con sottospecie
+- **12 Classi**: tutti gli archetipi e sottoclassi del Player's Handbook
+- **200+ Equipaggiamento**: armi, armature, oggetti avventura, kit
+- **25+ Background**: sfondi con competenze e caratteristiche
+- **35+ Talenti**: abilità speciali con prerequisiti
+- **Bestiary**: creature e mostri per i DM
+
+#### 🎲 **Strumenti Utility**
+- **Dadi Digitali**: roller completo per tutti i tipi di dado
+- **Generatore Nomi**: per personaggi e NPC fantasy
+- **Browser Database**: interfaccia mobile per esplorare tutto il contenuto D&D 5e
+
+#### 📱 **Mobile-First Design**
+- **UI Responsive**: ottimizzata per smartphone e tablet
+- **Touch-Friendly**: controlli pensati per schermi touch
+- **Offline-Ready**: database locale, funziona senza internet
+- **Performance**: build ottimizzati per dispositivi mobili
 
 
 ```
 
-### 📦 Requisiti
+### 📦 Requisiti (Solo per Sviluppatori)
+
+Per utilizzare l'app, scarica semplicemente l'APK Android! Per lo sviluppo:
+
 - **Dart** >= 3.7.2
 - **Flutter** >= 3.32.8
 - **Dipendenze principali**: `provider`, `logger`, `pdf`, `path_provider`
-- **Piattaforme supportate**: Web ✅, Desktop (Linux, Windows, macOS), Mobile (Android, iOS)
+- **Piattaforme supportate**: ✅ Android, ✅ Web, iOS (in sviluppo), Desktop
 - Git per la gestione delle versioni
 - Editor consigliato: Visual Studio Code
 

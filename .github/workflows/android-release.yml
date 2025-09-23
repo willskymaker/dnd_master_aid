@@ -1,0 +1,113 @@
+name: Android Release Build
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.3'
+        channel: 'stable'
+
+    - name: Get dependencies
+      run: flutter pub get
+
+    - name: Build APK
+      run: flutter build apk --release
+
+    - name: Build App Bundle
+      run: flutter build appbundle --release
+
+    - name: Get version from pubspec.yaml
+      id: version
+      run: |
+        VERSION=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | cut -d '+' -f 1)
+        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+    - name: Rename APK
+      run: |
+        cp build/app/outputs/flutter-apk/app-release.apk dnd-master-aid-v${{ steps.version.outputs.VERSION }}.apk
+
+    - name: Upload APK Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-apk
+        path: dnd-master-aid-v${{ steps.version.outputs.VERSION }}.apk
+
+    - name: Upload AAB Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-aab
+        path: build/app/outputs/bundle/release/app-release.aab
+
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref_name }}
+        release_name: D&D Master Aid ${{ github.ref_name }}
+        body: |
+          🚀 **D&D Master Aid** - Nuova versione disponibile!
+
+          ## 📱 Download Android
+          - **APK**: Scarica e installa direttamente su Android
+          - **AAB**: Per upload su Google Play Store
+
+          ## ✨ Funzionalità
+          - Creazione completa personaggi D&D 5e
+          - Database completo: 500+ incantesimi, 30+ specie, 12 classi
+          - Interfaccia mobile-first ottimizzata
+          - Export PDF delle schede personaggio
+          - Strumenti per DM: dadi, database browser
+
+          ## 📋 Installazione
+          1. Scarica l'APK
+          2. Abilita "Installazione da fonti sconosciute"
+          3. Installa e divertiti!
+
+          ---
+          🤖 Build automatizzato con GitHub Actions
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset (APK)
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: dnd-master-aid-v${{ steps.version.outputs.VERSION }}.apk
+        asset_name: dnd-master-aid-v${{ steps.version.outputs.VERSION }}.apk
+        asset_content_type: application/vnd.android.package-archive
+
+    - name: Upload Release Asset (AAB)
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: build/app/outputs/bundle/release/app-release.aab
+        asset_name: dnd-master-aid-v${{ steps.version.outputs.VERSION }}.aab
+        asset_content_type: application/octet-stream
