@@ -6,8 +6,10 @@ import 'pg_base/main_pg_base.dart';          // PG Base Wizard
 import 'screens/coming_soon.dart';           // Schermata per funzionalità disattivate
 import 'screens/dice_roller.dart';           // Modulo dadi
 import 'screens/name_generator.dart';        // Generatore nomi (standalone)
+import 'screens/saved_characters_screen.dart'; // Lista personaggi salvati
 import 'package:dnd_master_aid/factory_pg_base.dart';
 import 'providers/character_provider.dart';
+import 'providers/saved_characters_provider.dart';
 import 'widgets/mobile/mobile_scaffold.dart';
 import 'widgets/mobile/mobile_card.dart';
 import 'pages/database_browser_page.dart';
@@ -24,6 +26,7 @@ class DnDMasterAidApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CharacterProvider()),
+        ChangeNotifierProvider(create: (_) => SavedCharactersProvider()),
       ],
       child: MaterialApp(
         title: 'DnD MasterAid',
@@ -83,7 +86,14 @@ class HomePage extends StatelessWidget {
       'nome': 'Database D&D',
       'icona': '📚',
       'descr': 'Sfoglia tutte le opzioni',
-      'attivo': false
+      'attivo': true
+    },
+    {
+      'id': 'salvati',
+      'nome': 'I Miei Personaggi',
+      'icona': '📖',
+      'descr': 'Personaggi salvati',
+      'attivo': true
     },
     {
       'id': 'pgPro',
@@ -292,6 +302,9 @@ class HomePage extends StatelessWidget {
         break;
       case 'database':
         page = const DatabaseBrowserPage(); // 📚 Database D&D
+        break;
+      case 'salvati':
+        page = const SavedCharactersScreen();
         break;
       default:
         page = const ComingSoonScreen(); // 🕒 Placeholder

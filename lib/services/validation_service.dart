@@ -187,9 +187,18 @@ class ValidationService {
       warnings.add("Ci sono oggetti duplicati nell'equipaggiamento");
     }
 
-    // Verifica peso totale (da implementare con database equipaggiamento)
+    // Verifica peso totale basato sul numero di oggetti e suggerisce controllo encumbrance
+    // Le regole D&D 5e: capacità di carico = punteggio FOR x 15 libbre
+
     if (equipment.length > 20) {
-      warnings.add("Molti oggetti nell'equipaggiamento - controlla il peso totale");
+      warnings.add("Molti oggetti nell'equipaggiamento (${equipment.length}) - verifica il peso totale e la capacità di carico");
+    } else if (equipment.length > 15) {
+      warnings.add("Equipaggiamento numeroso (${equipment.length} oggetti) - potrebbe essere pesante");
+    }
+
+    // Suggerimento generale sul sistema di encumbrance
+    if (equipment.length >= 10) {
+      warnings.add("Ricorda: la capacità di carico è Forza x 15 libbre. Supero causa movimento ridotto.");
     }
 
     AppLogger.debug("Equipaggiamento validato: ${equipment.length} oggetti");

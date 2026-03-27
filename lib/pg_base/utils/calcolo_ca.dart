@@ -1,4 +1,4 @@
-import '../factory_pg_base.dart';
+import '../../factory_pg_base.dart';
 
 int calcolaClasseArmatura(PGBase pg) {
   int base = 10;

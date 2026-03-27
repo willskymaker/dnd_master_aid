@@ -1,4 +1,8 @@
+import 'package:uuid/uuid.dart';
+
 class PGBase {
+  final String id;
+  final DateTime dataSalvataggio;
   final String nome;
   final String specie;
   final String classe;
@@ -21,8 +25,9 @@ class PGBase {
   final List<String> abilitaClasse;
   final List<String> equipaggiamento;
 
-
   PGBase({
+    String? id,
+    DateTime? dataSalvataggio,
     required this.nome,
     required this.specie,
     required this.classe,
@@ -44,15 +49,80 @@ class PGBase {
     required this.competenzeStrumenti,
     required this.abilitaClasse,
     required this.equipaggiamento,
-  });
+  })  : id = id ?? const Uuid().v4(),
+        dataSalvataggio = dataSalvataggio ?? DateTime.now();
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'dataSalvataggio': dataSalvataggio.toIso8601String(),
+        'nome': nome,
+        'specie': specie,
+        'classe': classe,
+        'livello': livello,
+        'background': background,
+        'allineamento': allineamento,
+        'competenze': competenze,
+        'caratteristiche': caratteristiche,
+        'modificatori': modificatori,
+        'caratteristicheImpostate': caratteristicheImpostate,
+        'velocita': velocita,
+        'linguaggi': linguaggi,
+        'capacitaSpeciali': capacitaSpeciali,
+        'dadoVita': dadoVita,
+        'puntiVita': puntiVita,
+        'tiriSalvezza': tiriSalvezza,
+        'competenzeArmi': competenzeArmi,
+        'competenzeArmature': competenzeArmature,
+        'competenzeStrumenti': competenzeStrumenti,
+        'abilitaClasse': abilitaClasse,
+        'equipaggiamento': equipaggiamento,
+      };
+
+  factory PGBase.fromJson(Map<String, dynamic> json) => PGBase(
+        id: json['id'] as String?,
+        dataSalvataggio: json['dataSalvataggio'] != null
+            ? DateTime.parse(json['dataSalvataggio'] as String)
+            : null,
+        nome: json['nome'] as String? ?? '',
+        specie: json['specie'] as String? ?? '',
+        classe: json['classe'] as String? ?? '',
+        livello: json['livello'] as int? ?? 1,
+        background: json['background'] as String? ?? '',
+        allineamento: json['allineamento'] as String? ?? '',
+        competenze: List<String>.from(json['competenze'] ?? []),
+        caratteristiche: Map<String, int>.from(
+            (json['caratteristiche'] as Map?)?.map(
+                  (k, v) => MapEntry(k as String, (v as num).toInt()),
+                ) ??
+                {}),
+        modificatori: Map<String, int>.from(
+            (json['modificatori'] as Map?)?.map(
+                  (k, v) => MapEntry(k as String, (v as num).toInt()),
+                ) ??
+                {}),
+        caratteristicheImpostate:
+            json['caratteristicheImpostate'] as bool? ?? false,
+        velocita: json['velocita'] as int? ?? 0,
+        linguaggi: List<String>.from(json['linguaggi'] ?? []),
+        capacitaSpeciali: List<String>.from(json['capacitaSpeciali'] ?? []),
+        dadoVita: json['dadoVita'] as int? ?? 8,
+        puntiVita: json['puntiVita'] as int? ?? 0,
+        tiriSalvezza: List<String>.from(json['tiriSalvezza'] ?? []),
+        competenzeArmi: List<String>.from(json['competenzeArmi'] ?? []),
+        competenzeArmature: List<String>.from(json['competenzeArmature'] ?? []),
+        competenzeStrumenti:
+            List<String>.from(json['competenzeStrumenti'] ?? []),
+        abilitaClasse: List<String>.from(json['abilitaClasse'] ?? []),
+        equipaggiamento: List<String>.from(json['equipaggiamento'] ?? []),
+      );
 
   @override
-String toString() {
-  return 'PGBase(nome: $nome, specie: $specie, classe: $classe, livello: $livello, background: $background, allineamento: $allineamento, '
-      'modificatori: $modificatori, velocità: $velocita, linguaggi: $linguaggi, capacità: $capacitaSpeciali, '
-      'HP: $puntiVita (d${dadoVita}), TS: $tiriSalvezza, armi: $competenzeArmi, armature: $competenzeArmature, strumenti: $competenzeStrumenti, '
-      'abilita: $abilitaClasse, equipaggiamento: ${equipaggiamento.isNotEmpty ? equipaggiamento.join(', ') : 'Nessun equipaggiamento'})';
-}
+  String toString() {
+    return 'PGBase(nome: $nome, specie: $specie, classe: $classe, livello: $livello, background: $background, allineamento: $allineamento, '
+        'modificatori: $modificatori, velocità: $velocita, linguaggi: $linguaggi, capacità: $capacitaSpeciali, '
+        'HP: $puntiVita (d${dadoVita}), TS: $tiriSalvezza, armi: $competenzeArmi, armature: $competenzeArmature, strumenti: $competenzeStrumenti, '
+        'abilita: $abilitaClasse, equipaggiamento: ${equipaggiamento.isNotEmpty ? equipaggiamento.join(', ') : 'Nessun equipaggiamento'})';
+  }
 }
 
 class PGBaseFactory {
@@ -92,7 +162,7 @@ class PGBaseFactory {
   final List<String> _capacitaSpeciali = [];
   int get livello => _livello;
   int get dadoVita => _dadoVita;
-  final List <String> _equipaggiamento = [];
+  final List<String> _equipaggiamento = [];
 
   // Set base
   void setNome(String nome) => _nome = nome;
@@ -106,13 +176,15 @@ class PGBaseFactory {
   void setTiriSalvezza(List<String> lista) => _tiriSalvezza = lista;
   void setCompetenzeArmi(List<String> lista) => _competenzeArmi = lista;
   void setCompetenzeArmature(List<String> lista) => _competenzeArmature = lista;
-  void setCompetenzeStrumenti(List<String> lista) => _competenzeStrumenti = lista;
+  void setCompetenzeStrumenti(List<String> lista) =>
+      _competenzeStrumenti = lista;
   void setAbilitaClasse(List<String> lista) => _abilitaClasse = lista;
   void setVelocita(int velocita) => _velocita = velocita;
   void addCompetenza(String competenza) => _competenze.add(competenza);
-  void addLinguaggi(List<String> lingue) => _linguaggi.addAll(lingue.where((l) => !_linguaggi.contains(l)));
+  void addLinguaggi(List<String> lingue) =>
+      _linguaggi.addAll(lingue.where((l) => !_linguaggi.contains(l)));
   void addTrattiSpecie(List<String> tratti) => _capacitaSpeciali.addAll(tratti);
-  
+
   void setCaratteristiche(Map<String, int> valori) {
     _caratteristiche = valori;
     _caratteristicheImpostate = true;
@@ -121,40 +193,41 @@ class PGBaseFactory {
       _modificatori[key] = ((val - 10) / 2).floor();
     });
   }
+
   bool get caratteristicheImpostate => _caratteristicheImpostate;
+
   void addEquipaggiamento(List<String> oggetti) {
-    _equipaggiamento.clear();  // Rimuove equipaggiamento precedente, se necessario
-    _equipaggiamento.addAll(oggetti);  // Aggiunge i nuovi oggetti
+    _equipaggiamento.clear();
+    _equipaggiamento.addAll(oggetti);
   }
+
   void setCaratteristicheImpostate(bool value) {
     _caratteristicheImpostate = value;
   }
 
-
   PGBase build() {
-  return PGBase(
-    nome: _nome,
-    specie: _specie,
-    classe: _classe,
-    livello: _livello,
-    background: _background,
-    allineamento: _allineamento,
-    competenze: List.from(_competenze),
-    caratteristiche: Map.from(_caratteristiche),
-    modificatori: Map.from(_modificatori),
-    caratteristicheImpostate: _caratteristicheImpostate,
-    velocita: _velocita,
-    linguaggi: List.from(_linguaggi),
-    capacitaSpeciali: List.from(_capacitaSpeciali),
-    dadoVita: _dadoVita,
-    puntiVita: _puntiVita,
-    tiriSalvezza: List.from(_tiriSalvezza),
-    competenzeArmi: List.from(_competenzeArmi),
-    competenzeArmature: List.from(_competenzeArmature),
-    competenzeStrumenti: List.from(_competenzeStrumenti),
-    abilitaClasse: List.from(_abilitaClasse),
-    equipaggiamento: List.from(_equipaggiamento),
-  );
-}
-
+    return PGBase(
+      nome: _nome,
+      specie: _specie,
+      classe: _classe,
+      livello: _livello,
+      background: _background,
+      allineamento: _allineamento,
+      competenze: List.from(_competenze),
+      caratteristiche: Map.from(_caratteristiche),
+      modificatori: Map.from(_modificatori),
+      caratteristicheImpostate: _caratteristicheImpostate,
+      velocita: _velocita,
+      linguaggi: List.from(_linguaggi),
+      capacitaSpeciali: List.from(_capacitaSpeciali),
+      dadoVita: _dadoVita,
+      puntiVita: _puntiVita,
+      tiriSalvezza: List.from(_tiriSalvezza),
+      competenzeArmi: List.from(_competenzeArmi),
+      competenzeArmature: List.from(_competenzeArmature),
+      competenzeStrumenti: List.from(_competenzeStrumenti),
+      abilitaClasse: List.from(_abilitaClasse),
+      equipaggiamento: List.from(_equipaggiamento),
+    );
+  }
 }

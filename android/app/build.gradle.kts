@@ -39,9 +39,9 @@ android {
     defaultConfig {
         applicationId = "com.dndmasteraid.app"
         minSdk = 21
-        targetSdk = 31  // Android 12 - bilanciato sicurezza/compatibilità
-        versionCode = 4
-        versionName = "1.0.4"
+        targetSdk = 35  // Android 15 - richiesto da Google Play
+        versionCode = 6
+        versionName = "1.0.6"
 
         // Enable multidex support for large apps
         multiDexEnabled = true

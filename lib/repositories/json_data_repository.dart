@@ -87,83 +87,108 @@ class JsonDataRepository {
 
   /// Carica gli incantesimi dal file JSON
   static Future<List<Incantesimo>> loadSpells() async {
-    if (_cachedSpells == null) {
-      AppLogger.info("Caricando incantesimi da JSON");
-      final String jsonString = await rootBundle.loadString('assets/data/spells.json');
-      _cachedSpells = json.decode(jsonString);
-    }
-
-    final List<dynamic> spellsData = _cachedSpells!['spells'];
-    final List<Incantesimo> spells = [];
-
-    for (var data in spellsData) {
-      try {
-        final incantesimo = _parseIncantesimoFromJson(data);
-        spells.add(incantesimo);
-      } catch (e) {
-        AppLogger.error("Errore nel parsing dell'incantesimo: ${data['nome']}", e);
+    try {
+      if (_cachedSpells == null) {
+        AppLogger.info("Caricando incantesimi da JSON");
+        final String jsonString = await rootBundle.loadString('assets/data/spells.json');
+        _cachedSpells = json.decode(jsonString);
       }
-    }
 
-    AppLogger.info("Caricati ${spells.length} incantesimi dal JSON");
-    return spells;
+      final List<dynamic> spellsData = _cachedSpells!['spells'];
+      final List<Incantesimo> spells = [];
+
+      for (var data in spellsData) {
+        try {
+          final incantesimo = _parseIncantesimoFromJson(data);
+          spells.add(incantesimo);
+        } catch (e) {
+          AppLogger.error("Errore nel parsing dell'incantesimo: ${data['nome']}", e);
+        }
+      }
+
+      AppLogger.info("Caricati ${spells.length} incantesimi dal JSON");
+      return spells;
+    } catch (e) {
+      AppLogger.error("Errore nel caricamento incantesimi da JSON", e);
+      return []; // Ritorna lista vuota in caso di errore
+    }
   }
 
   /// Carica l'equipaggiamento dal file JSON
   static Future<Map<String, dynamic>> loadEquipment() async {
-    if (_cachedEquipment == null) {
-      AppLogger.info("Caricando equipaggiamento da JSON");
-      final String jsonString = await rootBundle.loadString('assets/data/equipment.json');
-      _cachedEquipment = json.decode(jsonString);
-    }
+    try {
+      if (_cachedEquipment == null) {
+        AppLogger.info("Caricando equipaggiamento da JSON");
+        final String jsonString = await rootBundle.loadString('assets/data/equipment.json');
+        _cachedEquipment = json.decode(jsonString);
+      }
 
-    AppLogger.info("Caricato equipaggiamento dal JSON");
-    return _cachedEquipment!;
+      AppLogger.info("Caricato equipaggiamento dal JSON");
+      return _cachedEquipment!;
+    } catch (e) {
+      AppLogger.error("Errore nel caricamento equipaggiamento da JSON", e);
+      return {}; // Ritorna mappa vuota in caso di errore
+    }
   }
 
   /// Carica i background dal file JSON
   static Future<List<Map<String, dynamic>>> loadBackgrounds() async {
-    if (_cachedBackgrounds == null) {
-      AppLogger.info("Caricando background da JSON");
-      final String jsonString = await rootBundle.loadString('assets/data/backgrounds.json');
-      _cachedBackgrounds = json.decode(jsonString);
+    try {
+      if (_cachedBackgrounds == null) {
+        AppLogger.info("Caricando background da JSON");
+        final String jsonString = await rootBundle.loadString('assets/data/backgrounds.json');
+        _cachedBackgrounds = json.decode(jsonString);
+      }
+
+      final List<dynamic> backgroundsData = _cachedBackgrounds!['backgrounds'];
+      final List<Map<String, dynamic>> backgrounds = backgroundsData.cast<Map<String, dynamic>>();
+
+      AppLogger.info("Caricati ${backgrounds.length} background dal JSON");
+      return backgrounds;
+    } catch (e) {
+      AppLogger.error("Errore nel caricamento background da JSON", e);
+      return []; // Ritorna lista vuota in caso di errore
     }
-
-    final List<dynamic> backgroundsData = _cachedBackgrounds!['backgrounds'];
-    final List<Map<String, dynamic>> backgrounds = backgroundsData.cast<Map<String, dynamic>>();
-
-    AppLogger.info("Caricati ${backgrounds.length} background dal JSON");
-    return backgrounds;
   }
 
   /// Carica i talenti dal file JSON
   static Future<List<Map<String, dynamic>>> loadFeats() async {
-    if (_cachedFeats == null) {
-      AppLogger.info("Caricando talenti da JSON");
-      final String jsonString = await rootBundle.loadString('assets/data/feats.json');
-      _cachedFeats = json.decode(jsonString);
+    try {
+      if (_cachedFeats == null) {
+        AppLogger.info("Caricando talenti da JSON");
+        final String jsonString = await rootBundle.loadString('assets/data/feats.json');
+        _cachedFeats = json.decode(jsonString);
+      }
+
+      final List<dynamic> featsData = _cachedFeats!['feats'];
+      final List<Map<String, dynamic>> feats = featsData.cast<Map<String, dynamic>>();
+
+      AppLogger.info("Caricati ${feats.length} talenti dal JSON");
+      return feats;
+    } catch (e) {
+      AppLogger.error("Errore nel caricamento talenti da JSON", e);
+      return []; // Ritorna lista vuota in caso di errore
     }
-
-    final List<dynamic> featsData = _cachedFeats!['feats'];
-    final List<Map<String, dynamic>> feats = featsData.cast<Map<String, dynamic>>();
-
-    AppLogger.info("Caricati ${feats.length} talenti dal JSON");
-    return feats;
   }
 
   /// Carica i mostri dal file JSON
   static Future<List<Map<String, dynamic>>> loadMonsters() async {
-    if (_cachedMonsters == null) {
-      AppLogger.info("Caricando mostri da JSON");
-      final String jsonString = await rootBundle.loadString('assets/data/monsters.json');
-      _cachedMonsters = json.decode(jsonString);
+    try {
+      if (_cachedMonsters == null) {
+        AppLogger.info("Caricando mostri da JSON");
+        final String jsonString = await rootBundle.loadString('assets/data/monsters.json');
+        _cachedMonsters = json.decode(jsonString);
+      }
+
+      final List<dynamic> monstersData = _cachedMonsters!['monsters'];
+      final List<Map<String, dynamic>> monsters = monstersData.cast<Map<String, dynamic>>();
+
+      AppLogger.info("Caricati ${monsters.length} mostri dal JSON");
+      return monsters;
+    } catch (e) {
+      AppLogger.error("Errore nel caricamento mostri da JSON", e);
+      return []; // Ritorna lista vuota in caso di errore
     }
-
-    final List<dynamic> monstersData = _cachedMonsters!['monsters'];
-    final List<Map<String, dynamic>> monsters = monstersData.cast<Map<String, dynamic>>();
-
-    AppLogger.info("Caricati ${monsters.length} mostri dal JSON");
-    return monsters;
   }
 
   /// Converte dati JSON in oggetto Specie

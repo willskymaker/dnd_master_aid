@@ -6,9 +6,11 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
+import 'package:provider/provider.dart';
 import '../../factory_pg_base.dart';
 import '../../utils/web_pdf_saver.dart';
 import '../../core/logger.dart';
+import '../../providers/saved_characters_provider.dart';
 
 class StepExportScreen extends StatelessWidget {
   final PGBaseFactory factory;
@@ -22,27 +24,72 @@ class StepExportScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Esporta Scheda PDF")),
       body: Center(
-        child: ElevatedButton.icon(
-          onPressed: () async {
-            final filename = "${pg.nome}_liv${pg.livello}.pdf".replaceAll(' ', '_');
-            final pdfData = await _generaPDF(pg);
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ElevatedButton.icon(
+              onPressed: () async {
+                try {
+                  await context.read<SavedCharactersProvider>().save(pg);
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("✅ ${pg.nome} salvato!")),
+                    );
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("❌ Errore durante il salvataggio"),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                }
+              },
+              icon: const Icon(Icons.save),
+              label: const Text("Salva Personaggio"),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              onPressed: () async {
+                try {
+                  final filename = "${pg.nome}_liv${pg.livello}.pdf".replaceAll(' ', '_');
+                  final pdfData = await _generaPDF(pg);
 
-            if (kIsWeb) {
-              downloadPdfWeb(pdfData, filename);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("📥 PDF scaricato nel browser")),
-              );
-              return;
-            }
+                  if (kIsWeb) {
+                    downloadPdfWeb(pdfData, filename);
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("📥 PDF scaricato nel browser")),
+                      );
+                    }
+                    return;
+                  }
 
-            final file = await _salvaPDFLocale(pdfData, filename);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("📄 PDF salvato in:\n${file.path}")),
-            );
-            await _apriPDF(file);
-          },
-          icon: const Icon(Icons.picture_as_pdf),
-          label: const Text("Salva PDF"),
+                  final file = await _salvaPDFLocale(pdfData, filename);
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("📄 PDF salvato in:\n${file.path}")),
+                    );
+                  }
+                  await _apriPDF(file);
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("❌ Errore durante l'esportazione: $e"),
+                        backgroundColor: Colors.red,
+                        duration: const Duration(seconds: 5),
+                      ),
+                    );
+                  }
+                }
+              },
+              icon: const Icon(Icons.picture_as_pdf),
+              label: const Text("Esporta PDF"),
+            ),
+          ],
         ),
       ),
     );

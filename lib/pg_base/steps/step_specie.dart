@@ -23,8 +23,6 @@ class StepSpecieScreen extends StatelessWidget {
                 "Velocità: ${specie.velocita} m\n"
                 "Competenze: ${specie.competenze.join(', ')}\n"
                 "Abilità innate: ${specie.abilitaInnate.join(', ')}\n"
-                "Linguaggi: ${specie.linguaggi.join(', ')}"
-                "Competenze: ${specie.competenze.join(', ')}\n"
                 "Resistenze: ${specie.resistenze.join(', ')}\n"
                 "Linguaggi: ${specie.linguaggi.join(', ')}"
               ),

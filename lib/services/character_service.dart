@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:flutter/services.dart';
 import '../data/db_specie.dart';
 import '../data/db_classi.dart';
 import '../data/db_abilita.dart';
@@ -160,19 +162,71 @@ class CharacterService {
     Map<String, int> baseCharacteristics,
     String specieName,
   ) async {
-    final specie = await getSpecieByName(specieName);
-    if (specie == null) {
-      AppLogger.warning("Impossibile applicare bonus razziali: specie '$specieName' non trovata");
+    try {
+      // Carica i dati JSON della specie per ottenere i bonus
+      final String jsonString = await rootBundle.loadString('assets/data/species.json');
+      final Map<String, dynamic> data = json.decode(jsonString);
+      final List<dynamic> speciesList = data['species'];
+
+      // Cerca la specie corretta (gestisce anche sottospecie tipo "Elfo (Alto)")
+      Map<String, dynamic>? specieData;
+      Map<String, dynamic>? subSpecieData;
+
+      for (var species in speciesList) {
+        // Controlla match diretto
+        if (species['nome'] == specieName) {
+          specieData = species;
+          break;
+        }
+
+        // Controlla sottospecie
+        if (species['sottospecie'] != null) {
+          for (var sub in species['sottospecie']) {
+            final subName = "${species['nome']} (${sub['nome']})";
+            if (subName == specieName) {
+              specieData = species;
+              subSpecieData = sub;
+              break;
+            }
+          }
+          if (subSpecieData != null) break;
+        }
+      }
+
+      if (specieData == null) {
+        AppLogger.warning("Impossibile trovare bonus per specie: $specieName");
+        return Map.from(baseCharacteristics);
+      }
+
+      final result = Map<String, int>.from(baseCharacteristics);
+
+      // Applica bonus della specie base
+      if (specieData['bonus_caratteristiche'] != null) {
+        final Map<String, dynamic> bonuses = specieData['bonus_caratteristiche'];
+        bonuses.forEach((key, value) {
+          if (result.containsKey(key)) {
+            result[key] = (result[key] ?? 0) + (value as int);
+            AppLogger.debug("Applicato bonus razziale +$value a $key per ${specieData!['nome']}");
+          }
+        });
+      }
+
+      // Applica bonus della sottospecie se presente
+      if (subSpecieData != null && subSpecieData['bonus_caratteristiche'] != null) {
+        final Map<String, dynamic> subBonuses = subSpecieData['bonus_caratteristiche'];
+        subBonuses.forEach((key, value) {
+          if (result.containsKey(key)) {
+            result[key] = (result[key] ?? 0) + (value as int);
+            AppLogger.debug("Applicato bonus sottospecie +$value a $key per ${subSpecieData!['nome']}");
+          }
+        });
+      }
+
+      return result;
+    } catch (e) {
+      AppLogger.error("Errore nell'applicazione dei bonus razziali", e);
       return Map.from(baseCharacteristics);
     }
-
-    final result = Map.from(baseCharacteristics);
-
-    // Qui andrebbero implementati i bonus specifici per specie
-    // Per ora mantengo la logica base
-    AppLogger.debug("Bonus razziali applicati per ${specie.nome}");
-
-    return Map<String, int>.from(result);
   }
 
   /// Verifica se un personaggio è valido e completo
