@@ -56,11 +56,3 @@ class StepClasseScreen extends StatelessWidget {
   }
 }
 
-Future<void> vaiAStepClasse(BuildContext context, PGBaseFactory factory) async {
-  await Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => StepClasseScreen(factory: factory),
-    ),
-  );
-}

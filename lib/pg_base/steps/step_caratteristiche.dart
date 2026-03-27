@@ -9,6 +9,15 @@ import '../../core/exceptions.dart';
 final List<int> standardArray = [15, 14, 13, 12, 10, 8];
 final List<String> caratteristiche = ['FOR', 'DES', 'COS', 'INT', 'SAG', 'CAR'];
 
+const Map<String, String> _nomiCompleti = {
+  'FOR': 'Forza',
+  'DES': 'Destrezza',
+  'COS': 'Costituzione',
+  'INT': 'Intelligenza',
+  'SAG': 'Saggezza',
+  'CAR': 'Carisma',
+};
+
 class StepCaratteristicheScreen extends StatefulWidget {
   final PGBaseFactory factory;
 
@@ -21,7 +30,7 @@ class StepCaratteristicheScreen extends StatefulWidget {
 class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
   late Map<String, int> baseStats;
   late final List<String> prioritarie;
-  late int asiDisponibili;
+  late int puntiDisponibili;
 
   @override
   void initState() {
@@ -32,7 +41,7 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
       orElse: () => classiList.first,
     );
 
-    final Map<String, List<String>> suggeritePerClasse = {
+    const Map<String, List<String>> suggeritePerClasse = {
       "Barbaro": ["FOR", "COS"],
       "Bardo": ["CAR", "DES"],
       "Chierico": ["SAG", "COS"],
@@ -49,34 +58,37 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
 
     prioritarie = suggeritePerClasse[classe.nome] ?? [];
 
-    // Si parte dalla standard array per determinare i punti base da assegnare (27)
     final int puntiBase = standardArray.reduce((a, b) => a + b);
     final int minCaratteristica = 8 * caratteristiche.length;
-    asiDisponibili = calcolaASI(livello: widget.factory.livello) * 2 + (puntiBase - minCaratteristica);
+    puntiDisponibili = calcolaASI(livello: widget.factory.livello) * 2 + (puntiBase - minCaratteristica);
 
-    baseStats = {
-      for (var stat in caratteristiche) stat: 8,
-    };
+    baseStats = {for (var stat in caratteristiche) stat: 8};
   }
+
+  int get _puntiSpesi =>
+      baseStats.values.reduce((a, b) => a + b) - (8 * caratteristiche.length);
+
+  int get _puntiRimanenti => puntiDisponibili - _puntiSpesi;
+
+  int _modificatore(int valore) => ((valore - 10) / 2).floor();
 
   void _conferma() {
     try {
-      // Validazione caratteristiche
       if (!_validaCaratteristiche()) return;
 
-      final mod = <String, int>{};
-      baseStats.forEach((key, val) {
-        mod[key] = ((val - 10) / 2).floor();
-      });
+      final mod = <String, int>{
+        for (var e in baseStats.entries) e.key: _modificatore(e.value)
+      };
 
-      final pf = calcolaPuntiVita(
+      final pf = calcolaPuntiFerita(
         livello: widget.factory.livello,
         dadoVita: widget.factory.dadoVita,
-        modificatoreCostituzione: mod['COS']!,
+        modCostituzione: mod['COS']!,
       );
 
       if (pf <= 0) {
-        throw ValidationException("I punti vita non possono essere zero o negativi", "Caratteristiche");
+        throw ValidationException(
+            "I punti vita non possono essere zero o negativi", "Caratteristiche");
       }
 
       widget.factory.setCaratteristiche(baseStats);
@@ -90,21 +102,18 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
     } catch (e) {
       AppLogger.error("Errore nella conferma caratteristiche", e);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Errore: $e"),
-          backgroundColor: Colors.red,
-        ),
+        SnackBar(content: Text("Errore: $e"), backgroundColor: Colors.red),
       );
     }
   }
 
   bool _validaCaratteristiche() {
-    // Verifica che tutte le caratteristiche siano nel range valido (3-20)
     for (var entry in baseStats.entries) {
       if (entry.value < 3 || entry.value > 20) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("${entry.key} deve essere tra 3 e 20 (attuale: ${entry.value})"),
+            content: Text(
+                "${_nomiCompleti[entry.key]} deve essere tra 3 e 20 (attuale: ${entry.value})"),
             backgroundColor: Colors.red,
           ),
         );
@@ -112,12 +121,11 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
       }
     }
 
-    // Verifica che il totale non superi i punti disponibili
-    final totaleUsato = baseStats.values.reduce((a, b) => a + b) - (8 * caratteristiche.length);
-    if (totaleUsato > asiDisponibili) {
+    if (_puntiRimanenti < 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Hai usato $totaleUsato punti su $asiDisponibili disponibili"),
+          content: Text(
+              "Hai usato $_puntiSpesi punti su $puntiDisponibili disponibili"),
           backgroundColor: Colors.red,
         ),
       );
@@ -128,107 +136,207 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
   }
 
   void _saltaStep() {
-    final defaultStats = {
-      for (var c in caratteristiche) c: 10,
-    };
+    final defaultStats = {for (var c in caratteristiche) c: 10};
     widget.factory.setCaratteristiche(defaultStats);
     widget.factory.setPuntiVita(
-      calcolaPuntiVita(
+      calcolaPuntiFerita(
         livello: widget.factory.livello,
         dadoVita: widget.factory.dadoVita,
-        modificatoreCostituzione: 0,
+        modCostituzione: 0,
       ),
     );
-
     AppLogger.debug("Caratteristiche default: $defaultStats");
     Navigator.pop(context, true);
   }
 
-  int calcolaPuntiVita({
-    required int livello,
-    required int dadoVita,
-    required int modificatoreCostituzione,
-  }) {
-    return livello * (dadoVita + modificatoreCostituzione);
-  }
-
-  int calcolaASI({required int livello}) {
-    return (livello / 4).floor();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final spesi = baseStats.values.reduce((a, b) => a + b) - (8 * caratteristiche.length);
+    final rimanenti = _puntiRimanenti;
+    final coloreRimanenti =
+        rimanenti < 0 ? Colors.red : (rimanenti == 0 ? Colors.green : Colors.orange);
+
+    // Calcola PF preview
+    final modCos = _modificatore(baseStats['COS']!);
+    final pfPreview = calcolaPuntiFerita(
+      livello: widget.factory.livello,
+      dadoVita: widget.factory.dadoVita,
+      modCostituzione: modCos,
+    );
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Step: Caratteristiche")),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const Text("Assegna i punteggi alle caratteristiche", style: TextStyle(fontSize: 18)),
-              const SizedBox(height: 12),
-              ...caratteristiche.map((stat) {
+      appBar: AppBar(title: const Text("Caratteristiche")),
+      body: Column(
+        children: [
+          // Riquadro punti rimanenti + PF preview
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            color: coloreRimanenti.withValues(alpha: 0.1),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  children: [
+                    Text(
+                      '$rimanenti',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: coloreRimanenti,
+                      ),
+                    ),
+                    Text('punti rimanenti',
+                        style: TextStyle(fontSize: 12, color: coloreRimanenti)),
+                  ],
+                ),
+                Container(width: 1, height: 40, color: Colors.grey.shade300),
+                Column(
+                  children: [
+                    Text(
+                      '$pfPreview',
+                      style: const TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF8B4513)),
+                    ),
+                    const Text('PF stimati',
+                        style: TextStyle(fontSize: 12, color: Colors.grey)),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // Lista caratteristiche
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.all(12),
+              children: caratteristiche.map((stat) {
+                final valore = baseStats[stat]!;
+                final mod = _modificatore(valore);
+                final modStr = mod >= 0 ? '+$mod' : '$mod';
                 final evidenziata = prioritarie.contains(stat);
+                final puoAumentare = rimanenti > 0 && valore < 20;
+
                 return Card(
-                  color: evidenziata ? Colors.yellow.shade100 : null,
-                  child: ListTile(
-                    title: Text(stat),
-                    subtitle: Text("Valore attuale: ${baseStats[stat]}", style: const TextStyle(fontSize: 16)),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
+                  margin: const EdgeInsets.only(bottom: 8),
+                  color: evidenziata
+                      ? const Color(0xFF8B4513).withValues(alpha: 0.08)
+                      : null,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: evidenziata
+                        ? const BorderSide(
+                            color: Color(0xFF8B4513), width: 1.5)
+                        : BorderSide.none,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 10),
+                    child: Row(
                       children: [
-                        IconButton(
-                          icon: const Icon(Icons.remove),
-                          onPressed: () {
-                            setState(() {
-                              if (baseStats[stat]! > 8) baseStats[stat] = baseStats[stat]! - 1;
-                            });
-                          },
+                        // Nome
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(stat,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                          color: Color(0xFF8B4513))),
+                                  if (evidenziata) ...[
+                                    const SizedBox(width: 6),
+                                    const Icon(Icons.star,
+                                        size: 14, color: Color(0xFF8B4513)),
+                                  ]
+                                ],
+                              ),
+                              Text(_nomiCompleti[stat] ?? '',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey.shade600)),
+                            ],
+                          ),
                         ),
+                        // Bottone -
                         IconButton(
-                          icon: const Icon(Icons.add),
-                          onPressed: () {
-                            if (spesi < asiDisponibili && baseStats[stat]! < 20) {
-                              setState(() {
-                                baseStats[stat] = baseStats[stat]! + 1;
-                              });
-                            }
-                          },
-                        )
+                          icon: const Icon(Icons.remove_circle_outline),
+                          color: valore > 8 ? Colors.red.shade400 : Colors.grey,
+                          onPressed: valore > 8
+                              ? () => setState(
+                                  () => baseStats[stat] = valore - 1)
+                              : null,
+                        ),
+                        // Valore + modificatore
+                        SizedBox(
+                          width: 64,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('$valore',
+                                  style: const TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold)),
+                              Text(modStr,
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: mod >= 0
+                                          ? Colors.green.shade700
+                                          : Colors.red.shade700)),
+                            ],
+                          ),
+                        ),
+                        // Bottone +
+                        IconButton(
+                          icon: const Icon(Icons.add_circle_outline),
+                          color: puoAumentare
+                              ? Colors.green.shade600
+                              : Colors.grey,
+                          onPressed: puoAumentare
+                              ? () => setState(
+                                  () => baseStats[stat] = valore + 1)
+                              : null,
+                        ),
                       ],
                     ),
                   ),
                 );
               }).toList(),
-              Text("Punti bonus rimanenti: ${asiDisponibili - spesi}"),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _conferma,
-                child: const Text("Conferma Punteggi"),
-              ),
-            TextButton(
-              onPressed: () {
-                widget.factory.setCaratteristicheImpostate(false); // Imposta a false
-                Navigator.pop(context, true); // Procedi allo step successivo
-              },
-              child: const Text("Salta Step"),
             ),
-            ],
           ),
-        ),
+          // Bottoni
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+            child: Column(
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _conferma,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF8B4513),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    child: const Text('Conferma Punteggi',
+                        style: TextStyle(fontSize: 16)),
+                  ),
+                ),
+                TextButton(
+                  onPressed: _saltaStep,
+                  child: const Text('Salta Step'),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
-/// Funzione helper
-Future<void> vaiAStepCaratteristiche(BuildContext context, PGBaseFactory factory) async {
-  await Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => StepCaratteristicheScreen(factory: factory),
-    ),
-  );
-}
+int calcolaASI({required int livello}) => (livello / 4).floor();
+

@@ -16,16 +16,15 @@ class StepAbilitaScreen extends StatefulWidget {
 
 class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
   List<String> abilitaSelezionate = [];
-  late List<String> suggeriteClasse;
+  late List<String> abilitaDisponibili;
   late int maxAbilita;
 
   @override
   void initState() {
     super.initState();
-
     final pg = widget.factory.build();
     final classe = classiList.firstWhere((c) => c.nome == pg.classe);
-    suggeriteClasse = classe.abilitaSelezionabili;
+    abilitaDisponibili = classe.abilitaSelezionabili;
     maxAbilita = classe.abilitaDaSelezionare;
   }
 
@@ -33,14 +32,8 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
     setState(() {
       if (abilitaSelezionate.contains(nome)) {
         abilitaSelezionate.remove(nome);
-      } else {
-        if (abilitaSelezionate.length < maxAbilita) {
-          abilitaSelezionate.add(nome);
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Puoi selezionare solo $maxAbilita abilità.")),
-          );
-        }
+      } else if (abilitaSelezionate.length < maxAbilita) {
+        abilitaSelezionate.add(nome);
       }
     });
   }
@@ -48,17 +41,13 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
   void _conferma() {
     try {
       if (!_validaAbilita()) return;
-
       widget.factory.setAbilitaClasse(abilitaSelezionate);
       AppLogger.info("Abilità selezionate: $abilitaSelezionate");
       Navigator.pop(context, true);
     } catch (e) {
       AppLogger.error("Errore nella selezione abilità", e);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Errore: $e"),
-          backgroundColor: Colors.red,
-        ),
+        SnackBar(content: Text("Errore: $e"), backgroundColor: Colors.red),
       );
     }
   }
@@ -67,23 +56,19 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
     if (abilitaSelezionate.length != maxAbilita) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Seleziona esattamente $maxAbilita abilità."),
+          content: Text(
+              "Seleziona esattamente $maxAbilita abilità (${abilitaSelezionate.length}/$maxAbilita)."),
           backgroundColor: Colors.orange,
         ),
       );
       return false;
     }
-
-    // Verifica che tutte le abilità selezionate siano valide per la classe
     for (var abilita in abilitaSelezionate) {
-      if (!suggeriteClasse.contains(abilita)) {
+      if (!abilitaDisponibili.contains(abilita)) {
         throw ValidationException(
-          "L'abilità $abilita non è disponibile per questa classe",
-          "Abilità"
-        );
+            "L'abilità $abilita non è disponibile per questa classe", "Abilità");
       }
     }
-
     return true;
   }
 
@@ -94,56 +79,137 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AppLogger.info("Step Abilità caricato");
+    final selezionate = abilitaSelezionate.length;
+    final completo = selezionate == maxAbilita;
+    final coloreCounter = completo
+        ? Colors.green
+        : (selezionate > 0 ? Colors.orange : Colors.grey);
+
+    // Solo le abilità disponibili per questa classe
+    final listaAbilita = abilitaList
+        .where((a) => abilitaDisponibili.contains(a.nome))
+        .toList();
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Step: Abilità")),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Text("Seleziona fino a $maxAbilita abilità", style: const TextStyle(fontSize: 18)),
-            const SizedBox(height: 12),
-            Expanded(
-              child: ListView.builder(
-                itemCount: abilitaList.length,
-                itemBuilder: (context, index) {
-                  final abilita = abilitaList[index];
-                  final selezionata = abilitaSelezionate.contains(abilita.nome);
-                  final suggerita = suggeriteClasse.contains(abilita.nome);
+      appBar: AppBar(title: const Text("Abilità")),
+      body: Column(
+        children: [
+          // Counter visibile
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            color: coloreCounter.withValues(alpha: 0.1),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '$selezionate',
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: coloreCounter,
+                  ),
+                ),
+                Text(
+                  ' / $maxAbilita',
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  'abilità selezionate',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+                if (completo) ...[
+                  const SizedBox(width: 8),
+                  Icon(Icons.check_circle, color: Colors.green.shade600, size: 20),
+                ]
+              ],
+            ),
+          ),
+          // Lista abilità disponibili per la classe
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.all(12),
+              itemCount: listaAbilita.length,
+              itemBuilder: (context, index) {
+                final abilita = listaAbilita[index];
+                final selezionata = abilitaSelezionate.contains(abilita.nome);
+                final puoSelezionare = selezionata || selezionate < maxAbilita;
 
-                  return Card(
-                    color: suggerita ? Colors.lightGreen[50] : null,
-                    child: CheckboxListTile(
-                      title: Text(abilita.nome),
-                      subtitle: Text("${abilita.caratteristicaAssociata} - ${abilita.descrizione}"),
-                      value: selezionata,
-                      onChanged: (_) => _toggleAbilita(abilita.nome),
+                return Card(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  color: selezionata
+                      ? const Color(0xFF8B4513).withValues(alpha: 0.1)
+                      : null,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: selezionata
+                        ? const BorderSide(
+                            color: Color(0xFF8B4513), width: 1.5)
+                        : BorderSide.none,
+                  ),
+                  child: CheckboxListTile(
+                    title: Text(
+                      abilita.nome,
+                      style: TextStyle(
+                        fontWeight: selezionata
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                      ),
                     ),
-                  );
-                },
-              ),
+                    subtitle: Text(
+                      '${abilita.caratteristicaAssociata}  •  ${abilita.descrizione}',
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                    value: selezionata,
+                    activeColor: const Color(0xFF8B4513),
+                    onChanged: puoSelezionare
+                        ? (_) => _toggleAbilita(abilita.nome)
+                        : null,
+                  ),
+                );
+              },
             ),
-            ElevatedButton(
-              onPressed: _conferma,
-              child: const Text("Conferma Abilità"),
+          ),
+          // Bottoni
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+            child: Column(
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: completo ? _conferma : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF8B4513),
+                      foregroundColor: Colors.white,
+                      disabledBackgroundColor: Colors.grey.shade300,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    child: Text(
+                      completo
+                          ? 'Conferma Abilità'
+                          : 'Seleziona ancora ${maxAbilita - selezionate}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: _saltaStep,
+                  child: const Text('Salta Step'),
+                ),
+              ],
             ),
-            TextButton(
-              onPressed: _saltaStep,
-              child: const Text("Salta Step"),
-            )
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
 
-Future<bool> vaiAStepAbilita(BuildContext context, PGBaseFactory factory) async {
-  return await Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => StepAbilitaScreen(factory: factory),
-    ),
-  ) ?? false;
-}

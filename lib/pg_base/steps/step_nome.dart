@@ -76,12 +76,3 @@ class _StepNomeScreenState extends State<StepNomeScreen> {
     );
   }
 }
-/// Funzione helper per lanciare lo step dal flusso principale
-Future<void> vaiAStepNome(BuildContext context, PGBaseFactory factory) async {
-  await Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => StepNomeScreen(factory: factory),
-    ),
-  );
-}

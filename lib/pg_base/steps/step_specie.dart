@@ -56,11 +56,3 @@ class StepSpecieScreen extends StatelessWidget {
   Navigator.pop(context, true); // Torna al wizard
 }
 }
-Future<void> vaiAStepSpecie(BuildContext context, PGBaseFactory factory) async {
-  await Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => StepSpecieScreen(factory: factory),
-    ),
-  );
-}

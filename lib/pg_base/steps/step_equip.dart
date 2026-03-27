@@ -150,11 +150,3 @@ class _StepEquipScreenState extends State<StepEquipScreen> {
   }
 }
 
-Future<void> vaiAStepEquipaggiamento(BuildContext context, PGBaseFactory factory) async {
-  await Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => StepEquipScreen(factory: factory),
-    ),
-  );
-}

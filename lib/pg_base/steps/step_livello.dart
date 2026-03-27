@@ -63,12 +63,3 @@ class _StepLivelloScreenState extends State<StepLivelloScreen> {
   }
 }
 
-/// Funzione helper per il wizard
-Future<void> vaiAStepLivello(BuildContext context, PGBaseFactory factory) async {
-  await Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => StepLivelloScreen(factory: factory),
-    ),
-  );
-}
