@@ -7,6 +7,7 @@ import 'steps/step_classe.dart';
 import 'steps/step_livello.dart';
 import 'steps/step_caratteristiche.dart';
 import 'steps/step_abilita.dart';
+import 'steps/step_background.dart';
 import 'steps/step_equip.dart';
 import 'steps/step_export.dart';
 import '../core/logger.dart';
@@ -19,6 +20,7 @@ const _stepsInfo = [
   {'icona': '⭐', 'nome': 'Livello', 'descr': 'Da 1 a 20'},
   {'icona': '💪', 'nome': 'Caratteristiche', 'descr': 'FOR, DES, COS, INT, SAG, CAR'},
   {'icona': '🎯', 'nome': 'Abilità', 'descr': 'Le competenze della tua classe'},
+  {'icona': '📜', 'nome': 'Background', 'descr': 'Storia passata e allineamento'},
   {'icona': '🛡️', 'nome': 'Equipaggiamento', 'descr': 'Armi, armature e oggetti'},
   {'icona': '📜', 'nome': 'Scheda', 'descr': 'Salva o esporta il personaggio'},
 ];
@@ -173,6 +175,7 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
       if (!await _eseguiStep('Livello', () => vaiAStepLivello(context, factory))) return;
       if (!await _eseguiStep('Caratteristiche', () => vaiAStepCaratteristiche(context, factory))) return;
       if (!await _eseguiStep('Abilità', () => vaiAStepAbilita(context, factory))) return;
+      if (!await _eseguiStep('Background', () => vaiAStepBackground(context, factory))) return;
       if (!await _eseguiStep('Equipaggiamento', () => vaiAStepEquipaggiamento(context, factory))) return;
 
       await _eseguiStep('Scheda', () => vaiAStepExportPDF(context, factory));
@@ -269,6 +272,15 @@ Future<bool> vaiAStepAbilita(
         context,
         MaterialPageRoute(
             builder: (_) => StepAbilitaScreen(factory: factory)),
+      ) ??
+      false;
+}
+
+Future<bool> vaiAStepBackground(
+    BuildContext context, PGBaseFactory factory) async {
+  return await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => StepBackgroundScreen(factory: factory)),
       ) ??
       false;
 }
