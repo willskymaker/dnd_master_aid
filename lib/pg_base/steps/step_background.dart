@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import '../../core/app_theme.dart';
 import '../../factory_pg_base.dart';
 import '../../data/db_background.dart';
 import '../../data/db_allineamenti.dart';
+import '../../widgets/mobile/mobile_scaffold.dart';
 
 class StepBackgroundScreen extends StatefulWidget {
   final PGBaseFactory factory;
@@ -57,9 +59,8 @@ class _StepBackgroundScreenState extends State<StepBackgroundScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFFAF7F2),
-      appBar: AppBar(title: const Text('Step: Background e Allineamento')),
+    return MobileScaffold(
+      title: 'Step: Background e Allineamento',
       body: Column(
         children: [
           Expanded(
@@ -108,15 +109,15 @@ class _StepBackgroundScreenState extends State<StepBackgroundScreen> {
                             decoration: BoxDecoration(
                               color:
                                   sel
-                                      ? const Color(
-                                        0xFF8B4513,
-                                      ).withValues(alpha: 0.12)
+                                      ? AppColors.primary.withValues(
+                                        alpha: 0.12,
+                                      )
                                       : Colors.white,
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(
                                 color:
                                     sel
-                                        ? const Color(0xFF8B4513)
+                                        ? AppColors.primary
                                         : Colors.grey.shade300,
                                 width: sel ? 2 : 1,
                               ),
@@ -127,10 +128,7 @@ class _StepBackgroundScreenState extends State<StepBackgroundScreen> {
                                 fontSize: 13,
                                 fontWeight:
                                     sel ? FontWeight.bold : FontWeight.normal,
-                                color:
-                                    sel
-                                        ? const Color(0xFF8B4513)
-                                        : Colors.black87,
+                                color: sel ? AppColors.primary : Colors.black87,
                               ),
                             ),
                           ),
@@ -151,10 +149,10 @@ class _StepBackgroundScreenState extends State<StepBackgroundScreen> {
                 child: ElevatedButton.icon(
                   onPressed: _conferma,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF8B4513),
+                    backgroundColor: AppColors.primary,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppRadius.md),
                     ),
                   ),
                   icon: const Icon(Icons.check),
@@ -195,11 +193,11 @@ class _BackgroundCard extends StatelessWidget {
         decoration: BoxDecoration(
           color:
               selezionato
-                  ? const Color(0xFF8B4513).withValues(alpha: 0.08)
+                  ? AppColors.primary.withValues(alpha: 0.08)
                   : Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppRadius.md),
           border: Border.all(
-            color: selezionato ? const Color(0xFF8B4513) : Colors.grey.shade200,
+            color: selezionato ? AppColors.primary : Colors.grey.shade200,
             width: selezionato ? 2 : 1,
           ),
         ),
@@ -208,7 +206,7 @@ class _BackgroundCard extends StatelessWidget {
           child: ExpansionTile(
             leading:
                 selezionato
-                    ? const Icon(Icons.check_circle, color: Color(0xFF8B4513))
+                    ? const Icon(Icons.check_circle, color: AppColors.primary)
                     : const Icon(
                       Icons.radio_button_unchecked,
                       color: Colors.grey,
@@ -217,7 +215,7 @@ class _BackgroundCard extends StatelessWidget {
               bg.nome,
               style: TextStyle(
                 fontWeight: selezionato ? FontWeight.bold : FontWeight.normal,
-                color: selezionato ? const Color(0xFF8B4513) : Colors.black87,
+                color: selezionato ? AppColors.primary : Colors.black87,
               ),
             ),
             subtitle: Text(
@@ -272,7 +270,7 @@ class _BackgroundCard extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: onTap,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF8B4513),
+                          backgroundColor: AppColors.primary,
                           foregroundColor: Colors.white,
                         ),
                         child: Text(
@@ -297,7 +295,7 @@ class _BackgroundCard extends StatelessWidget {
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 14, color: const Color(0xFF8B4513)),
+        Icon(icon, size: 14, color: AppColors.primary),
         const SizedBox(width: 6),
         Text(
           '$label: ',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../factory_pg_base.dart';
 import '../../data/db_specie.dart'; //importa il database specie
+import '../../widgets/mobile/mobile_scaffold.dart';
 
 class StepSpecieScreen extends StatelessWidget {
   final PGBaseFactory factory;
@@ -9,8 +10,8 @@ class StepSpecieScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Step 2: Seleziona la Specie")),
+    return MobileScaffold(
+      title: "Step 2: Seleziona la Specie",
       body: ListView.builder(
         itemCount: specieCoreList.length,
         itemBuilder: (context, index) {

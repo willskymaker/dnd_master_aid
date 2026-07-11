@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../core/app_theme.dart';
 import '../factory_pg_base.dart';
+import '../widgets/mobile/mobile_scaffold.dart';
 import 'steps/step_nome.dart';
 import 'steps/step_specie.dart';
 import 'steps/step_classe.dart';
@@ -54,9 +56,9 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFFAF7F2),
-      appBar: AppBar(title: const Text('Crea Personaggio')),
+    final textTheme = Theme.of(context).textTheme;
+    return MobileScaffold(
+      title: 'Crea Personaggio',
       body: Column(
         children: [
           // Banner errore dal provider
@@ -64,17 +66,22 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
             builder: (context, provider, _) {
               if (provider.errorMessage == null) return const SizedBox.shrink();
               return Container(
-                margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-                padding: const EdgeInsets.all(12),
+                margin: const EdgeInsets.fromLTRB(
+                  AppSpacing.lg,
+                  AppSpacing.md,
+                  AppSpacing.lg,
+                  0,
+                ),
+                padding: const EdgeInsets.all(AppSpacing.md),
                 decoration: BoxDecoration(
                   color: Colors.red.shade100,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppRadius.sm),
                   border: Border.all(color: Colors.red),
                 ),
                 child: Row(
                   children: [
                     const Icon(Icons.error, color: Colors.red),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppSpacing.sm),
                     Expanded(
                       child: Text(
                         provider.errorMessage!,
@@ -92,37 +99,37 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
           ),
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(AppSpacing.lg),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Intestazione
-                  const Text(
+                  Text(
                     '🧙‍♂️ Generatore guidato di personaggio',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: textTheme.titleMedium,
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppSpacing.xs),
                   Text(
                     'Seguirai ${_stepsInfo.length} semplici passi',
-                    style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+                    style: textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppSpacing.xl),
                   // Lista step
                   ...List.generate(_stepsInfo.length, (i) {
                     final step = _stepsInfo[i];
                     return Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
                       child: Row(
                         children: [
                           Container(
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
-                              color: const Color(
-                                0xFF8B4513,
-                              ).withValues(alpha: 0.1),
+                              color: AppColors.primary.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
                             ),
                             child: Center(
@@ -132,23 +139,21 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 14),
+                          const SizedBox(width: AppSpacing.md + 2),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   '${i + 1}. ${step["nome"]}',
-                                  style: const TextStyle(
+                                  style: textTheme.bodyMedium?.copyWith(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 14,
                                   ),
                                 ),
                                 Text(
                                   step['descr']!,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey.shade600,
+                                  style: textTheme.bodySmall?.copyWith(
+                                    color: AppColors.textSecondary,
                                   ),
                                 ),
                               ],
@@ -158,13 +163,13 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
                       ),
                     );
                   }),
-                  const SizedBox(height: 28),
+                  const SizedBox(height: AppSpacing.xl + AppSpacing.xs),
                   SizedBox(
                     height: 52,
                     child: ElevatedButton.icon(
                       onPressed: _inCorso ? null : _iniziaCreazione,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF8B4513),
+                        backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,
                       ),
                       icon:
@@ -182,7 +187,7 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
                         _inCorso
                             ? 'Creazione in corso...'
                             : 'Inizia la creazione',
-                        style: const TextStyle(fontSize: 16),
+                        style: textTheme.bodyLarge,
                       ),
                     ),
                   ),

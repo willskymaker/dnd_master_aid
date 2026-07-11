@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../core/app_theme.dart';
 import '../../factory_pg_base.dart';
+import '../../widgets/mobile/mobile_scaffold.dart';
 
 class StepLivelloScreen extends StatefulWidget {
   final PGBaseFactory factory;
@@ -29,17 +31,17 @@ class _StepLivelloScreenState extends State<StepLivelloScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Step: Seleziona il Livello")),
+    return MobileScaffold(
+      title: "Step: Seleziona il Livello",
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           children: [
-            const Text(
+            Text(
               "Scegli il livello iniziale del personaggio",
-              style: TextStyle(fontSize: 18),
+              style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppSpacing.lg),
             DropdownButton<int>(
               hint: const Text("Livello"),
               value: livelloSelezionato,
@@ -56,7 +58,7 @@ class _StepLivelloScreenState extends State<StepLivelloScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppSpacing.lg),
             ElevatedButton(
               onPressed: _conferma,
               child: const Text("Conferma Livello"),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../core/app_theme.dart';
 import '../../factory_pg_base.dart';
 import '../../data/db_classi.dart';
+import '../../widgets/mobile/mobile_scaffold.dart';
 
 final List<String> classiCore = [
   "Barbaro",
@@ -27,15 +29,15 @@ class StepClasseScreen extends StatelessWidget {
     final classiDisponibili =
         classiList.where((c) => classiCore.contains(c.nome)).toList();
 
-    return Scaffold(
-      appBar: AppBar(title: const Text("Step 3: Scegli la Classe")),
+    return MobileScaffold(
+      title: "Step 3: Scegli la Classe",
       body: ListView.builder(
         itemCount: classiDisponibili.length,
         itemBuilder: (context, index) {
           final classe = classiDisponibili[index];
 
           return Card(
-            margin: const EdgeInsets.all(8),
+            margin: const EdgeInsets.all(AppSpacing.sm),
             child: ListTile(
               title: Text(classe.nome),
               subtitle: Text(classe.descrizione),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../core/app_theme.dart';
 import '../../factory_pg_base.dart';
 import '../../screens/name_generator.dart';
+import '../../widgets/mobile/mobile_scaffold.dart';
 
 /// Widget per lo step 1: scelta del nome
 class StepNomeScreen extends StatefulWidget {
@@ -44,10 +46,10 @@ class _StepNomeScreenState extends State<StepNomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Step 1: Nome del Personaggio")),
+    return MobileScaffold(
+      title: "Step 1: Nome del Personaggio",
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           children: [
             TextField(
@@ -56,16 +58,16 @@ class _StepNomeScreenState extends State<StepNomeScreen> {
                 labelText: "Inserisci il nome",
                 border: OutlineInputBorder(),
               ),
-              style: const TextStyle(fontSize: 20),
+              style: Theme.of(context).textTheme.titleMedium,
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppSpacing.lg),
             ElevatedButton.icon(
               onPressed: _vaiAlGeneratore,
               icon: const Icon(Icons.casino),
               label: const Text("Genera Nome Automaticamente"),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppSpacing.lg),
             ElevatedButton(
               onPressed: _confermaNome,
               child: const Text("Conferma Nome"),

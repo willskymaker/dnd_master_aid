@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import '../../core/app_theme.dart';
 import '../../factory_pg_base.dart';
 import '../../data/db_classi.dart';
 import '../utils/pf_helper.dart';
 import '../../core/logger.dart';
 import '../../core/exceptions.dart';
+import '../../widgets/mobile/mobile_scaffold.dart';
 
 final List<int> standardArray = [15, 14, 13, 12, 10, 8];
 final List<String> caratteristiche = ['FOR', 'DES', 'COS', 'INT', 'SAG', 'CAR'];
@@ -171,14 +173,17 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
       modCostituzione: modCos,
     );
 
-    return Scaffold(
-      appBar: AppBar(title: const Text("Caratteristiche")),
+    return MobileScaffold(
+      title: "Caratteristiche",
       body: Column(
         children: [
           // Riquadro punti rimanenti + PF preview
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.lg,
+              vertical: AppSpacing.md,
+            ),
             color: coloreRimanenti.withValues(alpha: 0.1),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -207,7 +212,7 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
                       style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF8B4513),
+                        color: AppColors.primary,
                       ),
                     ),
                     const Text(
@@ -222,7 +227,7 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
           // Lista caratteristiche
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppSpacing.md),
               children:
                   caratteristiche.map((stat) {
                     final valore = baseStats[stat]!;
@@ -232,17 +237,17 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
                     final puoAumentare = rimanenti > 0 && valore < 20;
 
                     return Card(
-                      margin: const EdgeInsets.only(bottom: 8),
+                      margin: const EdgeInsets.only(bottom: AppSpacing.sm),
                       color:
                           evidenziata
-                              ? const Color(0xFF8B4513).withValues(alpha: 0.08)
+                              ? AppColors.primary.withValues(alpha: 0.08)
                               : null,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppRadius.md),
                         side:
                             evidenziata
                                 ? const BorderSide(
-                                  color: Color(0xFF8B4513),
+                                  color: AppColors.primary,
                                   width: 1.5,
                                 )
                                 : BorderSide.none,
@@ -266,7 +271,7 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 14,
-                                          color: Color(0xFF8B4513),
+                                          color: AppColors.primary,
                                         ),
                                       ),
                                       if (evidenziata) ...[
@@ -274,7 +279,7 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
                                         const Icon(
                                           Icons.star,
                                           size: 14,
-                                          color: Color(0xFF8B4513),
+                                          color: AppColors.primary,
                                         ),
                                       ],
                                     ],
@@ -353,7 +358,12 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
           ),
           // Bottoni
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.lg,
+              AppSpacing.sm,
+              AppSpacing.lg,
+              AppSpacing.xl,
+            ),
             child: Column(
               children: [
                 SizedBox(
@@ -361,7 +371,7 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
                   child: ElevatedButton(
                     onPressed: _conferma,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF8B4513),
+                      backgroundColor: AppColors.primary,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import '../../core/app_theme.dart';
 import '../../factory_pg_base.dart';
 import '../../data/db_abilita.dart';
 import '../../data/db_classi.dart';
 import '../../core/logger.dart';
 import '../../core/exceptions.dart';
+import '../../widgets/mobile/mobile_scaffold.dart';
 
 class StepAbilitaScreen extends StatefulWidget {
   final PGBaseFactory factory;
@@ -93,14 +95,17 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
     final listaAbilita =
         abilitaList.where((a) => abilitaDisponibili.contains(a.nome)).toList();
 
-    return Scaffold(
-      appBar: AppBar(title: const Text("Abilità")),
+    return MobileScaffold(
+      title: "Abilità",
       body: Column(
         children: [
           // Counter visibile
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.lg,
+              vertical: 14,
+            ),
             color: coloreCounter.withValues(alpha: 0.1),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -136,7 +141,7 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
           // Lista abilità disponibili per la classe
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(AppSpacing.md),
               itemCount: listaAbilita.length,
               itemBuilder: (context, index) {
                 final abilita = listaAbilita[index];
@@ -144,17 +149,17 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
                 final puoSelezionare = selezionata || selezionate < maxAbilita;
 
                 return Card(
-                  margin: const EdgeInsets.only(bottom: 8),
+                  margin: const EdgeInsets.only(bottom: AppSpacing.sm),
                   color:
                       selezionata
-                          ? const Color(0xFF8B4513).withValues(alpha: 0.1)
+                          ? AppColors.primary.withValues(alpha: 0.1)
                           : null,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppRadius.md),
                     side:
                         selezionata
                             ? const BorderSide(
-                              color: Color(0xFF8B4513),
+                              color: AppColors.primary,
                               width: 1.5,
                             )
                             : BorderSide.none,
@@ -172,7 +177,7 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
                       style: const TextStyle(fontSize: 12),
                     ),
                     value: selezionata,
-                    activeColor: const Color(0xFF8B4513),
+                    activeColor: AppColors.primary,
                     onChanged:
                         puoSelezionare
                             ? (_) => _toggleAbilita(abilita.nome)
@@ -184,7 +189,12 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
           ),
           // Bottoni
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.lg,
+              AppSpacing.sm,
+              AppSpacing.lg,
+              AppSpacing.xl,
+            ),
             child: Column(
               children: [
                 SizedBox(
@@ -192,7 +202,7 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
                   child: ElevatedButton(
                     onPressed: completo ? _conferma : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF8B4513),
+                      backgroundColor: AppColors.primary,
                       foregroundColor: Colors.white,
                       disabledBackgroundColor: Colors.grey.shade300,
                       padding: const EdgeInsets.symmetric(vertical: 14),
