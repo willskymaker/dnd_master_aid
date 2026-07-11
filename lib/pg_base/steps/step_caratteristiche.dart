@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import '../../core/app_theme.dart';
 import '../../factory_pg_base.dart';
@@ -143,6 +145,31 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
     return true;
   }
 
+  void _randomizza() {
+    final rnd = Random();
+    final nuovi = {for (var c in caratteristiche) c: 8};
+    var puntiRestanti = puntiDisponibili;
+
+    while (puntiRestanti > 0) {
+      final disponibili = caratteristiche.where((c) => nuovi[c]! < 20).toList();
+      if (disponibili.isEmpty) break;
+
+      // Le caratteristiche prioritarie per la classe hanno piu' probabilita'
+      // di ricevere punti.
+      final pesi = <String>[];
+      for (final c in disponibili) {
+        final peso = prioritarie.contains(c) ? 3 : 1;
+        pesi.addAll(List.filled(peso, c));
+      }
+
+      final scelto = pesi[rnd.nextInt(pesi.length)];
+      nuovi[scelto] = nuovi[scelto]! + 1;
+      puntiRestanti--;
+    }
+
+    setState(() => baseStats = nuovi);
+  }
+
   void _saltaStep() {
     final defaultStats = {for (var c in caratteristiche) c: 10};
     widget.factory.setCaratteristiche(defaultStats);
@@ -222,6 +249,22 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
                   ],
                 ),
               ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.lg,
+              AppSpacing.sm,
+              AppSpacing.lg,
+              0,
+            ),
+            child: SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: _randomizza,
+                icon: const Icon(Icons.casino),
+                label: const Text('Distribuisci punti casualmente'),
+              ),
             ),
           ),
           // Lista caratteristiche
