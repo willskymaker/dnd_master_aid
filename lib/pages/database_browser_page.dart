@@ -888,9 +888,9 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
             if (monster['hit_points'] != null)
               _buildDetailRow('PF', monster['hit_points'].toString()),
             if (monster['speed'] != null)
-              _buildDetailRow('Velocità', monster['speed'].toString()),
+              _buildDetailRow('Velocità', _formatSpeed(monster['speed'])),
             const SizedBox(height: 12),
-            if (monster['abilities'] != null) ...[
+            if (monster['ability_scores'] != null) ...[
               Text(
                 'Caratteristiche',
                 style: Theme.of(
@@ -901,13 +901,57 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _buildAbilityScore('FOR', monster['abilities']['str']),
-                  _buildAbilityScore('DES', monster['abilities']['dex']),
-                  _buildAbilityScore('COS', monster['abilities']['con']),
-                  _buildAbilityScore('INT', monster['abilities']['int']),
-                  _buildAbilityScore('SAG', monster['abilities']['wis']),
-                  _buildAbilityScore('CAR', monster['abilities']['cha']),
+                  _buildAbilityScore(
+                    'FOR',
+                    monster['ability_scores']['strength'],
+                  ),
+                  _buildAbilityScore(
+                    'DES',
+                    monster['ability_scores']['dexterity'],
+                  ),
+                  _buildAbilityScore(
+                    'COS',
+                    monster['ability_scores']['constitution'],
+                  ),
+                  _buildAbilityScore(
+                    'INT',
+                    monster['ability_scores']['intelligence'],
+                  ),
+                  _buildAbilityScore(
+                    'SAG',
+                    monster['ability_scores']['wisdom'],
+                  ),
+                  _buildAbilityScore(
+                    'CAR',
+                    monster['ability_scores']['charisma'],
+                  ),
                 ],
+              ),
+              const SizedBox(height: 12),
+            ],
+            if (monster['special_abilities'] != null &&
+                (monster['special_abilities'] as List).isNotEmpty) ...[
+              Text(
+                'Capacità speciali',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              ...(monster['special_abilities'] as List).map(
+                (ability) => Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        ability['name'] ?? '',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(ability['description'] ?? ''),
+                    ],
+                  ),
+                ),
               ),
               const SizedBox(height: 12),
             ],
@@ -935,11 +979,44 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
                   ),
                 ),
               ),
+              const SizedBox(height: 12),
+            ],
+            if (monster['legendary_actions'] != null &&
+                (monster['legendary_actions'] as List).isNotEmpty) ...[
+              Text(
+                'Azioni leggendarie',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              ...(monster['legendary_actions'] as List).map(
+                (action) => Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        action['name'] ?? '',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(action['description'] ?? ''),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ],
         ),
       ),
     );
+  }
+
+  String _formatSpeed(dynamic speed) {
+    if (speed is Map) {
+      return speed.entries.map((e) => '${e.key} ${e.value}').join(', ');
+    }
+    return speed.toString();
   }
 
   Widget _buildAbilityScore(String label, dynamic value) {
