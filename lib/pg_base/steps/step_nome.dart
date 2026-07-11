@@ -44,6 +44,10 @@ class _StepNomeScreenState extends State<StepNomeScreen> {
     Navigator.pop(context, true);
   }
 
+  void _saltaStep() {
+    Navigator.pop(context, true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MobileScaffold(
@@ -72,6 +76,8 @@ class _StepNomeScreenState extends State<StepNomeScreen> {
               onPressed: _confermaNome,
               child: const Text("Conferma Nome"),
             ),
+            const SizedBox(height: AppSpacing.lg),
+            TextButton(onPressed: _saltaStep, child: const Text("Salta Step")),
           ],
         ),
       ),

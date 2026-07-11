@@ -12,29 +12,46 @@ class StepSpecieScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MobileScaffold(
       title: "Step 2: Seleziona la Specie",
-      body: ListView.builder(
-        itemCount: specieCoreList.length,
-        itemBuilder: (context, index) {
-          final specie = specieCoreList[index];
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: specieCoreList.length,
+              itemBuilder: (context, index) {
+                final specie = specieCoreList[index];
 
-          return Card(
-            child: ListTile(
-              title: Text(specie.nome),
-              subtitle: Text(
-                "Velocità: ${specie.velocita} m\n"
-                "Competenze: ${specie.competenze.join(', ')}\n"
-                "Abilità innate: ${specie.abilitaInnate.join(', ')}\n"
-                "Resistenze: ${specie.resistenze.join(', ')}\n"
-                "Linguaggi: ${specie.linguaggi.join(', ')}",
-              ),
-              onTap: () {
-                _selezionaSpecie(context, specie);
+                return Card(
+                  child: ListTile(
+                    title: Text(specie.nome),
+                    subtitle: Text(
+                      "Velocità: ${specie.velocita} m\n"
+                      "Competenze: ${specie.competenze.join(', ')}\n"
+                      "Abilità innate: ${specie.abilitaInnate.join(', ')}\n"
+                      "Resistenze: ${specie.resistenze.join(', ')}\n"
+                      "Linguaggi: ${specie.linguaggi.join(', ')}",
+                    ),
+                    onTap: () {
+                      _selezionaSpecie(context, specie);
+                    },
+                  ),
+                );
               },
             ),
-          );
-        },
+          ),
+          SafeArea(
+            top: false,
+            child: TextButton(
+              onPressed: () => _saltaStep(context),
+              child: const Text('Salta Step'),
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+  void _saltaStep(BuildContext context) {
+    _selezionaSpecie(context, specieCoreList.first);
   }
 
   void _selezionaSpecie(BuildContext context, Specie specie) {

@@ -29,6 +29,11 @@ class _StepLivelloScreenState extends State<StepLivelloScreen> {
     Navigator.pop(context, true);
   }
 
+  void _saltaStep() {
+    widget.factory.setLivello(1);
+    Navigator.pop(context, true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MobileScaffold(
@@ -63,6 +68,8 @@ class _StepLivelloScreenState extends State<StepLivelloScreen> {
               onPressed: _conferma,
               child: const Text("Conferma Livello"),
             ),
+            const SizedBox(height: AppSpacing.lg),
+            TextButton(onPressed: _saltaStep, child: const Text("Salta Step")),
           ],
         ),
       ),

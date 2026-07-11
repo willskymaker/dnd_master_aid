@@ -57,6 +57,10 @@ class _StepBackgroundScreenState extends State<StepBackgroundScreen> {
     Navigator.pop(context, true);
   }
 
+  void _saltaStep() {
+    Navigator.pop(context, true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MobileScaffold(
@@ -164,6 +168,13 @@ class _StepBackgroundScreenState extends State<StepBackgroundScreen> {
                   ),
                 ),
               ),
+            ),
+          ),
+          SafeArea(
+            top: false,
+            child: TextButton(
+              onPressed: _saltaStep,
+              child: const Text('Salta Step'),
             ),
           ),
         ],

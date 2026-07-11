@@ -31,24 +31,41 @@ class StepClasseScreen extends StatelessWidget {
 
     return MobileScaffold(
       title: "Step 3: Scegli la Classe",
-      body: ListView.builder(
-        itemCount: classiDisponibili.length,
-        itemBuilder: (context, index) {
-          final classe = classiDisponibili[index];
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: classiDisponibili.length,
+              itemBuilder: (context, index) {
+                final classe = classiDisponibili[index];
 
-          return Card(
-            margin: const EdgeInsets.all(AppSpacing.sm),
-            child: ListTile(
-              title: Text(classe.nome),
-              subtitle: Text(classe.descrizione),
-              onTap: () {
-                _selezionaClasse(context, classe);
+                return Card(
+                  margin: const EdgeInsets.all(AppSpacing.sm),
+                  child: ListTile(
+                    title: Text(classe.nome),
+                    subtitle: Text(classe.descrizione),
+                    onTap: () {
+                      _selezionaClasse(context, classe);
+                    },
+                  ),
+                );
               },
             ),
-          );
-        },
+          ),
+          SafeArea(
+            top: false,
+            child: TextButton(
+              onPressed: () => _saltaStep(context, classiDisponibili),
+              child: const Text('Salta Step'),
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+  void _saltaStep(BuildContext context, List<Classe> classiDisponibili) {
+    _selezionaClasse(context, classiDisponibili.first);
   }
 
   void _selezionaClasse(BuildContext context, Classe classe) {
