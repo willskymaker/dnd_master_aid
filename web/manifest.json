@@ -1,11 +1,11 @@
 {
-    "name": "dnd_master_aid",
-    "short_name": "dnd_master_aid",
+    "name": "D&D Master Aid",
+    "short_name": "D&D Master Aid",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#1a1a2e",
+    "theme_color": "#1a1a2e",
+    "description": "Assistente open source offline per Dungeons & Dragons 5e: creazione personaggi, database e strumenti per il Master.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
