@@ -33,7 +33,7 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
     {
       'name': 'Incantesimi',
       'icon': Icons.auto_awesome,
-      'count': '500+',
+      'count': '400+',
       'description': 'Database completo',
     },
     {
@@ -57,8 +57,14 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
     {
       'name': 'Mostri',
       'icon': Icons.pets,
-      'count': '10+',
+      'count': '300+',
       'description': 'Creature e bestie',
+    },
+    {
+      'name': 'Oggetti Magici',
+      'icon': Icons.auto_fix_high,
+      'count': '200+',
+      'description': 'Armi, pozioni e artefatti magici',
     },
   ];
 
@@ -315,6 +321,9 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
         break;
       case 'Mostri':
         _showMonstersBottomSheet();
+        break;
+      case 'Oggetti Magici':
+        _showMagicItemsBottomSheet();
         break;
     }
   }
@@ -1028,6 +1037,98 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
         ),
         Text(value?.toString() ?? '-', style: const TextStyle(fontSize: 16)),
       ],
+    );
+  }
+
+  void _showMagicItemsBottomSheet() {
+    MobileBottomSheet.show(
+      context: context,
+      title: 'Oggetti Magici',
+      isScrollControlled: true,
+      height: MediaQuery.of(context).size.height * 0.8,
+      child: FutureBuilder<List<Map<String, dynamic>>>(
+        future: JsonDataRepository.loadMagicItems(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(child: Text('Errore: ${snapshot.error}'));
+          }
+
+          final items = snapshot.data ?? [];
+
+          if (items.isEmpty) {
+            return const Center(
+              child: Text('Nessun oggetto magico disponibile'),
+            );
+          }
+
+          return ListView(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            children:
+                items
+                    .map(
+                      (item) => MobileListTile(
+                        title:
+                            item['italian_name'] ??
+                            item['name'] ??
+                            'Sconosciuto',
+                        subtitle:
+                            '${item['type'] ?? '?'} - ${item['rarity'] ?? '?'}',
+                        onTap: () => _showMagicItemDetails(item),
+                        showDivider: true,
+                      ),
+                    )
+                    .toList(),
+          );
+        },
+      ),
+    );
+  }
+
+  void _showMagicItemDetails(Map<String, dynamic> item) {
+    MobileBottomSheet.show(
+      context: context,
+      title: item['italian_name'] ?? item['name'] ?? 'Sconosciuto',
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (item['name'] != null &&
+                item['name'] != item['italian_name']) ...[
+              Text(
+                'Nome originale: ${item['name']}',
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(fontStyle: FontStyle.italic),
+              ),
+              const SizedBox(height: 12),
+            ],
+            _buildDetailRow('Tipo', item['type'] ?? 'N/A'),
+            _buildDetailRow('Rarità', item['rarity'] ?? 'N/A'),
+            _buildDetailRow(
+              'Sintonia',
+              (item['attunement'] == true) ? 'Richiesta' : 'Non richiesta',
+            ),
+            if (item['attunement_note'] != null)
+              _buildDetailRow('Dettagli sintonia', item['attunement_note']),
+            const SizedBox(height: 12),
+            if (item['description'] != null) ...[
+              Text(
+                'Descrizione',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Text(item['description']),
+            ],
+          ],
+        ),
+      ),
     );
   }
 

@@ -15,6 +15,7 @@ class JsonDataRepository {
   static Map<String, dynamic>? _cachedBackgrounds;
   static Map<String, dynamic>? _cachedFeats;
   static Map<String, dynamic>? _cachedMonsters;
+  static Map<String, dynamic>? _cachedMagicItems;
 
   /// Carica le specie dal file JSON
   static Future<List<Specie>> loadSpecies() async {
@@ -220,6 +221,29 @@ class JsonDataRepository {
     }
   }
 
+  /// Carica gli oggetti magici dal file JSON
+  static Future<List<Map<String, dynamic>>> loadMagicItems() async {
+    try {
+      if (_cachedMagicItems == null) {
+        AppLogger.info("Caricando oggetti magici da JSON");
+        final String jsonString = await rootBundle.loadString(
+          'assets/data/magic_items.json',
+        );
+        _cachedMagicItems = json.decode(jsonString);
+      }
+
+      final List<dynamic> itemsData = _cachedMagicItems!['magic_items'];
+      final List<Map<String, dynamic>> items =
+          itemsData.cast<Map<String, dynamic>>();
+
+      AppLogger.info("Caricati ${items.length} oggetti magici dal JSON");
+      return items;
+    } catch (e) {
+      AppLogger.error("Errore nel caricamento oggetti magici da JSON", e);
+      return []; // Ritorna lista vuota in caso di errore
+    }
+  }
+
   /// Converte dati JSON in oggetto Specie
   static Specie _parseSpecieFromJson(Map<String, dynamic> data) {
     return Specie(
@@ -336,6 +360,7 @@ class JsonDataRepository {
     _cachedBackgrounds = null;
     _cachedFeats = null;
     _cachedMonsters = null;
+    _cachedMagicItems = null;
     AppLogger.info("Cache JSON repository pulita");
   }
 
@@ -505,6 +530,24 @@ class JsonDataRepository {
       final name = feat['name']?.toLowerCase() ?? '';
       final italianName = feat['italian_name']?.toLowerCase() ?? '';
       final description = feat['description']?.toLowerCase() ?? '';
+
+      return name.contains(lowercaseQuery) ||
+          italianName.contains(lowercaseQuery) ||
+          description.contains(lowercaseQuery);
+    }).toList();
+  }
+
+  /// Cerca oggetti magici per nome o descrizione
+  static Future<List<Map<String, dynamic>>> searchMagicItems(
+    String query,
+  ) async {
+    final items = await loadMagicItems();
+    final lowercaseQuery = query.toLowerCase();
+
+    return items.where((item) {
+      final name = item['name']?.toLowerCase() ?? '';
+      final italianName = item['italian_name']?.toLowerCase() ?? '';
+      final description = item['description']?.toLowerCase() ?? '';
 
       return name.contains(lowercaseQuery) ||
           italianName.contains(lowercaseQuery) ||
