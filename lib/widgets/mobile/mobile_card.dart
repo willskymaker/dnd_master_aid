@@ -14,7 +14,7 @@ class MobileCard extends StatefulWidget {
   final bool showElevation;
 
   const MobileCard({
-    Key? key,
+    super.key,
     required this.child,
     this.title,
     this.subtitle,
@@ -25,7 +25,7 @@ class MobileCard extends StatefulWidget {
     this.padding,
     this.backgroundColor,
     this.showElevation = true,
-  }) : super(key: key);
+  });
 
   @override
   State<MobileCard> createState() => _MobileCardState();

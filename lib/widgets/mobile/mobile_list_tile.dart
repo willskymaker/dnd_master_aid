@@ -13,7 +13,7 @@ class MobileListTile extends StatefulWidget {
   final EdgeInsetsGeometry? contentPadding;
 
   const MobileListTile({
-    Key? key,
+    super.key,
     required this.title,
     this.subtitle,
     this.leading,
@@ -23,7 +23,7 @@ class MobileListTile extends StatefulWidget {
     this.showDivider = false,
     this.backgroundColor,
     this.contentPadding,
-  }) : super(key: key);
+  });
 
   @override
   State<MobileListTile> createState() => _MobileListTileState();
@@ -43,7 +43,7 @@ class _MobileListTileState extends State<MobileListTile>
     );
     _colorAnimation = ColorTween(
       begin: widget.backgroundColor ?? Colors.transparent,
-      end: Colors.grey.withOpacity(0.1),
+      end: Colors.grey.withValues(alpha: 0.1),
     ).animate(_animationController);
   }
 
@@ -124,12 +124,12 @@ class MobileListGroup extends StatelessWidget {
   final bool showGroupDivider;
 
   const MobileListGroup({
-    Key? key,
+    super.key,
     this.header,
     required this.children,
     this.padding,
     this.showGroupDivider = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -178,7 +178,7 @@ class MobileExpandableTile extends StatefulWidget {
   final ValueChanged<bool>? onExpansionChanged;
 
   const MobileExpandableTile({
-    Key? key,
+    super.key,
     required this.title,
     this.subtitle,
     this.leading,
@@ -186,7 +186,7 @@ class MobileExpandableTile extends StatefulWidget {
     required this.children,
     this.initiallyExpanded = false,
     this.onExpansionChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<MobileExpandableTile> createState() => _MobileExpandableTileState();

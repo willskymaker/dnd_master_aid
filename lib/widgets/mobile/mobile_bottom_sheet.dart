@@ -103,11 +103,11 @@ class MobileBottomSheetList extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
 
   const MobileBottomSheetList({
-    Key? key,
+    super.key,
     required this.children,
     this.title,
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

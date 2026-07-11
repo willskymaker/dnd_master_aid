@@ -120,7 +120,7 @@ class PGBase {
   String toString() {
     return 'PGBase(nome: $nome, specie: $specie, classe: $classe, livello: $livello, background: $background, allineamento: $allineamento, '
         'modificatori: $modificatori, velocità: $velocita, linguaggi: $linguaggi, capacità: $capacitaSpeciali, '
-        'HP: $puntiVita (d${dadoVita}), TS: $tiriSalvezza, armi: $competenzeArmi, armature: $competenzeArmature, strumenti: $competenzeStrumenti, '
+        'HP: $puntiVita (d$dadoVita), TS: $tiriSalvezza, armi: $competenzeArmi, armature: $competenzeArmature, strumenti: $competenzeStrumenti, '
         'abilita: $abilitaClasse, equipaggiamento: ${equipaggiamento.isNotEmpty ? equipaggiamento.join(', ') : 'Nessun equipaggiamento'})';
   }
 }

@@ -11,7 +11,7 @@ class MobileScaffold extends StatelessWidget {
   final bool showBackButton;
 
   const MobileScaffold({
-    Key? key,
+    super.key,
     required this.title,
     required this.body,
     this.floatingActionButton,
@@ -19,7 +19,7 @@ class MobileScaffold extends StatelessWidget {
     this.drawer,
     this.bottom,
     this.showBackButton = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

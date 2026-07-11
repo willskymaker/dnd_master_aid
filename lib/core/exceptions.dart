@@ -9,13 +9,13 @@ class CharacterCreationException implements Exception {
 }
 
 class ValidationException extends CharacterCreationException {
-  const ValidationException(String message, String step) : super(message, step);
+  const ValidationException(super.message, super.step);
 }
 
 class DataException extends CharacterCreationException {
-  const DataException(String message, String step) : super(message, step);
+  const DataException(super.message, super.step);
 }
 
 class NavigationException extends CharacterCreationException {
-  const NavigationException(String message, String step) : super(message, step);
+  const NavigationException(super.message, super.step);
 }

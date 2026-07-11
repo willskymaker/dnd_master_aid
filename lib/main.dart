@@ -152,7 +152,7 @@ class HomePage extends StatelessWidget {
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: attivo ? const Color(0xFF8B4513).withOpacity(0.1) : Colors.grey.shade300,
+                    color: attivo ? const Color(0xFF8B4513).withValues(alpha: 0.1) : Colors.grey.shade300,
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Center(
@@ -234,7 +234,7 @@ class HomePage extends StatelessWidget {
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  color: attivo ? const Color(0xFF8B4513).withOpacity(0.1) : Colors.grey.shade300,
+                  color: attivo ? const Color(0xFF8B4513).withValues(alpha: 0.1) : Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(40),
                 ),
                 child: Center(

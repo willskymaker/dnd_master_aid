@@ -11,7 +11,7 @@ class MobileSearchBar extends StatefulWidget {
   final bool autofocus;
 
   const MobileSearchBar({
-    Key? key,
+    super.key,
     this.hintText = 'Cerca...',
     this.onChanged,
     this.onSubmitted,
@@ -19,7 +19,7 @@ class MobileSearchBar extends StatefulWidget {
     this.leading,
     this.actions,
     this.autofocus = false,
-  }) : super(key: key);
+  });
 
   @override
   State<MobileSearchBar> createState() => _MobileSearchBarState();
@@ -84,7 +84,7 @@ class _MobileSearchBarState extends State<MobileSearchBar>
         borderRadius: BorderRadius.circular(25),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -132,12 +132,12 @@ class CompactMobileSearchBar extends StatefulWidget implements PreferredSizeWidg
   final VoidCallback? onClear;
 
   const CompactMobileSearchBar({
-    Key? key,
+    super.key,
     this.hintText = 'Cerca...',
     this.onChanged,
     this.onSubmitted,
     this.onClear,
-  }) : super(key: key);
+  });
 
   @override
   State<CompactMobileSearchBar> createState() => _CompactMobileSearchBarState();
@@ -181,25 +181,25 @@ class _CompactMobileSearchBarState extends State<CompactMobileSearchBar> {
           style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(
             hintText: widget.hintText,
-            hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+            hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.7)),
             prefixIcon: Icon(
               Icons.search,
-              color: Colors.white.withOpacity(0.7),
+              color: Colors.white.withValues(alpha: 0.7),
             ),
             suffixIcon: _controller.text.isNotEmpty
               ? IconButton(
                   icon: const Icon(Icons.clear),
-                  color: Colors.white.withOpacity(0.7),
+                  color: Colors.white.withValues(alpha: 0.7),
                   onPressed: _clearSearch,
                 )
               : null,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
-              borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
+              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.3)),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
-              borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
+              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.3)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),

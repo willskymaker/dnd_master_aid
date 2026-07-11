@@ -40,8 +40,8 @@ android {
         applicationId = "com.dndmasteraid.app"
         minSdk = 21
         targetSdk = 35  // Android 15 - richiesto da Google Play
-        versionCode = 6
-        versionName = "1.0.6"
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
 
         // Enable multidex support for large apps
         multiDexEnabled = true

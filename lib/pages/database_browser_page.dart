@@ -8,7 +8,7 @@ import '../core/logger.dart';
 
 /// Pagina per navigare i database D&D 5e ottimizzata per mobile
 class DatabaseBrowserPage extends StatefulWidget {
-  const DatabaseBrowserPage({Key? key}) : super(key: key);
+  const DatabaseBrowserPage({super.key});
 
   @override
   State<DatabaseBrowserPage> createState() => _DatabaseBrowserPageState();
@@ -126,7 +126,7 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
                 width: 60,
                 height: 60,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF8B4513).withOpacity(0.1),
+                  color: const Color(0xFF8B4513).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Icon(
@@ -346,7 +346,7 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
                   ? '${specie.descrizione.substring(0, 100)}...'
                   : specie.descrizione,
               leading: CircleAvatar(
-                backgroundColor: const Color(0xFF8B4513).withOpacity(0.1),
+                backgroundColor: const Color(0xFF8B4513).withValues(alpha: 0.1),
                 child: Text(
                   specie.nome[0].toUpperCase(),
                   style: const TextStyle(
@@ -390,7 +390,7 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
               title: classe.nome,
               subtitle: '${classe.descrizione.substring(0, classe.descrizione.length > 100 ? 100 : classe.descrizione.length)}...',
               leading: CircleAvatar(
-                backgroundColor: const Color(0xFF8B4513).withOpacity(0.1),
+                backgroundColor: const Color(0xFF8B4513).withValues(alpha: 0.1),
                 child: Text(
                   classe.nome[0].toUpperCase(),
                   style: const TextStyle(
@@ -536,7 +536,7 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
               spacing: 8,
               children: (item['properties'] as List).map<Widget>((prop) => Chip(
                 label: Text(prop.toString()),
-                backgroundColor: const Color(0xFF8B4513).withOpacity(0.1),
+                backgroundColor: const Color(0xFF8B4513).withValues(alpha: 0.1),
               )).toList(),
             ),
           ],
@@ -906,7 +906,7 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
               spacing: 8,
               children: specie.competenze.map<Widget>((comp) => Chip(
                 label: Text(comp),
-                backgroundColor: const Color(0xFF8B4513).withOpacity(0.1),
+                backgroundColor: const Color(0xFF8B4513).withValues(alpha: 0.1),
               )).toList(),
             ),
           ],
@@ -948,7 +948,7 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
               spacing: 8,
               children: classe.sottoclassi.map<Widget>((sub) => Chip(
                 label: Text(sub),
-                backgroundColor: const Color(0xFF8B4513).withOpacity(0.1),
+                backgroundColor: const Color(0xFF8B4513).withValues(alpha: 0.1),
               )).toList(),
             ),
           ],
@@ -985,7 +985,7 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF8B4513).withOpacity(0.1),
+                  color: const Color(0xFF8B4513).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Text(

@@ -16,7 +16,7 @@ class _StepNomeScreenState extends State<StepNomeScreen> {
   final TextEditingController _controller = TextEditingController();
 
   void _vaiAlGeneratore() async {
-    final result = await Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => NameGeneratorScreen(factory: widget.factory),

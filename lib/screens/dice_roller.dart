@@ -118,7 +118,7 @@ class _DiceRollerScreenState extends State<DiceRollerScreen> {
                               color: sel ? const Color(0xFF8B4513) : Colors.grey.shade300,
                               width: 2,
                             ),
-                            boxShadow: sel ? [BoxShadow(color: const Color(0xFF8B4513).withOpacity(0.3), blurRadius: 6, offset: const Offset(0, 2))] : null,
+                            boxShadow: sel ? [BoxShadow(color: const Color(0xFF8B4513).withValues(alpha: 0.3), blurRadius: 6, offset: const Offset(0, 2))] : null,
                           ),
                           child: Center(
                             child: Text(
@@ -257,8 +257,8 @@ class _DiceRollerScreenState extends State<DiceRollerScreen> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: _coloreTotale().withOpacity(0.4), width: 2),
-                        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8)],
+                        border: Border.all(color: _coloreTotale().withValues(alpha: 0.4), width: 2),
+                        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 8)],
                       ),
                       child: Column(
                         children: [
@@ -355,7 +355,7 @@ class _DiceRollerScreenState extends State<DiceRollerScreen> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: sel ? color.withOpacity(0.12) : Colors.grey.shade50,
+            color: sel ? color.withValues(alpha: 0.12) : Colors.grey.shade50,
             borderRadius: BorderRadius.circular(10),
             border: Border.all(color: sel ? color : Colors.grey.shade300, width: sel ? 2 : 1),
           ),
