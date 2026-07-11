@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import '../core/app_theme.dart';
 import '../factory_pg_base.dart';
+import '../widgets/mobile/mobile_scaffold.dart';
 import 'dart:math'; // ✅ IMPORTA Random
 
 class NameGeneratorScreen extends StatefulWidget {
@@ -79,21 +81,31 @@ class _NameGeneratorScreenState extends State<NameGeneratorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Generatore di Nomi")),
+    return MobileScaffold(
+      title: "Generatore di Nomi",
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           children: [
             Text(
               _nomeGenerato.isEmpty ? "Premi per generare" : _nomeGenerato,
-              style: const TextStyle(fontSize: 24),
+              style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
+            const SizedBox(height: AppSpacing.lg),
+            ElevatedButton.icon(
               onPressed: _generaNome,
-              child: const Text("Genera Nome"),
+              icon: const Icon(Icons.casino),
+              label: const Text("Genera Nome"),
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            ElevatedButton.icon(
+              onPressed:
+                  _nomeGenerato.isEmpty
+                      ? null
+                      : () => Navigator.pop(context, true),
+              icon: const Icon(Icons.check),
+              label: const Text("Conferma nome e continua"),
             ),
           ],
         ),
