@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'dart:math';
 
 class DiceRollerScreen extends StatefulWidget {
@@ -17,7 +18,8 @@ class _RollRecord {
   _RollRecord(this.label, this.totale, this.dettaglio);
 }
 
-class _DiceRollerScreenState extends State<DiceRollerScreen> {
+class _DiceRollerScreenState extends State<DiceRollerScreen>
+    with SingleTickerProviderStateMixin {
   final Random _random = Random();
   int _numeroDadi = 1;
   int _facceDado = 20;
@@ -28,9 +30,31 @@ class _DiceRollerScreenState extends State<DiceRollerScreen> {
   int? _altroD20; // per vantaggio/svantaggio
   final List<_RollRecord> _storico = [];
 
+  late final AnimationController _rollController;
+  Timer? _rollTimer;
+  bool _rolling = false;
+  int _displayTotale = 0;
+
   static const _dadi = [4, 6, 8, 10, 12, 20, 100];
+  static const _durataAnimazione = Duration(milliseconds: 650);
 
   bool get _mostraVantaggio => _facceDado == 20 && _numeroDadi == 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _rollController = AnimationController(
+      vsync: this,
+      duration: _durataAnimazione,
+    );
+  }
+
+  @override
+  void dispose() {
+    _rollTimer?.cancel();
+    _rollController.dispose();
+    super.dispose();
+  }
 
   void _lanciaDadi() {
     List<int> tiri = List.generate(
@@ -53,11 +77,27 @@ class _DiceRollerScreenState extends State<DiceRollerScreen> {
     final label = _buildLabel();
     final dettaglio = _buildDettaglio(tiri, altroD20);
 
-    setState(() {
-      _risultati = tiri;
-      _altroD20 = altroD20;
-      _storico.insert(0, _RollRecord(label, somma, dettaglio));
-      if (_storico.length > 10) _storico.removeLast();
+    _rollTimer?.cancel();
+    setState(() => _rolling = true);
+
+    // Effetto "slot machine": mostra numeri casuali finché l'animazione gira.
+    _rollTimer = Timer.periodic(const Duration(milliseconds: 60), (_) {
+      setState(() {
+        _displayTotale =
+            _random.nextInt(_facceDado * _numeroDadi) + 1 + _modificatore;
+      });
+    });
+
+    _rollController.forward(from: 0).whenComplete(() {
+      _rollTimer?.cancel();
+      if (!mounted) return;
+      setState(() {
+        _rolling = false;
+        _risultati = tiri;
+        _altroD20 = altroD20;
+        _storico.insert(0, _RollRecord(label, somma, dettaglio));
+        if (_storico.length > 10) _storico.removeLast();
+      });
     });
   }
 
@@ -332,7 +372,7 @@ class _DiceRollerScreenState extends State<DiceRollerScreen> {
                   SizedBox(
                     height: 56,
                     child: ElevatedButton.icon(
-                      onPressed: _lanciaDadi,
+                      onPressed: _rolling ? null : _lanciaDadi,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF8B4513),
                         foregroundColor: Colors.white,
@@ -352,7 +392,7 @@ class _DiceRollerScreenState extends State<DiceRollerScreen> {
                   ),
 
                   // Risultato principale
-                  if (_risultati.isNotEmpty) ...[
+                  if (_risultati.isNotEmpty || _rolling) ...[
                     const SizedBox(height: 20),
                     Container(
                       padding: const EdgeInsets.all(20),
@@ -360,7 +400,10 @@ class _DiceRollerScreenState extends State<DiceRollerScreen> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: _coloreTotale().withValues(alpha: 0.4),
+                          color:
+                              _rolling
+                                  ? Colors.grey.shade300
+                                  : _coloreTotale().withValues(alpha: 0.4),
                           width: 2,
                         ),
                         boxShadow: [
@@ -373,7 +416,9 @@ class _DiceRollerScreenState extends State<DiceRollerScreen> {
                       child: Column(
                         children: [
                           // Critico/Fallimento critico
-                          if (_facceDado == 20 && _risultati[0] == 20)
+                          if (!_rolling &&
+                              _facceDado == 20 &&
+                              _risultati[0] == 20)
                             const Text(
                               '🎯 COLPO CRITICO!',
                               style: TextStyle(
@@ -382,7 +427,9 @@ class _DiceRollerScreenState extends State<DiceRollerScreen> {
                                 fontSize: 13,
                               ),
                             ),
-                          if (_facceDado == 20 && _risultati[0] == 1)
+                          if (!_rolling &&
+                              _facceDado == 20 &&
+                              _risultati[0] == 1)
                             const Text(
                               '💀 FALLIMENTO CRITICO',
                               style: TextStyle(
@@ -391,24 +438,44 @@ class _DiceRollerScreenState extends State<DiceRollerScreen> {
                                 fontSize: 13,
                               ),
                             ),
-                          Text(
-                            '$_totale',
-                            style: TextStyle(
-                              fontSize: 60,
-                              fontWeight: FontWeight.bold,
-                              color: _coloreTotale(),
-                              height: 1.1,
+                          AnimatedBuilder(
+                            animation: _rollController,
+                            builder: (context, child) {
+                              final angolo =
+                                  _rolling
+                                      ? sin(_rollController.value * pi * 8) *
+                                          0.15
+                                      : 0.0;
+                              return Transform.rotate(
+                                angle: angolo,
+                                child: child,
+                              );
+                            },
+                            child: Text(
+                              '${_rolling ? _displayTotale : _totale}',
+                              style: TextStyle(
+                                fontSize: 60,
+                                fontWeight: FontWeight.bold,
+                                color:
+                                    _rolling
+                                        ? Colors.grey.shade400
+                                        : _coloreTotale(),
+                                height: 1.1,
+                              ),
                             ),
                           ),
                           // Breakdown
                           Text(
-                            _buildDettaglio(_risultati, _altroD20),
+                            _rolling
+                                ? 'Tiro in corso...'
+                                : _buildDettaglio(_risultati, _altroD20),
                             style: TextStyle(
                               fontSize: 13,
                               color: Colors.grey.shade600,
                             ),
                           ),
-                          if (_mostraVantaggio &&
+                          if (!_rolling &&
+                              _mostraVantaggio &&
                               _modalita != _VantaggioMode.normale &&
                               _altroD20 != null)
                             Padding(
