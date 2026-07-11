@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/app_theme.dart';
+
 /// Scaffold ottimizzato per dispositivi mobile
 class MobileScaffold extends StatelessWidget {
   final String title;
@@ -32,7 +34,7 @@ class MobileScaffold extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        backgroundColor: const Color(0xFF8B4513), // Brown theme per D&D
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         elevation: 4,
         actions: actions,
@@ -42,7 +44,7 @@ class MobileScaffold extends StatelessWidget {
       drawer: drawer,
       body: SafeArea(child: body),
       floatingActionButton: floatingActionButton,
-      backgroundColor: const Color(0xFFF5F5DC), // Beige background
+      backgroundColor: AppColors.background,
     );
   }
 }

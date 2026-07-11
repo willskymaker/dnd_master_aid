@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/app_theme.dart';
+
 /// Card ottimizzata per dispositivi mobile con gesture e animazioni
 class MobileCard extends StatefulWidget {
   final Widget child;
@@ -83,10 +85,10 @@ class _MobileCardState extends State<MobileCard>
               elevation: widget.showElevation ? 4 : 0,
               color: widget.backgroundColor ?? Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppRadius.md),
               ),
               child: Padding(
-                padding: widget.padding ?? const EdgeInsets.all(16),
+                padding: widget.padding ?? const EdgeInsets.all(AppSpacing.lg),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +100,7 @@ class _MobileCardState extends State<MobileCard>
                         children: [
                           if (widget.leading != null) ...[
                             widget.leading!,
-                            const SizedBox(width: 12),
+                            const SizedBox(width: AppSpacing.md),
                           ],
                           Expanded(
                             child: Column(
@@ -115,8 +117,11 @@ class _MobileCardState extends State<MobileCard>
                                 if (widget.subtitle != null)
                                   Text(
                                     widget.subtitle!,
-                                    style: Theme.of(context).textTheme.bodySmall
-                                        ?.copyWith(color: Colors.grey[600]),
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodySmall?.copyWith(
+                                      color: AppColors.textSecondary,
+                                    ),
                                   ),
                               ],
                             ),
@@ -127,7 +132,7 @@ class _MobileCardState extends State<MobileCard>
                     if (widget.title != null ||
                         widget.leading != null ||
                         widget.trailing != null)
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppSpacing.md),
                     widget.child,
                   ],
                 ),

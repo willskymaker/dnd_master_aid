@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/app_theme.dart';
+
 /// Search bar ottimizzata per mobile con animazioni
 class MobileSearchBar extends StatefulWidget {
   final String hintText;
@@ -174,7 +176,7 @@ class _CompactMobileSearchBarState extends State<CompactMobileSearchBar> {
       preferredSize: widget.preferredSize,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        color: const Color(0xFF8B4513),
+        color: AppColors.primary,
         child: TextField(
           controller: _controller,
           onChanged: widget.onChanged,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/app_theme.dart';
+
 /// ListTile ottimizzato per dispositivi mobile con touch feedback migliorato
 class MobileListTile extends StatefulWidget {
   final String title;
@@ -145,7 +147,7 @@ class MobileListGroup extends StatelessWidget {
               child: Text(
                 header!,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: const Color(0xFF8B4513),
+                  color: AppColors.primary,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 0.5,
                 ),
@@ -155,7 +157,7 @@ class MobileListGroup extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 16),
             elevation: 2,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppRadius.md),
             ),
             child: Column(children: children),
           ),
@@ -238,7 +240,9 @@ class _MobileExpandableTileState extends State<MobileExpandableTile>
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.md),
+      ),
       child: Column(
         children: [
           MobileListTile(

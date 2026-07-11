@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // === IMPORTAZIONI ===
+import 'core/app_theme.dart';
 import 'pg_base/main_pg_base.dart'; // PG Base Wizard
 import 'screens/coming_soon.dart'; // Schermata per funzionalità disattivate
 import 'screens/dice_roller.dart'; // Modulo dadi
@@ -29,27 +30,9 @@ class DnDMasterAidApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => SavedCharactersProvider()),
       ],
       child: MaterialApp(
-        title: 'DnD MasterAid',
+        title: 'D&D Master Aid',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.brown,
-          primaryColor: const Color(0xFF8B4513),
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xFF8B4513),
-            brightness: Brightness.light,
-          ),
-          useMaterial3: true,
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Color(0xFF8B4513),
-            foregroundColor: Colors.white,
-          ),
-          cardTheme: CardThemeData(
-            elevation: 4,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-        ),
+        theme: buildAppTheme(),
         home: const HomePage(),
       ),
     );
