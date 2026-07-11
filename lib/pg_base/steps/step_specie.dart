@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import '../../factory_pg_base.dart';
 import '../../data/db_specie.dart'; //importa il database specie
@@ -14,6 +16,17 @@ class StepSpecieScreen extends StatelessWidget {
       title: "Step 2: Seleziona la Specie",
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+            child: SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () => _randomizza(context),
+                icon: const Icon(Icons.casino),
+                label: const Text('Specie casuale'),
+              ),
+            ),
+          ),
           Expanded(
             child: ListView.builder(
               itemCount: specieCoreList.length,
@@ -51,7 +64,12 @@ class StepSpecieScreen extends StatelessWidget {
   }
 
   void _saltaStep(BuildContext context) {
-    _selezionaSpecie(context, specieCoreList.first);
+    Navigator.pop(context, true);
+  }
+
+  void _randomizza(BuildContext context) {
+    final specie = specieCoreList[Random().nextInt(specieCoreList.length)];
+    _selezionaSpecie(context, specie);
   }
 
   void _selezionaSpecie(BuildContext context, Specie specie) {

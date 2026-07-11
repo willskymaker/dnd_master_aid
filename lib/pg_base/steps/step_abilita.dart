@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import '../../core/app_theme.dart';
 import '../../factory_pg_base.dart';
@@ -80,6 +82,14 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
   void _saltaStep() {
     widget.factory.setAbilitaClasse([]);
     Navigator.pop(context, true);
+  }
+
+  void _randomizza() {
+    final disponibili = List<String>.from(abilitaDisponibili)
+      ..shuffle(Random());
+    setState(() {
+      abilitaSelezionate = disponibili.take(maxAbilita).toList();
+    });
   }
 
   @override
@@ -197,6 +207,15 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
             ),
             child: Column(
               children: [
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: _randomizza,
+                    icon: const Icon(Icons.casino),
+                    label: const Text('Abilità casuali'),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(

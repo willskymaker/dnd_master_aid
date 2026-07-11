@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import '../../core/app_theme.dart';
 import '../../factory_pg_base.dart';
@@ -34,6 +36,10 @@ class _StepLivelloScreenState extends State<StepLivelloScreen> {
     Navigator.pop(context, true);
   }
 
+  void _randomizza() {
+    setState(() => livelloSelezionato = Random().nextInt(20) + 1);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MobileScaffold(
@@ -62,6 +68,12 @@ class _StepLivelloScreenState extends State<StepLivelloScreen> {
                   child: Text("Livello ${index + 1}"),
                 ),
               ),
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            OutlinedButton.icon(
+              onPressed: _randomizza,
+              icon: const Icon(Icons.casino),
+              label: const Text("Livello casuale"),
             ),
             const SizedBox(height: AppSpacing.lg),
             ElevatedButton(

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import '../../factory_pg_base.dart';
 import '../../data/db_equip.dart';
@@ -88,6 +90,18 @@ class _StepEquipScreenState extends State<StepEquipScreen> {
       kit = loadedKit;
       strumenti = loadedStrumenti;
       _loading = false;
+    });
+  }
+
+  T? _casuale<T>(List<T> lista) =>
+      lista.isEmpty ? null : lista[Random().nextInt(lista.length)];
+
+  void _randomizza() {
+    setState(() {
+      armaSelezionata = _casuale(armi);
+      armaturaSelezionata = _casuale(armature);
+      kitSelezionato = _casuale(kit);
+      strumentoSelezionato = _casuale(strumenti);
     });
   }
 
@@ -228,6 +242,15 @@ class _StepEquipScreenState extends State<StepEquipScreen> {
                       ),
                       const SizedBox(height: 32),
 
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          onPressed: _randomizza,
+                          icon: const Icon(Icons.casino),
+                          label: const Text("Equipaggiamento casuale"),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(

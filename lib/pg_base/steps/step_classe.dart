@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import '../../core/app_theme.dart';
 import '../../factory_pg_base.dart';
@@ -33,6 +35,17 @@ class StepClasseScreen extends StatelessWidget {
       title: "Step 3: Scegli la Classe",
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+            child: SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () => _randomizza(context, classiDisponibili),
+                icon: const Icon(Icons.casino),
+                label: const Text('Classe casuale'),
+              ),
+            ),
+          ),
           Expanded(
             child: ListView.builder(
               itemCount: classiDisponibili.length,
@@ -55,7 +68,7 @@ class StepClasseScreen extends StatelessWidget {
           SafeArea(
             top: false,
             child: TextButton(
-              onPressed: () => _saltaStep(context, classiDisponibili),
+              onPressed: () => _saltaStep(context),
               child: const Text('Salta Step'),
             ),
           ),
@@ -64,8 +77,14 @@ class StepClasseScreen extends StatelessWidget {
     );
   }
 
-  void _saltaStep(BuildContext context, List<Classe> classiDisponibili) {
-    _selezionaClasse(context, classiDisponibili.first);
+  void _saltaStep(BuildContext context) {
+    Navigator.pop(context, true);
+  }
+
+  void _randomizza(BuildContext context, List<Classe> classiDisponibili) {
+    final classe =
+        classiDisponibili[Random().nextInt(classiDisponibili.length)];
+    _selezionaClasse(context, classe);
   }
 
   void _selezionaClasse(BuildContext context, Classe classe) {

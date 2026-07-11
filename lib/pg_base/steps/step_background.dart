@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import '../../core/app_theme.dart';
 import '../../factory_pg_base.dart';
@@ -61,6 +63,15 @@ class _StepBackgroundScreenState extends State<StepBackgroundScreen> {
     Navigator.pop(context, true);
   }
 
+  void _randomizza() {
+    setState(() {
+      _backgroundSelezionato =
+          backgroundList[Random().nextInt(backgroundList.length)];
+      _allineamentoSelezionato =
+          allineamentiList[Random().nextInt(allineamentiList.length)].nome;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MobileScaffold(
@@ -79,6 +90,15 @@ class _StepBackgroundScreenState extends State<StepBackgroundScreen> {
                 Text(
                   'Il background definisce la storia passata, le competenze e la personalità.',
                   style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: _randomizza,
+                    icon: const Icon(Icons.casino),
+                    label: const Text('Background e allineamento casuali'),
+                  ),
                 ),
                 const SizedBox(height: 16),
                 ...backgroundList.map(
