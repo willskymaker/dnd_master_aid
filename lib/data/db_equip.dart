@@ -3,13 +3,14 @@
 class OggettoEquip {
   final String nome;
   final String tipo; // "arma", "armatura", "oggetto"
-  final String categoria; // es: "leggera", "media", "pesante", "da guerra", "comune", ecc.
+  final String
+  categoria; // es: "leggera", "media", "pesante", "da guerra", "comune", ecc.
   final String descrizione;
   final String proprieta; // [versatile, magico]
   final String? danno; // es: "1d8", "1d10", oppure null per oggetti e armature
   final double costoMO;
   final double pesoKg;
-  final List<String> classiConsigliate; 
+  final List<String> classiConsigliate;
 
   OggettoEquip({
     required this.nome,
@@ -20,10 +21,93 @@ class OggettoEquip {
     required this.costoMO,
     required this.pesoKg,
     this.danno,
-    this.classiConsigliate = const []
+    this.classiConsigliate = const [],
   });
-}
 
+  factory OggettoEquip.fromWeaponJson(
+    Map<String, dynamic> json,
+    String weaponType,
+  ) {
+    return OggettoEquip(
+      nome: json['italian_name'] ?? json['name'] ?? '',
+      tipo: 'arma',
+      categoria: weaponType,
+      descrizione: json['damage_type'] ?? '',
+      proprieta: (json['properties'] as List?)?.join(', ') ?? '',
+      danno: json['damage'],
+      costoMO: _parseCost(json['cost']),
+      pesoKg: _parseWeight(json['weight']),
+    );
+  }
+
+  factory OggettoEquip.fromArmorJson(
+    Map<String, dynamic> json,
+    String armorType,
+  ) {
+    return OggettoEquip(
+      nome: json['italian_name'] ?? json['name'] ?? '',
+      tipo: 'armatura',
+      categoria: armorType,
+      descrizione: json['armor_class'] ?? '',
+      proprieta: (json['properties'] as List?)?.join(', ') ?? '',
+      danno: null,
+      costoMO: _parseCost(json['cost']),
+      pesoKg: _parseWeight(json['weight']),
+    );
+  }
+
+  factory OggettoEquip.fromKitJson(Map<String, dynamic> json) {
+    final contents = (json['contents'] as List?)?.join(', ') ?? '';
+    return OggettoEquip(
+      nome: json['italian_name'] ?? json['name'] ?? '',
+      tipo: 'oggetto',
+      categoria: 'kit',
+      descrizione: contents,
+      proprieta: '',
+      danno: null,
+      costoMO: _parseCost(json['cost']),
+      pesoKg: 0,
+    );
+  }
+
+  factory OggettoEquip.fromToolJson(Map<String, dynamic> json) {
+    return OggettoEquip(
+      nome: json['italian_name'] ?? json['name'] ?? '',
+      tipo: 'oggetto',
+      categoria: 'strumento',
+      descrizione: json['description'] ?? '',
+      proprieta: '',
+      danno: null,
+      costoMO: _parseCost(json['cost']),
+      pesoKg: _parseWeight(json['weight']),
+    );
+  }
+
+  static double _parseCost(dynamic cost) {
+    if (cost == null) return 0;
+    final parts = cost.toString().replaceAll(',', '').split(' ');
+    if (parts.length < 2) return 0;
+    final value = double.tryParse(parts[0]) ?? 0;
+    switch (parts[1].toLowerCase()) {
+      case 'gp':
+        return value;
+      case 'sp':
+        return value / 10;
+      case 'cp':
+        return value / 100;
+      default:
+        return value;
+    }
+  }
+
+  static double _parseWeight(dynamic weight) {
+    if (weight == null) return 0;
+    final lb =
+        double.tryParse(weight.toString().replaceAll(',', '').split(' ')[0]) ??
+        0;
+    return lb * 0.453592;
+  }
+}
 
 final List<OggettoEquip> oggettiEquipList = [
   OggettoEquip(
@@ -35,7 +119,7 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: "1d8 / 1d10",
     costoMO: 15,
     pesoKg: 1.5,
-    classiConsigliate: ["Guerriero", "Paladino", "Ranger"]
+    classiConsigliate: ["Guerriero", "Paladino", "Ranger"],
   ),
   OggettoEquip(
     nome: "Arco lungo",
@@ -46,18 +130,19 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: "1d8",
     costoMO: 50,
     pesoKg: 1.8,
-    classiConsigliate: ["Ranger", "Guerriero"]
+    classiConsigliate: ["Ranger", "Guerriero"],
   ),
   OggettoEquip(
     nome: "Giaco di maglia",
     tipo: "armatura",
     categoria: "media",
-    descrizione: "CA base 14 + Des (max 2). Richiede competenza in armature medie.",
+    descrizione:
+        "CA base 14 + Des (max 2). Richiede competenza in armature medie.",
     proprieta: "rumorosa",
     danno: null,
     costoMO: 50,
     pesoKg: 10.0,
-    classiConsigliate: ["Guerriero", "Chierico", "Ranger"]
+    classiConsigliate: ["Guerriero", "Chierico", "Ranger"],
   ),
   OggettoEquip(
     nome: "Scudo",
@@ -68,7 +153,7 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: null,
     costoMO: 10,
     pesoKg: 3.0,
-    classiConsigliate: ["Paladino", "Chierico", "Guerriero"]
+    classiConsigliate: ["Paladino", "Chierico", "Guerriero"],
   ),
   OggettoEquip(
     nome: "Corda di canapa (15 metri)",
@@ -79,18 +164,19 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: null,
     costoMO: 1,
     pesoKg: 4.5,
-    classiConsigliate: []
+    classiConsigliate: [],
   ),
-    OggettoEquip(
+  OggettoEquip(
     nome: "Pugnale",
     tipo: "arma",
     categoria: "semplice",
-    descrizione: "Arma leggera e lanciabile, utile sia in corpo a corpo che a distanza.",
+    descrizione:
+        "Arma leggera e lanciabile, utile sia in corpo a corpo che a distanza.",
     proprieta: "leggera, finesse, lancio (6/18)",
     danno: "1d4",
     costoMO: 2,
     pesoKg: 0.5,
-    classiConsigliate: ["Ladro", "Stregone", "Bardo"]
+    classiConsigliate: ["Ladro", "Stregone", "Bardo"],
   ),
   OggettoEquip(
     nome: "Fionda",
@@ -101,18 +187,19 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: "1d4",
     costoMO: 0,
     pesoKg: 0.2,
-    classiConsigliate: ["Druido", "Mago"]
+    classiConsigliate: ["Druido", "Mago"],
   ),
   OggettoEquip(
     nome: "Bastone ferrato",
     tipo: "arma",
     categoria: "semplice",
-    descrizione: "Arma da mischia comune, spesso usata anche come supporto per la camminata.",
+    descrizione:
+        "Arma da mischia comune, spesso usata anche come supporto per la camminata.",
     proprieta: "versatile",
     danno: "1d6 / 1d8",
     costoMO: 0,
     pesoKg: 2.0,
-    classiConsigliate: ["Mago", "Monaco", "Druido"]
+    classiConsigliate: ["Mago", "Monaco", "Druido"],
   ),
   OggettoEquip(
     nome: "Armatura di cuoio",
@@ -123,7 +210,7 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: null,
     costoMO: 10,
     pesoKg: 4.0,
-    classiConsigliate: ["Ladro", "Bardo", "Stregone"]
+    classiConsigliate: ["Ladro", "Bardo", "Stregone"],
   ),
   OggettoEquip(
     nome: "Zaino",
@@ -134,7 +221,7 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: null,
     costoMO: 2,
     pesoKg: 2.0,
-    classiConsigliate: []
+    classiConsigliate: [],
   ),
   OggettoEquip(
     nome: "Martello da guerra",
@@ -145,7 +232,7 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: "1d8 / 1d10",
     costoMO: 15,
     pesoKg: 2.5,
-    classiConsigliate: ["Chierico", "Paladino"]
+    classiConsigliate: ["Chierico", "Paladino"],
   ),
   OggettoEquip(
     nome: "Ascia bipenne",
@@ -156,7 +243,7 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: "1d12",
     costoMO: 30,
     pesoKg: 3.5,
-    classiConsigliate: ["Barbaro", "Guerriero"]
+    classiConsigliate: ["Barbaro", "Guerriero"],
   ),
   OggettoEquip(
     nome: "Armatura a piastre",
@@ -167,9 +254,9 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: null,
     costoMO: 1500,
     pesoKg: 29.5,
-    classiConsigliate: ["Paladino", "Guerriero"]
+    classiConsigliate: ["Paladino", "Guerriero"],
   ),
-    OggettoEquip(
+  OggettoEquip(
     nome: "Lanterna a campana",
     tipo: "oggetto",
     categoria: "comune",
@@ -178,7 +265,7 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: null,
     costoMO: 5,
     pesoKg: 1.0,
-    classiConsigliate: []
+    classiConsigliate: [],
   ),
   OggettoEquip(
     nome: "Razioni (1 giorno)",
@@ -189,7 +276,7 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: null,
     costoMO: 0.5,
     pesoKg: 1.0,
-    classiConsigliate: []
+    classiConsigliate: [],
   ),
   OggettoEquip(
     nome: "Borraccia",
@@ -200,7 +287,7 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: null,
     costoMO: 1,
     pesoKg: 1.5,
-    classiConsigliate: []
+    classiConsigliate: [],
   ),
   OggettoEquip(
     nome: "Tenda piccola",
@@ -211,7 +298,7 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: null,
     costoMO: 10,
     pesoKg: 9.0,
-    classiConsigliate: []
+    classiConsigliate: [],
   ),
   OggettoEquip(
     nome: "Balestra leggera",
@@ -222,7 +309,7 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: "1d8",
     costoMO: 25,
     pesoKg: 4.5,
-    classiConsigliate: ["Ladro", "Guerriero"]
+    classiConsigliate: ["Ladro", "Guerriero"],
   ),
   OggettoEquip(
     nome: "Frusta",
@@ -233,7 +320,7 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: "1d4",
     costoMO: 2,
     pesoKg: 1.5,
-    classiConsigliate: ["Ladro", "Bardo"]
+    classiConsigliate: ["Ladro", "Bardo"],
   ),
   OggettoEquip(
     nome: "Armatura di scaglie",
@@ -244,7 +331,7 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: null,
     costoMO: 50,
     pesoKg: 20.0,
-    classiConsigliate: ["Chierico", "Ranger"]
+    classiConsigliate: ["Chierico", "Ranger"],
   ),
   OggettoEquip(
     nome: "Torcia",
@@ -255,7 +342,7 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: null,
     costoMO: 0.01,
     pesoKg: 0.5,
-    classiConsigliate: []
+    classiConsigliate: [],
   ),
   OggettoEquip(
     nome: "Piedi di porco",
@@ -266,7 +353,7 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: null,
     costoMO: 2,
     pesoKg: 2.0,
-    classiConsigliate: ["Ladro", "Guerriero"]
+    classiConsigliate: ["Ladro", "Guerriero"],
   ),
   OggettoEquip(
     nome: "Attrezzi da ladro",
@@ -277,7 +364,7 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: null,
     costoMO: 25,
     pesoKg: 0.5,
-    classiConsigliate: ["Ladro"]
+    classiConsigliate: ["Ladro"],
   ),
   OggettoEquip(
     nome: "Pozione di guarigione",
@@ -288,7 +375,7 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: null,
     costoMO: 50,
     pesoKg: 0.5,
-    classiConsigliate: []
+    classiConsigliate: [],
   ),
   OggettoEquip(
     nome: "Liuto da bardo",
@@ -299,7 +386,7 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: null,
     costoMO: 35,
     pesoKg: 1.5,
-    classiConsigliate: ["Bardo"]
+    classiConsigliate: ["Bardo"],
   ),
   OggettoEquip(
     nome: "Kit da erborista",
@@ -310,6 +397,6 @@ final List<OggettoEquip> oggettiEquipList = [
     danno: null,
     costoMO: 5,
     pesoKg: 1.0,
-    classiConsigliate: ["Druido", "Ranger"]
+    classiConsigliate: ["Druido", "Ranger"],
   ),
 ];

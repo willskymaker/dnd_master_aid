@@ -9,7 +9,6 @@ import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 import '../../factory_pg_base.dart';
 import '../../utils/web_pdf_saver.dart';
-import '../../core/logger.dart';
 import '../../providers/saved_characters_provider.dart';
 
 class StepExportScreen extends StatefulWidget {
@@ -27,19 +26,32 @@ class _StepExportScreenState extends State<StepExportScreen> {
 
   String _classeEmoji(String classe) {
     switch (classe.toLowerCase()) {
-      case 'barbaro': return '⚔️';
-      case 'bardo': return '🎵';
-      case 'chierico': return '✝️';
-      case 'druido': return '🌿';
-      case 'guerriero': return '🛡️';
-      case 'ladro': return '🗡️';
-      case 'mago': return '🔮';
-      case 'monaco': return '👊';
-      case 'paladino': return '⚜️';
-      case 'ranger': return '🏹';
-      case 'stregone': return '✨';
-      case 'warlock': return '👁️';
-      default: return '🧙';
+      case 'barbaro':
+        return '⚔️';
+      case 'bardo':
+        return '🎵';
+      case 'chierico':
+        return '✝️';
+      case 'druido':
+        return '🌿';
+      case 'guerriero':
+        return '🛡️';
+      case 'ladro':
+        return '🗡️';
+      case 'mago':
+        return '🔮';
+      case 'monaco':
+        return '👊';
+      case 'paladino':
+        return '⚜️';
+      case 'ranger':
+        return '🏹';
+      case 'stregone':
+        return '✨';
+      case 'warlock':
+        return '👁️';
+      default:
+        return '🧙';
     }
   }
 
@@ -72,8 +84,7 @@ class _StepExportScreenState extends State<StepExportScreen> {
 
   Future<void> _esportaPDF(PGBase pg) async {
     try {
-      final filename =
-          '${pg.nome}_liv${pg.livello}.pdf'.replaceAll(' ', '_');
+      final filename = '${pg.nome}_liv${pg.livello}.pdf'.replaceAll(' ', '_');
       final pdfData = await _generaPDF(pg);
 
       if (kIsWeb) {
@@ -139,14 +150,18 @@ class _StepExportScreenState extends State<StepExportScreen> {
                     Text(
                       pg.nome.isNotEmpty ? pg.nome : 'Personaggio',
                       style: const TextStyle(
-                          fontSize: 26, fontWeight: FontWeight.bold),
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 4),
                     Text(
                       '${pg.classe}  •  ${pg.specie}  •  Livello ${pg.livello}',
                       style: TextStyle(
-                          fontSize: 15, color: Colors.grey.shade600),
+                        fontSize: 15,
+                        color: Colors.grey.shade600,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 12),
@@ -154,11 +169,20 @@ class _StepExportScreenState extends State<StepExportScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         _statoPill(
-                            Icons.favorite, '${pg.puntiVita} PF', Colors.red),
-                        _statoPill(Icons.speed, '${pg.velocita} m',
-                            Colors.blue),
-                        _statoPill(Icons.casino,
-                            'd${pg.dadoVita}', const Color(0xFF8B4513)),
+                          Icons.favorite,
+                          '${pg.puntiVita} PF',
+                          Colors.red,
+                        ),
+                        _statoPill(
+                          Icons.speed,
+                          '${pg.velocita} m',
+                          Colors.blue,
+                        ),
+                        _statoPill(
+                          Icons.casino,
+                          'd${pg.dadoVita}',
+                          const Color(0xFF8B4513),
+                        ),
                       ],
                     ),
                   ],
@@ -174,9 +198,13 @@ class _StepExportScreenState extends State<StepExportScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Caratteristiche',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15)),
+                    const Text(
+                      'Caratteristiche',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
                     const SizedBox(height: 12),
                     if (pg.caratteristicheImpostate)
                       GridView.count(
@@ -186,45 +214,59 @@ class _StepExportScreenState extends State<StepExportScreen> {
                         childAspectRatio: 1.3,
                         mainAxisSpacing: 8,
                         crossAxisSpacing: 8,
-                        children: ['FOR', 'DES', 'COS', 'INT', 'SAG', 'CAR']
-                            .map((s) {
-                          final val = pg.caratteristiche[s] ?? 0;
-                          final mod = pg.modificatori[s] ?? 0;
-                          final segno = mod >= 0 ? '+' : '';
-                          return Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: const Color(0xFF8B4513)
-                                      .withValues(alpha: 0.35)),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(s,
-                                    style: const TextStyle(
+                        children:
+                            ['FOR', 'DES', 'COS', 'INT', 'SAG', 'CAR'].map((s) {
+                              final val = pg.caratteristiche[s] ?? 0;
+                              final mod = pg.modificatori[s] ?? 0;
+                              final segno = mod >= 0 ? '+' : '';
+                              return Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: const Color(
+                                      0xFF8B4513,
+                                    ).withValues(alpha: 0.35),
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      s,
+                                      style: const TextStyle(
                                         fontSize: 11,
                                         fontWeight: FontWeight.bold,
-                                        color: Color(0xFF8B4513))),
-                                Text('$val',
-                                    style: const TextStyle(
+                                        color: Color(0xFF8B4513),
+                                      ),
+                                    ),
+                                    Text(
+                                      '$val',
+                                      style: const TextStyle(
                                         fontSize: 22,
-                                        fontWeight: FontWeight.bold)),
-                                Text('$segno$mod',
-                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      '$segno$mod',
+                                      style: TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.w600,
-                                        color: mod >= 0
-                                            ? Colors.green.shade700
-                                            : Colors.red.shade700)),
-                              ],
-                            ),
-                          );
-                        }).toList(),
+                                        color:
+                                            mod >= 0
+                                                ? Colors.green.shade700
+                                                : Colors.red.shade700,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
                       )
                     else
-                      const Text('Caratteristiche non impostate',
-                          style: TextStyle(color: Colors.grey)),
+                      const Text(
+                        'Caratteristiche non impostate',
+                        style: TextStyle(color: Colors.grey),
+                      ),
                   ],
                 ),
               ),
@@ -238,24 +280,30 @@ class _StepExportScreenState extends State<StepExportScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Dettagli',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15)),
+                    const Text(
+                      'Dettagli',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
                     const SizedBox(height: 8),
                     if (pg.abilitaClasse.isNotEmpty)
-                      _rigaDettaglio(
-                          'Abilità', pg.abilitaClasse.join(', ')),
+                      _rigaDettaglio('Abilità', pg.abilitaClasse.join(', ')),
                     if (pg.linguaggi.isNotEmpty)
                       _rigaDettaglio('Linguaggi', pg.linguaggi.join(', ')),
                     if (pg.competenze.isNotEmpty)
-                      _rigaDettaglio(
-                          'Competenze', pg.competenze.join(', ')),
+                      _rigaDettaglio('Competenze', pg.competenze.join(', ')),
                     if (pg.tiriSalvezza.isNotEmpty)
                       _rigaDettaglio(
-                          'Tiri Salvezza', pg.tiriSalvezza.join(', ')),
+                        'Tiri Salvezza',
+                        pg.tiriSalvezza.join(', '),
+                      ),
                     if (pg.capacitaSpeciali.isNotEmpty)
                       _rigaDettaglio(
-                          'Abilità innate', pg.capacitaSpeciali.join(', ')),
+                        'Abilità innate',
+                        pg.capacitaSpeciali.join(', '),
+                      ),
                   ],
                 ),
               ),
@@ -269,21 +317,30 @@ class _StepExportScreenState extends State<StepExportScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Equipaggiamento',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15)),
+                      const Text(
+                        'Equipaggiamento',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
                       const SizedBox(height: 8),
-                      ...pg.equipaggiamento.map((e) => Padding(
-                            padding: const EdgeInsets.only(bottom: 4),
-                            child: Row(
-                              children: [
-                                const Icon(Icons.circle,
-                                    size: 6, color: Color(0xFF8B4513)),
-                                const SizedBox(width: 8),
-                                Expanded(child: Text(e)),
-                              ],
-                            ),
-                          )),
+                      ...pg.equipaggiamento.map(
+                        (e) => Padding(
+                          padding: const EdgeInsets.only(bottom: 4),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.circle,
+                                size: 6,
+                                color: Color(0xFF8B4513),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(child: Text(e)),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -296,30 +353,32 @@ class _StepExportScreenState extends State<StepExportScreen> {
             SizedBox(
               height: 52,
               child: ElevatedButton.icon(
-                onPressed: _salvataggioInCorso
-                    ? null
-                    : () => _salvaPersonaggio(pg),
+                onPressed:
+                    _salvataggioInCorso ? null : () => _salvaPersonaggio(pg),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: _personaggioSalvato
-                      ? Colors.green.shade700
-                      : const Color(0xFF8B4513),
+                  backgroundColor:
+                      _personaggioSalvato
+                          ? Colors.green.shade700
+                          : const Color(0xFF8B4513),
                   foregroundColor: Colors.white,
                 ),
-                icon: _salvataggioInCorso
-                    ? const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(
-                            color: Colors.white, strokeWidth: 2))
-                    : Icon(_personaggioSalvato
-                        ? Icons.check
-                        : Icons.save),
+                icon:
+                    _salvataggioInCorso
+                        ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                        : Icon(_personaggioSalvato ? Icons.check : Icons.save),
                 label: Text(
                   _salvataggioInCorso
                       ? 'Salvataggio...'
                       : _personaggioSalvato
-                          ? 'Personaggio salvato!'
-                          : 'Salva Personaggio',
+                      ? 'Personaggio salvato!'
+                      : 'Salva Personaggio',
                   style: const TextStyle(fontSize: 16),
                 ),
               ),
@@ -350,88 +409,328 @@ class _StepExportScreenState extends State<StepExportScreen> {
         children: [
           Icon(icon, size: 16, color: color),
           const SizedBox(width: 6),
-          Text(label,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, color: color, fontSize: 14)),
+          Text(
+            label,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: color,
+              fontSize: 14,
+            ),
+          ),
         ],
       ),
     );
   }
 
   Widget _rigaDettaglio(String label, String valore) => Padding(
-        padding: const EdgeInsets.only(bottom: 6),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: 110,
-              child: Text(label,
-                  style: const TextStyle(fontWeight: FontWeight.w600)),
-            ),
-            Expanded(
-                child: Text(valore,
-                    style: TextStyle(color: Colors.grey.shade800))),
-          ],
+    padding: const EdgeInsets.only(bottom: 6),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 110,
+          child: Text(
+            label,
+            style: const TextStyle(fontWeight: FontWeight.w600),
+          ),
         ),
-      );
+        Expanded(
+          child: Text(valore, style: TextStyle(color: Colors.grey.shade800)),
+        ),
+      ],
+    ),
+  );
 
   Future<Uint8List> _generaPDF(PGBase pg) async {
     final pdf = pw.Document();
+
+    final accent = PdfColor.fromHex('#7B3A10');
+    final accentLight = PdfColor.fromHex('#F5EDE4');
+    final grey = PdfColor.fromHex('#555555');
+    final borderColor = PdfColor.fromHex('#C8A882');
+
     pdf.addPage(
-      pw.Page(
-        build: (context) => pw.Padding(
-          padding: const pw.EdgeInsets.all(24),
-          child: pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: _buildScheda(pg),
-          ),
-        ),
+      pw.MultiPage(
+        pageFormat: PdfPageFormat.a4,
+        margin: const pw.EdgeInsets.symmetric(horizontal: 28, vertical: 28),
+        build:
+            (ctx) => [
+              // ── HEADER ──────────────────────────────────────────────
+              pw.Container(
+                padding: const pw.EdgeInsets.all(16),
+                decoration: pw.BoxDecoration(
+                  color: accentLight,
+                  border: pw.Border.all(color: borderColor),
+                  borderRadius: const pw.BorderRadius.all(
+                    pw.Radius.circular(6),
+                  ),
+                ),
+                child: pw.Row(
+                  crossAxisAlignment: pw.CrossAxisAlignment.center,
+                  children: [
+                    pw.Expanded(
+                      child: pw.Column(
+                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        children: [
+                          pw.Text(
+                            pg.nome.isNotEmpty ? pg.nome : 'Personaggio',
+                            style: pw.TextStyle(
+                              fontSize: 22,
+                              fontWeight: pw.FontWeight.bold,
+                              color: accent,
+                            ),
+                          ),
+                          pw.SizedBox(height: 4),
+                          pw.Text(
+                            '${pg.classe}  •  ${pg.specie}  •  Livello ${pg.livello}',
+                            style: pw.TextStyle(fontSize: 12, color: grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Pillole stats
+                    _pdfPill('PF', '${pg.puntiVita}', accent, borderColor),
+                    pw.SizedBox(width: 8),
+                    _pdfPill('Vel.', '${pg.velocita} m', accent, borderColor),
+                    pw.SizedBox(width: 8),
+                    _pdfPill('Dado', 'd${pg.dadoVita}', accent, borderColor),
+                  ],
+                ),
+              ),
+              pw.SizedBox(height: 14),
+
+              // ── CARATTERISTICHE ─────────────────────────────────────
+              if (pg.caratteristicheImpostate &&
+                  pg.caratteristiche.isNotEmpty) ...[
+                _pdfSectionTitle('Caratteristiche', accent, accentLight),
+                pw.SizedBox(height: 6),
+                pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children:
+                      ['FOR', 'DES', 'COS', 'INT', 'SAG', 'CAR'].map((s) {
+                        final val = pg.caratteristiche[s] ?? 0;
+                        final mod = pg.modificatori[s] ?? 0;
+                        final segno = mod >= 0 ? '+' : '';
+                        return pw.Expanded(
+                          child: pw.Container(
+                            margin: const pw.EdgeInsets.symmetric(
+                              horizontal: 3,
+                            ),
+                            padding: const pw.EdgeInsets.symmetric(vertical: 8),
+                            decoration: pw.BoxDecoration(
+                              border: pw.Border.all(color: borderColor),
+                              borderRadius: const pw.BorderRadius.all(
+                                pw.Radius.circular(5),
+                              ),
+                            ),
+                            child: pw.Column(
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              children: [
+                                pw.Text(
+                                  s,
+                                  style: pw.TextStyle(
+                                    fontSize: 9,
+                                    fontWeight: pw.FontWeight.bold,
+                                    color: accent,
+                                  ),
+                                ),
+                                pw.SizedBox(height: 2),
+                                pw.Text(
+                                  '$val',
+                                  style: pw.TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: pw.FontWeight.bold,
+                                  ),
+                                ),
+                                pw.Text(
+                                  '$segno$mod',
+                                  style: pw.TextStyle(
+                                    fontSize: 11,
+                                    color:
+                                        mod >= 0
+                                            ? PdfColors.green700
+                                            : PdfColors.red700,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                ),
+                pw.SizedBox(height: 14),
+              ],
+
+              // ── DETTAGLI ─────────────────────────────────────────────
+              _pdfSectionTitle('Dettagli', accent, accentLight),
+              pw.SizedBox(height: 6),
+              pw.Container(
+                padding: const pw.EdgeInsets.all(12),
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: borderColor),
+                  borderRadius: const pw.BorderRadius.all(
+                    pw.Radius.circular(5),
+                  ),
+                ),
+                child: pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    if (pg.abilitaClasse.isNotEmpty)
+                      _pdfRiga('Abilità', pg.abilitaClasse.join(', '), grey),
+                    if (pg.linguaggi.isNotEmpty)
+                      _pdfRiga('Linguaggi', pg.linguaggi.join(', '), grey),
+                    if (pg.competenze.isNotEmpty)
+                      _pdfRiga('Competenze', pg.competenze.join(', '), grey),
+                    if (pg.tiriSalvezza.isNotEmpty)
+                      _pdfRiga(
+                        'Tiri Salvezza',
+                        pg.tiriSalvezza.join(', '),
+                        grey,
+                      ),
+                    if (pg.capacitaSpeciali.isNotEmpty)
+                      _pdfRiga(
+                        'Abilità Innate',
+                        pg.capacitaSpeciali.join(', '),
+                        grey,
+                      ),
+                    if (pg.abilitaClasse.isEmpty &&
+                        pg.linguaggi.isEmpty &&
+                        pg.competenze.isEmpty &&
+                        pg.tiriSalvezza.isEmpty &&
+                        pg.capacitaSpeciali.isEmpty)
+                      pw.Text(
+                        '—',
+                        style: pw.TextStyle(color: grey, fontSize: 11),
+                      ),
+                  ],
+                ),
+              ),
+
+              // ── EQUIPAGGIAMENTO ──────────────────────────────────────
+              if (pg.equipaggiamento.isNotEmpty) ...[
+                pw.SizedBox(height: 14),
+                _pdfSectionTitle('Equipaggiamento', accent, accentLight),
+                pw.SizedBox(height: 6),
+                pw.Container(
+                  padding: const pw.EdgeInsets.all(12),
+                  decoration: pw.BoxDecoration(
+                    border: pw.Border.all(color: borderColor),
+                    borderRadius: const pw.BorderRadius.all(
+                      pw.Radius.circular(5),
+                    ),
+                  ),
+                  child: pw.Wrap(
+                    spacing: 12,
+                    runSpacing: 4,
+                    children:
+                        pg.equipaggiamento
+                            .map(
+                              (e) => pw.Row(
+                                mainAxisSize: pw.MainAxisSize.min,
+                                children: [
+                                  pw.Container(
+                                    width: 5,
+                                    height: 5,
+                                    decoration: pw.BoxDecoration(
+                                      color: accent,
+                                      shape: pw.BoxShape.circle,
+                                    ),
+                                  ),
+                                  pw.SizedBox(width: 5),
+                                  pw.Text(
+                                    e,
+                                    style: pw.TextStyle(
+                                      fontSize: 11,
+                                      color: grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                            .toList(),
+                  ),
+                ),
+              ],
+
+              // Footer
+              pw.SizedBox(height: 20),
+              pw.Divider(color: borderColor),
+              pw.SizedBox(height: 4),
+              pw.Text(
+                'D&D Master Aid  •  D&D 5e',
+                style: pw.TextStyle(fontSize: 8, color: grey),
+              ),
+            ],
       ),
     );
     return pdf.save();
   }
 
-  List<pw.Widget> _buildScheda(PGBase pg) {
-    final List<pw.Widget> contenuto = [];
-    contenuto.add(pw.Text('Scheda Personaggio',
-        style: pw.TextStyle(fontSize: 24)));
-    contenuto.add(pw.SizedBox(height: 12));
-    contenuto.addAll([
-      if (pg.nome.isNotEmpty) pw.Text('Nome: ${pg.nome}'),
-      if (pg.specie.isNotEmpty) pw.Text('Specie: ${pg.specie}'),
-      if (pg.classe.isNotEmpty) pw.Text('Classe: ${pg.classe}'),
-      pw.Text('Livello: ${pg.livello}'),
-      pw.Text('Punti Vita: ${pg.puntiVita} (d${pg.dadoVita})'),
-      pw.Text('Velocità: ${pg.velocita} m'),
-      if (pg.linguaggi.isNotEmpty)
-        pw.Text('Linguaggi: ${pg.linguaggi.join(", ")}'),
-      pw.SizedBox(height: 8),
-    ]);
-    if (pg.caratteristicheImpostate && pg.caratteristiche.isNotEmpty) {
-      contenuto.add(pw.Text('Caratteristiche:',
-          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)));
-      contenuto.add(pw.Text(
-        pg.caratteristiche.entries.map((e) {
-          final mod = pg.modificatori[e.key] ?? 0;
-          final segno = mod >= 0 ? '+' : '';
-          return '${e.key}: ${e.value} ($segno$mod)';
-        }).join(', '),
-      ));
-    }
-    if (pg.abilitaClasse.isNotEmpty)
-      contenuto.add(pw.Text('Abilità: ${pg.abilitaClasse.join(", ")}'));
-    if (pg.competenze.isNotEmpty)
-      contenuto.add(pw.Text('Competenze: ${pg.competenze.join(", ")}'));
-    if (pg.capacitaSpeciali.isNotEmpty)
-      contenuto
-          .add(pw.Text('Abilità Innate: ${pg.capacitaSpeciali.join(", ")}'));
-    if (pg.equipaggiamento.isNotEmpty) {
-      contenuto.add(pw.SizedBox(height: 8));
-      contenuto.add(pw.Text('Equipaggiamento:'));
-      contenuto.add(
-          pw.Text(pg.equipaggiamento.map((e) => '- $e').join('\n')));
-    }
-    return contenuto;
+  pw.Widget _pdfSectionTitle(String title, PdfColor accent, PdfColor bg) {
+    return pw.Container(
+      padding: const pw.EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: pw.BoxDecoration(
+        color: bg,
+        border: pw.Border(left: pw.BorderSide(color: accent, width: 3)),
+      ),
+      child: pw.Text(
+        title.toUpperCase(),
+        style: pw.TextStyle(
+          fontSize: 10,
+          fontWeight: pw.FontWeight.bold,
+          color: accent,
+          letterSpacing: 1,
+        ),
+      ),
+    );
+  }
+
+  pw.Widget _pdfPill(
+    String label,
+    String value,
+    PdfColor accent,
+    PdfColor border,
+  ) {
+    return pw.Container(
+      padding: const pw.EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: pw.BoxDecoration(
+        border: pw.Border.all(color: border),
+        borderRadius: const pw.BorderRadius.all(pw.Radius.circular(20)),
+      ),
+      child: pw.Column(
+        children: [
+          pw.Text(label, style: pw.TextStyle(fontSize: 8, color: accent)),
+          pw.Text(
+            value,
+            style: pw.TextStyle(fontSize: 11, fontWeight: pw.FontWeight.bold),
+          ),
+        ],
+      ),
+    );
+  }
+
+  pw.Widget _pdfRiga(String label, String valore, PdfColor grey) {
+    return pw.Padding(
+      padding: const pw.EdgeInsets.only(bottom: 5),
+      child: pw.Row(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          pw.SizedBox(
+            width: 100,
+            child: pw.Text(
+              label,
+              style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 11),
+            ),
+          ),
+          pw.Expanded(
+            child: pw.Text(
+              valore,
+              style: pw.TextStyle(fontSize: 11, color: grey),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<File> _salvaPDFLocale(Uint8List data, String filename) async {
@@ -456,12 +755,12 @@ class _StepExportScreenState extends State<StepExportScreen> {
 }
 
 Future<bool> vaiAStepExportPDF(
-    BuildContext context, PGBaseFactory factory) async {
+  BuildContext context,
+  PGBaseFactory factory,
+) async {
   final result = await Navigator.push(
     context,
-    MaterialPageRoute(
-      builder: (_) => StepExportScreen(factory: factory),
-    ),
+    MaterialPageRoute(builder: (_) => StepExportScreen(factory: factory)),
   );
   return result ?? true;
 }
