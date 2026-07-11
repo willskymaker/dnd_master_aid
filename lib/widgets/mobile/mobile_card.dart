@@ -43,13 +43,9 @@ class _MobileCardState extends State<MobileCard>
       duration: const Duration(milliseconds: 150),
       vsync: this,
     );
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.95,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
   }
 
   @override
@@ -95,7 +91,9 @@ class _MobileCardState extends State<MobileCard>
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (widget.title != null || widget.leading != null || widget.trailing != null)
+                    if (widget.title != null ||
+                        widget.leading != null ||
+                        widget.trailing != null)
                       Row(
                         children: [
                           if (widget.leading != null) ...[
@@ -109,16 +107,16 @@ class _MobileCardState extends State<MobileCard>
                                 if (widget.title != null)
                                   Text(
                                     widget.title!,
-                                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(fontWeight: FontWeight.bold),
                                   ),
                                 if (widget.subtitle != null)
                                   Text(
                                     widget.subtitle!,
-                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: Colors.grey[600],
-                                    ),
+                                    style: Theme.of(context).textTheme.bodySmall
+                                        ?.copyWith(color: Colors.grey[600]),
                                   ),
                               ],
                             ),
@@ -126,7 +124,9 @@ class _MobileCardState extends State<MobileCard>
                           if (widget.trailing != null) widget.trailing!,
                         ],
                       ),
-                    if (widget.title != null || widget.leading != null || widget.trailing != null)
+                    if (widget.title != null ||
+                        widget.leading != null ||
+                        widget.trailing != null)
                       const SizedBox(height: 12),
                     widget.child,
                   ],

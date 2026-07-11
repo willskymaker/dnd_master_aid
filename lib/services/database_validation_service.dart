@@ -16,14 +16,13 @@ class DatabaseValidationResult {
   });
 
   factory DatabaseValidationResult.success() {
-    return DatabaseValidationResult(
-      isValid: true,
-      errors: [],
-      warnings: [],
-    );
+    return DatabaseValidationResult(isValid: true, errors: [], warnings: []);
   }
 
-  factory DatabaseValidationResult.failure(List<String> errors, [List<String> warnings = const []]) {
+  factory DatabaseValidationResult.failure(
+    List<String> errors, [
+    List<String> warnings = const [],
+  ]) {
     return DatabaseValidationResult(
       isValid: false,
       errors: errors,
@@ -53,7 +52,9 @@ class DatabaseValidationService {
     errors.addAll(speciesResult.errors);
     warnings.addAll(speciesResult.warnings);
 
-    AppLogger.info("Validazione database completata: ${errors.length} errori, ${warnings.length} avvisi");
+    AppLogger.info(
+      "Validazione database completata: ${errors.length} errori, ${warnings.length} avvisi",
+    );
 
     return errors.isEmpty
         ? DatabaseValidationResult.success()
@@ -70,17 +71,23 @@ class DatabaseValidationService {
     for (final spell in incantesimiList) {
       // Valida scuola di magia
       if (!MagicSchool.isValidSchool(spell.scuola)) {
-        errors.add("Incantesimo '${spell.nome}': scuola '${spell.scuola}' non valida");
+        errors.add(
+          "Incantesimo '${spell.nome}': scuola '${spell.scuola}' non valida",
+        );
       }
 
       // Valida livello
       if (spell.livello < 0 || spell.livello > 9) {
-        errors.add("Incantesimo '${spell.nome}': livello ${spell.livello} non valido (deve essere 0-9)");
+        errors.add(
+          "Incantesimo '${spell.nome}': livello ${spell.livello} non valido (deve essere 0-9)",
+        );
       }
 
       // Valida trucchetto
       if (spell.eTrucchetto && spell.livello != 0) {
-        errors.add("Incantesimo '${spell.nome}': trucchetto deve avere livello 0");
+        errors.add(
+          "Incantesimo '${spell.nome}': trucchetto deve avere livello 0",
+        );
       }
 
       // Valida classi
@@ -90,18 +97,24 @@ class DatabaseValidationService {
 
       for (final className in spell.classi) {
         if (!_isValidClassName(className)) {
-          warnings.add("Incantesimo '${spell.nome}': classe '$className' non riconosciuta");
+          warnings.add(
+            "Incantesimo '${spell.nome}': classe '$className' non riconosciuta",
+          );
         }
       }
 
       // Valida componenti
       if (spell.componenti.isEmpty) {
-        warnings.add("Incantesimo '${spell.nome}': nessun componente specificato");
+        warnings.add(
+          "Incantesimo '${spell.nome}': nessun componente specificato",
+        );
       }
 
       for (final component in spell.componenti) {
         if (!['V', 'S', 'M'].contains(component)) {
-          warnings.add("Incantesimo '${spell.nome}': componente '$component' non standard");
+          warnings.add(
+            "Incantesimo '${spell.nome}': componente '$component' non standard",
+          );
         }
       }
 
@@ -145,12 +158,16 @@ class DatabaseValidationService {
 
       // Valida dado vita
       if (![4, 6, 8, 10, 12].contains(classe.dadoVita)) {
-        errors.add("Classe '${classe.nome}': dado vita ${classe.dadoVita} non standard");
+        errors.add(
+          "Classe '${classe.nome}': dado vita ${classe.dadoVita} non standard",
+        );
       }
 
       // Valida abilità da selezionare
       if (classe.abilitaDaSelezionare < 0 || classe.abilitaDaSelezionare > 6) {
-        warnings.add("Classe '${classe.nome}': numero abilità da selezionare (${classe.abilitaDaSelezionare}) insolito");
+        warnings.add(
+          "Classe '${classe.nome}': numero abilità da selezionare (${classe.abilitaDaSelezionare}) insolito",
+        );
       }
 
       // Valida abilità selezionabili
@@ -159,7 +176,9 @@ class DatabaseValidationService {
       }
 
       if (classe.abilitaSelezionabili.length < classe.abilitaDaSelezionare) {
-        errors.add("Classe '${classe.nome}': abilità selezionabili (${classe.abilitaSelezionabili.length}) < abilità richieste (${classe.abilitaDaSelezionare})");
+        errors.add(
+          "Classe '${classe.nome}': abilità selezionabili (${classe.abilitaSelezionabili.length}) < abilità richieste (${classe.abilitaDaSelezionare})",
+        );
       }
 
       // Valida sottoclassi
@@ -169,7 +188,9 @@ class DatabaseValidationService {
 
       // Valida tiri salvezza
       if (classe.tiriSalvezza.length != 2) {
-        warnings.add("Classe '${classe.nome}': dovrebbe avere esattamente 2 tiri salvezza");
+        warnings.add(
+          "Classe '${classe.nome}': dovrebbe avere esattamente 2 tiri salvezza",
+        );
       }
 
       for (final ts in classe.tiriSalvezza) {
@@ -200,7 +221,9 @@ class DatabaseValidationService {
 
       // Valida velocità
       if (specie.velocita <= 0 || specie.velocita > 60) {
-        warnings.add("Specie '${specie.nome}': velocità ${specie.velocita} insolita");
+        warnings.add(
+          "Specie '${specie.nome}': velocità ${specie.velocita} insolita",
+        );
       }
 
       // Valida linguaggi
@@ -222,9 +245,19 @@ class DatabaseValidationService {
   /// Verifica se un nome di classe è valido
   static bool _isValidClassName(String className) {
     const validClasses = [
-      'Barbaro', 'Bardo', 'Chierico', 'Druido', 'Guerriero',
-      'Ladro', 'Mago', 'Monaco', 'Paladino', 'Ranger',
-      'Stregone', 'Warlock', 'Artefice'
+      'Barbaro',
+      'Bardo',
+      'Chierico',
+      'Druido',
+      'Guerriero',
+      'Ladro',
+      'Mago',
+      'Monaco',
+      'Paladino',
+      'Ranger',
+      'Stregone',
+      'Warlock',
+      'Artefice',
     ];
     return validClasses.contains(className);
   }

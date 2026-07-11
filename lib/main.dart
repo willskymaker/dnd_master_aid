@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // === IMPORTAZIONI ===
-import 'pg_base/main_pg_base.dart';          // PG Base Wizard
-import 'screens/coming_soon.dart';           // Schermata per funzionalità disattivate
-import 'screens/dice_roller.dart';           // Modulo dadi
-import 'screens/name_generator.dart';        // Generatore nomi (standalone)
+import 'pg_base/main_pg_base.dart'; // PG Base Wizard
+import 'screens/coming_soon.dart'; // Schermata per funzionalità disattivate
+import 'screens/dice_roller.dart'; // Modulo dadi
+import 'screens/name_generator.dart'; // Generatore nomi (standalone)
 import 'screens/saved_characters_screen.dart'; // Lista personaggi salvati
 import 'package:dnd_master_aid/factory_pg_base.dart';
 import 'providers/character_provider.dart';
@@ -65,56 +65,56 @@ class HomePage extends StatelessWidget {
       'nome': 'Tira Dadi',
       'icona': '🎲',
       'descr': 'Lancia dadi classici',
-      'attivo': true
+      'attivo': true,
     },
     {
       'id': 'nomi',
       'nome': 'Generatore Nomi',
       'icona': '🧙',
       'descr': 'Crea nomi fantasy',
-      'attivo': true
+      'attivo': true,
     },
     {
       'id': 'pgBase',
       'nome': 'Crea PG Base',
       'icona': '🧑‍🎓',
       'descr': 'Generatore guidato di personaggio',
-      'attivo': true
+      'attivo': true,
     },
     {
       'id': 'database',
       'nome': 'Database D&D',
       'icona': '📚',
       'descr': 'Sfoglia tutte le opzioni',
-      'attivo': true
+      'attivo': true,
     },
     {
       'id': 'salvati',
       'nome': 'I Miei Personaggi',
       'icona': '📖',
       'descr': 'Personaggi salvati',
-      'attivo': true
+      'attivo': true,
     },
     {
       'id': 'pgPro',
       'nome': 'PG Avanzato',
       'icona': '🧠',
       'descr': 'Tutte le opzioni avanzate',
-      'attivo': false
+      'attivo': false,
     },
     {
       'id': 'mob',
       'nome': 'Generatore Mob',
       'icona': '👹',
       'descr': 'Crea mostri e creature',
-      'attivo': false
+      'attivo': false,
     },
     {
       'id': 'npc',
       'nome': 'Generatore NPC',
       'icona': '🧑‍🌾',
       'descr': 'Crea PNG con personalità',
-      'attivo': false
+      'attivo': false,
     },
   ];
 
@@ -144,7 +144,10 @@ class HomePage extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.only(bottom: 12),
           child: MobileCard(
-            onTap: attivo ? () => _navigateTo(context, funzione['id'] as String) : null,
+            onTap:
+                attivo
+                    ? () => _navigateTo(context, funzione['id'] as String)
+                    : null,
             backgroundColor: attivo ? Colors.white : Colors.grey.shade200,
             child: Row(
               children: [
@@ -152,7 +155,10 @@ class HomePage extends StatelessWidget {
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: attivo ? const Color(0xFF8B4513).withValues(alpha: 0.1) : Colors.grey.shade300,
+                    color:
+                        attivo
+                            ? const Color(0xFF8B4513).withValues(alpha: 0.1)
+                            : Colors.grey.shade300,
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Center(
@@ -177,10 +183,7 @@ class HomePage extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         funzione['descr'] as String,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                       ),
                     ],
                   ),
@@ -193,7 +196,10 @@ class HomePage extends StatelessWidget {
                   )
                 else
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.grey.shade400,
                       borderRadius: BorderRadius.circular(12),
@@ -217,74 +223,90 @@ class HomePage extends StatelessWidget {
 
   Widget _buildTabletLayout() {
     return Builder(
-      builder: (context) => GridView.count(
-        crossAxisCount: 3,
-        childAspectRatio: 1.2,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        children: funzioni.map((funzione) {
-          final attivo = funzione['attivo'] as bool;
-          return MobileCard(
-            onTap: attivo ? () => _navigateTo(context, funzione['id'] as String) : null,
-          backgroundColor: attivo ? Colors.white : Colors.grey.shade200,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  color: attivo ? const Color(0xFF8B4513).withValues(alpha: 0.1) : Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(40),
-                ),
-                child: Center(
-                  child: Text(
-                    funzione['icona'] as String,
-                    style: const TextStyle(fontSize: 40),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                funzione['nome'] as String,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                funzione['descr'] as String,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[600],
-                ),
-                textAlign: TextAlign.center,
-              ),
-              if (!attivo) ...[
-                const SizedBox(height: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade400,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: const Text(
-                    'Presto',
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+      builder:
+          (context) => GridView.count(
+            crossAxisCount: 3,
+            childAspectRatio: 1.2,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            children:
+                funzioni.map((funzione) {
+                  final attivo = funzione['attivo'] as bool;
+                  return MobileCard(
+                    onTap:
+                        attivo
+                            ? () =>
+                                _navigateTo(context, funzione['id'] as String)
+                            : null,
+                    backgroundColor:
+                        attivo ? Colors.white : Colors.grey.shade200,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color:
+                                attivo
+                                    ? const Color(
+                                      0xFF8B4513,
+                                    ).withValues(alpha: 0.1)
+                                    : Colors.grey.shade300,
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          child: Center(
+                            child: Text(
+                              funzione['icona'] as String,
+                              style: const TextStyle(fontSize: 40),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          funzione['nome'] as String,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          funzione['descr'] as String,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        if (!attivo) ...[
+                          const SizedBox(height: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade400,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: const Text(
+                              'Presto',
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
                     ),
-                  ),
-                ),
-              ],
-            ],
+                  );
+                }).toList(),
           ),
-        );
-      }).toList(),
-    ),);
+    );
   }
 
   void _navigateTo(BuildContext context, String id) {
@@ -298,7 +320,7 @@ class HomePage extends StatelessWidget {
         page = const DiceRollerScreen(); // 🎲 Modulo dadi
         break;
       case 'nomi':
-       page = NameGeneratorScreen(factory: PGBaseFactory());
+        page = NameGeneratorScreen(factory: PGBaseFactory());
         break;
       case 'database':
         page = const DatabaseBrowserPage(); // 📚 Database D&D
@@ -310,9 +332,6 @@ class HomePage extends StatelessWidget {
         page = const ComingSoonScreen(); // 🕒 Placeholder
     }
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => page),
-    );
+    Navigator.push(context, MaterialPageRoute(builder: (context) => page));
   }
 }

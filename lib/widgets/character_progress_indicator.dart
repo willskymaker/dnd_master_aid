@@ -54,10 +54,7 @@ class CharacterProgressIndicator extends StatelessWidget {
                     SizedBox(width: 4),
                     Text(
                       'Modifiche non salvate',
-                      style: TextStyle(
-                        color: Colors.orange,
-                        fontSize: 12,
-                      ),
+                      style: TextStyle(color: Colors.orange, fontSize: 12),
                     ),
                   ],
                 ),
@@ -67,10 +64,7 @@ class CharacterProgressIndicator extends StatelessWidget {
             if (provider.isLoading)
               const Padding(
                 padding: EdgeInsets.only(top: 8.0),
-                child: SizedBox(
-                  height: 2,
-                  child: LinearProgressIndicator(),
-                ),
+                child: SizedBox(height: 2, child: LinearProgressIndicator()),
               ),
           ],
         );

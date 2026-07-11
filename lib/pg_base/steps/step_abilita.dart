@@ -57,7 +57,8 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-              "Seleziona esattamente $maxAbilita abilità (${abilitaSelezionate.length}/$maxAbilita)."),
+            "Seleziona esattamente $maxAbilita abilità (${abilitaSelezionate.length}/$maxAbilita).",
+          ),
           backgroundColor: Colors.orange,
         ),
       );
@@ -66,7 +67,9 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
     for (var abilita in abilitaSelezionate) {
       if (!abilitaDisponibili.contains(abilita)) {
         throw ValidationException(
-            "L'abilità $abilita non è disponibile per questa classe", "Abilità");
+          "L'abilità $abilita non è disponibile per questa classe",
+          "Abilità",
+        );
       }
     }
     return true;
@@ -81,14 +84,14 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
   Widget build(BuildContext context) {
     final selezionate = abilitaSelezionate.length;
     final completo = selezionate == maxAbilita;
-    final coloreCounter = completo
-        ? Colors.green
-        : (selezionate > 0 ? Colors.orange : Colors.grey);
+    final coloreCounter =
+        completo
+            ? Colors.green
+            : (selezionate > 0 ? Colors.orange : Colors.grey);
 
     // Solo le abilità disponibili per questa classe
-    final listaAbilita = abilitaList
-        .where((a) => abilitaDisponibili.contains(a.nome))
-        .toList();
+    final listaAbilita =
+        abilitaList.where((a) => abilitaDisponibili.contains(a.nome)).toList();
 
     return Scaffold(
       appBar: AppBar(title: const Text("Abilità")),
@@ -112,23 +115,21 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
                 ),
                 Text(
                   ' / $maxAbilita',
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Colors.grey.shade600,
-                  ),
+                  style: TextStyle(fontSize: 24, color: Colors.grey.shade600),
                 ),
                 const SizedBox(width: 12),
                 Text(
                   'abilità selezionate',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey.shade600,
-                  ),
+                  style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
                 ),
                 if (completo) ...[
                   const SizedBox(width: 8),
-                  Icon(Icons.check_circle, color: Colors.green.shade600, size: 20),
-                ]
+                  Icon(
+                    Icons.check_circle,
+                    color: Colors.green.shade600,
+                    size: 20,
+                  ),
+                ],
               ],
             ),
           ),
@@ -144,23 +145,26 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
 
                 return Card(
                   margin: const EdgeInsets.only(bottom: 8),
-                  color: selezionata
-                      ? const Color(0xFF8B4513).withValues(alpha: 0.1)
-                      : null,
+                  color:
+                      selezionata
+                          ? const Color(0xFF8B4513).withValues(alpha: 0.1)
+                          : null,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
-                    side: selezionata
-                        ? const BorderSide(
-                            color: Color(0xFF8B4513), width: 1.5)
-                        : BorderSide.none,
+                    side:
+                        selezionata
+                            ? const BorderSide(
+                              color: Color(0xFF8B4513),
+                              width: 1.5,
+                            )
+                            : BorderSide.none,
                   ),
                   child: CheckboxListTile(
                     title: Text(
                       abilita.nome,
                       style: TextStyle(
-                        fontWeight: selezionata
-                            ? FontWeight.bold
-                            : FontWeight.normal,
+                        fontWeight:
+                            selezionata ? FontWeight.bold : FontWeight.normal,
                       ),
                     ),
                     subtitle: Text(
@@ -169,9 +173,10 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
                     ),
                     value: selezionata,
                     activeColor: const Color(0xFF8B4513),
-                    onChanged: puoSelezionare
-                        ? (_) => _toggleAbilita(abilita.nome)
-                        : null,
+                    onChanged:
+                        puoSelezionare
+                            ? (_) => _toggleAbilita(abilita.nome)
+                            : null,
                   ),
                 );
               },
@@ -212,4 +217,3 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
     );
   }
 }
-

@@ -17,11 +17,12 @@ class MobileBottomSheet {
       enableDrag: enableDrag,
       isScrollControlled: isScrollControlled,
       backgroundColor: Colors.transparent,
-      builder: (context) => _MobileBottomSheetContent(
-        title: title,
-        height: height,
-        child: child,
-      ),
+      builder:
+          (context) => _MobileBottomSheetContent(
+            title: title,
+            height: height,
+            child: child,
+          ),
     );
   }
 }
@@ -70,18 +71,14 @@ class _MobileBottomSheetContent extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Text(
                 title!,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
 
           // Divider
-          if (title != null)
-            Divider(
-              height: 1,
-              color: Colors.grey[300],
-            ),
+          if (title != null) Divider(height: 1, color: Colors.grey[300]),
 
           // Content
           Expanded(
@@ -120,9 +117,9 @@ class MobileBottomSheetList extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 16),
             child: Text(
               title!,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
         ListView.separated(

@@ -37,7 +37,8 @@ final List<Specie> specieList = [
     sottospecie: [
       Specie(
         nome: "Elfo Alto",
-        descrizione: "Incline allo studio della magia, ottiene un trucchetto da mago.",
+        descrizione:
+            "Incline allo studio della magia, ottiene un trucchetto da mago.",
         velocita: 9,
         competenze: [],
         resistenze: [],
@@ -76,7 +77,8 @@ final List<Specie> specieList = [
     sottospecie: [
       Specie(
         nome: "Nano delle Colline",
-        descrizione: "Più saggi e longevi, con un innato istinto di sopravvivenza.",
+        descrizione:
+            "Più saggi e longevi, con un innato istinto di sopravvivenza.",
         velocita: 7,
         competenze: [],
         resistenze: [],
@@ -85,7 +87,8 @@ final List<Specie> specieList = [
       ),
       Specie(
         nome: "Nano delle Montagne",
-        descrizione: "Più forti e addestrati al combattimento in armatura pesante.",
+        descrizione:
+            "Più forti e addestrati al combattimento in armatura pesante.",
         velocita: 7,
         competenze: ["Armature leggere e medie"],
         resistenze: [],
@@ -127,7 +130,8 @@ final List<Specie> specieList = [
   // Gnomi con sottospecie
   Specie(
     nome: "Gnomo",
-    descrizione: "Piccoli e intelligenti, dotati di mente acuta e abilità magiche innate.",
+    descrizione:
+        "Piccoli e intelligenti, dotati di mente acuta e abilità magiche innate.",
     velocita: 7,
     competenze: [],
     resistenze: ["Magia mentale"],
@@ -157,7 +161,8 @@ final List<Specie> specieList = [
   // Dragonidi con varianti elementali
   Specie(
     nome: "Dragonide",
-    descrizione: "Discendenti dei draghi, con soffio elementale e resistenza associata.",
+    descrizione:
+        "Discendenti dei draghi, con soffio elementale e resistenza associata.",
     velocita: 9,
     competenze: [],
     resistenze: [],
@@ -214,7 +219,8 @@ final List<Specie> specieList = [
   // Tiefling
   Specie(
     nome: "Tiefling",
-    descrizione: "Essere con lignaggio infernale, dotati di poteri magici e resistenza al fuoco.",
+    descrizione:
+        "Essere con lignaggio infernale, dotati di poteri magici e resistenza al fuoco.",
     velocita: 9,
     competenze: [],
     resistenze: ["Fuoco"],
@@ -224,7 +230,8 @@ final List<Specie> specieList = [
   // Orco
   Specie(
     nome: "Orco Redento",
-    descrizione: "Discendenti di stirpi brutali, ma determinati a riscattarsi nella società civile.",
+    descrizione:
+        "Discendenti di stirpi brutali, ma determinati a riscattarsi nella società civile.",
     velocita: 9,
     competenze: ["Intimidazione"],
     resistenze: [],
@@ -234,7 +241,8 @@ final List<Specie> specieList = [
   //Aarakocra
   Specie(
     nome: "Aarakocra",
-    descrizione: "Uccelli umanoidi capaci di volare, provenienti da alte montagne e piani elementali.",
+    descrizione:
+        "Uccelli umanoidi capaci di volare, provenienti da alte montagne e piani elementali.",
     velocita: 7,
     competenze: [],
     resistenze: [],
@@ -244,7 +252,8 @@ final List<Specie> specieList = [
   //Mezzorco
   Specie(
     nome: "Mezzorco",
-    descrizione: "Combattenti instancabili, portatori di forza brutale e resilienza.",
+    descrizione:
+        "Combattenti instancabili, portatori di forza brutale e resilienza.",
     velocita: 9,
     competenze: ["Intimidazione"],
     resistenze: [],
@@ -254,17 +263,22 @@ final List<Specie> specieList = [
   //Mezzelfo
   Specie(
     nome: "Mezzelfo",
-    descrizione: "Versatili e carismatici, ereditano tratti sia umani che elfici.",
+    descrizione:
+        "Versatili e carismatici, ereditano tratti sia umani che elfici.",
     velocita: 9,
     competenze: ["Due abilità a scelta"],
     resistenze: [],
-    abilitaInnate: ["Scurovisione", "Retaggio elfico (vantaggio contro charme)"],
+    abilitaInnate: [
+      "Scurovisione",
+      "Retaggio elfico (vantaggio contro charme)",
+    ],
     linguaggi: ["Comune", "Elfico", "Uno a scelta"],
   ),
   //Genasi e sottospecie elementali
   Specie(
     nome: "Genasi",
-    descrizione: "Esseri legati ai piani elementali, manifestano poteri innati del loro elemento.",
+    descrizione:
+        "Esseri legati ai piani elementali, manifestano poteri innati del loro elemento.",
     velocita: 9,
     competenze: [],
     resistenze: [],
@@ -300,7 +314,8 @@ final List<Specie> specieList = [
       ),
       Specie(
         nome: "Genasi della Terra",
-        descrizione: "Solidi e duri come la roccia, ignorano terreni difficili.",
+        descrizione:
+            "Solidi e duri come la roccia, ignorano terreni difficili.",
         velocita: 9,
         competenze: [],
         resistenze: [],
@@ -312,7 +327,8 @@ final List<Specie> specieList = [
   //Goliath
   Specie(
     nome: "Goliath",
-    descrizione: "Giganti delle montagne, forti, competitivi e incredibilmente resistenti.",
+    descrizione:
+        "Giganti delle montagne, forti, competitivi e incredibilmente resistenti.",
     velocita: 9,
     competenze: ["Atletica"],
     resistenze: [],
@@ -322,17 +338,23 @@ final List<Specie> specieList = [
   //Firbolg
   Specie(
     nome: "Firbolg",
-    descrizione: "Guardiani gentili delle foreste, dotati di magia innata e comunione con la natura.",
+    descrizione:
+        "Guardiani gentili delle foreste, dotati di magia innata e comunione con la natura.",
     velocita: 9,
     competenze: ["Intuizione", "Disfarsi di tracce"],
     resistenze: [],
-    abilitaInnate: ["Scurovisione", "Camuffare se stessi", "Parlare con animali e piante"],
+    abilitaInnate: [
+      "Scurovisione",
+      "Camuffare se stessi",
+      "Parlare con animali e piante",
+    ],
     linguaggi: ["Comune", "Silvano"],
   ),
   //Leonin
   Specie(
     nome: "Leonin",
-    descrizione: "Fieri felini guerrieri, originari di terre selvagge, con artigli e grande presenza.",
+    descrizione:
+        "Fieri felini guerrieri, originari di terre selvagge, con artigli e grande presenza.",
     velocita: 12,
     competenze: ["Intimidazione", "Percezione"],
     resistenze: [],
@@ -342,7 +364,8 @@ final List<Specie> specieList = [
   //Satiro
   Specie(
     nome: "Satiro",
-    descrizione: "Creatura delle selve, allegra e agile, resistente agli effetti mentali.",
+    descrizione:
+        "Creatura delle selve, allegra e agile, resistente agli effetti mentali.",
     velocita: 10,
     competenze: ["Intrattenere", "Persuasione"],
     resistenze: ["Charm", "Magia del sonno"],
@@ -352,7 +375,8 @@ final List<Specie> specieList = [
   //Tritone
   Specie(
     nome: "Tritone",
-    descrizione: "Creatura anfibia, protettrice degli oceani, adattata al combattimento subacqueo.",
+    descrizione:
+        "Creatura anfibia, protettrice degli oceani, adattata al combattimento subacqueo.",
     velocita: 9,
     competenze: ["Armi da guerra"],
     resistenze: [],
@@ -360,9 +384,10 @@ final List<Specie> specieList = [
     linguaggi: ["Comune", "Primordiale"],
   ),
   //Kenku
-    Specie(
+  Specie(
     nome: "Kenku",
-    descrizione: "Uccelli umanoidi incapaci di parlare ma dotati di mimica perfetta.",
+    descrizione:
+        "Uccelli umanoidi incapaci di parlare ma dotati di mimica perfetta.",
     velocita: 9,
     competenze: ["Furtività", "Falsificazione", "Inganno"],
     resistenze: [],
@@ -372,7 +397,8 @@ final List<Specie> specieList = [
   //Tabaxi
   Specie(
     nome: "Tabaxi",
-    descrizione: "Felini umanoidi curiosi, agili e amanti delle storie e degli oggetti.",
+    descrizione:
+        "Felini umanoidi curiosi, agili e amanti delle storie e degli oggetti.",
     velocita: 12,
     competenze: ["Furtività", "Percezione"],
     resistenze: [],
@@ -382,7 +408,8 @@ final List<Specie> specieList = [
   //Goblin
   Specie(
     nome: "Goblin",
-    descrizione: "Piccoli, astuti e veloci, con tendenze aggressive ma anche inventiva geniale.",
+    descrizione:
+        "Piccoli, astuti e veloci, con tendenze aggressive ma anche inventiva geniale.",
     velocita: 9,
     competenze: [],
     resistenze: [],
@@ -392,7 +419,8 @@ final List<Specie> specieList = [
   //Hobgoblin
   Specie(
     nome: "Hobgoblin",
-    descrizione: "Disciplinati e tattici, con una società rigidamente organizzata.",
+    descrizione:
+        "Disciplinati e tattici, con una società rigidamente organizzata.",
     velocita: 9,
     competenze: [],
     resistenze: [],
@@ -422,7 +450,8 @@ final List<Specie> specieList = [
   //Changeling
   Specie(
     nome: "Changeling",
-    descrizione: "Mutanti in grado di cambiare volto e forma, adattabili e sfuggenti.",
+    descrizione:
+        "Mutanti in grado di cambiare volto e forma, adattabili e sfuggenti.",
     velocita: 9,
     competenze: ["Inganno", "Persuasione"],
     resistenze: [],
@@ -432,7 +461,8 @@ final List<Specie> specieList = [
   //Warforged
   Specie(
     nome: "Warforged",
-    descrizione: "Costrutti senzienti creati per la guerra, ora in cerca di uno scopo.",
+    descrizione:
+        "Costrutti senzienti creati per la guerra, ora in cerca di uno scopo.",
     velocita: 9,
     competenze: [],
     resistenze: ["Veleno", "Malattie"],
@@ -452,7 +482,8 @@ final List<Specie> specieList = [
   //Vedalken
   Specie(
     nome: "Vedalken",
-    descrizione: "Intellettuali logici e riservati, dotati di resistenza mentale.",
+    descrizione:
+        "Intellettuali logici e riservati, dotati di resistenza mentale.",
     velocita: 9,
     competenze: ["Investigare", "Storia"],
     resistenze: ["Magia mentale"],
@@ -472,7 +503,8 @@ final List<Specie> specieList = [
   //Aasimar e sottospecie
   Specie(
     nome: "Aasimar",
-    descrizione: "Esseri benedetti da poteri celestiali, paladini della luce e della giustizia.",
+    descrizione:
+        "Esseri benedetti da poteri celestiali, paladini della luce e della giustizia.",
     velocita: 9,
     competenze: [],
     resistenze: ["Necrotico", "Radiante"],
@@ -481,7 +513,8 @@ final List<Specie> specieList = [
     sottospecie: [
       Specie(
         nome: "Protettore",
-        descrizione: "Ispirano e proteggono, con ali di luce e poteri curativi.",
+        descrizione:
+            "Ispirano e proteggono, con ali di luce e poteri curativi.",
         velocita: 9,
         competenze: [],
         resistenze: [],
@@ -499,7 +532,8 @@ final List<Specie> specieList = [
       ),
       Specie(
         nome: "Caduto",
-        descrizione: "Ex paladini ora legati a poteri oscuri, pur mantenendo abilità sacre.",
+        descrizione:
+            "Ex paladini ora legati a poteri oscuri, pur mantenendo abilità sacre.",
         velocita: 9,
         competenze: [],
         resistenze: [],
@@ -508,7 +542,7 @@ final List<Specie> specieList = [
       ),
     ],
   ),
-//Eladrin e sottospecie stagionali
+  //Eladrin e sottospecie stagionali
   Specie(
     nome: "Eladrin",
     descrizione: "Elfi dei piani fatati, mutevoli come le stagioni.",
@@ -559,7 +593,8 @@ final List<Specie> specieList = [
   //Locathan
   Specie(
     nome: "Locathah",
-    descrizione: "Popolo anfibio tenace, abituato a sopravvivere nella durezza degli abissi.",
+    descrizione:
+        "Popolo anfibio tenace, abituato a sopravvivere nella durezza degli abissi.",
     velocita: 9,
     competenze: ["Atletica", "Percezione"],
     resistenze: [],
@@ -569,7 +604,8 @@ final List<Specie> specieList = [
   //Loxodon
   Specie(
     nome: "Loxodon",
-    descrizione: "Pachidermi antropomorfi, calmi e forti, con una cultura spirituale profonda.",
+    descrizione:
+        "Pachidermi antropomorfi, calmi e forti, con una cultura spirituale profonda.",
     velocita: 9,
     competenze: ["Intuizione", "Religione"],
     resistenze: [],
@@ -586,9 +622,10 @@ final List<String> specieCoreConsentite = [
   "Gnomo",
   "Tiefling",
   "Mezzelfo",
-  "Mezzorco"
+  "Mezzorco",
 ];
 
-final List<Specie> specieCoreList = specieList
-    .where((specie) => specieCoreConsentite.contains(specie.nome))
-    .toList();
+final List<Specie> specieCoreList =
+    specieList
+        .where((specie) => specieCoreConsentite.contains(specie.nome))
+        .toList();

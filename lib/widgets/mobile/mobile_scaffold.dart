@@ -40,9 +40,7 @@ class MobileScaffold extends StatelessWidget {
         automaticallyImplyLeading: showBackButton,
       ),
       drawer: drawer,
-      body: SafeArea(
-        child: body,
-      ),
+      body: SafeArea(child: body),
       floatingActionButton: floatingActionButton,
       backgroundColor: const Color(0xFFF5F5DC), // Beige background
     );

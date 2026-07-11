@@ -43,7 +43,9 @@ class CharacterService {
   }
 
   /// Ottiene le abilità selezionabili per una classe
-  static Future<List<String>> getAvailableAbilitiesForClass(String className) async {
+  static Future<List<String>> getAvailableAbilitiesForClass(
+    String className,
+  ) async {
     final classe = await getClasseByName(className);
     if (classe == null) {
       throw DataException("Classe '$className' non trovata", "Abilità");
@@ -109,7 +111,8 @@ class CharacterService {
     // Livello 1: massimo del dado + mod COS
     // Livelli successivi: media del dado + mod COS per livello
     final baseHP = hitDie; // Livello 1
-    final additionalHP = (level - 1) * ((hitDie / 2) + 1 + constitutionModifier).floor();
+    final additionalHP =
+        (level - 1) * ((hitDie / 2) + 1 + constitutionModifier).floor();
     final totalHP = baseHP + constitutionModifier + additionalHP;
 
     // Minimo 1 PF per livello
@@ -117,7 +120,10 @@ class CharacterService {
   }
 
   /// Valida la selezione delle abilità per una classe
-  static Future<bool> validateAbilitySelection(String className, List<String> selectedAbilities) async {
+  static Future<bool> validateAbilitySelection(
+    String className,
+    List<String> selectedAbilities,
+  ) async {
     final classe = await getClasseByName(className);
     if (classe == null) return false;
 
@@ -151,7 +157,7 @@ class CharacterService {
       "Paladino": ["FOR", "CAR"],
       "Ranger": ["DES", "SAG"],
       "Stregone": ["CAR", "COS"],
-      "Warlock": ["CAR", "SAG"]
+      "Warlock": ["CAR", "SAG"],
     };
 
     return classCharacteristics[className] ?? [];
@@ -164,7 +170,9 @@ class CharacterService {
   ) async {
     try {
       // Carica i dati JSON della specie per ottenere i bonus
-      final String jsonString = await rootBundle.loadString('assets/data/species.json');
+      final String jsonString = await rootBundle.loadString(
+        'assets/data/species.json',
+      );
       final Map<String, dynamic> data = json.decode(jsonString);
       final List<dynamic> speciesList = data['species'];
 
@@ -202,22 +210,29 @@ class CharacterService {
 
       // Applica bonus della specie base
       if (specieData['bonus_caratteristiche'] != null) {
-        final Map<String, dynamic> bonuses = specieData['bonus_caratteristiche'];
+        final Map<String, dynamic> bonuses =
+            specieData['bonus_caratteristiche'];
         bonuses.forEach((key, value) {
           if (result.containsKey(key)) {
             result[key] = (result[key] ?? 0) + (value as int);
-            AppLogger.debug("Applicato bonus razziale +$value a $key per ${specieData!['nome']}");
+            AppLogger.debug(
+              "Applicato bonus razziale +$value a $key per ${specieData!['nome']}",
+            );
           }
         });
       }
 
       // Applica bonus della sottospecie se presente
-      if (subSpecieData != null && subSpecieData['bonus_caratteristiche'] != null) {
-        final Map<String, dynamic> subBonuses = subSpecieData['bonus_caratteristiche'];
+      if (subSpecieData != null &&
+          subSpecieData['bonus_caratteristiche'] != null) {
+        final Map<String, dynamic> subBonuses =
+            subSpecieData['bonus_caratteristiche'];
         subBonuses.forEach((key, value) {
           if (result.containsKey(key)) {
             result[key] = (result[key] ?? 0) + (value as int);
-            AppLogger.debug("Applicato bonus sottospecie +$value a $key per ${subSpecieData!['nome']}");
+            AppLogger.debug(
+              "Applicato bonus sottospecie +$value a $key per ${subSpecieData!['nome']}",
+            );
           }
         });
       }

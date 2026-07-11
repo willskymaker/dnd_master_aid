@@ -68,7 +68,9 @@ class CharacterRepository implements ICharacterRepository {
   @override
   List<OggettoEquip> getAllEquipment() {
     _cachedEquipment ??= List.from(oggettiEquipList);
-    AppLogger.debug("Caricati ${_cachedEquipment!.length} oggetti equipaggiamento");
+    AppLogger.debug(
+      "Caricati ${_cachedEquipment!.length} oggetti equipaggiamento",
+    );
     return _cachedEquipment!;
   }
 
@@ -93,7 +95,9 @@ class CharacterRepository implements ICharacterRepository {
   }
 
   /// Ottiene classi compatibili con determinate caratteristiche
-  Future<List<Classe>> getClassesForCharacteristics(List<String> preferredCharacteristics) async {
+  Future<List<Classe>> getClassesForCharacteristics(
+    List<String> preferredCharacteristics,
+  ) async {
     final classes = await getAllClasses();
 
     // Mappa delle caratteristiche primarie per classe
@@ -113,29 +117,32 @@ class CharacterRepository implements ICharacterRepository {
     };
 
     // Ordina le classi in base alla compatibilità con le caratteristiche preferite
-    final scoredClasses = classes.map((classe) {
-      final primaryStats = classePrimaryStats[classe.nome] ?? [];
-      var score = 0;
+    final scoredClasses =
+        classes.map((classe) {
+          final primaryStats = classePrimaryStats[classe.nome] ?? [];
+          var score = 0;
 
-      // Conta quante caratteristiche primarie matchano
-      for (var stat in primaryStats) {
-        if (preferredCharacteristics.contains(stat)) {
-          score += 2; // Match caratteristica primaria vale di più
-        }
-      }
+          // Conta quante caratteristiche primarie matchano
+          for (var stat in primaryStats) {
+            if (preferredCharacteristics.contains(stat)) {
+              score += 2; // Match caratteristica primaria vale di più
+            }
+          }
 
-      // Considera i tiri salvezza della classe
-      for (var ts in classe.tiriSalvezza) {
-        if (preferredCharacteristics.contains(ts)) {
-          score += 1; // Match tiro salvezza vale meno
-        }
-      }
+          // Considera i tiri salvezza della classe
+          for (var ts in classe.tiriSalvezza) {
+            if (preferredCharacteristics.contains(ts)) {
+              score += 1; // Match tiro salvezza vale meno
+            }
+          }
 
-      return {'classe': classe, 'score': score};
-    }).toList();
+          return {'classe': classe, 'score': score};
+        }).toList();
 
     // Ordina per score decrescente
-    scoredClasses.sort((a, b) => (b['score'] as int).compareTo(a['score'] as int));
+    scoredClasses.sort(
+      (a, b) => (b['score'] as int).compareTo(a['score'] as int),
+    );
 
     // Ritorna le classi ordinate per compatibilità
     return scoredClasses.map((item) => item['classe'] as Classe).toList();
@@ -148,7 +155,7 @@ class CharacterRepository implements ICharacterRepository {
 
     return getAllEquipment().where((equip) {
       return equip.classiConsigliate.contains(className) ||
-             equip.classiConsigliate.isEmpty;
+          equip.classiConsigliate.isEmpty;
     }).toList();
   }
 

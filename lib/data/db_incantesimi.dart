@@ -32,7 +32,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 1,
     scuola: "Evocazione",
     classi: ["Mago", "Stregone"],
-    descrizione: "Crei tre dardi di energia magica che colpiscono creature a tua scelta. Ogni dardo infligge 1d4+1 danni da forza.",
+    descrizione:
+        "Crei tre dardi di energia magica che colpiscono creature a tua scelta. Ogni dardo infligge 1d4+1 danni da forza.",
     raggio: "36 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -43,7 +44,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Evocazione",
     classi: ["Chierico", "Bardo", "Stregone"],
-    descrizione: "Fai brillare un oggetto toccato come una torcia, illuminando un'area per 6 metri.",
+    descrizione:
+        "Fai brillare un oggetto toccato come una torcia, illuminando un'area per 6 metri.",
     raggio: "Contatto",
     durata: "1 ora",
     tempoLancio: "1 azione",
@@ -55,7 +57,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Evocazione",
     classi: ["Mago", "Stregone"],
-    descrizione: "Crei una mano magica fluttuante che può manipolare oggetti a distanza.",
+    descrizione:
+        "Crei una mano magica fluttuante che può manipolare oggetti a distanza.",
     raggio: "9 metri",
     durata: "1 minuto",
     tempoLancio: "1 azione",
@@ -67,7 +70,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 1,
     scuola: "Invocazione",
     classi: ["Chierico", "Druido", "Paladino", "Ranger", "Bardo"],
-    descrizione: "Una creatura a contatto recupera 1d8 + modificatore di caratteristica da incantatore in punti ferita.",
+    descrizione:
+        "Una creatura a contatto recupera 1d8 + modificatore di caratteristica da incantatore in punti ferita.",
     raggio: "Contatto",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -78,7 +82,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Evocazione",
     classi: ["Mago", "Stregone"],
-    descrizione: "Un raggio gelido colpisce una creatura, infliggendo 1d8 danni da freddo e riducendone la velocità di 3 metri fino al tuo prossimo turno.",
+    descrizione:
+        "Un raggio gelido colpisce una creatura, infliggendo 1d8 danni da freddo e riducendone la velocità di 3 metri fino al tuo prossimo turno.",
     raggio: "18 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -90,7 +95,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 1,
     scuola: "Invocazione",
     classi: ["Bardo", "Chierico", "Druido"],
-    descrizione: "Una creatura a tua scelta entro 18 metri recupera 1d4 + modificatore Carisma/Saggezza di punti ferita.",
+    descrizione:
+        "Una creatura a tua scelta entro 18 metri recupera 1d4 + modificatore Carisma/Saggezza di punti ferita.",
     raggio: "18 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione bonus",
@@ -101,7 +107,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Illusione",
     classi: ["Bardo", "Mago", "Stregone", "Warlock"],
-    descrizione: "Crei uno o più piccoli effetti magici di intrattenimento o pratici (es. accendere una candela, pulire un oggetto).",
+    descrizione:
+        "Crei uno o più piccoli effetti magici di intrattenimento o pratici (es. accendere una candela, pulire un oggetto).",
     raggio: "3 metri",
     durata: "Fino a 1 ora",
     tempoLancio: "1 azione",
@@ -113,10 +120,12 @@ final List<Incantesimo> incantesimiList = [
     livello: 1,
     scuola: "Abjurazione",
     classi: ["Mago", "Stregone"],
-    descrizione: "Una barriera magica invisibile aumenta la tua CA di +5 fino all'inizio del tuo prossimo turno, inclusa contro l'attacco che ha attivato la reazione.",
+    descrizione:
+        "Una barriera magica invisibile aumenta la tua CA di +5 fino all'inizio del tuo prossimo turno, inclusa contro l'attacco che ha attivato la reazione.",
     raggio: "Sé stesso",
     durata: "Fino all'inizio del tuo prossimo turno",
-    tempoLancio: "1 reazione (quando sei colpito o bersaglio di Dardo Incantato)",
+    tempoLancio:
+        "1 reazione (quando sei colpito o bersaglio di Dardo Incantato)",
     componenti: ["V", "S"],
   ),
   Incantesimo(
@@ -124,7 +133,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 3,
     scuola: "Evocazione",
     classi: ["Mago", "Stregone"],
-    descrizione: "Versione potenziata di Dardo Incantato: 5 dardi da 1d4+1 ciascuno.",
+    descrizione:
+        "Versione potenziata di Dardo Incantato: 5 dardi da 1d4+1 ciascuno.",
     raggio: "36 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -135,7 +145,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 1,
     scuola: "Abjurazione",
     classi: ["Mago", "Stregone"],
-    descrizione: "Una creatura bersaglio ottiene una CA base di 13 + modificatore di Destrezza per 8 ore se non indossa armatura.",
+    descrizione:
+        "Una creatura bersaglio ottiene una CA base di 13 + modificatore di Destrezza per 8 ore se non indossa armatura.",
     raggio: "Contatto",
     durata: "8 ore",
     tempoLancio: "1 azione",
@@ -146,7 +157,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 1,
     scuola: "Divinazione",
     classi: ["Bardo", "Chierico", "Druido", "Paladino", "Ranger", "Mago"],
-    descrizione: "Percepisci la presenza di magia entro 9 metri da te, anche attraverso pareti sottili.",
+    descrizione:
+        "Percepisci la presenza di magia entro 9 metri da te, anche attraverso pareti sottili.",
     raggio: "Sé stesso",
     durata: "Fino a 10 minuti",
     tempoLancio: "1 azione",
@@ -157,7 +169,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 1,
     scuola: "Evocazione",
     classi: ["Stregone"],
-    descrizione: "Una fiammata a cono di 4,5 metri infligge 3d6 danni da fuoco a tutte le creature nell’area (salvezza su Destrezza per dimezzare).",
+    descrizione:
+        "Una fiammata a cono di 4,5 metri infligge 3d6 danni da fuoco a tutte le creature nell’area (salvezza su Destrezza per dimezzare).",
     raggio: "Cono di 4,5 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -168,18 +181,20 @@ final List<Incantesimo> incantesimiList = [
     livello: 1,
     scuola: "Divinazione",
     classi: ["Druido", "Ranger", "Bardo"],
-    descrizione: "Comprendi e comunichi con bestie per la durata dell’incantesimo.",
+    descrizione:
+        "Comprendi e comunichi con bestie per la durata dell’incantesimo.",
     raggio: "Sé stesso",
     durata: "10 minuti",
     tempoLancio: "1 azione",
     componenti: ["V", "S"],
   ),
-   Incantesimo(
+  Incantesimo(
     nome: "Infliggi Ferite",
     livello: 1,
     scuola: "Necromanzia",
     classi: ["Chierico"],
-    descrizione: "Un attacco in mischia che infligge 3d10 danni necrotici se colpisce.",
+    descrizione:
+        "Un attacco in mischia che infligge 3d10 danni necrotici se colpisce.",
     raggio: "Contatto",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -190,7 +205,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 1,
     scuola: "Abjurazione",
     classi: ["Mago", "Stregone", "Bardo"],
-    descrizione: "Fino a cinque creature che stanno cadendo rallentano la loro discesa e atterrano senza subire danni.",
+    descrizione:
+        "Fino a cinque creature che stanno cadendo rallentano la loro discesa e atterrano senza subire danni.",
     raggio: "18 metri",
     durata: "1 minuto",
     tempoLancio: "1 reazione (quando tu o una creatura entro 18 metri cade)",
@@ -201,7 +217,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Illusione",
     classi: ["Bardo", "Stregone", "Mago"],
-    descrizione: "Crei un oggetto o effetto minore sensoriale per distrarre o intrattenere.",
+    descrizione:
+        "Crei un oggetto o effetto minore sensoriale per distrarre o intrattenere.",
     raggio: "9 metri",
     durata: "Fino a 1 minuto",
     tempoLancio: "1 azione",
@@ -213,18 +230,24 @@ final List<Incantesimo> incantesimiList = [
     livello: 1,
     scuola: "Evocazione",
     classi: ["Mago"],
-    descrizione: "Evochi uno spirito che assume la forma di un animale familiare (es. gufo, gatto, rospo).",
+    descrizione:
+        "Evochi uno spirito che assume la forma di un animale familiare (es. gufo, gatto, rospo).",
     raggio: "3 metri",
     durata: "Concentrazione, fino a 1 ora",
     tempoLancio: "1 ora",
-    componenti: ["V", "S", "M (carbone, incenso ed erbe del valore di almeno 10 mo, consumati)"],
+    componenti: [
+      "V",
+      "S",
+      "M (carbone, incenso ed erbe del valore di almeno 10 mo, consumati)",
+    ],
   ),
   Incantesimo(
     nome: "Fascino su Persone",
     livello: 1,
     scuola: "Incantamento",
     classi: ["Bardo", "Stregone", "Mago", "Warlock"],
-    descrizione: "Tenti di affascinare un umanoide che puoi vedere entro 9 metri. Tiro salvezza su Saggezza. Il bersaglio ti considera amichevole finché l'effetto dura.",
+    descrizione:
+        "Tenti di affascinare un umanoide che puoi vedere entro 9 metri. Tiro salvezza su Saggezza. Il bersaglio ti considera amichevole finché l'effetto dura.",
     raggio: "9 metri",
     durata: "1 ora",
     tempoLancio: "1 azione",
@@ -235,7 +258,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 1,
     scuola: "Abjurazione",
     classi: ["Ranger", "Mago"],
-    descrizione: "Imposti un'area di 6 metri come trappola d'allarme. Se una creatura entra, lanci un segnale sonoro o mentale.",
+    descrizione:
+        "Imposti un'area di 6 metri come trappola d'allarme. Se una creatura entra, lanci un segnale sonoro o mentale.",
     raggio: "Contatto",
     durata: "8 ore",
     tempoLancio: "1 minuto",
@@ -246,7 +270,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 3,
     scuola: "Evocazione",
     classi: ["Mago", "Stregone"],
-    descrizione: "Una sfera di fuoco esplode in un punto a tua scelta entro 45 metri. Tutte le creature nell’area subiscono 8d6 danni da fuoco (salvezza su Destrezza per dimezzare).",
+    descrizione:
+        "Una sfera di fuoco esplode in un punto a tua scelta entro 45 metri. Tutte le creature nell’area subiscono 8d6 danni da fuoco (salvezza su Destrezza per dimezzare).",
     raggio: "45 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -257,7 +282,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 2,
     scuola: "Evocazione",
     classi: ["Mago", "Stregone"],
-    descrizione: "Crei tre raggi di fuoco, ciascuno diretto verso un bersaglio entro 36 metri. Ogni raggio infligge 2d6 danni da fuoco se colpisce.",
+    descrizione:
+        "Crei tre raggi di fuoco, ciascuno diretto verso un bersaglio entro 36 metri. Ogni raggio infligge 2d6 danni da fuoco se colpisce.",
     raggio: "36 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -268,7 +294,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 3,
     scuola: "Invocazione",
     classi: ["Chierico", "Druido"],
-    descrizione: "Ripristina 3d8 + modificatore Saggezza di punti ferita a un massimo di sei creature a tua scelta entro 9 metri.",
+    descrizione:
+        "Ripristina 3d8 + modificatore Saggezza di punti ferita a un massimo di sei creature a tua scelta entro 9 metri.",
     raggio: "9 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -279,7 +306,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 2,
     scuola: "Evocazione",
     classi: ["Mago", "Stregone"],
-    descrizione: "Versione potenziata di Mano Magica: può attaccare, afferrare e bloccare oggetti, infliggendo danni da forza.",
+    descrizione:
+        "Versione potenziata di Mano Magica: può attaccare, afferrare e bloccare oggetti, infliggendo danni da forza.",
     raggio: "18 metri",
     durata: "1 minuto",
     tempoLancio: "1 azione",
@@ -290,7 +318,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 1,
     scuola: "Abjurazione",
     classi: ["Chierico", "Paladino", "Ranger", "Warlock", "Mago"],
-    descrizione: "Protegge una creatura contro aberrazioni, celestiali, elementali, fate, demoni e non morti. Ha vantaggio ai tiri salvezza e le creature citate hanno svantaggio agli attacchi contro il bersaglio.",
+    descrizione:
+        "Protegge una creatura contro aberrazioni, celestiali, elementali, fate, demoni e non morti. Ha vantaggio ai tiri salvezza e le creature citate hanno svantaggio agli attacchi contro il bersaglio.",
     raggio: "Contatto",
     durata: "10 minuti",
     tempoLancio: "1 azione",
@@ -301,7 +330,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 2,
     scuola: "Evocazione",
     classi: ["Druido", "Ranger"],
-    descrizione: "Evochi spiriti animali che assumono la forma di bestie per combattere al tuo fianco. La potenza dipende dallo slot usato.",
+    descrizione:
+        "Evochi spiriti animali che assumono la forma di bestie per combattere al tuo fianco. La potenza dipende dallo slot usato.",
     raggio: "18 metri",
     durata: "Concentrazione, fino a 1 ora",
     tempoLancio: "1 azione",
@@ -312,7 +342,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 2,
     scuola: "Evocazione",
     classi: ["Chierico"],
-    descrizione: "Crei un’arma fluttuante che colpisce automaticamente un bersaglio e infligge 1d8 + modificatore Carisma danni da forza. Puoi muoverla e attaccare come azione bonus ogni turno.",
+    descrizione:
+        "Crei un’arma fluttuante che colpisce automaticamente un bersaglio e infligge 1d8 + modificatore Carisma danni da forza. Puoi muoverla e attaccare come azione bonus ogni turno.",
     raggio: "18 metri",
     durata: "1 minuto",
     tempoLancio: "1 azione bonus",
@@ -323,7 +354,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 1,
     scuola: "Abjurazione",
     classi: ["Warlock"],
-    descrizione: "Uno strato di gelo ti avvolge, conferendoti 5 PF temporanei. Se vieni colpito, il gelo infligge 5 danni da freddo a chi ti ha colpito.",
+    descrizione:
+        "Uno strato di gelo ti avvolge, conferendoti 5 PF temporanei. Se vieni colpito, il gelo infligge 5 danni da freddo a chi ti ha colpito.",
     raggio: "Sé stesso",
     durata: "1 ora",
     tempoLancio: "1 azione",
@@ -334,7 +366,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 1,
     scuola: "Incantamento",
     classi: ["Chierico", "Paladino"],
-    descrizione: "Comandi una creatura a obbedire a una singola parola (es. fermo, lascia, fuggi). Tiro salvezza su Saggezza.",
+    descrizione:
+        "Comandi una creatura a obbedire a una singola parola (es. fermo, lascia, fuggi). Tiro salvezza su Saggezza.",
     raggio: "18 metri",
     durata: "1 round",
     tempoLancio: "1 azione",
@@ -345,7 +378,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Necromanzia",
     classi: ["Mago", "Stregone", "Warlock"],
-    descrizione: "Una mano scheletrica fluttuante infligge 1d8 danni necrotici e impedisce cure al bersaglio fino all'inizio del tuo prossimo turno.",
+    descrizione:
+        "Una mano scheletrica fluttuante infligge 1d8 danni necrotici e impedisce cure al bersaglio fino all'inizio del tuo prossimo turno.",
     raggio: "36 metri",
     durata: "1 round",
     tempoLancio: "1 azione",
@@ -357,7 +391,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 1,
     scuola: "Evocazione",
     classi: ["Stregone", "Mago"],
-    descrizione: "Scagli un dardo elementale che infligge 1d10 danni da freddo, fuoco, fulmine o acido (a tua scelta).",
+    descrizione:
+        "Scagli un dardo elementale che infligge 1d10 danni da freddo, fuoco, fulmine o acido (a tua scelta).",
     raggio: "18 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -368,7 +403,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 1,
     scuola: "Divinazione",
     classi: ["Paladino", "Chierico"],
-    descrizione: "Percepisci la presenza di aberrazioni, celestiali, demoni, elementali, fate e non morti entro 9 metri da te.",
+    descrizione:
+        "Percepisci la presenza di aberrazioni, celestiali, demoni, elementali, fate e non morti entro 9 metri da te.",
     raggio: "Sé stesso",
     durata: "1 azione",
     tempoLancio: "1 azione",
@@ -379,7 +415,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 2,
     scuola: "Evocazione",
     classi: ["Paladino"],
-    descrizione: "La tua arma si infiamma. Il prossimo colpo infligge 2d6 danni da fuoco aggiuntivi. L'incantesimo si interrompe se non colpisci entro 1 minuto.",
+    descrizione:
+        "La tua arma si infiamma. Il prossimo colpo infligge 2d6 danni da fuoco aggiuntivi. L'incantesimo si interrompe se non colpisci entro 1 minuto.",
     raggio: "Sé stesso",
     durata: "Concentrazione, fino a 1 minuto",
     tempoLancio: "1 azione bonus",
@@ -390,7 +427,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 3,
     scuola: "Evocazione",
     classi: ["Druido"],
-    descrizione: "Evochi un folletto o un piccolo spirito fatato per assisterti. Può lanciare incantesimi e agire nel tuo turno.",
+    descrizione:
+        "Evochi un folletto o un piccolo spirito fatato per assisterti. Può lanciare incantesimi e agire nel tuo turno.",
     raggio: "27 metri",
     durata: "Concentrazione, fino a 1 ora",
     tempoLancio: "1 azione",
@@ -401,7 +439,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 3,
     scuola: "Necromanzia",
     classi: ["Mago", "Warlock"],
-    descrizione: "La tua mano si oscura. Colpendo una creatura, infliggi 3d6 danni necrotici e recuperi metà dei danni come punti ferita.",
+    descrizione:
+        "La tua mano si oscura. Colpendo una creatura, infliggi 3d6 danni necrotici e recuperi metà dei danni come punti ferita.",
     raggio: "Contatto",
     durata: "Concentrazione, fino a 1 minuto",
     tempoLancio: "1 azione",
@@ -412,7 +451,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 2,
     scuola: "Invocazione",
     classi: ["Mago", "Stregone"],
-    descrizione: "Lanci una ragnatela appiccicosa che intrappola le creature in un'area di 6 metri. Le creature devono effettuare un tiro salvezza su Destrezza o restano intrappolate.",
+    descrizione:
+        "Lanci una ragnatela appiccicosa che intrappola le creature in un'area di 6 metri. Le creature devono effettuare un tiro salvezza su Destrezza o restano intrappolate.",
     raggio: "18 metri",
     durata: "Concentrazione, fino a 1 ora",
     tempoLancio: "1 azione",
@@ -423,10 +463,11 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Abjurazione",
     classi: ["Stregone", "Mago"],
-    descrizione: "Fino al tuo prossimo turno, ottieni +1 alla CA contro il primo attacco che ti colpisce.",
+    descrizione:
+        "Fino al tuo prossimo turno, ottieni +1 alla CA contro il primo attacco che ti colpisce.",
     raggio: "Sé stesso",
     durata: "1 round",
-    tempoLancio: "1 reazione (quando vieni colpito)" ,
+    tempoLancio: "1 reazione (quando vieni colpito)",
     componenti: ["V"],
     eTrucchetto: true,
   ),
@@ -435,7 +476,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Evocazione",
     classi: ["Chierico"],
-    descrizione: "Una colonna di fuoco sacro colpisce un bersaglio visibile. Danno 1d8 radiante, nessun tiro per colpire, TS su Destrezza per evitare.",
+    descrizione:
+        "Una colonna di fuoco sacro colpisce un bersaglio visibile. Danno 1d8 radiante, nessun tiro per colpire, TS su Destrezza per evitare.",
     raggio: "18 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -447,7 +489,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 2,
     scuola: "Evocazione",
     classi: ["Stregone", "Warlock", "Mago"],
-    descrizione: "Un globo di oscurità magica riempie un'area di 4,5 metri. Anche la scurovisione non può attraversarla.",
+    descrizione:
+        "Un globo di oscurità magica riempie un'area di 4,5 metri. Anche la scurovisione non può attraversarla.",
     raggio: "18 metri",
     durata: "Concentrazione, fino a 10 minuti",
     tempoLancio: "1 azione",
@@ -458,7 +501,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 1,
     scuola: "Abjurazione",
     classi: ["Chierico", "Paladino"],
-    descrizione: "Una creatura bersaglio ottiene +2 alla CA per la durata dell’incantesimo.",
+    descrizione:
+        "Una creatura bersaglio ottiene +2 alla CA per la durata dell’incantesimo.",
     raggio: "18 metri",
     durata: "Concentrazione, fino a 10 minuti",
     tempoLancio: "1 azione bonus",
@@ -469,7 +513,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 1,
     scuola: "Trasmutazione",
     classi: ["Mago", "Stregone", "Warlock"],
-    descrizione: "Quando lanci l'incantesimo, ottieni l'effetto di Disimpegno come azione bonus. Finché dura, puoi usare Dash come azione bonus ogni turno.",
+    descrizione:
+        "Quando lanci l'incantesimo, ottieni l'effetto di Disimpegno come azione bonus. Finché dura, puoi usare Dash come azione bonus ogni turno.",
     raggio: "Sé stesso",
     durata: "Concentrazione, fino a 10 minuti",
     tempoLancio: "1 azione bonus",
@@ -480,7 +525,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 2,
     scuola: "Illusione",
     classi: ["Chierico", "Ranger", "Mago"],
-    descrizione: "Crea una sfera di 6 metri di raggio in cui nessun suono può essere prodotto. Incantesimi con componente verbale falliscono all’interno.",
+    descrizione:
+        "Crea una sfera di 6 metri di raggio in cui nessun suono può essere prodotto. Incantesimi con componente verbale falliscono all’interno.",
     raggio: "36 metri",
     durata: "Concentrazione, fino a 10 minuti",
     tempoLancio: "1 azione",
@@ -491,19 +537,29 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Trasmutazione",
     classi: ["Druido"],
-    descrizione: "Crei una frusta magica spinosa che afferra un bersaglio entro 9 metri e lo tira di 3 metri verso di te (se è più piccolo di te). Infligge 1d6 danni contundenti.",
+    descrizione:
+        "Crei una frusta magica spinosa che afferra un bersaglio entro 9 metri e lo tira di 3 metri verso di te (se è più piccolo di te). Infligge 1d6 danni contundenti.",
     raggio: "9 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
     componenti: ["V", "S"],
     eTrucchetto: true,
   ),
-    Incantesimo(
+  Incantesimo(
     nome: "Dissolvi Magie",
     livello: 3,
     scuola: "Abjurazione",
-    classi: ["Bardo", "Chierico", "Druido", "Mago", "Paladino", "Stregone", "Warlock"],
-    descrizione: "Interrompe un incantesimo o effetto magico in corso. Rimuove automaticamente incantesimi di livello 3 o inferiore, tiro su CD per superiori.",
+    classi: [
+      "Bardo",
+      "Chierico",
+      "Druido",
+      "Mago",
+      "Paladino",
+      "Stregone",
+      "Warlock",
+    ],
+    descrizione:
+        "Interrompe un incantesimo o effetto magico in corso. Rimuove automaticamente incantesimi di livello 3 o inferiore, tiro su CD per superiori.",
     raggio: "36 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -514,7 +570,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 4,
     scuola: "Evocazione",
     classi: ["Druido", "Mago"],
-    descrizione: "Crei una tempesta di grandine che colpisce un’area di 6 metri di raggio, infliggendo 2d8 danni contundenti e 4d6 danni da freddo.",
+    descrizione:
+        "Crei una tempesta di grandine che colpisce un’area di 6 metri di raggio, infliggendo 2d8 danni contundenti e 4d6 danni da freddo.",
     raggio: "90 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -525,7 +582,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 3,
     scuola: "Trasmutazione",
     classi: ["Stregone", "Mago", "Warlock"],
-    descrizione: "Una creatura toccata ottiene velocità di volo di 18 metri per la durata dell’incantesimo.",
+    descrizione:
+        "Una creatura toccata ottiene velocità di volo di 18 metri per la durata dell’incantesimo.",
     raggio: "Contatto",
     durata: "Concentrazione, fino a 10 minuti",
     tempoLancio: "1 azione",
@@ -536,18 +594,24 @@ final List<Incantesimo> incantesimiList = [
     livello: 6,
     scuola: "Divinazione",
     classi: ["Chierico", "Mago"],
-    descrizione: "Conferisce vista truesight fino a 36 metri, permettendo di vedere attraverso illusioni, invisibilità, oggetti eterei e trasmutazioni.",
+    descrizione:
+        "Conferisce vista truesight fino a 36 metri, permettendo di vedere attraverso illusioni, invisibilità, oggetti eterei e trasmutazioni.",
     raggio: "Contatto",
     durata: "1 ora",
     tempoLancio: "1 azione",
-    componenti: ["V", "S", "M (un unguento per gli occhi del valore di almeno 25 mo)"],
+    componenti: [
+      "V",
+      "S",
+      "M (un unguento per gli occhi del valore di almeno 25 mo)",
+    ],
   ),
   Incantesimo(
     nome: "Globo di Invulnerabilità",
     livello: 6,
     scuola: "Abjurazione",
     classi: ["Mago"],
-    descrizione: "Una barriera magica protegge tutte le creature all'interno da incantesimi di livello 5 o inferiore lanciati dall’esterno.",
+    descrizione:
+        "Una barriera magica protegge tutte le creature all'interno da incantesimi di livello 5 o inferiore lanciati dall’esterno.",
     raggio: "3 metri",
     durata: "Concentrazione, fino a 1 minuto",
     tempoLancio: "1 azione",
@@ -558,7 +622,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 4,
     scuola: "Trasmutazione",
     classi: ["Chierico", "Druido"],
-    descrizione: "Controlli una massa d’acqua fino a 30 metri cubi per creare marea, parti acque, deviare il flusso o vortice.",
+    descrizione:
+        "Controlli una massa d’acqua fino a 30 metri cubi per creare marea, parti acque, deviare il flusso o vortice.",
     raggio: "90 metri",
     durata: "Concentrazione, fino a 10 minuti",
     tempoLancio: "1 azione",
@@ -569,18 +634,24 @@ final List<Incantesimo> incantesimiList = [
     livello: 1,
     scuola: "Trasmutazione",
     classi: ["Chierico", "Druido"],
-    descrizione: "Crei fino a 10 litri di acqua o la distruggi in un contenitore o area aperta.",
+    descrizione:
+        "Crei fino a 10 litri di acqua o la distruggi in un contenitore o area aperta.",
     raggio: "9 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
-    componenti: ["V", "S", "M (una goccia d’acqua per creare, un granello di polvere per distruggere)"],
+    componenti: [
+      "V",
+      "S",
+      "M (una goccia d’acqua per creare, un granello di polvere per distruggere)",
+    ],
   ),
   Incantesimo(
     nome: "Scudo di Fuoco",
     livello: 4,
     scuola: "Evocazione",
     classi: ["Stregone", "Mago"],
-    descrizione: "Una fiamma fredda o calda ti circonda. Le creature che ti colpiscono in mischia subiscono 2d8 danni da freddo o fuoco.",
+    descrizione:
+        "Una fiamma fredda o calda ti circonda. Le creature che ti colpiscono in mischia subiscono 2d8 danni da freddo o fuoco.",
     raggio: "Sé stesso",
     durata: "10 minuti",
     tempoLancio: "1 azione",
@@ -591,7 +662,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 3,
     scuola: "Trasmutazione",
     classi: ["Chierico", "Druido", "Ranger"],
-    descrizione: "Fino a 10 creature possono camminare sulla superficie dell'acqua per la durata dell'incantesimo.",
+    descrizione:
+        "Fino a 10 creature possono camminare sulla superficie dell'acqua per la durata dell'incantesimo.",
     raggio: "9 metri",
     durata: "1 ora",
     tempoLancio: "1 azione",
@@ -602,7 +674,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 3,
     scuola: "Trasmutazione",
     classi: ["Stregone", "Warlock", "Mago"],
-    descrizione: "Trasformi una creatura volontaria in una nube di nebbia. Ottiene resistenza ai danni e può passare attraverso fessure.",
+    descrizione:
+        "Trasformi una creatura volontaria in una nube di nebbia. Ottiene resistenza ai danni e può passare attraverso fessure.",
     raggio: "Contatto",
     durata: "Concentrazione, fino a 1 ora",
     tempoLancio: "1 azione",
@@ -613,7 +686,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 4,
     scuola: "Evocazione",
     classi: ["Stregone", "Mago"],
-    descrizione: "Crei una barriera di fuoco lunga fino a 18 metri. Le creature che entrano o iniziano il turno nell'area subiscono 5d8 danni da fuoco.",
+    descrizione:
+        "Crei una barriera di fuoco lunga fino a 18 metri. Le creature che entrano o iniziano il turno nell'area subiscono 5d8 danni da fuoco.",
     raggio: "36 metri",
     durata: "Concentrazione, fino a 1 minuto",
     tempoLancio: "1 azione",
@@ -624,7 +698,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 3,
     scuola: "Necromanzia",
     classi: ["Mago", "Chierico", "Warlock"],
-    descrizione: "Evochi uno o più scheletri o zombie che agiscono sotto il tuo comando. Puoi animare cadaveri nel raggio.",
+    descrizione:
+        "Evochi uno o più scheletri o zombie che agiscono sotto il tuo comando. Puoi animare cadaveri nel raggio.",
     raggio: "3 metri",
     durata: "Concentrazione, fino a 1 ora",
     tempoLancio: "1 minuto",
@@ -635,7 +710,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 4,
     scuola: "Evocazione",
     classi: ["Bardo", "Stregone", "Mago", "Warlock"],
-    descrizione: "Apri un portale e ti teletrasporti istantaneamente fino a 150 metri di distanza, portando con te un alleato.",
+    descrizione:
+        "Apri un portale e ti teletrasporti istantaneamente fino a 150 metri di distanza, portando con te un alleato.",
     raggio: "36 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -646,7 +722,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 2,
     scuola: "Trasmutazione",
     classi: ["Druido", "Ranger"],
-    descrizione: "Aumenti agilità e destrezza: +2 a tiri salvezza su Destrezza e bonus a prove acrobatiche.",
+    descrizione:
+        "Aumenti agilità e destrezza: +2 a tiri salvezza su Destrezza e bonus a prove acrobatiche.",
     raggio: "Contatto",
     durata: "1 ora",
     tempoLancio: "1 azione",
@@ -657,7 +734,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 5,
     scuola: "Evocazione",
     classi: ["Mago", "Druido"],
-    descrizione: "Crei una muraglia solida di pietra che può formare una barriera continua o varie sezioni.",
+    descrizione:
+        "Crei una muraglia solida di pietra che può formare una barriera continua o varie sezioni.",
     raggio: "36 metri",
     durata: "Concentrazione, fino a 10 minuti",
     tempoLancio: "1 azione",
@@ -668,7 +746,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 9,
     scuola: "Invocazione",
     classi: ["Stregone", "Mago"],
-    descrizione: "L'incantesimo più potente: puoi duplicare qualsiasi altro incantesimo di livello 8 o inferiore o realizzare effetti quasi illimitati, ma con potenziali conseguenze.",
+    descrizione:
+        "L'incantesimo più potente: puoi duplicare qualsiasi altro incantesimo di livello 8 o inferiore o realizzare effetti quasi illimitati, ma con potenziali conseguenze.",
     raggio: "Sé stesso",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -679,7 +758,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 5,
     scuola: "Evocazione",
     classi: ["Druido", "Stregone", "Mago"],
-    descrizione: "Chiami un elementale (fuoco, aria, acqua o terra) che combatterà al tuo fianco per la durata.",
+    descrizione:
+        "Chiami un elementale (fuoco, aria, acqua o terra) che combatterà al tuo fianco per la durata.",
     raggio: "27 metri",
     durata: "Concentrazione, fino a 1 ora",
     tempoLancio: "1 minuto",
@@ -690,7 +770,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 9,
     scuola: "Invocazione",
     classi: ["Stregone", "Mago"],
-    descrizione: "Pronunci una parola fatale. Se la creatura ha 100 PF o meno, muore istantaneamente.",
+    descrizione:
+        "Pronunci una parola fatale. Se la creatura ha 100 PF o meno, muore istantaneamente.",
     raggio: "18 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -701,7 +782,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 7,
     scuola: "Trasmutazione",
     classi: ["Chierico", "Mago"],
-    descrizione: "Ti trasferisci nel Piano Etereo, muovendoti attraverso superfici solide e invisibile alle creature nel Piano Materiale.",
+    descrizione:
+        "Ti trasferisci nel Piano Etereo, muovendoti attraverso superfici solide e invisibile alle creature nel Piano Materiale.",
     raggio: "Sé stesso",
     durata: "Concentrazione, fino a 8 ore",
     tempoLancio: "1 azione",
@@ -712,7 +794,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 5,
     scuola: "Incantamento",
     classi: ["Bardo", "Stregone", "Mago"],
-    descrizione: "Fino a 12 creature a tua scelta devono superare un TS su Saggezza o saranno affascinate da te per 1 minuto.",
+    descrizione:
+        "Fino a 12 creature a tua scelta devono superare un TS su Saggezza o saranno affascinate da te per 1 minuto.",
     raggio: "18 metri",
     durata: "Concentrazione, fino a 1 minuto",
     tempoLancio: "1 azione",
@@ -723,7 +806,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 3,
     scuola: "Evocazione",
     classi: ["Chierico"],
-    descrizione: "Spiriti sacri fluttuano intorno a te infliggendo 3d8 danni a chiunque entri o inizi il turno nell’area (6 metri).",
+    descrizione:
+        "Spiriti sacri fluttuano intorno a te infliggendo 3d8 danni a chiunque entri o inizi il turno nell’area (6 metri).",
     raggio: "Sé stesso (raggio 6 metri)",
     durata: "Concentrazione, fino a 10 minuti",
     tempoLancio: "1 azione",
@@ -734,7 +818,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 4,
     scuola: "Illusione",
     classi: ["Bardo", "Mago", "Stregone"],
-    descrizione: "Rendi invisibile una creatura che attacca e lancia incantesimi senza perdere l’effetto.",
+    descrizione:
+        "Rendi invisibile una creatura che attacca e lancia incantesimi senza perdere l’effetto.",
     raggio: "Contatto",
     durata: "Concentrazione, fino a 1 minuto",
     tempoLancio: "1 azione",
@@ -745,7 +830,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 8,
     scuola: "Abjurazione",
     classi: ["Mago"],
-    descrizione: "Proteggi la mente di un bersaglio da lettura del pensiero, individuazione e influenze mentali. Immunità al charm.",
+    descrizione:
+        "Proteggi la mente di un bersaglio da lettura del pensiero, individuazione e influenze mentali. Immunità al charm.",
     raggio: "Contatto",
     durata: "24 ore",
     tempoLancio: "1 azione",
@@ -756,7 +842,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Evocazione",
     classi: ["Stregone", "Mago"],
-    descrizione: "Scagli un dardo di fuoco che infligge 1d10 danni da fuoco a un bersaglio entro 36 metri.",
+    descrizione:
+        "Scagli un dardo di fuoco che infligge 1d10 danni da fuoco a un bersaglio entro 36 metri.",
     raggio: "36 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -768,7 +855,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Evocazione",
     classi: ["Warlock"],
-    descrizione: "Scagli un raggio d'energia che infligge 1d10 danni da forza. Può essere potenziato da invocazioni eldritch.",
+    descrizione:
+        "Scagli un raggio d'energia che infligge 1d10 danni da forza. Può essere potenziato da invocazioni eldritch.",
     raggio: "36 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -780,7 +868,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Evocazione",
     classi: ["Mago", "Stregone"],
-    descrizione: "Un tocco elettrico infligge 1d8 danni da fulmine e impedisce reazioni fino al turno successivo della creatura.",
+    descrizione:
+        "Un tocco elettrico infligge 1d8 danni da fulmine e impedisce reazioni fino al turno successivo della creatura.",
     raggio: "Contatto",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -792,7 +881,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Necromanzia",
     classi: ["Chierico"],
-    descrizione: "Stabilizzi una creatura morente. Non ha effetto sui non morti o costrutti.",
+    descrizione:
+        "Stabilizzi una creatura morente. Non ha effetto sui non morti o costrutti.",
     raggio: "Contatto",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -804,7 +894,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Evocazione",
     classi: ["Chierico"],
-    descrizione: "Una colonna di fuoco sacro colpisce un nemico visibile infliggendo 1d8 danni radianti, TS su Destrezza per evitare.",
+    descrizione:
+        "Una colonna di fuoco sacro colpisce un nemico visibile infliggendo 1d8 danni radianti, TS su Destrezza per evitare.",
     raggio: "18 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -816,7 +907,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Necromanzia",
     classi: ["Chierico", "Warlock"],
-    descrizione: "Un suono lugubre infligge 1d8 danni necrotici. Il bersaglio effettua un TS su Saggezza o subisce danno pieno.",
+    descrizione:
+        "Un suono lugubre infligge 1d8 danni necrotici. Il bersaglio effettua un TS su Saggezza o subisce danno pieno.",
     raggio: "18 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -828,7 +920,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Trasmutazione",
     classi: ["Bardo", "Stregone", "Mago"],
-    descrizione: "Comunichi silenziosamente con una creatura entro 36 metri. Solo voi due potete udire il messaggio.",
+    descrizione:
+        "Comunichi silenziosamente con una creatura entro 36 metri. Solo voi due potete udire il messaggio.",
     raggio: "36 metri",
     durata: "1 round",
     tempoLancio: "1 azione",
@@ -840,7 +933,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Evocazione",
     classi: ["Druido"],
-    descrizione: "Crei una piccola fiamma nella tua mano, che può essere usata per illuminare o lanciare a distanza per infliggere 1d8 danni da fuoco.",
+    descrizione:
+        "Crei una piccola fiamma nella tua mano, che può essere usata per illuminare o lanciare a distanza per infliggere 1d8 danni da fuoco.",
     raggio: "18 metri",
     durata: "10 minuti",
     tempoLancio: "1 azione",
@@ -852,7 +946,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Evocazione",
     classi: ["Mago", "Stregone", "Warlock"],
-    descrizione: "Attacchi con un'arma in mischia e una fiamma verde salta su un secondo bersaglio entro 1,5 metri, infliggendo danni da fuoco aggiuntivi.",
+    descrizione:
+        "Attacchi con un'arma in mischia e una fiamma verde salta su un secondo bersaglio entro 1,5 metri, infliggendo danni da fuoco aggiuntivi.",
     raggio: "1,5 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -864,7 +959,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Evocazione",
     classi: ["Mago", "Stregone", "Warlock"],
-    descrizione: "Attacchi con un'arma e, se il bersaglio si muove, subisce 1d8 danni da tuono aggiuntivi.",
+    descrizione:
+        "Attacchi con un'arma e, se il bersaglio si muove, subisce 1d8 danni da tuono aggiuntivi.",
     raggio: "1,5 metri",
     durata: "1 round",
     tempoLancio: "1 azione",
@@ -876,7 +972,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Illusione",
     classi: ["Bardo", "Mago", "Stregone", "Warlock"],
-    descrizione: "Crei un'immagine statica o un suono entro 9 metri che può trarre in inganno le creature.",
+    descrizione:
+        "Crei un'immagine statica o un suono entro 9 metri che può trarre in inganno le creature.",
     raggio: "9 metri",
     durata: "1 minuto",
     tempoLancio: "1 azione",
@@ -888,7 +985,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Evocazione",
     classi: ["Bardo", "Stregone", "Mago"],
-    descrizione: "Crei fino a quattro luci fluttuanti che puoi far muovere entro 36 metri. Ogni luce illumina come una torcia.",
+    descrizione:
+        "Crei fino a quattro luci fluttuanti che puoi far muovere entro 36 metri. Ogni luce illumina come una torcia.",
     raggio: "36 metri",
     durata: "1 minuto",
     tempoLancio: "1 azione",
@@ -900,7 +998,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Illusione",
     classi: ["Warlock"],
-    descrizione: "Crei una lama fatta d’ombra che infligge 1d8 danni psichici e fa sì che il bersaglio abbia svantaggio al prossimo TS su Intelligenza.",
+    descrizione:
+        "Crei una lama fatta d’ombra che infligge 1d8 danni psichici e fa sì che il bersaglio abbia svantaggio al prossimo TS su Intelligenza.",
     raggio: "9 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -912,7 +1011,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Evocazione",
     classi: ["Stregone", "Mago"],
-    descrizione: "Spruzzi un getto di acido su due creature vicine. Se falliscono un TS su Destrezza, subiscono 1d6 danni da acido.",
+    descrizione:
+        "Spruzzi un getto di acido su due creature vicine. Se falliscono un TS su Destrezza, subiscono 1d6 danni da acido.",
     raggio: "18 metri",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -924,7 +1024,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Divinazione",
     classi: ["Druido", "Ranger"],
-    descrizione: "Osservi l’ambiente e ottieni piccoli presagi naturali: cambiamenti del tempo, pericoli o presenza di animali.",
+    descrizione:
+        "Osservi l’ambiente e ottieni piccoli presagi naturali: cambiamenti del tempo, pericoli o presenza di animali.",
     raggio: "Sé stesso",
     durata: "Istantanea",
     tempoLancio: "1 azione",
@@ -936,7 +1037,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Trasmutazione",
     classi: ["Druido"],
-    descrizione: "Trasformi un bastone o clava in un'arma magica che usa Saggezza per colpire e danni. Dura 1 minuto.",
+    descrizione:
+        "Trasformi un bastone o clava in un'arma magica che usa Saggezza per colpire e danni. Dura 1 minuto.",
     raggio: "Contatto",
     durata: "1 minuto",
     tempoLancio: "1 bonus action",
@@ -948,7 +1050,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Trasmutazione",
     classi: ["Druido", "Mago", "Stregone"],
-    descrizione: "Controlli una fiamma non magica in un cubo di 1,5m. Puoi estinguerla, raddoppiarne le dimensioni o cambiarne il colore.",
+    descrizione:
+        "Controlli una fiamma non magica in un cubo di 1,5m. Puoi estinguerla, raddoppiarne le dimensioni o cambiarne il colore.",
     raggio: "18 metri",
     durata: "1 ora",
     tempoLancio: "1 azione",
@@ -960,7 +1063,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Abjurazione",
     classi: ["Chierico", "Druido"],
-    descrizione: "Una creatura toccata può aggiungere 1d4 a un tiro salvezza a sua scelta nei prossimi 60 secondi.",
+    descrizione:
+        "Una creatura toccata può aggiungere 1d4 a un tiro salvezza a sua scelta nei prossimi 60 secondi.",
     raggio: "Contatto",
     durata: "1 minuto",
     tempoLancio: "1 azione",
@@ -972,7 +1076,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Illusione",
     classi: ["Bardo", "Stregone", "Mago"],
-    descrizione: "Crei un'esplosione momentanea di luci abbaglianti che distrae una creatura entro 18 metri, causandole svantaggio sul prossimo tiro per colpire.",
+    descrizione:
+        "Crei un'esplosione momentanea di luci abbaglianti che distrae una creatura entro 18 metri, causandole svantaggio sul prossimo tiro per colpire.",
     raggio: "18 metri",
     durata: "1 round",
     tempoLancio: "1 azione",
@@ -984,7 +1089,8 @@ final List<Incantesimo> incantesimiList = [
     livello: 0,
     scuola: "Necromanzia",
     classi: ["Mago", "Stregone", "Warlock"],
-    descrizione: "Una mano spettrale gela un bersaglio entro 36 metri infliggendo 1d8 danni da freddo. Il bersaglio non può recuperare PF fino al tuo prossimo turno.",
+    descrizione:
+        "Una mano spettrale gela un bersaglio entro 36 metri infliggendo 1d8 danni da freddo. Il bersaglio non può recuperare PF fino al tuo prossimo turno.",
     raggio: "36 metri",
     durata: "1 round",
     tempoLancio: "1 azione",
@@ -992,8 +1098,3 @@ final List<Incantesimo> incantesimiList = [
     eTrucchetto: true,
   ),
 ];
-
-
-
-
-

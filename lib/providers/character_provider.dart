@@ -13,7 +13,7 @@ enum CharacterCreationStep {
   abilita,
   equipaggiamento,
   export,
-  completed
+  completed,
 }
 
 class CharacterProvider extends ChangeNotifier {
@@ -30,8 +30,10 @@ class CharacterProvider extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   bool get hasUnsavedChanges => _hasUnsavedChanges;
 
-  bool get canGoNext => _currentStep.index < CharacterCreationStep.completed.index;
-  bool get canGoPrevious => _currentStep.index > CharacterCreationStep.nome.index;
+  bool get canGoNext =>
+      _currentStep.index < CharacterCreationStep.completed.index;
+  bool get canGoPrevious =>
+      _currentStep.index > CharacterCreationStep.nome.index;
 
   // Character data getters
   String get nome => _factory.build().nome;
@@ -145,7 +147,9 @@ class CharacterProvider extends ChangeNotifier {
 
   void setCaratteristiche(Map<String, int> caratteristiche) {
     try {
-      final validation = ValidationService.validateCharacteristics(caratteristiche);
+      final validation = ValidationService.validateCharacteristics(
+        caratteristiche,
+      );
       if (!validation.isValid) {
         setError(validation.errorMessage!);
         return;
@@ -157,7 +161,9 @@ class CharacterProvider extends ChangeNotifier {
 
       // Mostra avvisi se presenti
       if (validation.warnings.isNotEmpty) {
-        AppLogger.warning("Avvisi caratteristiche: ${validation.warnings.join(', ')}");
+        AppLogger.warning(
+          "Avvisi caratteristiche: ${validation.warnings.join(', ')}",
+        );
       }
     } catch (e) {
       AppLogger.error("Errore nell'impostare le caratteristiche", e);
@@ -169,14 +175,15 @@ class CharacterProvider extends ChangeNotifier {
     try {
       // Validazione con la classe corrente
       if (classe.isNotEmpty) {
-        final availableAbilities = await CharacterService.getAvailableAbilitiesForClass(classe);
+        final availableAbilities =
+            await CharacterService.getAvailableAbilitiesForClass(classe);
         final classeObj = await CharacterService.getClasseByName(classe);
         final requiredCount = classeObj?.abilitaDaSelezionare ?? 0;
 
         final validation = ValidationService.validateAbilitySelection(
           abilita,
           availableAbilities,
-          requiredCount
+          requiredCount,
         );
 
         if (!validation.isValid) {
@@ -251,5 +258,6 @@ class CharacterProvider extends ChangeNotifier {
     }
   }
 
-  double get progress => (_currentStep.index + 1) / CharacterCreationStep.values.length;
+  double get progress =>
+      (_currentStep.index + 1) / CharacterCreationStep.values.length;
 }

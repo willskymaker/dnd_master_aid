@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class ComingSoonScreen extends StatelessWidget {
   const ComingSoonScreen({super.key}); // ✅ Costruttore const aggiunto
 

@@ -98,8 +98,8 @@ class _MobileSearchBarState extends State<MobileSearchBar>
         decoration: InputDecoration(
           hintText: widget.hintText,
           hintStyle: TextStyle(color: Colors.grey[400]),
-          prefixIcon: widget.leading ??
-            Icon(Icons.search, color: Colors.grey[400]),
+          prefixIcon:
+              widget.leading ?? Icon(Icons.search, color: Colors.grey[400]),
           suffixIcon: AnimatedBuilder(
             animation: _fadeAnimation,
             builder: (context, child) {
@@ -125,7 +125,8 @@ class _MobileSearchBarState extends State<MobileSearchBar>
 }
 
 /// Versione compatta della search bar per AppBar
-class CompactMobileSearchBar extends StatefulWidget implements PreferredSizeWidget {
+class CompactMobileSearchBar extends StatefulWidget
+    implements PreferredSizeWidget {
   final String hintText;
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;
@@ -186,20 +187,25 @@ class _CompactMobileSearchBarState extends State<CompactMobileSearchBar> {
               Icons.search,
               color: Colors.white.withValues(alpha: 0.7),
             ),
-            suffixIcon: _controller.text.isNotEmpty
-              ? IconButton(
-                  icon: const Icon(Icons.clear),
-                  color: Colors.white.withValues(alpha: 0.7),
-                  onPressed: _clearSearch,
-                )
-              : null,
+            suffixIcon:
+                _controller.text.isNotEmpty
+                    ? IconButton(
+                      icon: const Icon(Icons.clear),
+                      color: Colors.white.withValues(alpha: 0.7),
+                      onPressed: _clearSearch,
+                    )
+                    : null,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
-              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.3)),
+              borderSide: BorderSide(
+                color: Colors.white.withValues(alpha: 0.3),
+              ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
-              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.3)),
+              borderSide: BorderSide(
+                color: Colors.white.withValues(alpha: 0.3),
+              ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),

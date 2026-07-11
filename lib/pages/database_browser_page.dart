@@ -22,43 +22,43 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
       'name': 'Specie',
       'icon': Icons.person,
       'count': '30+',
-      'description': 'Razze giocabili'
+      'description': 'Razze giocabili',
     },
     {
       'name': 'Classi',
       'icon': Icons.school,
       'count': '12',
-      'description': 'Classi e sottoclassi'
+      'description': 'Classi e sottoclassi',
     },
     {
       'name': 'Incantesimi',
       'icon': Icons.auto_awesome,
       'count': '500+',
-      'description': 'Database completo'
+      'description': 'Database completo',
     },
     {
       'name': 'Equipaggiamento',
       'icon': Icons.inventory,
       'count': '200+',
-      'description': 'Armi, armature, oggetti'
+      'description': 'Armi, armature, oggetti',
     },
     {
       'name': 'Background',
       'icon': Icons.library_books,
       'count': '25+',
-      'description': 'Sfondi e storie'
+      'description': 'Sfondi e storie',
     },
     {
       'name': 'Talenti',
       'icon': Icons.star,
       'count': '35+',
-      'description': 'Abilità speciali'
+      'description': 'Abilità speciali',
     },
     {
       'name': 'Mostri',
       'icon': Icons.pets,
       'count': '10+',
-      'description': 'Creature e bestie'
+      'description': 'Creature e bestie',
     },
   ];
 
@@ -80,9 +80,10 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
 
           // Categories Grid
           Expanded(
-            child: _searchQuery.isEmpty
-                ? _buildCategoriesView()
-                : _buildSearchResults(),
+            child:
+                _searchQuery.isEmpty
+                    ? _buildCategoriesView()
+                    : _buildSearchResults(),
           ),
         ],
       ),
@@ -111,9 +112,7 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
   Widget _buildCategoryCard(Map<String, dynamic> category) {
     return Card(
       elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () => _openCategory(category['name']),
@@ -156,10 +155,7 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
               const SizedBox(height: 4),
               Text(
                 category['description'],
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[500],
-                ),
+                style: TextStyle(fontSize: 12, color: Colors.grey[500]),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -174,10 +170,7 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
       return const Center(
         child: Text(
           'Inizia a digitare per cercare...',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
-          ),
+          style: TextStyle(fontSize: 16, color: Colors.grey),
         ),
       );
     }
@@ -190,9 +183,7 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
         }
 
         if (snapshot.hasError) {
-          return Center(
-            child: Text('Errore nella ricerca: ${snapshot.error}'),
-          );
+          return Center(child: Text('Errore nella ricerca: ${snapshot.error}'));
         }
 
         final results = snapshot.data ?? {};
@@ -202,10 +193,7 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
           return Center(
             child: Text(
               'Nessun risultato per "$_searchQuery"',
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),
+              style: const TextStyle(fontSize: 16, color: Colors.grey),
             ),
           );
         }
@@ -223,12 +211,17 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
                   ),
                 ),
               ),
-              ...results['species']!.map((item) => MobileListTile(
-                title: item.nome,
-                subtitle: item.descrizione.substring(0, item.descrizione.length > 50 ? 50 : item.descrizione.length),
-                onTap: () => _showSpecieDetails(item),
-                showDivider: true,
-              )),
+              ...results['species']!.map(
+                (item) => MobileListTile(
+                  title: item.nome,
+                  subtitle: item.descrizione.substring(
+                    0,
+                    item.descrizione.length > 50 ? 50 : item.descrizione.length,
+                  ),
+                  onTap: () => _showSpecieDetails(item),
+                  showDivider: true,
+                ),
+              ),
             ],
             if (results['classes']?.isNotEmpty ?? false) ...[
               Padding(
@@ -241,12 +234,17 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
                   ),
                 ),
               ),
-              ...results['classes']!.map((item) => MobileListTile(
-                title: item.nome,
-                subtitle: item.descrizione.substring(0, item.descrizione.length > 50 ? 50 : item.descrizione.length),
-                onTap: () => _showClasseDetails(item),
-                showDivider: true,
-              )),
+              ...results['classes']!.map(
+                (item) => MobileListTile(
+                  title: item.nome,
+                  subtitle: item.descrizione.substring(
+                    0,
+                    item.descrizione.length > 50 ? 50 : item.descrizione.length,
+                  ),
+                  onTap: () => _showClasseDetails(item),
+                  showDivider: true,
+                ),
+              ),
             ],
             if (results['spells']?.isNotEmpty ?? false) ...[
               Padding(
@@ -259,12 +257,14 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
                   ),
                 ),
               ),
-              ...results['spells']!.map((item) => MobileListTile(
-                title: item.nome,
-                subtitle: 'Livello ${item.livello} - ${item.scuola}',
-                onTap: () => _showSpellDetails(item),
-                showDivider: true,
-              )),
+              ...results['spells']!.map(
+                (item) => MobileListTile(
+                  title: item.nome,
+                  subtitle: 'Livello ${item.livello} - ${item.scuola}',
+                  onTap: () => _showSpellDetails(item),
+                  showDivider: true,
+                ),
+              ),
             ],
           ],
         );
@@ -333,32 +333,38 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
           }
 
           if (snapshot.hasError) {
-            return Center(
-              child: Text('Errore: ${snapshot.error}'),
-            );
+            return Center(child: Text('Errore: ${snapshot.error}'));
           }
 
           final species = snapshot.data ?? [];
           return MobileBottomSheetList(
-            children: species.map((specie) => MobileListTile(
-              title: specie.nome,
-              subtitle: specie.descrizione.length > 100
-                  ? '${specie.descrizione.substring(0, 100)}...'
-                  : specie.descrizione,
-              leading: CircleAvatar(
-                backgroundColor: const Color(0xFF8B4513).withValues(alpha: 0.1),
-                child: Text(
-                  specie.nome[0].toUpperCase(),
-                  style: const TextStyle(
-                    color: Color(0xFF8B4513),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () => _showSpecieDetails(specie),
-              showDivider: true,
-            )).toList(),
+            children:
+                species
+                    .map(
+                      (specie) => MobileListTile(
+                        title: specie.nome,
+                        subtitle:
+                            specie.descrizione.length > 100
+                                ? '${specie.descrizione.substring(0, 100)}...'
+                                : specie.descrizione,
+                        leading: CircleAvatar(
+                          backgroundColor: const Color(
+                            0xFF8B4513,
+                          ).withValues(alpha: 0.1),
+                          child: Text(
+                            specie.nome[0].toUpperCase(),
+                            style: const TextStyle(
+                              color: Color(0xFF8B4513),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                        onTap: () => _showSpecieDetails(specie),
+                        showDivider: true,
+                      ),
+                    )
+                    .toList(),
           );
         },
       ),
@@ -379,36 +385,42 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
           }
 
           if (snapshot.hasError) {
-            return Center(
-              child: Text('Errore: ${snapshot.error}'),
-            );
+            return Center(child: Text('Errore: ${snapshot.error}'));
           }
 
           final classes = snapshot.data ?? [];
           return MobileBottomSheetList(
-            children: classes.map((classe) => MobileListTile(
-              title: classe.nome,
-              subtitle: '${classe.descrizione.substring(0, classe.descrizione.length > 100 ? 100 : classe.descrizione.length)}...',
-              leading: CircleAvatar(
-                backgroundColor: const Color(0xFF8B4513).withValues(alpha: 0.1),
-                child: Text(
-                  classe.nome[0].toUpperCase(),
-                  style: const TextStyle(
-                    color: Color(0xFF8B4513),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              trailing: Text(
-                'HD: d${classe.dadoVita}',
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              onTap: () => _showClasseDetails(classe),
-              showDivider: true,
-            )).toList(),
+            children:
+                classes
+                    .map(
+                      (classe) => MobileListTile(
+                        title: classe.nome,
+                        subtitle:
+                            '${classe.descrizione.substring(0, classe.descrizione.length > 100 ? 100 : classe.descrizione.length)}...',
+                        leading: CircleAvatar(
+                          backgroundColor: const Color(
+                            0xFF8B4513,
+                          ).withValues(alpha: 0.1),
+                          child: Text(
+                            classe.nome[0].toUpperCase(),
+                            style: const TextStyle(
+                              color: Color(0xFF8B4513),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        trailing: Text(
+                          'HD: d${classe.dadoVita}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onTap: () => _showClasseDetails(classe),
+                        showDivider: true,
+                      ),
+                    )
+                    .toList(),
           );
         },
       ),
@@ -429,38 +441,42 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
           }
 
           if (snapshot.hasError) {
-            return Center(
-              child: Text('Errore: ${snapshot.error}'),
-            );
+            return Center(child: Text('Errore: ${snapshot.error}'));
           }
 
           final spells = snapshot.data ?? [];
           return MobileBottomSheetList(
-            children: spells.take(20).map((spell) => MobileListTile(
-              title: spell.nome,
-              subtitle: '${spell.scuola} • Livello ${spell.livello}',
-              leading: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: _getSpellLevelColor(spell.livello),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Center(
-                  child: Text(
-                    spell.livello == 0 ? 'C' : '${spell.livello}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-              ),
-              trailing: const Icon(Icons.auto_awesome, size: 16),
-              onTap: () => _showSpellDetails(spell),
-              showDivider: true,
-            )).toList(),
+            children:
+                spells
+                    .take(20)
+                    .map(
+                      (spell) => MobileListTile(
+                        title: spell.nome,
+                        subtitle: '${spell.scuola} • Livello ${spell.livello}',
+                        leading: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: _getSpellLevelColor(spell.livello),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Center(
+                            child: Text(
+                              spell.livello == 0 ? 'C' : '${spell.livello}',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ),
+                        trailing: const Icon(Icons.auto_awesome, size: 16),
+                        onTap: () => _showSpellDetails(spell),
+                        showDivider: true,
+                      ),
+                    )
+                    .toList(),
           );
         },
       ),
@@ -485,18 +501,29 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
           final equipment = snapshot.data ?? [];
 
           if (equipment.isEmpty) {
-            return const Center(child: Text('Nessun equipaggiamento disponibile'));
+            return const Center(
+              child: Text('Nessun equipaggiamento disponibile'),
+            );
           }
 
           return ListView(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            children: equipment.map((item) => MobileListTile(
-              title: item['italian_name'] ?? item['name'] ?? 'Sconosciuto',
-              subtitle: '${item['cost'] ?? 'N/A'} - ${item['weight'] ?? 'N/A'}',
-              onTap: () => _showEquipmentDetails(item),
-              showDivider: true,
-            )).toList(),
+            children:
+                equipment
+                    .map(
+                      (item) => MobileListTile(
+                        title:
+                            item['italian_name'] ??
+                            item['name'] ??
+                            'Sconosciuto',
+                        subtitle:
+                            '${item['cost'] ?? 'N/A'} - ${item['weight'] ?? 'N/A'}',
+                        onTap: () => _showEquipmentDetails(item),
+                        showDivider: true,
+                      ),
+                    )
+                    .toList(),
           );
         },
       ),
@@ -513,40 +540,49 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
           if (item['name'] != null && item['name'] != item['italian_name']) ...[
             Text(
               'Nome originale: ${item['name']}',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontStyle: FontStyle.italic,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(fontStyle: FontStyle.italic),
             ),
             const SizedBox(height: 12),
           ],
           _buildDetailRow('Costo', item['cost'] ?? 'N/A'),
           _buildDetailRow('Peso', item['weight'] ?? 'N/A'),
           if (item['damage'] != null) _buildDetailRow('Danno', item['damage']),
-          if (item['armor_class'] != null) _buildDetailRow('CA', item['armor_class'].toString()),
-          if (item['properties'] != null && (item['properties'] as List).isNotEmpty) ...[
+          if (item['armor_class'] != null)
+            _buildDetailRow('CA', item['armor_class'].toString()),
+          if (item['properties'] != null &&
+              (item['properties'] as List).isNotEmpty) ...[
             const SizedBox(height: 12),
             Text(
               'Proprietà',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
-              children: (item['properties'] as List).map<Widget>((prop) => Chip(
-                label: Text(prop.toString()),
-                backgroundColor: const Color(0xFF8B4513).withValues(alpha: 0.1),
-              )).toList(),
+              children:
+                  (item['properties'] as List)
+                      .map<Widget>(
+                        (prop) => Chip(
+                          label: Text(prop.toString()),
+                          backgroundColor: const Color(
+                            0xFF8B4513,
+                          ).withValues(alpha: 0.1),
+                        ),
+                      )
+                      .toList(),
             ),
           ],
           if (item['description'] != null) ...[
             const SizedBox(height: 12),
             Text(
               'Descrizione',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(item['description']),
@@ -599,12 +635,25 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
           return ListView(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            children: backgrounds.map((bg) => MobileListTile(
-              title: bg['italian_name'] ?? bg['name'] ?? 'Sconosciuto',
-              subtitle: bg['description']?.toString().substring(0, bg['description'].toString().length > 60 ? 60 : bg['description'].toString().length) ?? '',
-              onTap: () => _showBackgroundDetails(bg),
-              showDivider: true,
-            )).toList(),
+            children:
+                backgrounds
+                    .map(
+                      (bg) => MobileListTile(
+                        title:
+                            bg['italian_name'] ?? bg['name'] ?? 'Sconosciuto',
+                        subtitle:
+                            bg['description']?.toString().substring(
+                              0,
+                              bg['description'].toString().length > 60
+                                  ? 60
+                                  : bg['description'].toString().length,
+                            ) ??
+                            '',
+                        onTap: () => _showBackgroundDetails(bg),
+                        showDivider: true,
+                      ),
+                    )
+                    .toList(),
           );
         },
       ),
@@ -621,25 +670,28 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
           if (bg['name'] != null && bg['name'] != bg['italian_name']) ...[
             Text(
               'Nome originale: ${bg['name']}',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontStyle: FontStyle.italic,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(fontStyle: FontStyle.italic),
             ),
             const SizedBox(height: 12),
           ],
           if (bg['description'] != null) ...[
             Text(
               'Descrizione',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(bg['description']),
             const SizedBox(height: 12),
           ],
           if (bg['skill_proficiencies'] != null) ...[
-            _buildDetailRow('Competenze abilità', (bg['skill_proficiencies'] as List).join(', ')),
+            _buildDetailRow(
+              'Competenze abilità',
+              (bg['skill_proficiencies'] as List).join(', '),
+            ),
           ],
           if (bg['tool_proficiencies'] != null) ...[
             _buildDetailRow('Competenze strumenti', bg['tool_proficiencies']),
@@ -651,9 +703,9 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
             const SizedBox(height: 8),
             Text(
               'Equipaggiamento',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(bg['equipment']),
@@ -662,9 +714,9 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
             const SizedBox(height: 12),
             Text(
               bg['feature']['name'] ?? 'Capacità',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(bg['feature']['description'] ?? ''),
@@ -698,12 +750,20 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
           return ListView(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            children: feats.map((feat) => MobileListTile(
-              title: feat['italian_name'] ?? feat['name'] ?? 'Sconosciuto',
-              subtitle: feat['prerequisite'] ?? 'Nessun prerequisito',
-              onTap: () => _showFeatDetails(feat),
-              showDivider: true,
-            )).toList(),
+            children:
+                feats
+                    .map(
+                      (feat) => MobileListTile(
+                        title:
+                            feat['italian_name'] ??
+                            feat['name'] ??
+                            'Sconosciuto',
+                        subtitle: feat['prerequisite'] ?? 'Nessun prerequisito',
+                        onTap: () => _showFeatDetails(feat),
+                        showDivider: true,
+                      ),
+                    )
+                    .toList(),
           );
         },
       ),
@@ -720,9 +780,9 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
           if (feat['name'] != null && feat['name'] != feat['italian_name']) ...[
             Text(
               'Nome originale: ${feat['name']}',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontStyle: FontStyle.italic,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(fontStyle: FontStyle.italic),
             ),
             const SizedBox(height: 12),
           ],
@@ -733,9 +793,9 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
           if (feat['description'] != null) ...[
             Text(
               'Descrizione',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(feat['description']),
@@ -769,12 +829,21 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
           return ListView(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            children: monsters.map((monster) => MobileListTile(
-              title: monster['italian_name'] ?? monster['name'] ?? 'Sconosciuto',
-              subtitle: 'GS ${monster['challenge_rating'] ?? '?'} - ${monster['type'] ?? '?'}',
-              onTap: () => _showMonsterDetails(monster),
-              showDivider: true,
-            )).toList(),
+            children:
+                monsters
+                    .map(
+                      (monster) => MobileListTile(
+                        title:
+                            monster['italian_name'] ??
+                            monster['name'] ??
+                            'Sconosciuto',
+                        subtitle:
+                            'GS ${monster['challenge_rating'] ?? '?'} - ${monster['type'] ?? '?'}',
+                        onTap: () => _showMonsterDetails(monster),
+                        showDivider: true,
+                      ),
+                    )
+                    .toList(),
           );
         },
       ),
@@ -789,37 +858,44 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (monster['name'] != null && monster['name'] != monster['italian_name']) ...[
+            if (monster['name'] != null &&
+                monster['name'] != monster['italian_name']) ...[
               Text(
                 'Nome originale: ${monster['name']}',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  fontStyle: FontStyle.italic,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(fontStyle: FontStyle.italic),
               ),
               const SizedBox(height: 12),
             ],
             _buildDetailRow('Tipo', monster['type'] ?? 'N/A'),
             _buildDetailRow('Taglia', monster['size'] ?? 'N/A'),
             _buildDetailRow('Allineamento', monster['alignment'] ?? 'N/A'),
-            _buildDetailRow('Grado di Sfida', monster['challenge_rating']?.toString() ?? 'N/A'),
+            _buildDetailRow(
+              'Grado di Sfida',
+              monster['challenge_rating']?.toString() ?? 'N/A',
+            ),
             const SizedBox(height: 12),
             Text(
               'Statistiche',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            if (monster['armor_class'] != null) _buildDetailRow('CA', monster['armor_class'].toString()),
-            if (monster['hit_points'] != null) _buildDetailRow('PF', monster['hit_points'].toString()),
-            if (monster['speed'] != null) _buildDetailRow('Velocità', monster['speed'].toString()),
+            if (monster['armor_class'] != null)
+              _buildDetailRow('CA', monster['armor_class'].toString()),
+            if (monster['hit_points'] != null)
+              _buildDetailRow('PF', monster['hit_points'].toString()),
+            if (monster['speed'] != null)
+              _buildDetailRow('Velocità', monster['speed'].toString()),
             const SizedBox(height: 12),
             if (monster['abilities'] != null) ...[
               Text(
                 'Caratteristiche',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Row(
@@ -835,27 +911,30 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
               ),
               const SizedBox(height: 12),
             ],
-            if (monster['actions'] != null && (monster['actions'] as List).isNotEmpty) ...[
+            if (monster['actions'] != null &&
+                (monster['actions'] as List).isNotEmpty) ...[
               Text(
                 'Azioni',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              ...(monster['actions'] as List).map((action) => Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      action['name'] ?? '',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text(action['description'] ?? ''),
-                  ],
+              ...(monster['actions'] as List).map(
+                (action) => Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        action['name'] ?? '',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(action['description'] ?? ''),
+                    ],
+                  ),
                 ),
-              )),
+              ),
             ],
           ],
         ),
@@ -870,10 +949,7 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
           label,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
         ),
-        Text(
-          value?.toString() ?? '-',
-          style: const TextStyle(fontSize: 16),
-        ),
+        Text(value?.toString() ?? '-', style: const TextStyle(fontSize: 16)),
       ],
     );
   }
@@ -887,9 +963,9 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
         children: [
           Text(
             'Descrizione',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(specie.descrizione),
@@ -897,17 +973,24 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
           if (specie.competenze.isNotEmpty) ...[
             Text(
               'Competenze',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
-              children: specie.competenze.map<Widget>((comp) => Chip(
-                label: Text(comp),
-                backgroundColor: const Color(0xFF8B4513).withValues(alpha: 0.1),
-              )).toList(),
+              children:
+                  specie.competenze
+                      .map<Widget>(
+                        (comp) => Chip(
+                          label: Text(comp),
+                          backgroundColor: const Color(
+                            0xFF8B4513,
+                          ).withValues(alpha: 0.1),
+                        ),
+                      )
+                      .toList(),
             ),
           ],
         ],
@@ -924,9 +1007,9 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
         children: [
           Text(
             'Descrizione',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(classe.descrizione),
@@ -939,17 +1022,24 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
           if (classe.sottoclassi.isNotEmpty) ...[
             Text(
               'Sottoclassi',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
-              children: classe.sottoclassi.map<Widget>((sub) => Chip(
-                label: Text(sub),
-                backgroundColor: const Color(0xFF8B4513).withValues(alpha: 0.1),
-              )).toList(),
+              children:
+                  classe.sottoclassi
+                      .map<Widget>(
+                        (sub) => Chip(
+                          label: Text(sub),
+                          backgroundColor: const Color(
+                            0xFF8B4513,
+                          ).withValues(alpha: 0.1),
+                        ),
+                      )
+                      .toList(),
             ),
           ],
         ],
@@ -967,7 +1057,10 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: _getSpellLevelColor(spell.livello),
                   borderRadius: BorderRadius.circular(16),
@@ -983,7 +1076,10 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
               ),
               const SizedBox(width: 8),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFF8B4513).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(16),
@@ -1001,9 +1097,9 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
           const SizedBox(height: 16),
           Text(
             'Descrizione',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(spell.descrizione),
@@ -1014,7 +1110,10 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Raggio', style: TextStyle(fontWeight: FontWeight.bold)),
+                    const Text(
+                      'Raggio',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     Text(spell.raggio),
                   ],
                 ),
@@ -1023,7 +1122,10 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Durata', style: TextStyle(fontWeight: FontWeight.bold)),
+                    const Text(
+                      'Durata',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     Text(spell.durata),
                   ],
                 ),
@@ -1037,13 +1139,20 @@ class _DatabaseBrowserPageState extends State<DatabaseBrowserPage> {
 
   Color _getSpellLevelColor(int level) {
     switch (level) {
-      case 0: return Colors.grey;
-      case 1: return Colors.blue;
-      case 2: return Colors.green;
-      case 3: return Colors.orange;
-      case 4: return Colors.red;
-      case 5: return Colors.purple;
-      default: return Colors.black;
+      case 0:
+        return Colors.grey;
+      case 1:
+        return Colors.blue;
+      case 2:
+        return Colors.green;
+      case 3:
+        return Colors.orange;
+      case 4:
+        return Colors.red;
+      case 5:
+        return Colors.purple;
+      default:
+        return Colors.black;
     }
   }
 }

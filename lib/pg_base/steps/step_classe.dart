@@ -3,9 +3,18 @@ import '../../factory_pg_base.dart';
 import '../../data/db_classi.dart';
 
 final List<String> classiCore = [
-  "Barbaro", "Bardo", "Chierico", "Druido",
-  "Guerriero", "Ladro", "Mago", "Monaco",
-  "Paladino", "Ranger", "Stregone", "Warlock"
+  "Barbaro",
+  "Bardo",
+  "Chierico",
+  "Druido",
+  "Guerriero",
+  "Ladro",
+  "Mago",
+  "Monaco",
+  "Paladino",
+  "Ranger",
+  "Stregone",
+  "Warlock",
 ];
 
 class StepClasseScreen extends StatelessWidget {
@@ -15,9 +24,8 @@ class StepClasseScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final classiDisponibili = classiList
-        .where((c) => classiCore.contains(c.nome))
-        .toList();
+    final classiDisponibili =
+        classiList.where((c) => classiCore.contains(c.nome)).toList();
 
     return Scaffold(
       appBar: AppBar(title: const Text("Step 3: Scegli la Classe")),
@@ -49,10 +57,10 @@ class StepClasseScreen extends StatelessWidget {
     factory.setCompetenzeArmature(classe.competenzeArmature);
     factory.setCompetenzeStrumenti(classe.competenzeStrumenti);
 
-    final abilitaScelte = classe.abilitaSelezionabili.take(classe.abilitaDaSelezionare).toList();
+    final abilitaScelte =
+        classe.abilitaSelezionabili.take(classe.abilitaDaSelezionare).toList();
     factory.setAbilitaClasse(abilitaScelte);
 
     Navigator.pop(context, true);
   }
 }
-

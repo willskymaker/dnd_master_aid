@@ -69,7 +69,7 @@ class _StepNomeScreenState extends State<StepNomeScreen> {
             ElevatedButton(
               onPressed: _confermaNome,
               child: const Text("Conferma Nome"),
-            )
+            ),
           ],
         ),
       ),

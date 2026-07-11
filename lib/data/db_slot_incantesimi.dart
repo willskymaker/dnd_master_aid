@@ -37,25 +37,21 @@ final List<SlotIncantesimi> slotIncantesimiList = [
       19: [4, 3, 3, 3, 3, 2, 1, 1, 1],
       20: [4, 3, 3, 3, 3, 2, 2, 1, 1],
     },
-    trucchettiConosciuti: {
-      1: 3,
-      4: 4,
-      10: 5
-    },
+    trucchettiConosciuti: {1: 3, 4: 4, 10: 5},
   ),
   SlotIncantesimi(
     classe: "Warlock",
     // I Warlock lanciano sempre al massimo livello disponibile
     slotPerLivello: {
-      1: [1, 0, 0, 0, 0, 0, 0, 0, 0],  // 1 slot di 1°
-      2: [0, 2, 0, 0, 0, 0, 0, 0, 0],  // 2 slot di 2°
-      3: [0, 0, 2, 0, 0, 0, 0, 0, 0],  // 2 slot di 3°
-      4: [0, 0, 2, 0, 0, 0, 0, 0, 0],  // 2 slot di 3°
-      5: [0, 0, 0, 2, 0, 0, 0, 0, 0],  // 2 slot di 4°
-      6: [0, 0, 0, 2, 0, 0, 0, 0, 0],  // 2 slot di 4°
-      7: [0, 0, 0, 0, 2, 0, 0, 0, 0],  // 2 slot di 5°
-      8: [0, 0, 0, 0, 2, 0, 0, 0, 0],  // 2 slot di 5°
-      9: [0, 0, 0, 0, 2, 0, 0, 0, 0],  // 2 slot di 5°
+      1: [1, 0, 0, 0, 0, 0, 0, 0, 0], // 1 slot di 1°
+      2: [0, 2, 0, 0, 0, 0, 0, 0, 0], // 2 slot di 2°
+      3: [0, 0, 2, 0, 0, 0, 0, 0, 0], // 2 slot di 3°
+      4: [0, 0, 2, 0, 0, 0, 0, 0, 0], // 2 slot di 3°
+      5: [0, 0, 0, 2, 0, 0, 0, 0, 0], // 2 slot di 4°
+      6: [0, 0, 0, 2, 0, 0, 0, 0, 0], // 2 slot di 4°
+      7: [0, 0, 0, 0, 2, 0, 0, 0, 0], // 2 slot di 5°
+      8: [0, 0, 0, 0, 2, 0, 0, 0, 0], // 2 slot di 5°
+      9: [0, 0, 0, 0, 2, 0, 0, 0, 0], // 2 slot di 5°
       10: [0, 0, 0, 0, 2, 0, 0, 0, 0], // 2 slot di 5°
       11: [0, 0, 0, 0, 3, 0, 0, 0, 0], // 3 slot di 5°
       12: [0, 0, 0, 0, 3, 0, 0, 0, 0], // 3 slot di 5°
@@ -68,15 +64,9 @@ final List<SlotIncantesimi> slotIncantesimiList = [
       19: [0, 0, 0, 0, 4, 0, 0, 0, 0], // 4 slot di 5°
       20: [0, 0, 0, 0, 4, 0, 0, 0, 0], // 4 slot di 5°
     },
-    trucchettiConosciuti: {
-      1: 2,
-      2: 2,
-      3: 2,
-      4: 3,
-      10: 4
-    },
+    trucchettiConosciuti: {1: 2, 2: 2, 3: 2, 4: 3, 10: 4},
   ),
-SlotIncantesimi(
+  SlotIncantesimi(
     classe: "Chierico",
     slotPerLivello: {
       for (int i = 1; i <= 20; i++)
@@ -90,13 +80,9 @@ SlotIncantesimi(
           i >= 13 ? (i >= 15 ? 2 : 1) : 0,
           i >= 15 ? (i >= 17 ? 2 : 1) : 0,
           i >= 17 ? (i >= 19 ? 2 : 1) : 0,
-        ]
+        ],
     },
-    trucchettiConosciuti: {
-      1: 3,
-      4: 4,
-      10: 5
-    },
+    trucchettiConosciuti: {1: 3, 4: 4, 10: 5},
   ),
   SlotIncantesimi(
     classe: "Druido",
@@ -112,13 +98,9 @@ SlotIncantesimi(
           i >= 13 ? (i >= 15 ? 2 : 1) : 0,
           i >= 15 ? (i >= 17 ? 2 : 1) : 0,
           i >= 17 ? (i >= 19 ? 2 : 1) : 0,
-        ]
+        ],
     },
-    trucchettiConosciuti: {
-      1: 2,
-      4: 3,
-      10: 4
-    },
+    trucchettiConosciuti: {1: 2, 4: 3, 10: 4},
   ),
   SlotIncantesimi(
     classe: "Bardo",
@@ -144,11 +126,7 @@ SlotIncantesimi(
       19: [4, 3, 3, 3, 3, 2, 1, 1, 1],
       20: [4, 3, 3, 3, 3, 2, 2, 1, 1],
     },
-    trucchettiConosciuti: {
-      1: 2,
-      4: 3,
-      10: 4
-    },
+    trucchettiConosciuti: {1: 2, 4: 3, 10: 4},
   ),
   SlotIncantesimi(
     classe: "Stregone",
@@ -174,11 +152,7 @@ SlotIncantesimi(
       19: [4, 3, 3, 3, 3, 2, 1, 1, 1],
       20: [4, 3, 3, 3, 3, 2, 2, 1, 1],
     },
-    trucchettiConosciuti: {
-      1: 4,
-      4: 5,
-      10: 6
-    },
+    trucchettiConosciuti: {1: 4, 4: 5, 10: 6},
   ),
   SlotIncantesimi(
     classe: "Paladino",
@@ -233,5 +207,3 @@ SlotIncantesimi(
     trucchettiConosciuti: {},
   ),
 ];
-
-

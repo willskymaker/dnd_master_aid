@@ -97,43 +97,47 @@ class _SavedCharactersScreenState extends State<SavedCharactersScreen> {
   }
 
   void _confermaEliminazione(
-      BuildContext context, SavedCharactersProvider provider, PGBase pg) {
+    BuildContext context,
+    SavedCharactersProvider provider,
+    PGBase pg,
+  ) {
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: const Text('Elimina personaggio'),
-        content: Text('Sei sicuro di voler eliminare ${pg.nome}?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Annulla'),
+      builder:
+          (_) => AlertDialog(
+            title: const Text('Elimina personaggio'),
+            content: Text('Sei sicuro di voler eliminare ${pg.nome}?'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Annulla'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  Navigator.pop(context);
+                  try {
+                    await provider.delete(pg.id);
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('${pg.nome} eliminato')),
+                      );
+                    }
+                  } catch (_) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Errore durante l\'eliminazione'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  }
+                },
+                style: TextButton.styleFrom(foregroundColor: Colors.red),
+                child: const Text('Elimina'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () async {
-              Navigator.pop(context);
-              try {
-                await provider.delete(pg.id);
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('${pg.nome} eliminato')),
-                  );
-                }
-              } catch (_) {
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Errore durante l\'eliminazione'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              }
-            },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Elimina'),
-          ),
-        ],
-      ),
     );
   }
 }
@@ -171,7 +175,10 @@ class _CharacterCard extends StatelessWidget {
       child: Card(
         margin: const EdgeInsets.only(bottom: 12),
         child: ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 8,
+          ),
           leading: Container(
             width: 48,
             height: 48,
@@ -193,7 +200,9 @@ class _CharacterCard extends StatelessWidget {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('${pg.classe} ${pg.specie.isNotEmpty ? "· ${pg.specie}" : ""} · Livello ${pg.livello}'),
+              Text(
+                '${pg.classe} ${pg.specie.isNotEmpty ? "· ${pg.specie}" : ""} · Livello ${pg.livello}',
+              ),
               const SizedBox(height: 2),
               Text(
                 'HP: ${pg.puntiVita}  •  Velocità: ${pg.velocita}m',
@@ -210,19 +219,32 @@ class _CharacterCard extends StatelessWidget {
 
   String _classeEmoji(String classe) {
     switch (classe.toLowerCase()) {
-      case 'barbaro': return '⚔️';
-      case 'bardo': return '🎵';
-      case 'chierico': return '✝️';
-      case 'druido': return '🌿';
-      case 'guerriero': return '🛡️';
-      case 'ladro': return '🗡️';
-      case 'mago': return '🔮';
-      case 'monaco': return '👊';
-      case 'paladino': return '⚜️';
-      case 'ranger': return '🏹';
-      case 'stregone': return '✨';
-      case 'warlock': return '👁️';
-      default: return '🧙';
+      case 'barbaro':
+        return '⚔️';
+      case 'bardo':
+        return '🎵';
+      case 'chierico':
+        return '✝️';
+      case 'druido':
+        return '🌿';
+      case 'guerriero':
+        return '🛡️';
+      case 'ladro':
+        return '🗡️';
+      case 'mago':
+        return '🔮';
+      case 'monaco':
+        return '👊';
+      case 'paladino':
+        return '⚜️';
+      case 'ranger':
+        return '🏹';
+      case 'stregone':
+        return '✨';
+      case 'warlock':
+        return '👁️';
+      default:
+        return '🧙';
     }
   }
 }
@@ -239,77 +261,96 @@ class _SchedaBottomSheet extends StatelessWidget {
       maxChildSize: 0.95,
       minChildSize: 0.5,
       expand: false,
-      builder: (_, controller) => Padding(
-        padding: const EdgeInsets.all(20),
-        child: ListView(
-          controller: controller,
-          children: [
-            Center(
-              child: Container(
-                width: 40, height: 4,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(2),
+      builder:
+          (_, controller) => Padding(
+            padding: const EdgeInsets.all(20),
+            child: ListView(
+              controller: controller,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
                 ),
-              ),
+                const SizedBox(height: 16),
+                Text(
+                  pg.nome.isNotEmpty ? pg.nome : 'Personaggio',
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${pg.classe} · ${pg.specie} · Livello ${pg.livello}',
+                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                ),
+                const Divider(height: 24),
+                _riga('Punti Vita', '${pg.puntiVita} (d${pg.dadoVita})'),
+                _riga('Velocità', '${pg.velocita} m'),
+                if (pg.background.isNotEmpty)
+                  _riga('Background', pg.background),
+                if (pg.allineamento.isNotEmpty)
+                  _riga('Allineamento', pg.allineamento),
+                if (pg.linguaggi.isNotEmpty)
+                  _riga('Linguaggi', pg.linguaggi.join(', ')),
+                const Divider(height: 24),
+                const Text(
+                  'Caratteristiche',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                const SizedBox(height: 8),
+                _grigliaCaratteristiche(),
+                if (pg.abilitaClasse.isNotEmpty) ...[
+                  const Divider(height: 24),
+                  _riga('Abilità', pg.abilitaClasse.join(', ')),
+                ],
+                if (pg.competenze.isNotEmpty)
+                  _riga('Competenze', pg.competenze.join(', ')),
+                if (pg.capacitaSpeciali.isNotEmpty)
+                  _riga('Abilità Innate', pg.capacitaSpeciali.join(', ')),
+                if (pg.equipaggiamento.isNotEmpty) ...[
+                  const Divider(height: 24),
+                  const Text(
+                    'Equipaggiamento',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  const SizedBox(height: 8),
+                  ...pg.equipaggiamento.map(
+                    (e) => Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: Text('• $e'),
+                    ),
+                  ),
+                ],
+                const SizedBox(height: 32),
+              ],
             ),
-            const SizedBox(height: 16),
-            Text(
-              pg.nome.isNotEmpty ? pg.nome : 'Personaggio',
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              '${pg.classe} · ${pg.specie} · Livello ${pg.livello}',
-              style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-            ),
-            const Divider(height: 24),
-            _riga('Punti Vita', '${pg.puntiVita} (d${pg.dadoVita})'),
-            _riga('Velocità', '${pg.velocita} m'),
-            if (pg.background.isNotEmpty) _riga('Background', pg.background),
-            if (pg.allineamento.isNotEmpty) _riga('Allineamento', pg.allineamento),
-            if (pg.linguaggi.isNotEmpty) _riga('Linguaggi', pg.linguaggi.join(', ')),
-            const Divider(height: 24),
-            const Text('Caratteristiche', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-            const SizedBox(height: 8),
-            _grigliaCaratteristiche(),
-            if (pg.abilitaClasse.isNotEmpty) ...[
-              const Divider(height: 24),
-              _riga('Abilità', pg.abilitaClasse.join(', ')),
-            ],
-            if (pg.competenze.isNotEmpty)
-              _riga('Competenze', pg.competenze.join(', ')),
-            if (pg.capacitaSpeciali.isNotEmpty)
-              _riga('Abilità Innate', pg.capacitaSpeciali.join(', ')),
-            if (pg.equipaggiamento.isNotEmpty) ...[
-              const Divider(height: 24),
-              const Text('Equipaggiamento', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              const SizedBox(height: 8),
-              ...pg.equipaggiamento.map((e) => Padding(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    child: Text('• $e'),
-                  )),
-            ],
-            const SizedBox(height: 32),
-          ],
-        ),
-      ),
+          ),
     );
   }
 
   Widget _riga(String label, String valore) => Padding(
-        padding: const EdgeInsets.only(bottom: 8),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: 120,
-              child: Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
-            ),
-            Expanded(child: Text(valore)),
-          ],
+    padding: const EdgeInsets.only(bottom: 8),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 120,
+          child: Text(
+            label,
+            style: const TextStyle(fontWeight: FontWeight.w600),
+          ),
         ),
-      );
+        Expanded(child: Text(valore)),
+      ],
+    ),
+  );
 
   Widget _grigliaCaratteristiche() {
     final stats = ['FOR', 'DES', 'COS', 'INT', 'SAG', 'CAR'];
@@ -320,25 +361,41 @@ class _SchedaBottomSheet extends StatelessWidget {
       childAspectRatio: 1.4,
       mainAxisSpacing: 8,
       crossAxisSpacing: 8,
-      children: stats.map((s) {
-        final val = pg.caratteristiche[s] ?? 0;
-        final mod = pg.modificatori[s] ?? 0;
-        final segno = mod >= 0 ? '+' : '';
-        return Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: const Color(0xFF8B4513).withValues(alpha: 0.4)),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(s, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF8B4513))),
-              Text('$val', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Text('$segno$mod', style: const TextStyle(fontSize: 13)),
-            ],
-          ),
-        );
-      }).toList(),
+      children:
+          stats.map((s) {
+            final val = pg.caratteristiche[s] ?? 0;
+            final mod = pg.modificatori[s] ?? 0;
+            final segno = mod >= 0 ? '+' : '';
+            return Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: const Color(0xFF8B4513).withValues(alpha: 0.4),
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    s,
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF8B4513),
+                    ),
+                  ),
+                  Text(
+                    '$val',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text('$segno$mod', style: const TextStyle(fontSize: 13)),
+                ],
+              ),
+            );
+          }).toList(),
     );
   }
 }

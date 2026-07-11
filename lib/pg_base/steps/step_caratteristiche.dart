@@ -23,7 +23,8 @@ class StepCaratteristicheScreen extends StatefulWidget {
   const StepCaratteristicheScreen({super.key, required this.factory});
 
   @override
-  State<StepCaratteristicheScreen> createState() => _StepCaratteristicheScreenState();
+  State<StepCaratteristicheScreen> createState() =>
+      _StepCaratteristicheScreenState();
 }
 
 class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
@@ -52,14 +53,16 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
       "Paladino": ["FOR", "CAR"],
       "Ranger": ["DES", "SAG"],
       "Stregone": ["CAR", "COS"],
-      "Warlock": ["CAR", "SAG"]
+      "Warlock": ["CAR", "SAG"],
     };
 
     prioritarie = suggeritePerClasse[classe.nome] ?? [];
 
     final int puntiBase = standardArray.reduce((a, b) => a + b);
     final int minCaratteristica = 8 * caratteristiche.length;
-    puntiDisponibili = calcolaASI(livello: widget.factory.livello) * 2 + (puntiBase - minCaratteristica);
+    puntiDisponibili =
+        calcolaASI(livello: widget.factory.livello) * 2 +
+        (puntiBase - minCaratteristica);
 
     baseStats = {for (var stat in caratteristiche) stat: 8};
   }
@@ -76,7 +79,7 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
       if (!_validaCaratteristiche()) return;
 
       final mod = <String, int>{
-        for (var e in baseStats.entries) e.key: _modificatore(e.value)
+        for (var e in baseStats.entries) e.key: _modificatore(e.value),
       };
 
       final pf = calcolaPuntiFerita(
@@ -87,7 +90,9 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
 
       if (pf <= 0) {
         throw ValidationException(
-            "I punti vita non possono essere zero o negativi", "Caratteristiche");
+          "I punti vita non possono essere zero o negativi",
+          "Caratteristiche",
+        );
       }
 
       widget.factory.setCaratteristiche(baseStats);
@@ -112,7 +117,8 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-                "${_nomiCompleti[entry.key]} deve essere tra 3 e 20 (attuale: ${entry.value})"),
+              "${_nomiCompleti[entry.key]} deve essere tra 3 e 20 (attuale: ${entry.value})",
+            ),
             backgroundColor: Colors.red,
           ),
         );
@@ -124,7 +130,8 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-              "Hai usato $_puntiSpesi punti su $puntiDisponibili disponibili"),
+            "Hai usato $_puntiSpesi punti su $puntiDisponibili disponibili",
+          ),
           backgroundColor: Colors.red,
         ),
       );
@@ -152,7 +159,9 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
   Widget build(BuildContext context) {
     final rimanenti = _puntiRimanenti;
     final coloreRimanenti =
-        rimanenti < 0 ? Colors.red : (rimanenti == 0 ? Colors.green : Colors.orange);
+        rimanenti < 0
+            ? Colors.red
+            : (rimanenti == 0 ? Colors.green : Colors.orange);
 
     // Calcola PF preview
     final modCos = _modificatore(baseStats['COS']!);
@@ -184,8 +193,10 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
                         color: coloreRimanenti,
                       ),
                     ),
-                    Text('punti rimanenti',
-                        style: TextStyle(fontSize: 12, color: coloreRimanenti)),
+                    Text(
+                      'punti rimanenti',
+                      style: TextStyle(fontSize: 12, color: coloreRimanenti),
+                    ),
                   ],
                 ),
                 Container(width: 1, height: 40, color: Colors.grey.shade300),
@@ -194,12 +205,15 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
                     Text(
                       '$pfPreview',
                       style: const TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF8B4513)),
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF8B4513),
+                      ),
                     ),
-                    const Text('PF stimati',
-                        style: TextStyle(fontSize: 12, color: Colors.grey)),
+                    const Text(
+                      'PF stimati',
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
                   ],
                 ),
               ],
@@ -209,101 +223,132 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(12),
-              children: caratteristiche.map((stat) {
-                final valore = baseStats[stat]!;
-                final mod = _modificatore(valore);
-                final modStr = mod >= 0 ? '+$mod' : '$mod';
-                final evidenziata = prioritarie.contains(stat);
-                final puoAumentare = rimanenti > 0 && valore < 20;
+              children:
+                  caratteristiche.map((stat) {
+                    final valore = baseStats[stat]!;
+                    final mod = _modificatore(valore);
+                    final modStr = mod >= 0 ? '+$mod' : '$mod';
+                    final evidenziata = prioritarie.contains(stat);
+                    final puoAumentare = rimanenti > 0 && valore < 20;
 
-                return Card(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  color: evidenziata
-                      ? const Color(0xFF8B4513).withValues(alpha: 0.08)
-                      : null,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: evidenziata
-                        ? const BorderSide(
-                            color: Color(0xFF8B4513), width: 1.5)
-                        : BorderSide.none,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 10),
-                    child: Row(
-                      children: [
-                        // Nome
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
+                    return Card(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      color:
+                          evidenziata
+                              ? const Color(0xFF8B4513).withValues(alpha: 0.08)
+                              : null,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side:
+                            evidenziata
+                                ? const BorderSide(
+                                  color: Color(0xFF8B4513),
+                                  width: 1.5,
+                                )
+                                : BorderSide.none,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 10,
+                        ),
+                        child: Row(
+                          children: [
+                            // Nome
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(stat,
-                                      style: const TextStyle(
+                                  Row(
+                                    children: [
+                                      Text(
+                                        stat,
+                                        style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 14,
-                                          color: Color(0xFF8B4513))),
-                                  if (evidenziata) ...[
-                                    const SizedBox(width: 6),
-                                    const Icon(Icons.star,
-                                        size: 14, color: Color(0xFF8B4513)),
-                                  ]
+                                          color: Color(0xFF8B4513),
+                                        ),
+                                      ),
+                                      if (evidenziata) ...[
+                                        const SizedBox(width: 6),
+                                        const Icon(
+                                          Icons.star,
+                                          size: 14,
+                                          color: Color(0xFF8B4513),
+                                        ),
+                                      ],
+                                    ],
+                                  ),
+                                  Text(
+                                    _nomiCompleti[stat] ?? '',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey.shade600,
+                                    ),
+                                  ),
                                 ],
                               ),
-                              Text(_nomiCompleti[stat] ?? '',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey.shade600)),
-                            ],
-                          ),
-                        ),
-                        // Bottone -
-                        IconButton(
-                          icon: const Icon(Icons.remove_circle_outline),
-                          color: valore > 8 ? Colors.red.shade400 : Colors.grey,
-                          onPressed: valore > 8
-                              ? () => setState(
-                                  () => baseStats[stat] = valore - 1)
-                              : null,
-                        ),
-                        // Valore + modificatore
-                        SizedBox(
-                          width: 64,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('$valore',
-                                  style: const TextStyle(
+                            ),
+                            // Bottone -
+                            IconButton(
+                              icon: const Icon(Icons.remove_circle_outline),
+                              color:
+                                  valore > 8
+                                      ? Colors.red.shade400
+                                      : Colors.grey,
+                              onPressed:
+                                  valore > 8
+                                      ? () => setState(
+                                        () => baseStats[stat] = valore - 1,
+                                      )
+                                      : null,
+                            ),
+                            // Valore + modificatore
+                            SizedBox(
+                              width: 64,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '$valore',
+                                    style: const TextStyle(
                                       fontSize: 24,
-                                      fontWeight: FontWeight.bold)),
-                              Text(modStr,
-                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    modStr,
+                                    style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
-                                      color: mod >= 0
-                                          ? Colors.green.shade700
-                                          : Colors.red.shade700)),
-                            ],
-                          ),
+                                      color:
+                                          mod >= 0
+                                              ? Colors.green.shade700
+                                              : Colors.red.shade700,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Bottone +
+                            IconButton(
+                              icon: const Icon(Icons.add_circle_outline),
+                              color:
+                                  puoAumentare
+                                      ? Colors.green.shade600
+                                      : Colors.grey,
+                              onPressed:
+                                  puoAumentare
+                                      ? () => setState(
+                                        () => baseStats[stat] = valore + 1,
+                                      )
+                                      : null,
+                            ),
+                          ],
                         ),
-                        // Bottone +
-                        IconButton(
-                          icon: const Icon(Icons.add_circle_outline),
-                          color: puoAumentare
-                              ? Colors.green.shade600
-                              : Colors.grey,
-                          onPressed: puoAumentare
-                              ? () => setState(
-                                  () => baseStats[stat] = valore + 1)
-                              : null,
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }).toList(),
+                      ),
+                    );
+                  }).toList(),
             ),
           ),
           // Bottoni
@@ -320,8 +365,10 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
-                    child: const Text('Conferma Punteggi',
-                        style: TextStyle(fontSize: 16)),
+                    child: const Text(
+                      'Conferma Punteggi',
+                      style: TextStyle(fontSize: 16),
+                    ),
                   ),
                 ),
                 TextButton(
@@ -338,4 +385,3 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
 }
 
 int calcolaASI({required int livello}) => (livello / 4).floor();
-

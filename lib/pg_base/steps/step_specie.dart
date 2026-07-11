@@ -24,7 +24,7 @@ class StepSpecieScreen extends StatelessWidget {
                 "Competenze: ${specie.competenze.join(', ')}\n"
                 "Abilità innate: ${specie.abilitaInnate.join(', ')}\n"
                 "Resistenze: ${specie.resistenze.join(', ')}\n"
-                "Linguaggi: ${specie.linguaggi.join(', ')}"
+                "Linguaggi: ${specie.linguaggi.join(', ')}",
               ),
               onTap: () {
                 _selezionaSpecie(context, specie);
@@ -37,22 +37,22 @@ class StepSpecieScreen extends StatelessWidget {
   }
 
   void _selezionaSpecie(BuildContext context, Specie specie) {
-  factory.setSpecie(specie.nome);
+    factory.setSpecie(specie.nome);
 
-  // Aggiungi le abilità innate come "tratti"
-  factory.addTrattiSpecie(specie.abilitaInnate);
+    // Aggiungi le abilità innate come "tratti"
+    factory.addTrattiSpecie(specie.abilitaInnate);
 
-  // Aggiungi le competenze (una per una)
-  for (var comp in specie.competenze) {
-    factory.addCompetenza(comp);
+    // Aggiungi le competenze (una per una)
+    for (var comp in specie.competenze) {
+      factory.addCompetenza(comp);
+    }
+
+    // Imposta velocità
+    factory.setVelocita(specie.velocita);
+
+    // Aggiungi linguaggi, evitando duplicati
+    factory.addLinguaggi(specie.linguaggi);
+
+    Navigator.pop(context, true); // Torna al wizard
   }
-
-  // Imposta velocità
-  factory.setVelocita(specie.velocita);
-
-  // Aggiungi linguaggi, evitando duplicati
-  factory.addLinguaggi(specie.linguaggi);
-
-  Navigator.pop(context, true); // Torna al wizard
-}
 }

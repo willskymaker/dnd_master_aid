@@ -30,7 +30,8 @@ final List<Classe> classiList = [
   //Barbaro e rispettive sottoclassi
   Classe(
     nome: "Barbaro",
-    descrizione: "Un guerriero brutale spinto dalla furia, specializzato nel combattimento corpo a corpo.",
+    descrizione:
+        "Un guerriero brutale spinto dalla furia, specializzato nel combattimento corpo a corpo.",
     dadoVita: 12,
     competenzeArmature: ["Leggere", "Medie", "Scudi"],
     competenzeArmi: ["Armi semplici", "Armi da guerra"],
@@ -42,23 +43,30 @@ final List<Classe> classiList = [
       "Intimidazione",
       "Natura",
       "Percezione",
-      "Sopravvivenza"
+      "Sopravvivenza",
     ],
     abilitaDaSelezionare: 2,
     sottoclassi: [
       "Cammino del Berserker",
       "Cammino del Totem",
       "Cammino del Guerriero Selvaggio",
-      "Cammino dell'Ancestrale"
+      "Cammino dell'Ancestrale",
     ],
   ),
   //Bardo e rispettive sottoclassi
   Classe(
     nome: "Bardo",
-    descrizione: "Artista incantatore che trae potere dalla musica e dalla conoscenza.",
+    descrizione:
+        "Artista incantatore che trae potere dalla musica e dalla conoscenza.",
     dadoVita: 8,
     competenzeArmature: ["Leggere"],
-    competenzeArmi: ["Armi semplici", "Balestre leggere", "Spade corte", "Spade lunghe", "Stocchi"],
+    competenzeArmi: [
+      "Armi semplici",
+      "Balestre leggere",
+      "Spade corte",
+      "Spade lunghe",
+      "Stocchi",
+    ],
     competenzeStrumenti: ["Tre strumenti musicali a scelta"],
     tiriSalvezza: ["Destrezza", "Carisma"],
     abilitaSelezionabili: [
@@ -77,20 +85,21 @@ final List<Classe> classiList = [
       "Persuasione",
       "Religione",
       "Sopravvivenza",
-      "Storia"
+      "Storia",
     ],
     abilitaDaSelezionare: 3,
     sottoclassi: [
       "Collegio della Conoscenza",
       "Collegio del Valore",
       "Collegio delle Spade",
-      "Collegio della Musica Funesta"
+      "Collegio della Musica Funesta",
     ],
   ),
   //Chierico e rispettive sottoclassi
   Classe(
     nome: "Chierico",
-    descrizione: "Incantatore divino devoto a una divinità, canalizza energia sacra per curare o distruggere.",
+    descrizione:
+        "Incantatore divino devoto a una divinità, canalizza energia sacra per curare o distruggere.",
     dadoVita: 8,
     competenzeArmature: ["Leggere", "Medie", "Scudi"],
     competenzeArmi: ["Armi semplici"],
@@ -101,7 +110,7 @@ final List<Classe> classiList = [
       "Medicina",
       "Persuasione",
       "Religione",
-      "Storia"
+      "Storia",
     ],
     abilitaDaSelezionare: 2,
     sottoclassi: [
@@ -110,16 +119,26 @@ final List<Classe> classiList = [
       "Dominio della Conoscenza",
       "Dominio della Tempesta",
       "Dominio della Tomba",
-      "Dominio dell'Oscurità"
+      "Dominio dell'Oscurità",
     ],
   ),
   //Druido e rispettive sottoclassi
   Classe(
     nome: "Druido",
-    descrizione: "Custode della natura capace di trasformarsi in animali e lanciare incantesimi druidici.",
+    descrizione:
+        "Custode della natura capace di trasformarsi in animali e lanciare incantesimi druidici.",
     dadoVita: 8,
     competenzeArmature: ["Leggere", "Medie", "Scudi (non metallici)"],
-    competenzeArmi: ["Bastoni", "Fionde", "Lance", "Pugnali", "Falci", "Mazze", "Bastoni ferrati", "Dardi"],
+    competenzeArmi: [
+      "Bastoni",
+      "Fionde",
+      "Lance",
+      "Pugnali",
+      "Falci",
+      "Mazze",
+      "Bastoni ferrati",
+      "Dardi",
+    ],
     competenzeStrumenti: ["Erboristeria"],
     tiriSalvezza: ["Intelligenza", "Saggezza"],
     abilitaSelezionabili: [
@@ -128,20 +147,21 @@ final List<Classe> classiList = [
       "Natura",
       "Percezione",
       "Sopravvivenza",
-      "Addestrare animali"
+      "Addestrare animali",
     ],
     abilitaDaSelezionare: 2,
     sottoclassi: [
       "Circolo della Terra",
       "Circolo della Luna",
       "Circolo delle Stelle",
-      "Circolo del Fuoco Selvaggio"
+      "Circolo del Fuoco Selvaggio",
     ],
   ),
   //Guerriero e rispettive sottoclassi
   Classe(
     nome: "Guerriero",
-    descrizione: "Maestro del combattimento marziale, abile con ogni tipo di arma e tattica.",
+    descrizione:
+        "Maestro del combattimento marziale, abile con ogni tipo di arma e tattica.",
     dadoVita: 10,
     competenzeArmature: ["Tutte le armature", "Scudi"],
     competenzeArmi: ["Armi semplici", "Armi da guerra"],
@@ -155,7 +175,7 @@ final List<Classe> classiList = [
       "Intimidazione",
       "Percezione",
       "Sopravvivenza",
-      "Storia"
+      "Storia",
     ],
     abilitaDaSelezionare: 2,
     sottoclassi: [
@@ -163,16 +183,23 @@ final List<Classe> classiList = [
       "Cavaliere Mistico",
       "Maestro di Battaglia",
       "Samurai",
-      "Cavaliere dell'Eco"
+      "Cavaliere dell'Eco",
     ],
   ),
   //Ladro e rispettive sottoclassi
   Classe(
     nome: "Ladro",
-    descrizione: "Agile, furtivo e scaltro. Esperto nello scassinare, infiltrarsi e colpire con precisione.",
+    descrizione:
+        "Agile, furtivo e scaltro. Esperto nello scassinare, infiltrarsi e colpire con precisione.",
     dadoVita: 8,
     competenzeArmature: ["Leggere"],
-    competenzeArmi: ["Armi semplici", "Balestre leggere", "Spade corte", "Spade lunghe", "Stocchi"],
+    competenzeArmi: [
+      "Armi semplici",
+      "Balestre leggere",
+      "Spade corte",
+      "Spade lunghe",
+      "Stocchi",
+    ],
     competenzeStrumenti: ["Attrezzi da ladro"],
     tiriSalvezza: ["Destrezza", "Intelligenza"],
     abilitaSelezionabili: [
@@ -184,23 +211,30 @@ final List<Classe> classiList = [
       "Intuizione",
       "Percezione",
       "Rapidità di mano",
-      "Inganno"
+      "Inganno",
     ],
     abilitaDaSelezionare: 4,
     sottoclassi: [
       "Ladro Gentiluomo",
       "Assassino",
       "Mistificatore Arcano",
-      "Cecchino delle Ombre"
+      "Cecchino delle Ombre",
     ],
   ),
   //Mago e rispettive sottoclassi
   Classe(
     nome: "Mago",
-    descrizione: "Studioso della magia arcana, specializzato in incantesimi di grande potere e versatilità.",
+    descrizione:
+        "Studioso della magia arcana, specializzato in incantesimi di grande potere e versatilità.",
     dadoVita: 6,
     competenzeArmature: [],
-    competenzeArmi: ["Pugnali", "Bastoni", "Fionde", "Dardi", "Bastoni ferrati"],
+    competenzeArmi: [
+      "Pugnali",
+      "Bastoni",
+      "Fionde",
+      "Dardi",
+      "Bastoni ferrati",
+    ],
     competenzeStrumenti: [],
     tiriSalvezza: ["Intelligenza", "Saggezza"],
     abilitaSelezionabili: [
@@ -208,7 +242,7 @@ final List<Classe> classiList = [
       "Indagare",
       "Intuizione",
       "Storia",
-      "Religione"
+      "Religione",
     ],
     abilitaDaSelezionare: 2,
     sottoclassi: [
@@ -216,13 +250,14 @@ final List<Classe> classiList = [
       "Scuola di Evocazione",
       "Scuola di Illusione",
       "Scuola di Necromanzia",
-      "Scuola della Cronomanzia"
+      "Scuola della Cronomanzia",
     ],
   ),
   //Monaco e rispettive sottoclassi
   Classe(
     nome: "Monaco",
-    descrizione: "Guerriero spirituale che canalizza l’energia del ki per compiere imprese fisiche sovrumane.",
+    descrizione:
+        "Guerriero spirituale che canalizza l’energia del ki per compiere imprese fisiche sovrumane.",
     dadoVita: 8,
     competenzeArmature: [],
     competenzeArmi: ["Armi semplici", "Spade corte"],
@@ -233,19 +268,20 @@ final List<Classe> classiList = [
       "Atletica",
       "Furtività",
       "Intuizione",
-      "Religione"
+      "Religione",
     ],
     abilitaDaSelezionare: 2,
     sottoclassi: [
       "Via della Mano Aperta",
       "Via dell’Ombra",
       "Via degli Elementi",
-      "Via del Sole Ardente"
+      "Via del Sole Ardente",
     ],
   ),
   Classe(
     nome: "Paladino",
-    descrizione: "Guerriero sacro che combatte per la giustizia, armato di fede e poteri divini.",
+    descrizione:
+        "Guerriero sacro che combatte per la giustizia, armato di fede e poteri divini.",
     dadoVita: 10,
     competenzeArmature: ["Tutte le armature", "Scudi"],
     competenzeArmi: ["Armi semplici", "Armi da guerra"],
@@ -257,19 +293,20 @@ final List<Classe> classiList = [
       "Intimidazione",
       "Intuizione",
       "Medicina",
-      "Religione"
+      "Religione",
     ],
     abilitaDaSelezionare: 2,
     sottoclassi: [
       "Giuramento della Devozione",
       "Giuramento della Vendetta",
       "Giuramento degli Antichi",
-      "Giuramento della Corona"
+      "Giuramento della Corona",
     ],
   ),
   Classe(
     nome: "Ranger",
-    descrizione: "Esploratore abile nella caccia e nel combattimento nella natura, con magie druidiche leggere.",
+    descrizione:
+        "Esploratore abile nella caccia e nel combattimento nella natura, con magie druidiche leggere.",
     dadoVita: 10,
     competenzeArmature: ["Leggere", "Medie", "Scudi"],
     competenzeArmi: ["Armi semplici", "Armi da guerra"],
@@ -282,19 +319,20 @@ final List<Classe> classiList = [
       "Intuizione",
       "Natura",
       "Percezione",
-      "Sopravvivenza"
+      "Sopravvivenza",
     ],
     abilitaDaSelezionare: 3,
     sottoclassi: [
       "Cacciatore",
       "Maestro delle Bestie",
       "Esploratore dell'Orizzonte",
-      "Cacciatore delle Ombre"
+      "Cacciatore delle Ombre",
     ],
   ),
   Classe(
     nome: "Stregone",
-    descrizione: "Incantatore che attinge potere da un'origine mistica, con grande potenza e versatilità.",
+    descrizione:
+        "Incantatore che attinge potere da un'origine mistica, con grande potenza e versatilità.",
     dadoVita: 6,
     competenzeArmature: [],
     competenzeArmi: ["Armi semplici"],
@@ -305,19 +343,20 @@ final List<Classe> classiList = [
       "Inganno",
       "Intimidazione",
       "Persuasione",
-      "Religione"
+      "Religione",
     ],
     abilitaDaSelezionare: 2,
     sottoclassi: [
       "Origine Draconica",
       "Magia del Caos",
       "Anima Divina",
-      "Fiamma Eterna"
+      "Fiamma Eterna",
     ],
   ),
   Classe(
     nome: "Warlock",
-    descrizione: "Incantatore che stipula un patto con un'entità ultraterrena per ottenere poteri arcani.",
+    descrizione:
+        "Incantatore che stipula un patto con un'entità ultraterrena per ottenere poteri arcani.",
     dadoVita: 8,
     competenzeArmature: ["Leggere"],
     competenzeArmi: ["Armi semplici"],
@@ -328,14 +367,14 @@ final List<Classe> classiList = [
       "Inganno",
       "Intimidazione",
       "Investigare",
-      "Religione"
+      "Religione",
     ],
     abilitaDaSelezionare: 2,
     sottoclassi: [
       "Patto dell'Inferno",
       "Patto dell’Abisso",
       "Patto del Grande Antico",
-      "Patto della Lama"
+      "Patto della Lama",
     ],
   ),
 ];

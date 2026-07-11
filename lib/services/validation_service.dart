@@ -15,8 +15,15 @@ class ValidationResult {
     return ValidationResult(isValid: true, warnings: warnings);
   }
 
-  factory ValidationResult.error(String message, {List<String> warnings = const []}) {
-    return ValidationResult(isValid: false, errorMessage: message, warnings: warnings);
+  factory ValidationResult.error(
+    String message, {
+    List<String> warnings = const [],
+  }) {
+    return ValidationResult(
+      isValid: false,
+      errorMessage: message,
+      warnings: warnings,
+    );
   }
 }
 
@@ -48,7 +55,9 @@ class ValidationService {
     final lowerName = trimmedName.toLowerCase();
     for (var word in offensiveWords) {
       if (lowerName.contains(word)) {
-        return ValidationResult.error("Il nome contiene parole non appropriate");
+        return ValidationResult.error(
+          "Il nome contiene parole non appropriate",
+        );
       }
     }
 
@@ -68,7 +77,9 @@ class ValidationService {
   }
 
   /// Valida le caratteristiche
-  static ValidationResult validateCharacteristics(Map<String, int> characteristics) {
+  static ValidationResult validateCharacteristics(
+    Map<String, int> characteristics,
+  ) {
     const validAbilities = ['FOR', 'DES', 'COS', 'INT', 'SAG', 'CAR'];
     const minValue = 3;
     const maxValue = 20;
@@ -81,11 +92,15 @@ class ValidationService {
 
       final value = characteristics[ability]!;
       if (value < minValue) {
-        return ValidationResult.error("$ability non può essere inferiore a $minValue");
+        return ValidationResult.error(
+          "$ability non può essere inferiore a $minValue",
+        );
       }
 
       if (value > maxValue) {
-        return ValidationResult.error("$ability non può essere superiore a $maxValue");
+        return ValidationResult.error(
+          "$ability non può essere superiore a $maxValue",
+        );
       }
     }
 
@@ -130,11 +145,15 @@ class ValidationService {
     List<String> warnings = [];
 
     if (level == 1) {
-      warnings.add("Personaggio di primo livello - considera di aumentare il livello");
+      warnings.add(
+        "Personaggio di primo livello - considera di aumentare il livello",
+      );
     }
 
     if (level >= 15) {
-      warnings.add("Personaggio di alto livello - assicurati di gestire correttamente le abilità avanzate");
+      warnings.add(
+        "Personaggio di alto livello - assicurati di gestire correttamente le abilità avanzate",
+      );
     }
 
     AppLogger.debug("Livello validato: $level");
@@ -149,21 +168,25 @@ class ValidationService {
   ) {
     if (selectedAbilities.length != requiredCount) {
       return ValidationResult.error(
-        "Seleziona esattamente $requiredCount abilità (attualmente: ${selectedAbilities.length})"
+        "Seleziona esattamente $requiredCount abilità (attualmente: ${selectedAbilities.length})",
       );
     }
 
     // Verifica che tutte le abilità selezionate siano disponibili
     for (var ability in selectedAbilities) {
       if (!availableAbilities.contains(ability)) {
-        return ValidationResult.error("L'abilità '$ability' non è disponibile per questa classe");
+        return ValidationResult.error(
+          "L'abilità '$ability' non è disponibile per questa classe",
+        );
       }
     }
 
     // Verifica duplicati
     final uniqueAbilities = selectedAbilities.toSet();
     if (uniqueAbilities.length != selectedAbilities.length) {
-      return ValidationResult.error("Non puoi selezionare la stessa abilità più volte");
+      return ValidationResult.error(
+        "Non puoi selezionare la stessa abilità più volte",
+      );
     }
 
     List<String> warnings = [];
@@ -176,7 +199,9 @@ class ValidationService {
   /// Valida l'equipaggiamento
   static ValidationResult validateEquipment(List<String> equipment) {
     if (equipment.isEmpty) {
-      return ValidationResult.success(warnings: ["Nessun equipaggiamento selezionato"]);
+      return ValidationResult.success(
+        warnings: ["Nessun equipaggiamento selezionato"],
+      );
     }
 
     List<String> warnings = [];
@@ -191,14 +216,20 @@ class ValidationService {
     // Le regole D&D 5e: capacità di carico = punteggio FOR x 15 libbre
 
     if (equipment.length > 20) {
-      warnings.add("Molti oggetti nell'equipaggiamento (${equipment.length}) - verifica il peso totale e la capacità di carico");
+      warnings.add(
+        "Molti oggetti nell'equipaggiamento (${equipment.length}) - verifica il peso totale e la capacità di carico",
+      );
     } else if (equipment.length > 15) {
-      warnings.add("Equipaggiamento numeroso (${equipment.length} oggetti) - potrebbe essere pesante");
+      warnings.add(
+        "Equipaggiamento numeroso (${equipment.length} oggetti) - potrebbe essere pesante",
+      );
     }
 
     // Suggerimento generale sul sistema di encumbrance
     if (equipment.length >= 10) {
-      warnings.add("Ricorda: la capacità di carico è Forza x 15 libbre. Supero causa movimento ridotto.");
+      warnings.add(
+        "Ricorda: la capacità di carico è Forza x 15 libbre. Supero causa movimento ridotto.",
+      );
     }
 
     AppLogger.debug("Equipaggiamento validato: ${equipment.length} oggetti");
@@ -253,7 +284,9 @@ class ValidationService {
     }
 
     if (errors.isNotEmpty) {
-      AppLogger.warning("Validazione personaggio fallita: ${errors.join(', ')}");
+      AppLogger.warning(
+        "Validazione personaggio fallita: ${errors.join(', ')}",
+      );
       return ValidationResult.error(errors.first, warnings: warnings);
     }
 

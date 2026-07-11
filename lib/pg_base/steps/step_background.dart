@@ -19,13 +19,17 @@ class _StepBackgroundScreenState extends State<StepBackgroundScreen> {
   void _conferma() {
     if (_backgroundSelezionato == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Seleziona un background prima di continuare.')),
+        const SnackBar(
+          content: Text('Seleziona un background prima di continuare.'),
+        ),
       );
       return;
     }
     if (_allineamentoSelezionato == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Seleziona un allineamento prima di continuare.')),
+        const SnackBar(
+          content: Text('Seleziona un allineamento prima di continuare.'),
+        ),
       );
       return;
     }
@@ -72,11 +76,13 @@ class _StepBackgroundScreenState extends State<StepBackgroundScreen> {
                   style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
                 ),
                 const SizedBox(height: 16),
-                ...backgroundList.map((bg) => _BackgroundCard(
-                      bg: bg,
-                      selezionato: _backgroundSelezionato?.nome == bg.nome,
-                      onTap: () => setState(() => _backgroundSelezionato = bg),
-                    )),
+                ...backgroundList.map(
+                  (bg) => _BackgroundCard(
+                    bg: bg,
+                    selezionato: _backgroundSelezionato?.nome == bg.nome,
+                    onTap: () => setState(() => _backgroundSelezionato = bg),
+                  ),
+                ),
                 const Divider(height: 32),
                 const Text(
                   'Allineamento',
@@ -86,31 +92,50 @@ class _StepBackgroundScreenState extends State<StepBackgroundScreen> {
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
-                  children: allineamentiList.map((a) {
-                    final sel = _allineamentoSelezionato == a.nome;
-                    return GestureDetector(
-                      onTap: () => setState(() => _allineamentoSelezionato = a.nome),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: sel ? const Color(0xFF8B4513).withValues(alpha: 0.12) : Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: sel ? const Color(0xFF8B4513) : Colors.grey.shade300,
-                            width: sel ? 2 : 1,
+                  children:
+                      allineamentiList.map((a) {
+                        final sel = _allineamentoSelezionato == a.nome;
+                        return GestureDetector(
+                          onTap:
+                              () => setState(
+                                () => _allineamentoSelezionato = a.nome,
+                              ),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color:
+                                  sel
+                                      ? const Color(
+                                        0xFF8B4513,
+                                      ).withValues(alpha: 0.12)
+                                      : Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color:
+                                    sel
+                                        ? const Color(0xFF8B4513)
+                                        : Colors.grey.shade300,
+                                width: sel ? 2 : 1,
+                              ),
+                            ),
+                            child: Text(
+                              a.nome,
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight:
+                                    sel ? FontWeight.bold : FontWeight.normal,
+                                color:
+                                    sel
+                                        ? const Color(0xFF8B4513)
+                                        : Colors.black87,
+                              ),
+                            ),
                           ),
-                        ),
-                        child: Text(
-                          a.nome,
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: sel ? FontWeight.bold : FontWeight.normal,
-                            color: sel ? const Color(0xFF8B4513) : Colors.black87,
-                          ),
-                        ),
-                      ),
-                    );
-                  }).toList(),
+                        );
+                      }).toList(),
                 ),
                 const SizedBox(height: 24),
               ],
@@ -128,7 +153,9 @@ class _StepBackgroundScreenState extends State<StepBackgroundScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF8B4513),
                     foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   icon: const Icon(Icons.check),
                   label: Text(
@@ -152,7 +179,11 @@ class _BackgroundCard extends StatelessWidget {
   final bool selezionato;
   final VoidCallback onTap;
 
-  const _BackgroundCard({required this.bg, required this.selezionato, required this.onTap});
+  const _BackgroundCard({
+    required this.bg,
+    required this.selezionato,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +193,10 @@ class _BackgroundCard extends StatelessWidget {
         duration: const Duration(milliseconds: 150),
         margin: const EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
-          color: selezionato ? const Color(0xFF8B4513).withValues(alpha: 0.08) : Colors.white,
+          color:
+              selezionato
+                  ? const Color(0xFF8B4513).withValues(alpha: 0.08)
+                  : Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: selezionato ? const Color(0xFF8B4513) : Colors.grey.shade200,
@@ -172,9 +206,13 @@ class _BackgroundCard extends StatelessWidget {
         child: Theme(
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
-            leading: selezionato
-                ? const Icon(Icons.check_circle, color: Color(0xFF8B4513))
-                : const Icon(Icons.radio_button_unchecked, color: Colors.grey),
+            leading:
+                selezionato
+                    ? const Icon(Icons.check_circle, color: Color(0xFF8B4513))
+                    : const Icon(
+                      Icons.radio_button_unchecked,
+                      color: Colors.grey,
+                    ),
             title: Text(
               bg.nome,
               style: TextStyle(
@@ -192,15 +230,37 @@ class _BackgroundCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(bg.descrizione, style: TextStyle(fontSize: 13, color: Colors.grey.shade700)),
+                    Text(
+                      bg.descrizione,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey.shade700,
+                      ),
+                    ),
                     const SizedBox(height: 10),
                     if (bg.competenzeAbilita.isNotEmpty)
-                      _chip('Abilità', bg.competenzeAbilita.join(', '), Icons.star),
+                      _chip(
+                        'Abilità',
+                        bg.competenzeAbilita.join(', '),
+                        Icons.star,
+                      ),
                     if (bg.competenzeStrumenti.isNotEmpty)
-                      _chip('Strumenti', bg.competenzeStrumenti.join(', '), Icons.build),
+                      _chip(
+                        'Strumenti',
+                        bg.competenzeStrumenti.join(', '),
+                        Icons.build,
+                      ),
                     if (bg.linguaggi.isNotEmpty)
-                      _chip('Linguaggi', bg.linguaggi.join(', '), Icons.language),
-                    _chip('Equipaggiamento', bg.equipaggiamento, Icons.backpack),
+                      _chip(
+                        'Linguaggi',
+                        bg.linguaggi.join(', '),
+                        Icons.language,
+                      ),
+                    _chip(
+                      'Equipaggiamento',
+                      bg.equipaggiamento,
+                      Icons.backpack,
+                    ),
                     const Divider(height: 16),
                     _tratto('💡 Tratto', bg.tratto),
                     _tratto('⚖️ Ideale', bg.ideali),
@@ -215,7 +275,11 @@ class _BackgroundCard extends StatelessWidget {
                           backgroundColor: const Color(0xFF8B4513),
                           foregroundColor: Colors.white,
                         ),
-                        child: Text(selezionato ? '✓ Selezionato' : 'Scegli questo background'),
+                        child: Text(
+                          selezionato
+                              ? '✓ Selezionato'
+                              : 'Scegli questo background',
+                        ),
                       ),
                     ),
                   ],
@@ -229,28 +293,34 @@ class _BackgroundCard extends StatelessWidget {
   }
 
   Widget _chip(String label, String valore, IconData icon) => Padding(
-        padding: const EdgeInsets.only(bottom: 6),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(icon, size: 14, color: const Color(0xFF8B4513)),
-            const SizedBox(width: 6),
-            Text('$label: ', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-            Expanded(child: Text(valore, style: const TextStyle(fontSize: 12))),
-          ],
+    padding: const EdgeInsets.only(bottom: 6),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, size: 14, color: const Color(0xFF8B4513)),
+        const SizedBox(width: 6),
+        Text(
+          '$label: ',
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
         ),
-      );
+        Expanded(child: Text(valore, style: const TextStyle(fontSize: 12))),
+      ],
+    ),
+  );
 
   Widget _tratto(String label, String testo) => Padding(
-        padding: const EdgeInsets.only(bottom: 4),
-        child: RichText(
-          text: TextSpan(
-            style: const TextStyle(fontSize: 12, color: Colors.black87),
-            children: [
-              TextSpan(text: '$label: ', style: const TextStyle(fontWeight: FontWeight.bold)),
-              TextSpan(text: testo, style: TextStyle(color: Colors.grey.shade700)),
-            ],
+    padding: const EdgeInsets.only(bottom: 4),
+    child: RichText(
+      text: TextSpan(
+        style: const TextStyle(fontSize: 12, color: Colors.black87),
+        children: [
+          TextSpan(
+            text: '$label: ',
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-        ),
-      );
+          TextSpan(text: testo, style: TextStyle(color: Colors.grey.shade700)),
+        ],
+      ),
+    ),
+  );
 }

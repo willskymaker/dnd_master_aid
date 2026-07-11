@@ -49,72 +49,74 @@ class PGBase {
     required this.competenzeStrumenti,
     required this.abilitaClasse,
     required this.equipaggiamento,
-  })  : id = id ?? const Uuid().v4(),
-        dataSalvataggio = dataSalvataggio ?? DateTime.now();
+  }) : id = id ?? const Uuid().v4(),
+       dataSalvataggio = dataSalvataggio ?? DateTime.now();
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'dataSalvataggio': dataSalvataggio.toIso8601String(),
-        'nome': nome,
-        'specie': specie,
-        'classe': classe,
-        'livello': livello,
-        'background': background,
-        'allineamento': allineamento,
-        'competenze': competenze,
-        'caratteristiche': caratteristiche,
-        'modificatori': modificatori,
-        'caratteristicheImpostate': caratteristicheImpostate,
-        'velocita': velocita,
-        'linguaggi': linguaggi,
-        'capacitaSpeciali': capacitaSpeciali,
-        'dadoVita': dadoVita,
-        'puntiVita': puntiVita,
-        'tiriSalvezza': tiriSalvezza,
-        'competenzeArmi': competenzeArmi,
-        'competenzeArmature': competenzeArmature,
-        'competenzeStrumenti': competenzeStrumenti,
-        'abilitaClasse': abilitaClasse,
-        'equipaggiamento': equipaggiamento,
-      };
+    'id': id,
+    'dataSalvataggio': dataSalvataggio.toIso8601String(),
+    'nome': nome,
+    'specie': specie,
+    'classe': classe,
+    'livello': livello,
+    'background': background,
+    'allineamento': allineamento,
+    'competenze': competenze,
+    'caratteristiche': caratteristiche,
+    'modificatori': modificatori,
+    'caratteristicheImpostate': caratteristicheImpostate,
+    'velocita': velocita,
+    'linguaggi': linguaggi,
+    'capacitaSpeciali': capacitaSpeciali,
+    'dadoVita': dadoVita,
+    'puntiVita': puntiVita,
+    'tiriSalvezza': tiriSalvezza,
+    'competenzeArmi': competenzeArmi,
+    'competenzeArmature': competenzeArmature,
+    'competenzeStrumenti': competenzeStrumenti,
+    'abilitaClasse': abilitaClasse,
+    'equipaggiamento': equipaggiamento,
+  };
 
   factory PGBase.fromJson(Map<String, dynamic> json) => PGBase(
-        id: json['id'] as String?,
-        dataSalvataggio: json['dataSalvataggio'] != null
+    id: json['id'] as String?,
+    dataSalvataggio:
+        json['dataSalvataggio'] != null
             ? DateTime.parse(json['dataSalvataggio'] as String)
             : null,
-        nome: json['nome'] as String? ?? '',
-        specie: json['specie'] as String? ?? '',
-        classe: json['classe'] as String? ?? '',
-        livello: json['livello'] as int? ?? 1,
-        background: json['background'] as String? ?? '',
-        allineamento: json['allineamento'] as String? ?? '',
-        competenze: List<String>.from(json['competenze'] ?? []),
-        caratteristiche: Map<String, int>.from(
-            (json['caratteristiche'] as Map?)?.map(
-                  (k, v) => MapEntry(k as String, (v as num).toInt()),
-                ) ??
-                {}),
-        modificatori: Map<String, int>.from(
-            (json['modificatori'] as Map?)?.map(
-                  (k, v) => MapEntry(k as String, (v as num).toInt()),
-                ) ??
-                {}),
-        caratteristicheImpostate:
-            json['caratteristicheImpostate'] as bool? ?? false,
-        velocita: json['velocita'] as int? ?? 0,
-        linguaggi: List<String>.from(json['linguaggi'] ?? []),
-        capacitaSpeciali: List<String>.from(json['capacitaSpeciali'] ?? []),
-        dadoVita: json['dadoVita'] as int? ?? 8,
-        puntiVita: json['puntiVita'] as int? ?? 0,
-        tiriSalvezza: List<String>.from(json['tiriSalvezza'] ?? []),
-        competenzeArmi: List<String>.from(json['competenzeArmi'] ?? []),
-        competenzeArmature: List<String>.from(json['competenzeArmature'] ?? []),
-        competenzeStrumenti:
-            List<String>.from(json['competenzeStrumenti'] ?? []),
-        abilitaClasse: List<String>.from(json['abilitaClasse'] ?? []),
-        equipaggiamento: List<String>.from(json['equipaggiamento'] ?? []),
-      );
+    nome: json['nome'] as String? ?? '',
+    specie: json['specie'] as String? ?? '',
+    classe: json['classe'] as String? ?? '',
+    livello: json['livello'] as int? ?? 1,
+    background: json['background'] as String? ?? '',
+    allineamento: json['allineamento'] as String? ?? '',
+    competenze: List<String>.from(json['competenze'] ?? []),
+    caratteristiche: Map<String, int>.from(
+      (json['caratteristiche'] as Map?)?.map(
+            (k, v) => MapEntry(k as String, (v as num).toInt()),
+          ) ??
+          {},
+    ),
+    modificatori: Map<String, int>.from(
+      (json['modificatori'] as Map?)?.map(
+            (k, v) => MapEntry(k as String, (v as num).toInt()),
+          ) ??
+          {},
+    ),
+    caratteristicheImpostate:
+        json['caratteristicheImpostate'] as bool? ?? false,
+    velocita: json['velocita'] as int? ?? 0,
+    linguaggi: List<String>.from(json['linguaggi'] ?? []),
+    capacitaSpeciali: List<String>.from(json['capacitaSpeciali'] ?? []),
+    dadoVita: json['dadoVita'] as int? ?? 8,
+    puntiVita: json['puntiVita'] as int? ?? 0,
+    tiriSalvezza: List<String>.from(json['tiriSalvezza'] ?? []),
+    competenzeArmi: List<String>.from(json['competenzeArmi'] ?? []),
+    competenzeArmature: List<String>.from(json['competenzeArmature'] ?? []),
+    competenzeStrumenti: List<String>.from(json['competenzeStrumenti'] ?? []),
+    abilitaClasse: List<String>.from(json['abilitaClasse'] ?? []),
+    equipaggiamento: List<String>.from(json['equipaggiamento'] ?? []),
+  );
 
   @override
   String toString() {

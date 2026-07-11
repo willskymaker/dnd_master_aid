@@ -16,7 +16,9 @@ class _StepLivelloScreenState extends State<StepLivelloScreen> {
   void _conferma() {
     if (livelloSelezionato == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Seleziona un livello prima di continuare.")),
+        const SnackBar(
+          content: Text("Seleziona un livello prima di continuare."),
+        ),
       );
       return;
     }
@@ -33,7 +35,10 @@ class _StepLivelloScreenState extends State<StepLivelloScreen> {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            const Text("Scegli il livello iniziale del personaggio", style: TextStyle(fontSize: 18)),
+            const Text(
+              "Scegli il livello iniziale del personaggio",
+              style: TextStyle(fontSize: 18),
+            ),
             const SizedBox(height: 20),
             DropdownButton<int>(
               hint: const Text("Livello"),
@@ -55,11 +60,10 @@ class _StepLivelloScreenState extends State<StepLivelloScreen> {
             ElevatedButton(
               onPressed: _conferma,
               child: const Text("Conferma Livello"),
-            )
+            ),
           ],
         ),
       ),
     );
   }
 }
-

@@ -87,18 +87,19 @@ class _MobileListTileState extends State<MobileListTile>
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  subtitle: widget.subtitle != null
-                    ? Text(
-                        widget.subtitle!,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.grey[600],
-                        ),
-                      )
-                    : null,
+                  subtitle:
+                      widget.subtitle != null
+                          ? Text(
+                            widget.subtitle!,
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(color: Colors.grey[600]),
+                          )
+                          : null,
                   leading: widget.leading,
                   trailing: widget.trailing,
-                  contentPadding: widget.contentPadding ??
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  contentPadding:
+                      widget.contentPadding ??
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 ),
                 if (widget.showDivider)
                   Divider(
@@ -156,9 +157,7 @@ class MobileListGroup extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Column(
-              children: children,
-            ),
+            child: Column(children: children),
           ),
           if (showGroupDivider) const SizedBox(height: 16),
         ],
@@ -239,9 +238,7 @@ class _MobileExpandableTileState extends State<MobileExpandableTile>
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Column(
         children: [
           MobileListTile(
@@ -272,13 +269,12 @@ class _MobileExpandableTileState extends State<MobileExpandableTile>
             firstChild: const SizedBox.shrink(),
             secondChild: Padding(
               padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-              child: Column(
-                children: widget.children,
-              ),
+              child: Column(children: widget.children),
             ),
-            crossFadeState: _isExpanded
-              ? CrossFadeState.showSecond
-              : CrossFadeState.showFirst,
+            crossFadeState:
+                _isExpanded
+                    ? CrossFadeState.showSecond
+                    : CrossFadeState.showFirst,
             duration: const Duration(milliseconds: 200),
           ),
         ],
