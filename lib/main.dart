@@ -107,188 +107,214 @@ class HomePage extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 600;
 
+    final attive = funzioni.where((f) => f['attivo'] as bool).toList();
+    final inArrivo = funzioni.where((f) => !(f['attivo'] as bool)).toList();
+
     return MobileScaffold(
       title: 'D&D Master Aid',
       showBackButton: false,
+      titleBadge: 'BETA',
+      leading: Padding(
+        padding: const EdgeInsets.all(AppSpacing.sm),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(AppRadius.sm),
+          child: Image.asset('assets/icon/icon.png'),
+        ),
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: isMobile ? _buildMobileLayout() : _buildTabletLayout(),
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        child:
+            isMobile
+                ? _buildMobileLayout(context, attive, inArrivo)
+                : _buildTabletLayout(context, attive, inArrivo),
       ),
     );
   }
 
-  Widget _buildMobileLayout() {
-    return ListView.builder(
-      itemCount: funzioni.length,
-      itemBuilder: (context, index) {
-        final funzione = funzioni[index];
-        final attivo = funzione['attivo'] as bool;
+  Widget _sectionHeader(BuildContext context, String label) => Padding(
+    padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+    child: Text(
+      label.toUpperCase(),
+      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+        color: AppColors.textSecondary,
+        letterSpacing: 0.5,
+      ),
+    ),
+  );
 
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: MobileCard(
-            onTap:
-                attivo
-                    ? () => _navigateTo(context, funzione['id'] as String)
-                    : null,
-            backgroundColor: attivo ? Colors.white : Colors.grey.shade200,
-            child: Row(
-              children: [
-                Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color:
-                        attivo
-                            ? const Color(0xFF8B4513).withValues(alpha: 0.1)
-                            : Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Center(
-                    child: Text(
-                      funzione['icona'] as String,
-                      style: const TextStyle(fontSize: 28),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        funzione['nome'] as String,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        funzione['descr'] as String,
-                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                      ),
-                    ],
-                  ),
-                ),
-                if (attivo)
-                  const Icon(
-                    Icons.arrow_forward_ios,
-                    color: Color(0xFF8B4513),
-                    size: 16,
-                  )
-                else
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade400,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Text(
-                      'Presto',
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        );
-      },
+  Widget _buildMobileLayout(
+    BuildContext context,
+    List<Map<String, Object>> attive,
+    List<Map<String, Object>> inArrivo,
+  ) {
+    return ListView(
+      children: [
+        _sectionHeader(context, 'Funzioni disponibili'),
+        for (final funzione in attive) _buildMobileCard(context, funzione),
+        if (inArrivo.isNotEmpty) ...[
+          const SizedBox(height: AppSpacing.md),
+          _sectionHeader(context, 'In arrivo'),
+          for (final funzione in inArrivo) _buildMobileCard(context, funzione),
+        ],
+      ],
     );
   }
 
-  Widget _buildTabletLayout() {
-    return Builder(
-      builder:
-          (context) => GridView.count(
-            crossAxisCount: 3,
-            childAspectRatio: 1.2,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            children:
-                funzioni.map((funzione) {
-                  final attivo = funzione['attivo'] as bool;
-                  return MobileCard(
-                    onTap:
-                        attivo
-                            ? () =>
-                                _navigateTo(context, funzione['id'] as String)
-                            : null,
-                    backgroundColor:
-                        attivo ? Colors.white : Colors.grey.shade200,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color:
-                                attivo
-                                    ? const Color(
-                                      0xFF8B4513,
-                                    ).withValues(alpha: 0.1)
-                                    : Colors.grey.shade300,
-                            borderRadius: BorderRadius.circular(40),
-                          ),
-                          child: Center(
-                            child: Text(
-                              funzione['icona'] as String,
-                              style: const TextStyle(fontSize: 40),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          funzione['nome'] as String,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          funzione['descr'] as String,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey[600],
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        if (!attivo) ...[
-                          const SizedBox(height: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade400,
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: const Text(
-                              'Presto',
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ],
+  Widget _buildMobileCard(BuildContext context, Map<String, Object> funzione) {
+    final attivo = funzione['attivo'] as bool;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.md),
+      child: MobileCard(
+        onTap:
+            attivo
+                ? () => _navigateTo(context, funzione['id'] as String)
+                : null,
+        backgroundColor: attivo ? Colors.white : AppColors.disabledBackground,
+        child: Row(
+          children: [
+            Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                color:
+                    attivo
+                        ? AppColors.primary.withValues(alpha: 0.1)
+                        : Colors.grey.shade300,
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Text(
+                  funzione['icona'] as String,
+                  style: const TextStyle(fontSize: 28),
+                ),
+              ),
+            ),
+            const SizedBox(width: AppSpacing.lg),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(funzione['nome'] as String, style: textTheme.titleSmall),
+                  const SizedBox(height: AppSpacing.xs),
+                  Text(
+                    funzione['descr'] as String,
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textSecondary,
                     ),
-                  );
-                }).toList(),
-          ),
+                  ),
+                ],
+              ),
+            ),
+            if (attivo)
+              const Icon(
+                Icons.arrow_forward_ios,
+                color: AppColors.primary,
+                size: 16,
+              )
+            else
+              _prestoBadge(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _prestoBadge(BuildContext context) => Container(
+    padding: const EdgeInsets.symmetric(
+      horizontal: AppSpacing.sm,
+      vertical: AppSpacing.xs,
+    ),
+    decoration: BoxDecoration(
+      color: AppColors.disabledText,
+      borderRadius: BorderRadius.circular(AppRadius.md),
+    ),
+    child: Text('Presto', style: Theme.of(context).textTheme.labelSmall),
+  );
+
+  Widget _buildTabletLayout(
+    BuildContext context,
+    List<Map<String, Object>> attive,
+    List<Map<String, Object>> inArrivo,
+  ) {
+    return ListView(
+      children: [
+        _sectionHeader(context, 'Funzioni disponibili'),
+        _buildTabletGrid(context, attive),
+        if (inArrivo.isNotEmpty) ...[
+          const SizedBox(height: AppSpacing.lg),
+          _sectionHeader(context, 'In arrivo'),
+          _buildTabletGrid(context, inArrivo),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildTabletGrid(
+    BuildContext context,
+    List<Map<String, Object>> lista,
+  ) {
+    final textTheme = Theme.of(context).textTheme;
+    return GridView.count(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: 3,
+      childAspectRatio: 1.2,
+      crossAxisSpacing: AppSpacing.lg,
+      mainAxisSpacing: AppSpacing.lg,
+      children:
+          lista.map((funzione) {
+            final attivo = funzione['attivo'] as bool;
+            return MobileCard(
+              onTap:
+                  attivo
+                      ? () => _navigateTo(context, funzione['id'] as String)
+                      : null,
+              backgroundColor:
+                  attivo ? Colors.white : AppColors.disabledBackground,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color:
+                          attivo
+                              ? AppColors.primary.withValues(alpha: 0.1)
+                              : Colors.grey.shade300,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        funzione['icona'] as String,
+                        style: const TextStyle(fontSize: 40),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+                  Text(
+                    funzione['nome'] as String,
+                    style: textTheme.titleSmall,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  Text(
+                    funzione['descr'] as String,
+                    style: textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  if (!attivo) ...[
+                    const SizedBox(height: AppSpacing.sm),
+                    _prestoBadge(context),
+                  ],
+                ],
+              ),
+            );
+          }).toList(),
     );
   }
 

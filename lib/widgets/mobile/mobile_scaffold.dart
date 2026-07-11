@@ -12,6 +12,13 @@ class MobileScaffold extends StatelessWidget {
   final PreferredSizeWidget? bottom;
   final bool showBackButton;
 
+  /// Icona mostrata al posto del pulsante indietro (es. logo dell'app in
+  /// una schermata radice, dove [showBackButton] è false).
+  final Widget? leading;
+
+  /// Badge testuale mostrato accanto al titolo (es. "BETA").
+  final String? titleBadge;
+
   const MobileScaffold({
     super.key,
     required this.title,
@@ -21,18 +28,45 @@ class MobileScaffold extends StatelessWidget {
     this.drawer,
     this.bottom,
     this.showBackButton = true,
+    this.leading,
+    this.titleBadge,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          title,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
+        leading: leading,
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: Text(
+                title,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            if (titleBadge != null) ...[
+              const SizedBox(width: AppSpacing.sm),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.sm,
+                  vertical: 2,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.accent,
+                  borderRadius: BorderRadius.circular(AppRadius.sm),
+                ),
+                child: Text(
+                  titleBadge!,
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+              ),
+            ],
+          ],
         ),
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
