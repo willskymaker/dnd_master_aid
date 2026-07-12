@@ -1,5 +1,26 @@
 import 'package:uuid/uuid.dart';
 
+/// Voce di inventario libera (nome + quantita'), distinta
+/// dall'equipaggiamento scelto in fase di creazione del personaggio.
+class InventoryItem {
+  final String nome;
+  final int quantita;
+
+  const InventoryItem({required this.nome, this.quantita = 1});
+
+  InventoryItem copyWith({String? nome, int? quantita}) => InventoryItem(
+    nome: nome ?? this.nome,
+    quantita: quantita ?? this.quantita,
+  );
+
+  Map<String, dynamic> toJson() => {'nome': nome, 'quantita': quantita};
+
+  factory InventoryItem.fromJson(Map<String, dynamic> json) => InventoryItem(
+    nome: json['nome'] as String? ?? '',
+    quantita: json['quantita'] as int? ?? 1,
+  );
+}
+
 class PGBase {
   final String id;
   final DateTime dataSalvataggio;
@@ -30,6 +51,7 @@ class PGBase {
   final int denaroPlatino;
   final int puntiVitaCorrenti;
   final int puntiVitaTemporanei;
+  final List<InventoryItem> inventario;
 
   PGBase({
     String? id,
@@ -61,6 +83,7 @@ class PGBase {
     this.denaroPlatino = 0,
     int? puntiVitaCorrenti,
     this.puntiVitaTemporanei = 0,
+    this.inventario = const [],
   }) : id = id ?? const Uuid().v4(),
        dataSalvataggio = dataSalvataggio ?? DateTime.now(),
        puntiVitaCorrenti = puntiVitaCorrenti ?? puntiVita;
@@ -94,6 +117,7 @@ class PGBase {
     int? denaroPlatino,
     int? puntiVitaCorrenti,
     int? puntiVitaTemporanei,
+    List<InventoryItem>? inventario,
   }) {
     return PGBase(
       id: id,
@@ -126,6 +150,7 @@ class PGBase {
       denaroPlatino: denaroPlatino ?? this.denaroPlatino,
       puntiVitaCorrenti: puntiVitaCorrenti ?? this.puntiVitaCorrenti,
       puntiVitaTemporanei: puntiVitaTemporanei ?? this.puntiVitaTemporanei,
+      inventario: inventario ?? this.inventario,
     );
   }
 
@@ -159,6 +184,7 @@ class PGBase {
     'denaroPlatino': denaroPlatino,
     'puntiVitaCorrenti': puntiVitaCorrenti,
     'puntiVitaTemporanei': puntiVitaTemporanei,
+    'inventario': inventario.map((i) => i.toJson()).toList(),
   };
 
   factory PGBase.fromJson(Map<String, dynamic> json) => PGBase(
@@ -205,6 +231,11 @@ class PGBase {
     denaroPlatino: json['denaroPlatino'] as int? ?? 0,
     puntiVitaCorrenti: json['puntiVitaCorrenti'] as int?,
     puntiVitaTemporanei: json['puntiVitaTemporanei'] as int? ?? 0,
+    inventario:
+        (json['inventario'] as List?)
+            ?.map((i) => InventoryItem.fromJson(i as Map<String, dynamic>))
+            .toList() ??
+        [],
   );
 
   @override

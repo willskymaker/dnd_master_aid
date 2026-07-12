@@ -312,6 +312,13 @@ class _SchedaBottomSheet extends StatelessWidget {
                 _DenaroSection(pg: pg),
                 const Divider(height: 24),
                 const Text(
+                  'Inventario',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                const SizedBox(height: 8),
+                _InventarioSection(pg: pg),
+                const Divider(height: 24),
+                const Text(
                   'Caratteristiche',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
@@ -663,4 +670,143 @@ class _PfSectionState extends State<_PfSection> {
       ),
     ),
   );
+}
+
+/// Inventario libero (oggetti/pozioni) di un personaggio salvato. "Usa" su
+/// una pozione di cura tira 2d4+2 e applica la cura direttamente ai PF.
+class _InventarioSection extends StatefulWidget {
+  final PGBase pg;
+
+  const _InventarioSection({required this.pg});
+
+  @override
+  State<_InventarioSection> createState() => _InventarioSectionState();
+}
+
+class _InventarioSectionState extends State<_InventarioSection> {
+  late PGBase _pg;
+  final _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _pg = widget.pg;
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _salva() => context.read<SavedCharactersProvider>().save(_pg);
+
+  void _aggiungiOggetto() {
+    final nome = _controller.text.trim();
+    if (nome.isEmpty) return;
+
+    final nuovo = List<InventoryItem>.from(_pg.inventario);
+    final idx = nuovo.indexWhere(
+      (i) => i.nome.toLowerCase() == nome.toLowerCase(),
+    );
+    if (idx >= 0) {
+      nuovo[idx] = nuovo[idx].copyWith(quantita: nuovo[idx].quantita + 1);
+    } else {
+      nuovo.add(InventoryItem(nome: nome));
+    }
+
+    setState(() {
+      _pg = _pg.copyWith(inventario: nuovo);
+      _controller.clear();
+    });
+    _salva();
+  }
+
+  void _rimuoviUno(InventoryItem item) {
+    final nuovo = List<InventoryItem>.from(_pg.inventario);
+    final idx = nuovo.indexOf(item);
+    if (idx < 0) return;
+
+    if (item.quantita > 1) {
+      nuovo[idx] = item.copyWith(quantita: item.quantita - 1);
+    } else {
+      nuovo.removeAt(idx);
+    }
+
+    setState(() => _pg = _pg.copyWith(inventario: nuovo));
+    _salva();
+  }
+
+  bool _ePozioneDiCura(String nome) {
+    final n = nome.toLowerCase();
+    return n.contains('cura') || n.contains('guarigion');
+  }
+
+  void _usa(InventoryItem item) {
+    if (_ePozioneDiCura(item.nome)) {
+      final random = Random();
+      final cura = random.nextInt(4) + 1 + random.nextInt(4) + 1 + 2; // 2d4+2
+      final nuoviPf = (_pg.puntiVitaCorrenti + cura).clamp(0, _pg.puntiVita);
+      setState(() => _pg = _pg.copyWith(puntiVitaCorrenti: nuoviPf));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('${item.nome}: curati $cura PF')));
+    }
+    _rimuoviUno(item);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (_pg.inventario.isEmpty)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Text(
+              'Nessun oggetto',
+              style: TextStyle(color: Colors.grey[600]),
+            ),
+          ),
+        ..._pg.inventario.map(
+          (item) => Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: Row(
+              children: [
+                Expanded(child: Text('${item.nome} ×${item.quantita}')),
+                TextButton(
+                  onPressed: () => _usa(item),
+                  child: const Text('Usa'),
+                ),
+                IconButton(
+                  onPressed: () => _rimuoviUno(item),
+                  icon: const Icon(Icons.remove_circle_outline),
+                  color: Colors.red,
+                ),
+              ],
+            ),
+          ),
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _controller,
+                decoration: const InputDecoration(
+                  hintText: 'Aggiungi oggetto...',
+                  isDense: true,
+                ),
+                onSubmitted: (_) => _aggiungiOggetto(),
+              ),
+            ),
+            IconButton(
+              onPressed: _aggiungiOggetto,
+              icon: const Icon(Icons.add_circle),
+              color: const Color(0xFF8B4513),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 }
