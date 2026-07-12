@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../data/db_condizioni.dart';
 import '../data/db_slot_incantesimi.dart';
+import '../data/db_talenti.dart';
 import '../factory_pg_base.dart';
 import '../pg_base/utils/asi_helper.dart';
 import '../pg_base/utils/pf_helper.dart';
@@ -391,6 +392,8 @@ class _SchedaBottomSheetState extends State<_SchedaBottomSheet> {
                   _riga('Competenze', pg.competenze.join(', ')),
                 if (pg.capacitaSpeciali.isNotEmpty)
                   _riga('Abilità Innate', pg.capacitaSpeciali.join(', ')),
+                if (pg.talenti.isNotEmpty)
+                  _riga('Talenti', pg.talenti.join(', ')),
                 if (pg.equipaggiamento.isNotEmpty) ...[
                   const Divider(height: 24),
                   const Text(
@@ -420,6 +423,7 @@ class _SchedaBottomSheetState extends State<_SchedaBottomSheet> {
 
     var nuoveCaratteristiche = _pg.caratteristiche;
     var nuoviModificatori = _pg.modificatori;
+    var nuoviTalenti = _pg.talenti;
 
     if (asiDopo > asiPrima) {
       final distribuzione = await _mostraDistribuzioneAsi();
@@ -434,6 +438,12 @@ class _SchedaBottomSheetState extends State<_SchedaBottomSheet> {
           for (final e in nuoveCaratteristiche.entries)
             e.key: ((e.value - 10) / 2).floor(),
         };
+      } else {
+        final talento = await _mostraSceltaTalento(nuovoLivello);
+        if (!mounted) return;
+        if (talento != null && talento.isNotEmpty) {
+          nuoviTalenti = [..._pg.talenti, talento];
+        }
       }
     }
 
@@ -451,6 +461,7 @@ class _SchedaBottomSheetState extends State<_SchedaBottomSheet> {
       puntiVitaCorrenti: (_pg.puntiVitaCorrenti + deltaPf).clamp(0, nuovoPfMax),
       caratteristiche: nuoveCaratteristiche,
       modificatori: nuoviModificatori,
+      talenti: nuoviTalenti,
     );
 
     await context.read<SavedCharactersProvider>().save(nuovoPg);
@@ -554,6 +565,89 @@ class _SchedaBottomSheetState extends State<_SchedaBottomSheet> {
     );
   }
 
+  /// Mostra la scelta del talento preso al posto dell'ASI: selezionabile
+  /// dall'elenco (filtrato per livello minimo) o scrivibile a mano per i
+  /// talenti homebrew non presenti in db_talenti.dart. Ritorna null se
+  /// l'utente chiude il foglio senza scegliere nulla.
+  Future<String?> _mostraSceltaTalento(int nuovoLivello) {
+    final disponibili =
+        talentiList.where((t) => t.livelloMinimo <= nuovoLivello).toList()
+          ..sort((a, b) => a.nome.compareTo(b.nome));
+    final controller = TextEditingController();
+
+    return showModalBottomSheet<String>(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder:
+          (context) => DraggableScrollableSheet(
+            initialChildSize: 0.7,
+            maxChildSize: 0.9,
+            minChildSize: 0.4,
+            expand: false,
+            builder:
+                (_, scrollController) => Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Quale talento hai preso?',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      TextField(
+                        controller: controller,
+                        decoration: const InputDecoration(
+                          labelText: 'Nome del talento (se non in elenco)',
+                          border: OutlineInputBorder(),
+                        ),
+                        onSubmitted: (v) => Navigator.pop(context, v.trim()),
+                      ),
+                      const SizedBox(height: 8),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            final testo = controller.text.trim();
+                            if (testo.isNotEmpty) {
+                              Navigator.pop(context, testo);
+                            }
+                          },
+                          child: const Text('Usa questo nome'),
+                        ),
+                      ),
+                      const Divider(height: 24),
+                      Expanded(
+                        child: ListView.builder(
+                          controller: scrollController,
+                          itemCount: disponibili.length,
+                          itemBuilder: (context, index) {
+                            final t = disponibili[index];
+                            return ListTile(
+                              title: Text(t.nome),
+                              subtitle: Text(
+                                t.descrizione,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              onTap: () => Navigator.pop(context, t.nome),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+          ),
+    );
+  }
+
   Widget _riga(String label, String valore) => Padding(
     padding: const EdgeInsets.only(bottom: 8),
     child: Row(
@@ -637,6 +731,14 @@ class _DenaroSectionState extends State<_DenaroSection> {
   void initState() {
     super.initState();
     _pg = widget.pg;
+  }
+
+  @override
+  void didUpdateWidget(covariant _DenaroSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(oldWidget.pg, widget.pg)) {
+      setState(() => _pg = widget.pg);
+    }
   }
 
   void _aggiorna(String moneta, int delta) {
@@ -727,6 +829,14 @@ class _PfSectionState extends State<_PfSection> {
   void initState() {
     super.initState();
     _pg = widget.pg;
+  }
+
+  @override
+  void didUpdateWidget(covariant _PfSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(oldWidget.pg, widget.pg)) {
+      setState(() => _pg = widget.pg);
+    }
   }
 
   void _salva() => context.read<SavedCharactersProvider>().save(_pg);
@@ -895,6 +1005,14 @@ class _InventarioSectionState extends State<_InventarioSection> {
   }
 
   @override
+  void didUpdateWidget(covariant _InventarioSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(oldWidget.pg, widget.pg)) {
+      setState(() => _pg = widget.pg);
+    }
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
@@ -1031,6 +1149,14 @@ class _CondizioniSectionState extends State<_CondizioniSection> {
     _pg = widget.pg;
   }
 
+  @override
+  void didUpdateWidget(covariant _CondizioniSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(oldWidget.pg, widget.pg)) {
+      setState(() => _pg = widget.pg);
+    }
+  }
+
   void _toggle(String condizione, bool attiva) {
     final nuove = List<String>.from(_pg.condizioniAttive);
     if (attiva) {
@@ -1085,6 +1211,14 @@ class _ModificatoriSectionState extends State<_ModificatoriSection> {
   void initState() {
     super.initState();
     _pg = widget.pg;
+  }
+
+  @override
+  void didUpdateWidget(covariant _ModificatoriSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(oldWidget.pg, widget.pg)) {
+      setState(() => _pg = widget.pg);
+    }
   }
 
   @override
@@ -1184,6 +1318,14 @@ class _IncantesimiSectionState extends State<_IncantesimiSection> {
   void initState() {
     super.initState();
     _pg = widget.pg;
+  }
+
+  @override
+  void didUpdateWidget(covariant _IncantesimiSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(oldWidget.pg, widget.pg)) {
+      setState(() => _pg = widget.pg);
+    }
   }
 
   void _salva() => context.read<SavedCharactersProvider>().save(_pg);
