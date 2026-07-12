@@ -82,7 +82,7 @@ class HomePage extends StatelessWidget {
       'id': 'salvati',
       'nome': 'I Miei Personaggi',
       'icona': '📖',
-      'descr': 'Personaggi salvati',
+      'descr': 'Scheda viva: PF, denaro, condizioni',
       'attivo': true,
     },
     {
