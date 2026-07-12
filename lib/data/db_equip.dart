@@ -1,5 +1,68 @@
 // lib/data/db_equip.dart
 
+import 'db_classi.dart';
+
+/// Alcune classi hanno competenze su armi specifiche (non l'intera
+/// categoria "semplici"/"da guerra"), elencate in db_classi.dart con il
+/// nome italiano dell'arma al plurale (es. "Spade corte"). Mappa quei nomi
+/// al nome inglese stabile dell'arma corrispondente in equipment.json, per
+/// poter derivare le classi consigliate anche per il catalogo importato.
+const Map<String, String> _aliasCompetenzaArma = {
+  'Balestre leggere': 'Crossbow, light',
+  'Balestre a mano': 'Crossbow, hand',
+  'Spade corte': 'Shortsword',
+  'Spade lunghe': 'Longsword',
+  'Stocchi': 'Rapier',
+  'Bastoni': 'Quarterstaff',
+  'Bastoni ferrati': 'Quarterstaff',
+  'Fionde': 'Sling',
+  'Lance': 'Spear',
+  'Pugnali': 'Dagger',
+  'Falci': 'Sickle',
+  'Mazze': 'Mace',
+  'Dardi': 'Dart',
+};
+
+bool _classeCompetenteArma(Classe classe, String categoria, String nomeArma) {
+  final generica =
+      categoria.startsWith('simple') ? 'Armi semplici' : 'Armi da guerra';
+  if (classe.competenzeArmi.contains(generica)) return true;
+  return classe.competenzeArmi.any((c) => _aliasCompetenzaArma[c] == nomeArma);
+}
+
+/// Classi consigliate per un'arma importata da equipment.json, derivate
+/// dalle competenze d'arma di ciascuna classe in db_classi.dart.
+List<String> classiConsigliatePerArma(String categoria, String nomeArma) =>
+    classiList
+        .where((c) => _classeCompetenteArma(c, categoria, nomeArma))
+        .map((c) => c.nome)
+        .toList();
+
+bool _classeCompetenteArmatura(Classe classe, String categoria) {
+  switch (categoria) {
+    case 'light':
+      return classe.competenzeArmature.any((c) => c.startsWith('Leggere')) ||
+          classe.competenzeArmature.contains('Tutte le armature');
+    case 'medium':
+      return classe.competenzeArmature.any((c) => c.startsWith('Medie')) ||
+          classe.competenzeArmature.contains('Tutte le armature');
+    case 'heavy':
+      return classe.competenzeArmature.contains('Tutte le armature');
+    case 'shields':
+      return classe.competenzeArmature.any((c) => c.startsWith('Scudi'));
+    default:
+      return false;
+  }
+}
+
+/// Classi consigliate per un'armatura importata da equipment.json, derivate
+/// dalle competenze d'armatura di ciascuna classe in db_classi.dart.
+List<String> classiConsigliatePerArmatura(String categoria) =>
+    classiList
+        .where((c) => _classeCompetenteArmatura(c, categoria))
+        .map((c) => c.nome)
+        .toList();
+
 class OggettoEquip {
   final String nome;
   final String tipo; // "arma", "armatura", "oggetto"
@@ -37,6 +100,10 @@ class OggettoEquip {
       danno: json['damage'],
       costoMO: _parseCost(json['cost']),
       pesoKg: _parseWeight(json['weight']),
+      classiConsigliate: classiConsigliatePerArma(
+        weaponType,
+        json['name'] ?? '',
+      ),
     );
   }
 
@@ -53,6 +120,7 @@ class OggettoEquip {
       danno: null,
       costoMO: _parseCost(json['cost']),
       pesoKg: _parseWeight(json['weight']),
+      classiConsigliate: classiConsigliatePerArmatura(armorType),
     );
   }
 

@@ -96,10 +96,28 @@ class _StepEquipScreenState extends State<StepEquipScreen> {
   T? _casuale<T>(List<T> lista) =>
       lista.isEmpty ? null : lista[Random().nextInt(lista.length)];
 
+  /// Come [_casuale], ma pesca solo tra gli oggetti consigliati per
+  /// [classe] quando ce ne sono (un oggetto senza classi consigliate resta
+  /// disponibile per tutti). Se nessun oggetto e' consigliato per la
+  /// classe scelta, ripiega sull'intera lista per non lasciare lo slot
+  /// vuoto.
+  OggettoEquip? _casualeCompatibile(List<OggettoEquip> lista, String classe) {
+    final compatibili =
+        lista
+            .where(
+              (o) =>
+                  o.classiConsigliate.isEmpty ||
+                  o.classiConsigliate.contains(classe),
+            )
+            .toList();
+    return _casuale(compatibili.isNotEmpty ? compatibili : lista);
+  }
+
   void _randomizza() {
+    final classePG = widget.factory.build().classe;
     setState(() {
-      armaSelezionata = _casuale(armi);
-      armaturaSelezionata = _casuale(armature);
+      armaSelezionata = _casualeCompatibile(armi, classePG);
+      armaturaSelezionata = _casualeCompatibile(armature, classePG);
       kitSelezionato = _casuale(kit);
       strumentoSelezionato = _casuale(strumenti);
     });
