@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../core/app_theme.dart';
+import '../data/db_condizioni.dart';
 import '../data/db_slot_incantesimi.dart';
 import '../factory_pg_base.dart';
 import '../providers/saved_characters_provider.dart';
@@ -22,9 +23,19 @@ class _Combattente {
   int iniziativa;
   int pfMax;
   int pfCorrenti;
+  int? ca;
+  int? cd;
   final String? classe;
   final int? livello;
   final Map<String, int> slotUsati;
+  final List<String> condizioni;
+
+  /// Dati completi del mostro (da monsters.json), usati per la vista
+  /// dettagli (caratteristiche, azioni, abilita' speciali, azioni
+  /// leggendarie). Null per PG e combattenti manuali.
+  final Map<String, dynamic>? datiMostro;
+  final int? azioniLeggendarieMax;
+  int azioniLeggendarieUsate = 0;
 
   _Combattente({
     required this.nome,
@@ -32,12 +43,17 @@ class _Combattente {
     required this.pfMax,
     int? pfCorrenti,
     this.isPg = false,
+    this.ca,
     this.classe,
     this.livello,
     Map<String, int>? slotUsati,
+    List<String>? condizioni,
+    this.datiMostro,
+    this.azioniLeggendarieMax,
   }) : id = '${DateTime.now().microsecondsSinceEpoch}_$nome',
        pfCorrenti = pfCorrenti ?? pfMax,
-       slotUsati = slotUsati ?? {};
+       slotUsati = slotUsati ?? {},
+       condizioni = condizioni ?? [];
 
   /// Slot totali per livello incantesimo, in base a classe/livello (vuoto
   /// se non e' una classe incantatrice o non trovata in tabella).
@@ -50,6 +66,8 @@ class _Combattente {
   }
 
   bool get eIncantatore => slotTotaliPerLivello.any((n) => n > 0);
+
+  bool get eLeggendario => azioniLeggendarieMax != null;
 }
 
 class CombatTrackerScreen extends StatefulWidget {
@@ -95,55 +113,122 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
     final iniziativaController = TextEditingController(text: '${c.iniziativa}');
     final pfMaxController = TextEditingController(text: '${c.pfMax}');
     final pfCorrentiController = TextEditingController(text: '${c.pfCorrenti}');
+    final caController = TextEditingController(text: c.ca?.toString() ?? '');
+    final cdController = TextEditingController(text: c.cd?.toString() ?? '');
+    final condizioniSelezionate = Set<String>.from(c.condizioni);
 
     final confermato = await showDialog<bool>(
       context: context,
       builder:
-          (context) => AlertDialog(
-            title: const Text('Modifica combattente'),
-            content: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: nomeController,
-                    decoration: const InputDecoration(labelText: 'Nome'),
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    controller: iniziativaController,
-                    keyboardType: const TextInputType.numberWithOptions(
-                      signed: true,
+          (context) => StatefulBuilder(
+            builder:
+                (context, setDialogState) => AlertDialog(
+                  title: const Text('Modifica combattente'),
+                  content: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextField(
+                          controller: nomeController,
+                          decoration: const InputDecoration(labelText: 'Nome'),
+                        ),
+                        const SizedBox(height: 8),
+                        TextField(
+                          controller: iniziativaController,
+                          keyboardType: const TextInputType.numberWithOptions(
+                            signed: true,
+                          ),
+                          decoration: const InputDecoration(
+                            labelText: 'Iniziativa (tiro + mod. Destrezza)',
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        TextField(
+                          controller: pfMaxController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: 'PF massimi',
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        TextField(
+                          controller: pfCorrentiController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: 'PF correnti',
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: caController,
+                                keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                  labelText: 'CA',
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: TextField(
+                                controller: cdController,
+                                keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                  labelText: 'CD',
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Condizioni attive',
+                            style: Theme.of(context).textTheme.labelLarge,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Wrap(
+                          spacing: 6,
+                          runSpacing: 6,
+                          children:
+                              condizioniD20.keys.map((condizione) {
+                                final attiva = condizioniSelezionate.contains(
+                                  condizione,
+                                );
+                                return FilterChip(
+                                  label: Text(condizione),
+                                  selected: attiva,
+                                  onSelected:
+                                      (sel) => setDialogState(() {
+                                        if (sel) {
+                                          condizioniSelezionate.add(condizione);
+                                        } else {
+                                          condizioniSelezionate.remove(
+                                            condizione,
+                                          );
+                                        }
+                                      }),
+                                );
+                              }).toList(),
+                        ),
+                      ],
                     ),
-                    decoration: const InputDecoration(
-                      labelText: 'Iniziativa (tiro + mod. Destrezza)',
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: const Text('Annulla'),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    controller: pfMaxController,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'PF massimi'),
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    controller: pfCorrentiController,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'PF correnti'),
-                  ),
-                ],
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: const Text('Annulla'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, true),
-                child: const Text('Conferma'),
-              ),
-            ],
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      child: const Text('Conferma'),
+                    ),
+                  ],
+                ),
           ),
     );
 
@@ -155,6 +240,11 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
         c.pfMax = int.tryParse(pfMaxController.text) ?? c.pfMax;
         c.pfCorrenti = (int.tryParse(pfCorrentiController.text) ?? c.pfCorrenti)
             .clamp(0, c.pfMax);
+        c.ca = int.tryParse(caController.text);
+        c.cd = int.tryParse(cdController.text);
+        c.condizioni
+          ..clear()
+          ..addAll(condizioniSelezionate);
       });
     }
   }
@@ -246,8 +336,179 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
       if (_turnoIndex >= _combattenti.length) {
         _turnoIndex = 0;
         _round++;
+        for (final c in _combattenti) {
+          if (c.eLeggendario) c.azioniLeggendarieUsate = 0;
+        }
       }
     });
+  }
+
+  void _modificaAzioniLeggendarie(_Combattente c, int delta) {
+    final max = c.azioniLeggendarieMax ?? 0;
+    setState(
+      () =>
+          c.azioniLeggendarieUsate = (c.azioniLeggendarieUsate + delta).clamp(
+            0,
+            max,
+          ),
+    );
+  }
+
+  Future<void> _mostraDettagliMostro(_Combattente c) async {
+    final dati = c.datiMostro;
+    if (dati == null) return;
+    final abilityScores = dati['ability_scores'] as Map?;
+    final azioni = (dati['actions'] as List?) ?? const [];
+    final azioniSpeciali = (dati['special_abilities'] as List?) ?? const [];
+    final azioniLeggendarie = (dati['legendary_actions'] as List?) ?? const [];
+
+    const nomiCaratteristiche = {
+      'strength': 'FOR',
+      'dexterity': 'DES',
+      'constitution': 'COS',
+      'intelligence': 'INT',
+      'wisdom': 'SAG',
+      'charisma': 'CAR',
+    };
+
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setSheetState) {
+            return DraggableScrollableSheet(
+              initialChildSize: 0.7,
+              maxChildSize: 0.95,
+              minChildSize: 0.4,
+              expand: false,
+              builder:
+                  (_, scrollController) => ListView(
+                    controller: scrollController,
+                    padding: const EdgeInsets.all(20),
+                    children: [
+                      Text(
+                        c.nome,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'CA ${c.ca ?? '?'} · PF ${c.pfCorrenti}/${c.pfMax}',
+                        style: TextStyle(color: Colors.grey[600]),
+                      ),
+                      if (abilityScores != null) ...[
+                        const SizedBox(height: 16),
+                        Wrap(
+                          spacing: 12,
+                          runSpacing: 8,
+                          children:
+                              nomiCaratteristiche.entries.map((e) {
+                                final valore =
+                                    (abilityScores[e.key] as num?)?.toInt();
+                                if (valore == null) return const SizedBox();
+                                final mod = ((valore - 10) / 2).floor();
+                                return Column(
+                                  children: [
+                                    Text(
+                                      e.value,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      '$valore (${mod >= 0 ? '+' : ''}$mod)',
+                                    ),
+                                  ],
+                                );
+                              }).toList(),
+                        ),
+                      ],
+                      if (azioniSpeciali.isNotEmpty) ...[
+                        const SizedBox(height: 20),
+                        const Text(
+                          'Abilità speciali',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        for (final a in azioniSpeciali)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 6),
+                            child: Text(
+                              '${a['name']}: ${a['description'] ?? ''}',
+                            ),
+                          ),
+                      ],
+                      if (azioni.isNotEmpty) ...[
+                        const SizedBox(height: 20),
+                        const Text(
+                          'Azioni',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        for (final a in azioni)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 6),
+                            child: Text(
+                              '${a['name']}: ${a['description'] ?? ''}',
+                            ),
+                          ),
+                      ],
+                      if (azioniLeggendarie.isNotEmpty) ...[
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Azioni leggendarie',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    _modificaAzioniLeggendarie(c, -1);
+                                    setSheetState(() {});
+                                  },
+                                  icon: const Icon(Icons.add_circle_outline),
+                                  color: Colors.green.shade700,
+                                ),
+                                Text(
+                                  '${(c.azioniLeggendarieMax ?? 0) - c.azioniLeggendarieUsate} / ${c.azioniLeggendarieMax ?? 0}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    _modificaAzioniLeggendarie(c, 1);
+                                    setSheetState(() {});
+                                  },
+                                  icon: const Icon(Icons.remove_circle_outline),
+                                  color: Colors.red,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        for (final a in azioniLeggendarie)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 6),
+                            child: Text(
+                              '${a['name']}: ${a['description'] ?? ''}',
+                            ),
+                          ),
+                      ],
+                    ],
+                  ),
+            );
+          },
+        );
+      },
+    );
   }
 
   void _nuovoCombattimento() {
@@ -288,6 +549,8 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
                     (abilityScores?['dexterity'] as num?)?.toInt() ?? 10;
                 final mod = ((destrezza - 10) / 2).floor();
                 final pf = (mostro['hit_points'] as num?)?.toInt() ?? 10;
+                final ca = (mostro['armor_class'] as num?)?.toInt();
+                final azioniLeggendarie = mostro['legendary_actions'] as List?;
                 final nome =
                     mostro['italian_name'] ?? mostro['name'] ?? 'Mostro';
                 for (var i = 0; i < gruppo.quantita; i++) {
@@ -296,6 +559,13 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
                       nome: gruppo.quantita > 1 ? '$nome ${i + 1}' : nome,
                       iniziativa: random.nextInt(20) + 1 + mod,
                       pfMax: pf,
+                      ca: ca,
+                      datiMostro: mostro,
+                      azioniLeggendarieMax:
+                          (azioniLeggendarie != null &&
+                                  azioniLeggendarie.isNotEmpty)
+                              ? 3
+                              : null,
                     ),
                   );
                 }
@@ -460,16 +730,62 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
                                           ),
                                         ),
                                         Text(
-                                          '${c.isPg ? "PG" : "Mostro"} · PF ${c.pfCorrenti}/${c.pfMax}',
+                                          '${c.isPg ? "PG" : "Mostro"}'
+                                          '${c.ca != null ? " · CA ${c.ca}" : ""}'
+                                          '${c.cd != null ? " · CD ${c.cd}" : ""}'
+                                          ' · PF ${c.pfCorrenti}/${c.pfMax}',
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: Colors.grey[600],
                                           ),
                                         ),
+                                        if (c.condizioni.isNotEmpty)
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              top: 4,
+                                            ),
+                                            child: Wrap(
+                                              spacing: 4,
+                                              runSpacing: 4,
+                                              children:
+                                                  c.condizioni
+                                                      .map(
+                                                        (cond) => Chip(
+                                                          label: Text(
+                                                            cond,
+                                                            style:
+                                                                const TextStyle(
+                                                                  fontSize: 11,
+                                                                ),
+                                                          ),
+                                                          visualDensity:
+                                                              VisualDensity
+                                                                  .compact,
+                                                          materialTapTargetSize:
+                                                              MaterialTapTargetSize
+                                                                  .shrinkWrap,
+                                                          padding:
+                                                              EdgeInsets.zero,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .red
+                                                                  .shade50,
+                                                        ),
+                                                      )
+                                                      .toList(),
+                                            ),
+                                          ),
                                       ],
                                     ),
                                   ),
                                 ),
+                                if (c.datiMostro != null)
+                                  IconButton(
+                                    onPressed: () => _mostraDettagliMostro(c),
+                                    icon: const Icon(Icons.info_outline),
+                                    color: Colors.grey[700],
+                                    tooltip: 'Dettagli mostro',
+                                  ),
                                 if (c.eIncantatore)
                                   IconButton(
                                     onPressed: () => _mostraSlotIncantesimo(c),
@@ -558,6 +874,7 @@ class _AggiungiCombattenteSheetState extends State<_AggiungiCombattenteSheet> {
         classe: pg.classe,
         livello: pg.livello,
         slotUsati: Map<String, int>.from(pg.slotIncantesimoUsati),
+        condizioni: List<String>.from(pg.condizioniAttive),
       ),
     );
     Navigator.pop(context);
@@ -569,11 +886,19 @@ class _AggiungiCombattenteSheetState extends State<_AggiungiCombattenteSheet> {
     final mod = ((destrezza - 10) / 2).floor();
     final iniziativa = _random.nextInt(20) + 1 + mod;
     final pf = (mostro['hit_points'] as num?)?.toInt() ?? 10;
+    final ca = (mostro['armor_class'] as num?)?.toInt();
+    final azioniLeggendarie = mostro['legendary_actions'] as List?;
     widget.onAggiungi(
       _Combattente(
         nome: mostro['italian_name'] ?? mostro['name'] ?? 'Mostro',
         iniziativa: iniziativa,
         pfMax: pf,
+        ca: ca,
+        datiMostro: mostro,
+        azioniLeggendarieMax:
+            (azioniLeggendarie != null && azioniLeggendarie.isNotEmpty)
+                ? 3
+                : null,
       ),
     );
     Navigator.pop(context);
