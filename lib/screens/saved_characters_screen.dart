@@ -331,6 +331,13 @@ class _SchedaBottomSheet extends StatelessWidget {
                 _CondizioniSection(pg: pg),
                 const Divider(height: 24),
                 const Text(
+                  'Bonus/Malus temporanei',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                const SizedBox(height: 8),
+                _ModificatoriSection(pg: pg),
+                const Divider(height: 24),
+                const Text(
                   'Caratteristiche',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
@@ -922,6 +929,106 @@ class _CondizioniSectionState extends State<_CondizioniSection> {
               ),
             );
           }).toList(),
+    );
+  }
+}
+
+/// Note libere per bonus/malus temporanei e vantaggio/svantaggio attivi
+/// (es. "+2 attacco fino a fine turno", "svantaggio TS Destrezza 3 round").
+class _ModificatoriSection extends StatefulWidget {
+  final PGBase pg;
+
+  const _ModificatoriSection({required this.pg});
+
+  @override
+  State<_ModificatoriSection> createState() => _ModificatoriSectionState();
+}
+
+class _ModificatoriSectionState extends State<_ModificatoriSection> {
+  late PGBase _pg;
+  final _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _pg = widget.pg;
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _salva() => context.read<SavedCharactersProvider>().save(_pg);
+
+  void _aggiungi() {
+    final testo = _controller.text.trim();
+    if (testo.isEmpty) return;
+
+    setState(() {
+      _pg = _pg.copyWith(
+        modificatoriAttivi: [..._pg.modificatoriAttivi, testo],
+      );
+      _controller.clear();
+    });
+    _salva();
+  }
+
+  void _rimuovi(int index) {
+    final nuovi = List<String>.from(_pg.modificatoriAttivi)..removeAt(index);
+    setState(() => _pg = _pg.copyWith(modificatoriAttivi: nuovi));
+    _salva();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (_pg.modificatoriAttivi.isEmpty)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Text(
+              'Nessun modificatore attivo',
+              style: TextStyle(color: Colors.grey[600]),
+            ),
+          ),
+        ..._pg.modificatoriAttivi.asMap().entries.map(
+          (entry) => Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: Row(
+              children: [
+                Expanded(child: Text(entry.value)),
+                IconButton(
+                  onPressed: () => _rimuovi(entry.key),
+                  icon: const Icon(Icons.close, size: 20),
+                  color: Colors.red,
+                ),
+              ],
+            ),
+          ),
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _controller,
+                decoration: const InputDecoration(
+                  hintText: 'Es. +2 attacco fino a fine turno',
+                  isDense: true,
+                ),
+                onSubmitted: (_) => _aggiungi(),
+              ),
+            ),
+            IconButton(
+              onPressed: _aggiungi,
+              icon: const Icon(Icons.add_circle),
+              color: const Color(0xFF8B4513),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
