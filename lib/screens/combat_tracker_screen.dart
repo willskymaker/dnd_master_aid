@@ -8,6 +8,7 @@ import '../factory_pg_base.dart';
 import '../providers/saved_characters_provider.dart';
 import '../repositories/json_data_repository.dart';
 import '../utils/encounter_generator.dart';
+import '../utils/loot_generator.dart';
 import '../widgets/mobile/mobile_scaffold.dart';
 
 /// Combattente in una sessione di combattimento (solo in memoria, non
@@ -134,6 +135,17 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
     );
   }
 
+  Future<void> _mostraGeneraBottino() async {
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) => const _GeneraBottinoSheet(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final ordinati = _ordinati;
@@ -148,6 +160,11 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
           onPressed: _mostraGeneraIncontro,
           icon: const Icon(Icons.auto_awesome),
           tooltip: 'Genera incontro',
+        ),
+        IconButton(
+          onPressed: _mostraGeneraBottino,
+          icon: const Icon(Icons.diamond_outlined),
+          tooltip: 'Genera bottino',
         ),
         IconButton(
           onPressed: _combattenti.isEmpty ? null : _nuovoCombattimento,
@@ -683,6 +700,111 @@ class _GeneraIncontroSheetState extends State<_GeneraIncontroSheet> {
                   child: const Text('Aggiungi al combattimento'),
                 ),
               ),
+            ],
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Genera un bottino casuale (monete + oggetti magici) per il tier scelto,
+/// pescando dal catalogo oggetti magici (assets/data/magic_items.json).
+class _GeneraBottinoSheet extends StatefulWidget {
+  const _GeneraBottinoSheet();
+
+  @override
+  State<_GeneraBottinoSheet> createState() => _GeneraBottinoSheetState();
+}
+
+class _GeneraBottinoSheetState extends State<_GeneraBottinoSheet> {
+  TierBottino _tier = TierBottino.basso;
+  bool _generando = false;
+  Bottino? _risultato;
+
+  Future<void> _genera() async {
+    setState(() => _generando = true);
+    final oggetti = await JsonDataRepository.loadMagicItems();
+    final bottino = generaBottino(tier: _tier, oggettiDisponibili: oggetti);
+    if (!mounted) return;
+    setState(() {
+      _risultato = bottino;
+      _generando = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final risultato = _risultato;
+    return SingleChildScrollView(
+      padding: EdgeInsets.only(
+        left: 20,
+        right: 20,
+        top: 20,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Genera bottino',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children:
+                TierBottino.values.map((t) {
+                  return ChoiceChip(
+                    label: Text(nomeTier(t)),
+                    selected: _tier == t,
+                    onSelected: (_) => setState(() => _tier = t),
+                  );
+                }).toList(),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: _generando ? null : _genera,
+              child:
+                  _generando
+                      ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                      : const Text('Genera'),
+            ),
+          ),
+          if (risultato != null) ...[
+            const SizedBox(height: 16),
+            const Text('Monete', style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 4),
+            Text(
+              [
+                if (risultato.platino > 0) '${risultato.platino} mp',
+                if (risultato.oro > 0) '${risultato.oro} mo',
+                if (risultato.argento > 0) '${risultato.argento} ma',
+                if (risultato.rame > 0) '${risultato.rame} mr',
+              ].join(', '),
+            ),
+            if (risultato.oggettiMagici.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              const Text(
+                'Oggetti magici',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 4),
+              for (final oggetto in risultato.oggettiMagici)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 6),
+                  child: Text(
+                    '${oggetto['italian_name'] ?? oggetto['name']} (${oggetto['rarity']})',
+                  ),
+                ),
             ],
           ],
         ],
