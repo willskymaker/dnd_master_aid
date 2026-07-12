@@ -52,6 +52,7 @@ class PGBase {
   final int puntiVitaCorrenti;
   final int puntiVitaTemporanei;
   final List<InventoryItem> inventario;
+  final List<String> condizioniAttive;
 
   PGBase({
     String? id,
@@ -84,6 +85,7 @@ class PGBase {
     int? puntiVitaCorrenti,
     this.puntiVitaTemporanei = 0,
     this.inventario = const [],
+    this.condizioniAttive = const [],
   }) : id = id ?? const Uuid().v4(),
        dataSalvataggio = dataSalvataggio ?? DateTime.now(),
        puntiVitaCorrenti = puntiVitaCorrenti ?? puntiVita;
@@ -118,6 +120,7 @@ class PGBase {
     int? puntiVitaCorrenti,
     int? puntiVitaTemporanei,
     List<InventoryItem>? inventario,
+    List<String>? condizioniAttive,
   }) {
     return PGBase(
       id: id,
@@ -151,6 +154,7 @@ class PGBase {
       puntiVitaCorrenti: puntiVitaCorrenti ?? this.puntiVitaCorrenti,
       puntiVitaTemporanei: puntiVitaTemporanei ?? this.puntiVitaTemporanei,
       inventario: inventario ?? this.inventario,
+      condizioniAttive: condizioniAttive ?? this.condizioniAttive,
     );
   }
 
@@ -185,6 +189,7 @@ class PGBase {
     'puntiVitaCorrenti': puntiVitaCorrenti,
     'puntiVitaTemporanei': puntiVitaTemporanei,
     'inventario': inventario.map((i) => i.toJson()).toList(),
+    'condizioniAttive': condizioniAttive,
   };
 
   factory PGBase.fromJson(Map<String, dynamic> json) => PGBase(
@@ -236,6 +241,7 @@ class PGBase {
             ?.map((i) => InventoryItem.fromJson(i as Map<String, dynamic>))
             .toList() ??
         [],
+    condizioniAttive: List<String>.from(json['condizioniAttive'] ?? []),
   );
 
   @override
