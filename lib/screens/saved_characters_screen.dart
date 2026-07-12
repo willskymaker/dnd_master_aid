@@ -1,7 +1,9 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import '../data/db_condizioni.dart';
 import '../data/db_slot_incantesimi.dart';
 import '../data/db_talenti.dart';
@@ -9,6 +11,7 @@ import '../factory_pg_base.dart';
 import '../pg_base/utils/asi_helper.dart';
 import '../pg_base/utils/pf_helper.dart';
 import '../providers/saved_characters_provider.dart';
+import '../utils/character_share.dart';
 import '../widgets/mobile/mobile_scaffold.dart';
 import 'spell_cards_screen.dart';
 
@@ -32,6 +35,13 @@ class _SavedCharactersScreenState extends State<SavedCharactersScreen> {
   Widget build(BuildContext context) {
     return MobileScaffold(
       title: 'I Miei Personaggi',
+      actions: [
+        IconButton(
+          onPressed: () => _mostraImportaScheda(context),
+          icon: const Icon(Icons.file_download_outlined),
+          tooltip: 'Importa scheda',
+        ),
+      ],
       body: Consumer<SavedCharactersProvider>(
         builder: (context, provider, _) {
           if (provider.isLoading) {
@@ -93,6 +103,17 @@ class _SavedCharactersScreenState extends State<SavedCharactersScreen> {
     );
   }
 
+  void _mostraImportaScheda(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) => const _ImportaSchedaSheet(),
+    );
+  }
+
   void _apriScheda(BuildContext context, PGBase pg) {
     showModalBottomSheet(
       context: context,
@@ -146,6 +167,94 @@ class _SavedCharactersScreenState extends State<SavedCharactersScreen> {
               ),
             ],
           ),
+    );
+  }
+}
+
+/// Incolla il codice ricevuto (es. da WhatsApp) e importa il personaggio
+/// tra "I Miei Personaggi". Vedi lib/utils/character_share.dart per il
+/// formato del codice.
+class _ImportaSchedaSheet extends StatefulWidget {
+  const _ImportaSchedaSheet();
+
+  @override
+  State<_ImportaSchedaSheet> createState() => _ImportaSchedaSheetState();
+}
+
+class _ImportaSchedaSheetState extends State<_ImportaSchedaSheet> {
+  final _controller = TextEditingController();
+  String? _errore;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _importa() async {
+    setState(() => _errore = null);
+    try {
+      final pg = importaPersonaggio(_controller.text);
+      await context.read<SavedCharactersProvider>().save(pg);
+      if (!mounted) return;
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '${pg.nome.isNotEmpty ? pg.nome : "Personaggio"} importato',
+          ),
+        ),
+      );
+    } on FormatException catch (e) {
+      setState(() => _errore = e.message);
+    } catch (_) {
+      setState(() => _errore = 'Codice non valido.');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 20,
+        right: 20,
+        top: 20,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Importa scheda',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Incolla qui il codice ricevuto dal giocatore (es. via WhatsApp).',
+            style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+          ),
+          const SizedBox(height: 12),
+          TextField(
+            controller: _controller,
+            maxLines: 4,
+            decoration: InputDecoration(
+              hintText: 'DNDMA1:...',
+              border: const OutlineInputBorder(),
+              errorText: _errore,
+            ),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: _importa,
+              icon: const Icon(Icons.check),
+              label: const Text('Importa'),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -300,12 +409,23 @@ class _SchedaBottomSheetState extends State<_SchedaBottomSheet> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Text(
-                  pg.nome.isNotEmpty ? pg.nome : 'Personaggio',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        pg.nome.isNotEmpty ? pg.nome : 'Personaggio',
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: _condividi,
+                      icon: const Icon(Icons.share),
+                      tooltip: 'Condividi personaggio',
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 4),
                 Row(
@@ -324,6 +444,8 @@ class _SchedaBottomSheetState extends State<_SchedaBottomSheet> {
                       ),
                   ],
                 ),
+                const SizedBox(height: 8),
+                _ProprietarioSection(pg: pg),
                 const Divider(height: 24),
                 _PfSection(pg: pg),
                 const SizedBox(height: 8),
@@ -412,6 +534,29 @@ class _SchedaBottomSheetState extends State<_SchedaBottomSheet> {
               ],
             ),
           ),
+    );
+  }
+
+  /// Condivide il personaggio tramite il pannello di condivisione nativo
+  /// del sistema operativo (WhatsApp, email, ecc.). Su web condivide solo
+  /// il codice testuale (niente concetto di file "apri con" nel browser);
+  /// su piattaforme native condivide un file .dnd, cosi' che un tap su di
+  /// esso, una volta ricevuto, apra direttamente l'app (vedi il filtro in
+  /// AndroidManifest.xml).
+  Future<void> _condividi() async {
+    final nome = _pg.nome.isNotEmpty ? _pg.nome : 'Senza nome';
+    if (kIsWeb) {
+      await SharePlus.instance.share(
+        ShareParams(
+          text: esportaPersonaggio(_pg),
+          subject: 'Personaggio D&D: $nome',
+        ),
+      );
+      return;
+    }
+    final file = await creaFileEsportazione(_pg);
+    await SharePlus.instance.share(
+      ShareParams(files: [XFile(file.path)], text: 'Personaggio D&D: $nome'),
     );
   }
 
@@ -709,6 +854,76 @@ class _SchedaBottomSheetState extends State<_SchedaBottomSheet> {
               ),
             );
           }).toList(),
+    );
+  }
+}
+
+/// Campo libero per annotare a chi appartiene il personaggio: utile per il
+/// Master quando importa le schede di piu' giocatori e deve distinguerle
+/// a colpo d'occhio.
+class _ProprietarioSection extends StatefulWidget {
+  final PGBase pg;
+
+  const _ProprietarioSection({required this.pg});
+
+  @override
+  State<_ProprietarioSection> createState() => _ProprietarioSectionState();
+}
+
+class _ProprietarioSectionState extends State<_ProprietarioSection> {
+  late PGBase _pg;
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _pg = widget.pg;
+    _controller = TextEditingController(text: _pg.proprietario);
+  }
+
+  @override
+  void didUpdateWidget(covariant _ProprietarioSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(oldWidget.pg, widget.pg)) {
+      _pg = widget.pg;
+      _controller.text = _pg.proprietario;
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _salva() {
+    final valore = _controller.text.trim();
+    if (valore == _pg.proprietario) return;
+    _pg = _pg.copyWith(proprietario: valore);
+    context.read<SavedCharactersProvider>().save(_pg);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            controller: _controller,
+            decoration: const InputDecoration(
+              labelText: 'Di chi è questo personaggio',
+              hintText: 'Es. Marco',
+              isDense: true,
+            ),
+            onSubmitted: (_) => _salva(),
+          ),
+        ),
+        IconButton(
+          onPressed: _salva,
+          icon: const Icon(Icons.check, size: 20),
+          tooltip: 'Salva',
+        ),
+      ],
     );
   }
 }
