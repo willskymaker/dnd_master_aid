@@ -16,13 +16,13 @@ import '../core/logger.dart';
 import '../providers/character_provider.dart';
 
 const _stepsInfo = [
+  {'icona': '🧬', 'nome': 'Specie', 'descr': 'Elfo, Nano, Umano...'},
+  {'icona': '⚔️', 'nome': 'Classe', 'descr': 'Guerriero, Mago, Ladro...'},
   {
     'icona': '✏️',
     'nome': 'Nome',
     'descr': 'Come si chiama il tuo personaggio?',
   },
-  {'icona': '🧬', 'nome': 'Specie', 'descr': 'Elfo, Nano, Umano...'},
-  {'icona': '⚔️', 'nome': 'Classe', 'descr': 'Guerriero, Mago, Ladro...'},
   {'icona': '⭐', 'nome': 'Livello', 'descr': 'Da 1 a 20'},
   {
     'icona': '💪',
@@ -205,9 +205,6 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
     try {
       AppLogger.info('Iniziando creazione personaggio');
 
-      if (!await _eseguiStep('Nome', () => vaiAStepNome(context, factory))) {
-        return;
-      }
       if (!await _eseguiStep(
         'Specie',
         () => vaiAStepSpecie(context, factory),
@@ -218,6 +215,9 @@ class _PGBaseWizardState extends State<PGBaseWizard> {
         'Classe',
         () => vaiAStepClasse(context, factory),
       )) {
+        return;
+      }
+      if (!await _eseguiStep('Nome', () => vaiAStepNome(context, factory))) {
         return;
       }
       if (!await _eseguiStep(

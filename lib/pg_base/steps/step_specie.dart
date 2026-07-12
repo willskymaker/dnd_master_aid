@@ -13,7 +13,7 @@ class StepSpecieScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MobileScaffold(
-      title: "Step 2: Seleziona la Specie",
+      title: "Step 1: Seleziona la Specie",
       body: Column(
         children: [
           Padding(

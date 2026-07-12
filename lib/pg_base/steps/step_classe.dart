@@ -32,7 +32,7 @@ class StepClasseScreen extends StatelessWidget {
         classiList.where((c) => classiCore.contains(c.nome)).toList();
 
     return MobileScaffold(
-      title: "Step 3: Scegli la Classe",
+      title: "Step 2: Scegli la Classe",
       body: Column(
         children: [
           Padding(
