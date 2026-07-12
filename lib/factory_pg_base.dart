@@ -55,6 +55,7 @@ class PGBase {
   final List<String> condizioniAttive;
   final List<String> modificatoriAttivi;
   final Map<String, int> slotIncantesimoUsati;
+  final List<String> talenti;
 
   PGBase({
     String? id,
@@ -90,6 +91,7 @@ class PGBase {
     this.condizioniAttive = const [],
     this.modificatoriAttivi = const [],
     this.slotIncantesimoUsati = const {},
+    this.talenti = const [],
   }) : id = id ?? const Uuid().v4(),
        dataSalvataggio = dataSalvataggio ?? DateTime.now(),
        puntiVitaCorrenti = puntiVitaCorrenti ?? puntiVita;
@@ -127,6 +129,7 @@ class PGBase {
     List<String>? condizioniAttive,
     List<String>? modificatoriAttivi,
     Map<String, int>? slotIncantesimoUsati,
+    List<String>? talenti,
   }) {
     return PGBase(
       id: id,
@@ -163,6 +166,7 @@ class PGBase {
       condizioniAttive: condizioniAttive ?? this.condizioniAttive,
       modificatoriAttivi: modificatoriAttivi ?? this.modificatoriAttivi,
       slotIncantesimoUsati: slotIncantesimoUsati ?? this.slotIncantesimoUsati,
+      talenti: talenti ?? this.talenti,
     );
   }
 
@@ -200,6 +204,7 @@ class PGBase {
     'condizioniAttive': condizioniAttive,
     'modificatoriAttivi': modificatoriAttivi,
     'slotIncantesimoUsati': slotIncantesimoUsati,
+    'talenti': talenti,
   };
 
   factory PGBase.fromJson(Map<String, dynamic> json) => PGBase(
@@ -259,6 +264,7 @@ class PGBase {
           ) ??
           {},
     ),
+    talenti: List<String>.from(json['talenti'] ?? []),
   );
 
   @override
