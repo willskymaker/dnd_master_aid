@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../data/db_slot_incantesimi.dart';
 import '../factory_pg_base.dart';
 import '../providers/saved_characters_provider.dart';
 import '../widgets/mobile/mobile_scaffold.dart';
@@ -336,6 +337,15 @@ class _SchedaBottomSheet extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 _ModificatoriSection(pg: pg),
+                if (slotIncantesimiList.any((s) => s.classe == pg.classe)) ...[
+                  const Divider(height: 24),
+                  const Text(
+                    'Slot Incantesimo',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  const SizedBox(height: 8),
+                  _IncantesimiSection(pg: pg),
+                ],
                 const Divider(height: 24),
                 const Text(
                   'Caratteristiche',
@@ -1027,6 +1037,123 @@ class _ModificatoriSectionState extends State<_ModificatoriSection> {
               color: const Color(0xFF8B4513),
             ),
           ],
+        ),
+      ],
+    );
+  }
+}
+
+/// Tracker degli slot incantesimo disponibili/usati per livello, in base a
+/// classe e livello del personaggio (tabella in db_slot_incantesimi.dart).
+class _IncantesimiSection extends StatefulWidget {
+  final PGBase pg;
+
+  const _IncantesimiSection({required this.pg});
+
+  @override
+  State<_IncantesimiSection> createState() => _IncantesimiSectionState();
+}
+
+class _IncantesimiSectionState extends State<_IncantesimiSection> {
+  late PGBase _pg;
+
+  @override
+  void initState() {
+    super.initState();
+    _pg = widget.pg;
+  }
+
+  void _salva() => context.read<SavedCharactersProvider>().save(_pg);
+
+  List<int> get _slotTotaliPerLivello {
+    SlotIncantesimi? tabella;
+    for (final s in slotIncantesimiList) {
+      if (s.classe == _pg.classe) {
+        tabella = s;
+        break;
+      }
+    }
+    return tabella?.slotPerLivello[_pg.livello] ?? const [];
+  }
+
+  int _usati(int livelloIncantesimo) =>
+      _pg.slotIncantesimoUsati['$livelloIncantesimo'] ?? 0;
+
+  void _aggiorna(int livelloIncantesimo, int nuovoValore) {
+    final nuovaMappa = Map<String, int>.from(_pg.slotIncantesimoUsati);
+    nuovaMappa['$livelloIncantesimo'] = nuovoValore;
+    setState(() => _pg = _pg.copyWith(slotIncantesimoUsati: nuovaMappa));
+    _salva();
+  }
+
+  void _usaSlot(int livelloIncantesimo, int totale) {
+    final usatiCorrenti = _usati(livelloIncantesimo);
+    if (usatiCorrenti >= totale) return;
+    _aggiorna(livelloIncantesimo, usatiCorrenti + 1);
+  }
+
+  void _recuperaSlot(int livelloIncantesimo) {
+    final usatiCorrenti = _usati(livelloIncantesimo);
+    if (usatiCorrenti <= 0) return;
+    _aggiorna(livelloIncantesimo, usatiCorrenti - 1);
+  }
+
+  void _riposoLungo() {
+    setState(() => _pg = _pg.copyWith(slotIncantesimoUsati: {}));
+    _salva();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final slotTotali = _slotTotaliPerLivello;
+    if (slotTotali.isEmpty || slotTotali.every((n) => n == 0)) {
+      return Text(
+        'Nessuno slot incantesimo a questo livello.',
+        style: TextStyle(color: Colors.grey[600], fontSize: 13),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        for (var i = 0; i < slotTotali.length; i++)
+          if (slotTotali[i] > 0)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 6),
+              child: Row(
+                children: [
+                  SizedBox(width: 90, child: Text('Livello ${i + 1}')),
+                  IconButton(
+                    onPressed: () => _recuperaSlot(i + 1),
+                    icon: const Icon(Icons.add_circle_outline),
+                    color: Colors.green.shade700,
+                    tooltip: 'Recupera slot',
+                  ),
+                  SizedBox(
+                    width: 56,
+                    child: Text(
+                      '${slotTotali[i] - _usati(i + 1)} / ${slotTotali[i]}',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => _usaSlot(i + 1, slotTotali[i]),
+                    icon: const Icon(Icons.remove_circle_outline),
+                    color: Colors.red,
+                    tooltip: 'Usa slot',
+                  ),
+                ],
+              ),
+            ),
+        const SizedBox(height: 8),
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton.icon(
+            onPressed: _riposoLungo,
+            icon: const Icon(Icons.bedtime),
+            label: const Text('Riposo Lungo'),
+          ),
         ),
       ],
     );
