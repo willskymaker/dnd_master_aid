@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../core/app_theme.dart';
+import '../data/db_slot_incantesimi.dart';
 import '../factory_pg_base.dart';
 import '../providers/saved_characters_provider.dart';
 import '../repositories/json_data_repository.dart';
@@ -12,14 +13,18 @@ import '../utils/loot_generator.dart';
 import '../widgets/mobile/mobile_scaffold.dart';
 
 /// Combattente in una sessione di combattimento (solo in memoria, non
-/// persistito: la scheda viva del PG resta la fonte di verita' per i PF).
+/// persistito: la scheda viva del PG resta la fonte di verita' per PF e
+/// slot incantesimo - qui si tracciano solo i consumi durante il fight).
 class _Combattente {
   final String id;
-  final String nome;
+  String nome;
   final bool isPg;
   int iniziativa;
-  final int pfMax;
+  int pfMax;
   int pfCorrenti;
+  final String? classe;
+  final int? livello;
+  final Map<String, int> slotUsati;
 
   _Combattente({
     required this.nome,
@@ -27,8 +32,24 @@ class _Combattente {
     required this.pfMax,
     int? pfCorrenti,
     this.isPg = false,
+    this.classe,
+    this.livello,
+    Map<String, int>? slotUsati,
   }) : id = '${DateTime.now().microsecondsSinceEpoch}_$nome',
-       pfCorrenti = pfCorrenti ?? pfMax;
+       pfCorrenti = pfCorrenti ?? pfMax,
+       slotUsati = slotUsati ?? {};
+
+  /// Slot totali per livello incantesimo, in base a classe/livello (vuoto
+  /// se non e' una classe incantatrice o non trovata in tabella).
+  List<int> get slotTotaliPerLivello {
+    if (classe == null || livello == null) return const [];
+    for (final s in slotIncantesimiList) {
+      if (s.classe == classe) return s.slotPerLivello[livello] ?? const [];
+    }
+    return const [];
+  }
+
+  bool get eIncantatore => slotTotaliPerLivello.any((n) => n > 0);
 }
 
 class CombatTrackerScreen extends StatefulWidget {
@@ -69,37 +90,153 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
     setState(() => c.pfCorrenti = (c.pfCorrenti + delta).clamp(0, c.pfMax));
   }
 
-  Future<void> _modificaIniziativa(_Combattente c) async {
-    final controller = TextEditingController(text: '${c.iniziativa}');
-    final nuovoValore = await showDialog<int>(
+  Future<void> _modificaCombattente(_Combattente c) async {
+    final nomeController = TextEditingController(text: c.nome);
+    final iniziativaController = TextEditingController(text: '${c.iniziativa}');
+    final pfMaxController = TextEditingController(text: '${c.pfMax}');
+    final pfCorrentiController = TextEditingController(text: '${c.pfCorrenti}');
+
+    final confermato = await showDialog<bool>(
       context: context,
       builder:
           (context) => AlertDialog(
-            title: Text('Iniziativa di ${c.nome}'),
-            content: TextField(
-              controller: controller,
-              autofocus: true,
-              keyboardType: const TextInputType.numberWithOptions(signed: true),
-              decoration: const InputDecoration(
-                labelText: 'Tiro + modificatore Destrezza',
+            title: const Text('Modifica combattente'),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: nomeController,
+                    decoration: const InputDecoration(labelText: 'Nome'),
+                  ),
+                  const SizedBox(height: 8),
+                  TextField(
+                    controller: iniziativaController,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      signed: true,
+                    ),
+                    decoration: const InputDecoration(
+                      labelText: 'Iniziativa (tiro + mod. Destrezza)',
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  TextField(
+                    controller: pfMaxController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(labelText: 'PF massimi'),
+                  ),
+                  const SizedBox(height: 8),
+                  TextField(
+                    controller: pfCorrentiController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(labelText: 'PF correnti'),
+                  ),
+                ],
               ),
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => Navigator.pop(context, false),
                 child: const Text('Annulla'),
               ),
               TextButton(
-                onPressed:
-                    () => Navigator.pop(context, int.tryParse(controller.text)),
+                onPressed: () => Navigator.pop(context, true),
                 child: const Text('Conferma'),
               ),
             ],
           ),
     );
-    if (nuovoValore != null) {
-      setState(() => c.iniziativa = nuovoValore);
+
+    if (confermato == true) {
+      setState(() {
+        final nome = nomeController.text.trim();
+        if (nome.isNotEmpty) c.nome = nome;
+        c.iniziativa = int.tryParse(iniziativaController.text) ?? c.iniziativa;
+        c.pfMax = int.tryParse(pfMaxController.text) ?? c.pfMax;
+        c.pfCorrenti = (int.tryParse(pfCorrentiController.text) ?? c.pfCorrenti)
+            .clamp(0, c.pfMax);
+      });
     }
+  }
+
+  void _modificaSlot(_Combattente c, int livelloIncantesimo, int delta) {
+    final totali = c.slotTotaliPerLivello;
+    final totale =
+        livelloIncantesimo - 1 < totali.length
+            ? totali[livelloIncantesimo - 1]
+            : 0;
+    final usatiCorrenti = c.slotUsati['$livelloIncantesimo'] ?? 0;
+    final nuovoValore = (usatiCorrenti + delta).clamp(0, totale);
+    setState(() => c.slotUsati['$livelloIncantesimo'] = nuovoValore);
+  }
+
+  Future<void> _mostraSlotIncantesimo(_Combattente c) async {
+    await showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setSheetState) {
+            final totali = c.slotTotaliPerLivello;
+            return Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Slot incantesimo di ${c.nome}',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  for (var i = 0; i < totali.length; i++)
+                    if (totali[i] > 0)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 6),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 80,
+                              child: Text('Livello ${i + 1}'),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                _modificaSlot(c, i + 1, -1);
+                                setSheetState(() {});
+                              },
+                              icon: const Icon(Icons.add_circle_outline),
+                              color: Colors.green.shade700,
+                            ),
+                            SizedBox(
+                              width: 56,
+                              child: Text(
+                                '${totali[i] - (c.slotUsati['${i + 1}'] ?? 0)} / ${totali[i]}',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                _modificaSlot(c, i + 1, 1);
+                                setSheetState(() {});
+                              },
+                              icon: const Icon(Icons.remove_circle_outline),
+                              color: Colors.red,
+                            ),
+                          ],
+                        ),
+                      ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   void _prossimoTurno() {
@@ -284,7 +421,7 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
                             child: Row(
                               children: [
                                 InkWell(
-                                  onTap: () => _modificaIniziativa(c),
+                                  onTap: () => _modificaCombattente(c),
                                   borderRadius: BorderRadius.circular(
                                     AppRadius.sm,
                                   ),
@@ -310,26 +447,36 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
                                   ),
                                 ),
                                 Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        c.nome,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
+                                  child: InkWell(
+                                    onTap: () => _modificaCombattente(c),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          c.nome,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        '${c.isPg ? "PG" : "Mostro"} · PF ${c.pfCorrenti}/${c.pfMax}',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.grey[600],
+                                        Text(
+                                          '${c.isPg ? "PG" : "Mostro"} · PF ${c.pfCorrenti}/${c.pfMax}',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey[600],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
+                                if (c.eIncantatore)
+                                  IconButton(
+                                    onPressed: () => _mostraSlotIncantesimo(c),
+                                    icon: const Icon(Icons.auto_fix_high),
+                                    color: AppColors.primary,
+                                    tooltip: 'Slot incantesimo',
+                                  ),
                                 IconButton(
                                   onPressed: () => _modificaPf(c, -1),
                                   icon: const Icon(Icons.remove_circle_outline),
@@ -408,6 +555,9 @@ class _AggiungiCombattenteSheetState extends State<_AggiungiCombattenteSheet> {
         pfMax: pg.puntiVita,
         pfCorrenti: pg.puntiVitaCorrenti,
         isPg: true,
+        classe: pg.classe,
+        livello: pg.livello,
+        slotUsati: Map<String, int>.from(pg.slotIncantesimoUsati),
       ),
     );
     Navigator.pop(context);
