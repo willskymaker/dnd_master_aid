@@ -8,6 +8,7 @@ import 'screens/coming_soon.dart'; // Schermata per funzionalità disattivate
 import 'screens/dice_roller.dart'; // Modulo dadi
 import 'screens/name_generator.dart'; // Generatore nomi (standalone)
 import 'screens/saved_characters_screen.dart'; // Lista personaggi salvati
+import 'screens/combat_tracker_screen.dart'; // Tracker iniziativa/combattimento
 import 'package:dnd_master_aid/factory_pg_base.dart';
 import 'providers/character_provider.dart';
 import 'providers/saved_characters_provider.dart';
@@ -86,11 +87,11 @@ class HomePage extends StatelessWidget {
       'attivo': false,
     },
     {
-      'id': 'mob',
-      'nome': 'Generatore Mob',
-      'icona': '👹',
-      'descr': 'Crea mostri e creature',
-      'attivo': false,
+      'id': 'combattimento',
+      'nome': 'Tracker Combattimento',
+      'icona': '⚔️',
+      'descr': 'Iniziativa e PF per il Master',
+      'attivo': true,
     },
     {
       'id': 'npc',
@@ -336,6 +337,9 @@ class HomePage extends StatelessWidget {
         break;
       case 'salvati':
         page = const SavedCharactersScreen();
+        break;
+      case 'combattimento':
+        page = const CombatTrackerScreen();
         break;
       default:
         page = const ComingSoonScreen(); // 🕒 Placeholder
