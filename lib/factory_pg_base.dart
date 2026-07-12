@@ -28,6 +28,8 @@ class PGBase {
   final int denaroArgento;
   final int denaroOro;
   final int denaroPlatino;
+  final int puntiVitaCorrenti;
+  final int puntiVitaTemporanei;
 
   PGBase({
     String? id,
@@ -57,8 +59,11 @@ class PGBase {
     this.denaroArgento = 0,
     this.denaroOro = 0,
     this.denaroPlatino = 0,
+    int? puntiVitaCorrenti,
+    this.puntiVitaTemporanei = 0,
   }) : id = id ?? const Uuid().v4(),
-       dataSalvataggio = dataSalvataggio ?? DateTime.now();
+       dataSalvataggio = dataSalvataggio ?? DateTime.now(),
+       puntiVitaCorrenti = puntiVitaCorrenti ?? puntiVita;
 
   /// Ritorna una copia del personaggio con i campi indicati sostituiti.
   PGBase copyWith({
@@ -87,6 +92,8 @@ class PGBase {
     int? denaroArgento,
     int? denaroOro,
     int? denaroPlatino,
+    int? puntiVitaCorrenti,
+    int? puntiVitaTemporanei,
   }) {
     return PGBase(
       id: id,
@@ -117,6 +124,8 @@ class PGBase {
       denaroArgento: denaroArgento ?? this.denaroArgento,
       denaroOro: denaroOro ?? this.denaroOro,
       denaroPlatino: denaroPlatino ?? this.denaroPlatino,
+      puntiVitaCorrenti: puntiVitaCorrenti ?? this.puntiVitaCorrenti,
+      puntiVitaTemporanei: puntiVitaTemporanei ?? this.puntiVitaTemporanei,
     );
   }
 
@@ -148,6 +157,8 @@ class PGBase {
     'denaroArgento': denaroArgento,
     'denaroOro': denaroOro,
     'denaroPlatino': denaroPlatino,
+    'puntiVitaCorrenti': puntiVitaCorrenti,
+    'puntiVitaTemporanei': puntiVitaTemporanei,
   };
 
   factory PGBase.fromJson(Map<String, dynamic> json) => PGBase(
@@ -192,6 +203,8 @@ class PGBase {
     denaroArgento: json['denaroArgento'] as int? ?? 0,
     denaroOro: json['denaroOro'] as int? ?? 0,
     denaroPlatino: json['denaroPlatino'] as int? ?? 0,
+    puntiVitaCorrenti: json['puntiVitaCorrenti'] as int?,
+    puntiVitaTemporanei: json['puntiVitaTemporanei'] as int? ?? 0,
   );
 
   @override
