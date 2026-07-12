@@ -436,11 +436,17 @@ class _SchedaBottomSheetState extends State<_SchedaBottomSheet> {
                         style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                       ),
                     ),
+                    if (pg.livello > 1)
+                      IconButton(
+                        onPressed: _scendiDiLivello,
+                        icon: const Icon(Icons.arrow_downward, size: 18),
+                        tooltip: 'Scendi di livello',
+                      ),
                     if (pg.livello < 20)
-                      TextButton.icon(
+                      IconButton(
                         onPressed: _saliDiLivello,
-                        icon: const Icon(Icons.arrow_upward, size: 16),
-                        label: const Text('Sali di livello'),
+                        icon: const Icon(Icons.arrow_upward, size: 18),
+                        tooltip: 'Sali di livello',
                       ),
                   ],
                 ),
@@ -500,9 +506,23 @@ class _SchedaBottomSheetState extends State<_SchedaBottomSheet> {
                   _IncantesimiSection(pg: pg),
                 ],
                 const Divider(height: 24),
-                const Text(
-                  'Caratteristiche',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Caratteristiche',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: _correggiCaratteristiche,
+                      icon: const Icon(Icons.edit, size: 18),
+                      tooltip: 'Correggi caratteristiche',
+                      visualDensity: VisualDensity.compact,
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 8),
                 _grigliaCaratteristiche(),
@@ -530,10 +550,60 @@ class _SchedaBottomSheetState extends State<_SchedaBottomSheet> {
                     ),
                   ),
                 ],
-                const SizedBox(height: 32),
+                const Divider(height: 32),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: () => _eliminaPersonaggio(context),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.red,
+                      side: const BorderSide(color: Colors.red),
+                    ),
+                    icon: const Icon(Icons.delete_outline),
+                    label: const Text('Elimina personaggio'),
+                  ),
+                ),
+                const SizedBox(height: 16),
               ],
             ),
           ),
+    );
+  }
+
+  Future<void> _eliminaPersonaggio(BuildContext context) async {
+    final confermato = await showDialog<bool>(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Elimina personaggio'),
+            content: Text(
+              'Sei sicuro di voler eliminare ${_pg.nome.isNotEmpty ? _pg.nome : "questo personaggio"}? '
+              'L\'operazione non è reversibile.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('Annulla'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                style: TextButton.styleFrom(foregroundColor: Colors.red),
+                child: const Text('Elimina'),
+              ),
+            ],
+          ),
+    );
+    if (confermato != true) return;
+    if (!context.mounted) return;
+
+    final nome = _pg.nome;
+    await context.read<SavedCharactersProvider>().delete(_pg.id);
+    if (!context.mounted) return;
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${nome.isNotEmpty ? nome : "Personaggio"} eliminato'),
+      ),
     );
   }
 
@@ -615,6 +685,182 @@ class _SchedaBottomSheetState extends State<_SchedaBottomSheet> {
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text('Livello $nuovoLivello raggiunto!')));
+  }
+
+  /// Scende di un livello (per correggere un errore, es. un "Sali di
+  /// livello" premuto per sbaglio). Ricalcola i PF massimi come per la
+  /// salita. Se il livello lasciato prevedeva un ASI, chiede conferma e
+  /// offre di rimuovere l'ultimo talento preso (le caratteristiche, se
+  /// invece era stato scelto un aumento, vanno corrette a mano dalla
+  /// griglia caratteristiche).
+  /// Correzione manuale libera delle caratteristiche, senza vincoli di
+  /// budget: utile per rimediare a un ASI assegnato per errore o a
+  /// qualunque altra svista, dato che non teniamo uno storico di quali
+  /// punti sono stati assegnati a quale livello.
+  Future<void> _correggiCaratteristiche() async {
+    final stats = ['FOR', 'DES', 'COS', 'INT', 'SAG', 'CAR'];
+    final valori = Map<String, int>.from(_pg.caratteristiche);
+
+    final confermato = await showDialog<bool>(
+      context: context,
+      builder:
+          (context) => StatefulBuilder(
+            builder:
+                (context, setDialogState) => AlertDialog(
+                  title: const Text('Correggi caratteristiche'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      for (final s in stats)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 4),
+                          child: Row(
+                            children: [
+                              SizedBox(width: 48, child: Text(s)),
+                              IconButton(
+                                onPressed:
+                                    (valori[s] ?? 10) > 3
+                                        ? () => setDialogState(
+                                          () => valori[s] = valori[s]! - 1,
+                                        )
+                                        : null,
+                                icon: const Icon(Icons.remove_circle_outline),
+                              ),
+                              SizedBox(
+                                width: 32,
+                                child: Text(
+                                  '${valori[s] ?? 10}',
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                onPressed:
+                                    (valori[s] ?? 10) < 20
+                                        ? () => setDialogState(
+                                          () => valori[s] = valori[s]! + 1,
+                                        )
+                                        : null,
+                                icon: const Icon(Icons.add_circle_outline),
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: const Text('Annulla'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      child: const Text('Salva'),
+                    ),
+                  ],
+                ),
+          ),
+    );
+    if (confermato != true) return;
+    if (!mounted) return;
+
+    final nuoviModificatori = {
+      for (final e in valori.entries) e.key: ((e.value - 10) / 2).floor(),
+    };
+    final nuovoPg = _pg.copyWith(
+      caratteristiche: valori,
+      modificatori: nuoviModificatori,
+    );
+    await context.read<SavedCharactersProvider>().save(nuovoPg);
+    if (!mounted) return;
+    setState(() => _pg = nuovoPg);
+  }
+
+  Future<void> _scendiDiLivello() async {
+    if (_pg.livello <= 1) return;
+    final nuovoLivello = _pg.livello - 1;
+    final asiAttuale = calcolaASI(livello: _pg.livello, classe: _pg.classe);
+    final asiNuovo = calcolaASI(livello: nuovoLivello, classe: _pg.classe);
+
+    final confermato = await showDialog<bool>(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Scendi di livello'),
+            content: Text(
+              'Sei sicuro di voler tornare al livello $nuovoLivello? '
+              'I PF massimi verranno ricalcolati.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('Annulla'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text('Conferma'),
+              ),
+            ],
+          ),
+    );
+    if (confermato != true) return;
+    if (!mounted) return;
+
+    var nuoviTalenti = _pg.talenti;
+    if (asiAttuale > asiNuovo && _pg.talenti.isNotEmpty) {
+      final rimuovi = await showDialog<bool>(
+        context: context,
+        builder:
+            (context) => AlertDialog(
+              title: const Text('Rimuovere anche il talento?'),
+              content: Text(
+                'Il livello ${_pg.livello} prevedeva un Aumento delle '
+                'Caratteristiche o un talento. Vuoi rimuovere l\'ultimo '
+                'talento preso ("${_pg.talenti.last}")? Se invece a quel '
+                'livello avevi aumentato le caratteristiche, correggile a '
+                'mano dalla griglia più sotto.',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('No, lascialo'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: const Text('Sì, rimuovilo'),
+                ),
+              ],
+            ),
+      );
+      if (rimuovi == true) {
+        nuoviTalenti = _pg.talenti.sublist(0, _pg.talenti.length - 1);
+      }
+    }
+
+    if (!mounted) return;
+    final modCos = _pg.modificatori['COS'] ?? 0;
+    final nuovoPfMax = calcolaPuntiFerita(
+      livello: nuovoLivello,
+      dadoVita: _pg.dadoVita,
+      modCostituzione: modCos,
+    );
+    final deltaPf = nuovoPfMax - _pg.puntiVita;
+
+    final nuovoPg = _pg.copyWith(
+      livello: nuovoLivello,
+      puntiVita: nuovoPfMax,
+      puntiVitaCorrenti: (_pg.puntiVitaCorrenti + deltaPf).clamp(0, nuovoPfMax),
+      talenti: nuoviTalenti,
+    );
+
+    await context.read<SavedCharactersProvider>().save(nuovoPg);
+    if (!mounted) return;
+    setState(() => _pg = nuovoPg);
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('Sceso al livello $nuovoLivello')));
   }
 
   /// Mostra il dialog per distribuire i 2 punti dell'Aumento del Punteggio
