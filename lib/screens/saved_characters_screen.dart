@@ -319,6 +319,18 @@ class _SchedaBottomSheet extends StatelessWidget {
                 _InventarioSection(pg: pg),
                 const Divider(height: 24),
                 const Text(
+                  'Condizioni',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Tocco lungo su una condizione per vederne l\'effetto',
+                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                ),
+                const SizedBox(height: 8),
+                _CondizioniSection(pg: pg),
+                const Divider(height: 24),
+                const Text(
                   'Caratteristiche',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
@@ -807,6 +819,109 @@ class _InventarioSectionState extends State<_InventarioSection> {
           ],
         ),
       ],
+    );
+  }
+}
+
+/// Condizioni ufficiali di D&D 5e con una sintesi del loro effetto
+/// meccanico, mostrata come tooltip al tocco lungo sul chip.
+const Map<String, String> _condizioniD20 = {
+  'Accecato':
+      'Fallisce automaticamente le prove che richiedono la vista. I tiri per '
+      'colpire contro di lui hanno vantaggio, i suoi hanno svantaggio.',
+  'Affascinato':
+      'Non può attaccare chi lo affascina né bersagliarlo con effetti '
+      'dannosi. Chi lo affascina ha vantaggio nelle interazioni sociali.',
+  'Assordato': 'Fallisce automaticamente le prove che richiedono l\'udito.',
+  'Afferrato':
+      'Velocità 0, non beneficia di bonus alla velocità. Finisce se chi '
+      'afferra viene incapacitato o allontanato.',
+  'Impaurito':
+      'Svantaggio a prove e attacchi finché la fonte della paura è in '
+      'vista; non può avvicinarsi volontariamente ad essa.',
+  'Incapacitato': 'Non può compiere azioni né reazioni.',
+  'Invisibile':
+      'Impossibile da vedere senza mezzi speciali. I suoi attacchi hanno '
+      'vantaggio, quelli contro di lui svantaggio.',
+  'Paralizzato':
+      'Incapacitato, non può muoversi né parlare. Fallisce automaticamente '
+      'i TS su Forza e Destrezza. Gli attacchi contro di lui hanno '
+      'vantaggio e sono critici se da 1,5 metri o meno.',
+  'Pietrificato':
+      'Trasformato in sostanza inanimata, incapacitato, non consapevole. '
+      'Resistenza a tutti i danni.',
+  'Avvelenato':
+      'Svantaggio ai tiri per colpire e alle prove di caratteristica.',
+  'Prono':
+      'Svantaggio ai tiri per colpire. Gli attacchi in mischia contro di '
+      'lui hanno vantaggio, quelli a distanza svantaggio.',
+  'Trattenuto':
+      'Velocità 0. Svantaggio ai tiri per colpire e ai TS su Destrezza. '
+      'Gli attacchi contro di lui hanno vantaggio.',
+  'Stordito':
+      'Incapacitato, non può muoversi, parla a stento. Fallisce '
+      'automaticamente i TS su Forza e Destrezza. Gli attacchi contro di '
+      'lui hanno vantaggio.',
+  'Esausto':
+      'Livelli cumulativi di penalità (svantaggio a prove, velocità '
+      'dimezzata, PF massimi ridotti, fino alla morte al livello 6).',
+  'Incosciente':
+      'Incapacitato, non consapevole, cade prono e lascia cadere ciò che '
+      'tiene in mano. Fallisce automaticamente i TS su Forza e Destrezza. '
+      'Gli attacchi contro di lui hanno vantaggio e sono critici se da 1,5 '
+      'metri o meno.',
+};
+
+/// Toggle delle condizioni di stato attive su un personaggio salvato.
+class _CondizioniSection extends StatefulWidget {
+  final PGBase pg;
+
+  const _CondizioniSection({required this.pg});
+
+  @override
+  State<_CondizioniSection> createState() => _CondizioniSectionState();
+}
+
+class _CondizioniSectionState extends State<_CondizioniSection> {
+  late PGBase _pg;
+
+  @override
+  void initState() {
+    super.initState();
+    _pg = widget.pg;
+  }
+
+  void _toggle(String condizione, bool attiva) {
+    final nuove = List<String>.from(_pg.condizioniAttive);
+    if (attiva) {
+      if (!nuove.contains(condizione)) nuove.add(condizione);
+    } else {
+      nuove.remove(condizione);
+    }
+    setState(() => _pg = _pg.copyWith(condizioniAttive: nuove));
+    context.read<SavedCharactersProvider>().save(_pg);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children:
+          _condizioniD20.entries.map((entry) {
+            final attiva = _pg.condizioniAttive.contains(entry.key);
+            return Tooltip(
+              message: entry.value,
+              triggerMode: TooltipTriggerMode.longPress,
+              child: FilterChip(
+                label: Text(entry.key),
+                selected: attiva,
+                onSelected: (val) => _toggle(entry.key, val),
+                selectedColor: const Color(0xFF8B4513).withValues(alpha: 0.2),
+                checkmarkColor: const Color(0xFF8B4513),
+              ),
+            );
+          }).toList(),
     );
   }
 }
