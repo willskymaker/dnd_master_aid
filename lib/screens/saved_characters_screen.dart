@@ -301,6 +301,13 @@ class _SchedaBottomSheet extends StatelessWidget {
                   _riga('Linguaggi', pg.linguaggi.join(', ')),
                 const Divider(height: 24),
                 const Text(
+                  'Denaro',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                const SizedBox(height: 8),
+                _DenaroSection(pg: pg),
+                const Divider(height: 24),
+                const Text(
                   'Caratteristiche',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
@@ -396,6 +403,96 @@ class _SchedaBottomSheet extends StatelessWidget {
               ),
             );
           }).toList(),
+    );
+  }
+}
+
+/// Tracker del denaro (rame/argento/oro/platino) di un personaggio salvato.
+/// Ogni modifica viene persistita subito tramite [SavedCharactersProvider].
+class _DenaroSection extends StatefulWidget {
+  final PGBase pg;
+
+  const _DenaroSection({required this.pg});
+
+  @override
+  State<_DenaroSection> createState() => _DenaroSectionState();
+}
+
+class _DenaroSectionState extends State<_DenaroSection> {
+  late PGBase _pg;
+
+  @override
+  void initState() {
+    super.initState();
+    _pg = widget.pg;
+  }
+
+  void _aggiorna(String moneta, int delta) {
+    setState(() {
+      switch (moneta) {
+        case 'rame':
+          _pg = _pg.copyWith(
+            denaroRame: (_pg.denaroRame + delta).clamp(0, 1 << 30),
+          );
+          break;
+        case 'argento':
+          _pg = _pg.copyWith(
+            denaroArgento: (_pg.denaroArgento + delta).clamp(0, 1 << 30),
+          );
+          break;
+        case 'oro':
+          _pg = _pg.copyWith(
+            denaroOro: (_pg.denaroOro + delta).clamp(0, 1 << 30),
+          );
+          break;
+        case 'platino':
+          _pg = _pg.copyWith(
+            denaroPlatino: (_pg.denaroPlatino + delta).clamp(0, 1 << 30),
+          );
+          break;
+      }
+    });
+    context.read<SavedCharactersProvider>().save(_pg);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        _contatore('Monete di rame (mr)', _pg.denaroRame, 'rame'),
+        _contatore('Monete di argento (ma)', _pg.denaroArgento, 'argento'),
+        _contatore('Monete d\'oro (mo)', _pg.denaroOro, 'oro'),
+        _contatore('Monete di platino (mp)', _pg.denaroPlatino, 'platino'),
+      ],
+    );
+  }
+
+  Widget _contatore(String label, int valore, String moneta) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Expanded(child: Text(label)),
+          IconButton(
+            onPressed: valore > 0 ? () => _aggiorna(moneta, -1) : null,
+            icon: const Icon(Icons.remove_circle_outline),
+            color: const Color(0xFF8B4513),
+          ),
+          SizedBox(
+            width: 40,
+            child: Text(
+              '$valore',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+          ),
+          IconButton(
+            onPressed: () => _aggiorna(moneta, 1),
+            icon: const Icon(Icons.add_circle_outline),
+            color: const Color(0xFF8B4513),
+          ),
+        ],
+      ),
     );
   }
 }

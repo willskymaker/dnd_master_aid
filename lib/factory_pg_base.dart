@@ -24,6 +24,10 @@ class PGBase {
   final List<String> competenzeStrumenti;
   final List<String> abilitaClasse;
   final List<String> equipaggiamento;
+  final int denaroRame;
+  final int denaroArgento;
+  final int denaroOro;
+  final int denaroPlatino;
 
   PGBase({
     String? id,
@@ -49,8 +53,72 @@ class PGBase {
     required this.competenzeStrumenti,
     required this.abilitaClasse,
     required this.equipaggiamento,
+    this.denaroRame = 0,
+    this.denaroArgento = 0,
+    this.denaroOro = 0,
+    this.denaroPlatino = 0,
   }) : id = id ?? const Uuid().v4(),
        dataSalvataggio = dataSalvataggio ?? DateTime.now();
+
+  /// Ritorna una copia del personaggio con i campi indicati sostituiti.
+  PGBase copyWith({
+    String? nome,
+    String? specie,
+    String? classe,
+    int? livello,
+    String? background,
+    String? allineamento,
+    List<String>? competenze,
+    Map<String, int>? caratteristiche,
+    Map<String, int>? modificatori,
+    bool? caratteristicheImpostate,
+    int? velocita,
+    List<String>? linguaggi,
+    List<String>? capacitaSpeciali,
+    int? dadoVita,
+    int? puntiVita,
+    List<String>? tiriSalvezza,
+    List<String>? competenzeArmi,
+    List<String>? competenzeArmature,
+    List<String>? competenzeStrumenti,
+    List<String>? abilitaClasse,
+    List<String>? equipaggiamento,
+    int? denaroRame,
+    int? denaroArgento,
+    int? denaroOro,
+    int? denaroPlatino,
+  }) {
+    return PGBase(
+      id: id,
+      dataSalvataggio: dataSalvataggio,
+      nome: nome ?? this.nome,
+      specie: specie ?? this.specie,
+      classe: classe ?? this.classe,
+      livello: livello ?? this.livello,
+      background: background ?? this.background,
+      allineamento: allineamento ?? this.allineamento,
+      competenze: competenze ?? this.competenze,
+      caratteristiche: caratteristiche ?? this.caratteristiche,
+      modificatori: modificatori ?? this.modificatori,
+      caratteristicheImpostate:
+          caratteristicheImpostate ?? this.caratteristicheImpostate,
+      velocita: velocita ?? this.velocita,
+      linguaggi: linguaggi ?? this.linguaggi,
+      capacitaSpeciali: capacitaSpeciali ?? this.capacitaSpeciali,
+      dadoVita: dadoVita ?? this.dadoVita,
+      puntiVita: puntiVita ?? this.puntiVita,
+      tiriSalvezza: tiriSalvezza ?? this.tiriSalvezza,
+      competenzeArmi: competenzeArmi ?? this.competenzeArmi,
+      competenzeArmature: competenzeArmature ?? this.competenzeArmature,
+      competenzeStrumenti: competenzeStrumenti ?? this.competenzeStrumenti,
+      abilitaClasse: abilitaClasse ?? this.abilitaClasse,
+      equipaggiamento: equipaggiamento ?? this.equipaggiamento,
+      denaroRame: denaroRame ?? this.denaroRame,
+      denaroArgento: denaroArgento ?? this.denaroArgento,
+      denaroOro: denaroOro ?? this.denaroOro,
+      denaroPlatino: denaroPlatino ?? this.denaroPlatino,
+    );
+  }
 
   Map<String, dynamic> toJson() => {
     'id': id,
@@ -76,6 +144,10 @@ class PGBase {
     'competenzeStrumenti': competenzeStrumenti,
     'abilitaClasse': abilitaClasse,
     'equipaggiamento': equipaggiamento,
+    'denaroRame': denaroRame,
+    'denaroArgento': denaroArgento,
+    'denaroOro': denaroOro,
+    'denaroPlatino': denaroPlatino,
   };
 
   factory PGBase.fromJson(Map<String, dynamic> json) => PGBase(
@@ -116,6 +188,10 @@ class PGBase {
     competenzeStrumenti: List<String>.from(json['competenzeStrumenti'] ?? []),
     abilitaClasse: List<String>.from(json['abilitaClasse'] ?? []),
     equipaggiamento: List<String>.from(json['equipaggiamento'] ?? []),
+    denaroRame: json['denaroRame'] as int? ?? 0,
+    denaroArgento: json['denaroArgento'] as int? ?? 0,
+    denaroOro: json['denaroOro'] as int? ?? 0,
+    denaroPlatino: json['denaroPlatino'] as int? ?? 0,
   );
 
   @override
