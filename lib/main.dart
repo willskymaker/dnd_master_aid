@@ -86,25 +86,11 @@ class HomePage extends StatelessWidget {
       'attivo': true,
     },
     {
-      'id': 'pgPro',
-      'nome': 'PG Avanzato',
-      'icona': '🧠',
-      'descr': 'Tutte le opzioni avanzate',
-      'attivo': false,
-    },
-    {
       'id': 'combattimento',
       'nome': 'Tracker Combattimento',
       'icona': '⚔️',
       'descr': 'Iniziativa e PF per il Master',
       'attivo': true,
-    },
-    {
-      'id': 'npc',
-      'nome': 'Generatore NPC',
-      'icona': '🧑‍🌾',
-      'descr': 'Crea PNG con personalità',
-      'attivo': false,
     },
   ];
 
@@ -120,7 +106,6 @@ class HomePage extends StatelessWidget {
     return MobileScaffold(
       title: 'D&D Master Aid',
       showBackButton: false,
-      titleBadge: 'BETA',
       leading: Padding(
         padding: const EdgeInsets.all(AppSpacing.sm),
         child: ClipRRect(

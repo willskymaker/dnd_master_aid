@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import '../data/db_condizioni.dart';
 import '../data/db_slot_incantesimi.dart';
 import '../factory_pg_base.dart';
+import '../pg_base/utils/asi_helper.dart';
+import '../pg_base/utils/pf_helper.dart';
 import '../providers/saved_characters_provider.dart';
 import '../widgets/mobile/mobile_scaffold.dart';
 import 'spell_cards_screen.dart';
@@ -254,13 +256,27 @@ class _CharacterCard extends StatelessWidget {
   }
 }
 
-class _SchedaBottomSheet extends StatelessWidget {
+class _SchedaBottomSheet extends StatefulWidget {
   final PGBase pg;
 
   const _SchedaBottomSheet({required this.pg});
 
   @override
+  State<_SchedaBottomSheet> createState() => _SchedaBottomSheetState();
+}
+
+class _SchedaBottomSheetState extends State<_SchedaBottomSheet> {
+  late PGBase _pg;
+
+  @override
+  void initState() {
+    super.initState();
+    _pg = widget.pg;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final pg = _pg;
     return DraggableScrollableSheet(
       initialChildSize: 0.85,
       maxChildSize: 0.95,
@@ -291,9 +307,21 @@ class _SchedaBottomSheet extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  '${pg.classe} · ${pg.specie} · Livello ${pg.livello}',
-                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        '${pg.classe} · ${pg.specie} · Livello ${pg.livello}',
+                        style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                      ),
+                    ),
+                    if (pg.livello < 20)
+                      TextButton.icon(
+                        onPressed: _saliDiLivello,
+                        icon: const Icon(Icons.arrow_upward, size: 16),
+                        label: const Text('Sali di livello'),
+                      ),
+                  ],
                 ),
                 const Divider(height: 24),
                 _PfSection(pg: pg),
@@ -384,6 +412,148 @@ class _SchedaBottomSheet extends StatelessWidget {
     );
   }
 
+  Future<void> _saliDiLivello() async {
+    if (_pg.livello >= 20) return;
+    final nuovoLivello = _pg.livello + 1;
+    final asiPrima = calcolaASI(livello: _pg.livello, classe: _pg.classe);
+    final asiDopo = calcolaASI(livello: nuovoLivello, classe: _pg.classe);
+
+    var nuoveCaratteristiche = _pg.caratteristiche;
+    var nuoviModificatori = _pg.modificatori;
+
+    if (asiDopo > asiPrima) {
+      final distribuzione = await _mostraDistribuzioneAsi();
+      if (!mounted) return;
+      if (distribuzione == null) return; // annullato dall'utente
+      if (distribuzione.isNotEmpty) {
+        nuoveCaratteristiche = {
+          for (final e in _pg.caratteristiche.entries)
+            e.key: e.value + (distribuzione[e.key] ?? 0),
+        };
+        nuoviModificatori = {
+          for (final e in nuoveCaratteristiche.entries)
+            e.key: ((e.value - 10) / 2).floor(),
+        };
+      }
+    }
+
+    final modCos = nuoviModificatori['COS'] ?? 0;
+    final nuovoPfMax = calcolaPuntiFerita(
+      livello: nuovoLivello,
+      dadoVita: _pg.dadoVita,
+      modCostituzione: modCos,
+    );
+    final deltaPf = nuovoPfMax - _pg.puntiVita;
+
+    final nuovoPg = _pg.copyWith(
+      livello: nuovoLivello,
+      puntiVita: nuovoPfMax,
+      puntiVitaCorrenti: (_pg.puntiVitaCorrenti + deltaPf).clamp(0, nuovoPfMax),
+      caratteristiche: nuoveCaratteristiche,
+      modificatori: nuoviModificatori,
+    );
+
+    await context.read<SavedCharactersProvider>().save(nuovoPg);
+    if (!mounted) return;
+    setState(() => _pg = nuovoPg);
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('Livello $nuovoLivello raggiunto!')));
+  }
+
+  /// Mostra il dialog per distribuire i 2 punti dell'Aumento del Punteggio
+  /// di Caratteristica. Ritorna null se l'utente annulla il level up,
+  /// una mappa vuota se ha scelto un talento al posto dell'ASI, altrimenti
+  /// la mappa dei punti assegnati per caratteristica.
+  Future<Map<String, int>?> _mostraDistribuzioneAsi() {
+    final stats = ['FOR', 'DES', 'COS', 'INT', 'SAG', 'CAR'];
+    final assegnati = {for (final s in stats) s: 0};
+    var puntiRimanenti = 2;
+
+    return showDialog<Map<String, int>>(
+      context: context,
+      barrierDismissible: false,
+      builder:
+          (context) => StatefulBuilder(
+            builder:
+                (context, setDialogState) => AlertDialog(
+                  title: const Text('Aumento Punteggio di Caratteristica'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Hai $puntiRimanenti punti da distribuire (max +2 su '
+                        'una caratteristica, fino a 20).',
+                      ),
+                      const SizedBox(height: 12),
+                      for (final s in stats)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 4),
+                          child: Row(
+                            children: [
+                              SizedBox(width: 48, child: Text(s)),
+                              SizedBox(
+                                width: 32,
+                                child: Text(
+                                  '${(_pg.caratteristiche[s] ?? 10) + assegnati[s]!}',
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              const Spacer(),
+                              IconButton(
+                                onPressed:
+                                    assegnati[s]! > 0
+                                        ? () => setDialogState(() {
+                                          assegnati[s] = assegnati[s]! - 1;
+                                          puntiRimanenti++;
+                                        })
+                                        : null,
+                                icon: const Icon(Icons.remove_circle_outline),
+                              ),
+                              IconButton(
+                                onPressed:
+                                    (puntiRimanenti > 0 &&
+                                            (_pg.caratteristiche[s] ?? 10) +
+                                                    assegnati[s]! <
+                                                20)
+                                        ? () => setDialogState(() {
+                                          assegnati[s] = assegnati[s]! + 1;
+                                          puntiRimanenti--;
+                                        })
+                                        : null,
+                                icon: const Icon(Icons.add_circle_outline),
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, null),
+                      child: const Text('Annulla'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, <String, int>{}),
+                      child: const Text('Ho preso un talento'),
+                    ),
+                    FilledButton(
+                      onPressed:
+                          puntiRimanenti == 0
+                              ? () => Navigator.pop(context, assegnati)
+                              : null,
+                      child: const Text('Conferma'),
+                    ),
+                  ],
+                ),
+          ),
+    );
+  }
+
   Widget _riga(String label, String valore) => Padding(
     padding: const EdgeInsets.only(bottom: 8),
     child: Row(
@@ -412,8 +582,8 @@ class _SchedaBottomSheet extends StatelessWidget {
       crossAxisSpacing: 8,
       children:
           stats.map((s) {
-            final val = pg.caratteristiche[s] ?? 0;
-            final mod = pg.modificatori[s] ?? 0;
+            final val = _pg.caratteristiche[s] ?? 0;
+            final mod = _pg.modificatori[s] ?? 0;
             final segno = mod >= 0 ? '+' : '';
             return Container(
               decoration: BoxDecoration(

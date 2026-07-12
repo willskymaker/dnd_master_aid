@@ -5,6 +5,7 @@ import '../../core/app_theme.dart';
 import '../../factory_pg_base.dart';
 import '../../data/db_classi.dart';
 import '../utils/pf_helper.dart';
+import '../utils/asi_helper.dart';
 import '../../core/logger.dart';
 import '../../core/exceptions.dart';
 import '../../widgets/mobile/mobile_scaffold.dart';
@@ -435,23 +436,4 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
       ),
     );
   }
-}
-
-const List<int> _livelliAsiStandard = [4, 8, 12, 16, 19];
-
-/// Livelli di ASI aggiuntivi rispetto alla tabella standard, previsti da
-/// manuale solo per alcune classi (Guerriero: 6 e 14; Ladro: 10).
-const Map<String, List<int>> _livelliAsiExtra = {
-  'Guerriero': [6, 14],
-  'Ladro': [10],
-};
-
-/// Numero di Aumenti del Punteggio di Caratteristica (ASI) raggiunti al
-/// livello indicato, secondo la tabella ufficiale (4, 8, 12, 16, 19), con
-/// gli ASI aggiuntivi previsti da manuale per Guerriero e Ladro.
-int calcolaASI({required int livello, String? classe}) {
-  var numeroAsi = _livelliAsiStandard.where((l) => livello >= l).length;
-  final extra = _livelliAsiExtra[classe] ?? const [];
-  numeroAsi += extra.where((l) => livello >= l).length;
-  return numeroAsi;
 }
