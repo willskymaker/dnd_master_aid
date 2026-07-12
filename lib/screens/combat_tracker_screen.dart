@@ -12,6 +12,7 @@ import '../repositories/json_data_repository.dart';
 import '../utils/encounter_generator.dart';
 import '../utils/loot_generator.dart';
 import '../widgets/mobile/mobile_scaffold.dart';
+import 'spell_cards_screen.dart';
 
 /// Combattente in una sessione di combattimento (solo in memoria, non
 /// persistito: la scheda viva del PG resta la fonte di verita' per PF e
@@ -596,6 +597,16 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
     return MobileScaffold(
       title: 'Tracker Combattimento',
       actions: [
+        IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const SpellCardsScreen()),
+            );
+          },
+          icon: const Icon(Icons.auto_stories),
+          tooltip: 'Card incantesimi',
+        ),
         IconButton(
           onPressed: _mostraGeneraIncontro,
           icon: const Icon(Icons.auto_awesome),

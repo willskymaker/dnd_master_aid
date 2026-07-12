@@ -7,6 +7,7 @@ import '../data/db_slot_incantesimi.dart';
 import '../factory_pg_base.dart';
 import '../providers/saved_characters_provider.dart';
 import '../widgets/mobile/mobile_scaffold.dart';
+import 'spell_cards_screen.dart';
 
 class SavedCharactersScreen extends StatefulWidget {
   const SavedCharactersScreen({super.key});
@@ -1105,6 +1106,20 @@ class _IncantesimiSectionState extends State<_IncantesimiSection> {
             onPressed: _riposoLungo,
             icon: const Icon(Icons.bedtime),
             label: const Text('Riposo Lungo'),
+          ),
+        ),
+        const SizedBox(height: 8),
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SpellCardsScreen()),
+              );
+            },
+            icon: const Icon(Icons.auto_stories),
+            label: const Text('Card incantesimi'),
           ),
         ),
       ],
