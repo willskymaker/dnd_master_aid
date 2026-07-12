@@ -51,7 +51,7 @@ class _StepNomeScreenState extends State<StepNomeScreen> {
   @override
   Widget build(BuildContext context) {
     return MobileScaffold(
-      title: "Step 1: Nome del Personaggio",
+      title: "Step 3: Nome del Personaggio",
       body: Padding(
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(

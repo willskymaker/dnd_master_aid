@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import '../core/app_theme.dart';
+import '../data/db_nomi.dart';
 import '../factory_pg_base.dart';
 import '../widgets/mobile/mobile_scaffold.dart';
 import 'dart:math'; // ✅ IMPORTA Random
+
+enum _Genere { maschio, femmina }
 
 class NameGeneratorScreen extends StatefulWidget {
   final PGBaseFactory factory;
@@ -15,7 +18,11 @@ class NameGeneratorScreen extends StatefulWidget {
 
 class _NameGeneratorScreenState extends State<NameGeneratorScreen> {
   final _random = Random();
-  final _prefissi = [
+  _Genere _genere = _Genere.maschio;
+
+  // Sillabe generiche, usate solo se la specie non e' ancora nel database
+  // dei nomi (lib/data/db_nomi.dart copre le 9 specie base del wizard).
+  static const _prefissiGenerici = [
     "El",
     "Fa",
     "Al",
@@ -33,7 +40,7 @@ class _NameGeneratorScreenState extends State<NameGeneratorScreen> {
     "Der",
     "Bel",
   ];
-  final _suffissi = [
+  static const _suffissiGenerici = [
     "dor",
     "ion",
     "mir",
@@ -48,7 +55,7 @@ class _NameGeneratorScreenState extends State<NameGeneratorScreen> {
     "gil",
     "fil",
   ];
-  final _cognomi = [
+  static const _cognomiGenerici = [
     "Ombrafuoco",
     "Cuorepuro",
     "Ventoargenteo",
@@ -57,21 +64,34 @@ class _NameGeneratorScreenState extends State<NameGeneratorScreen> {
     "Cuoreardente",
     "Pietralama",
     "Lunargento",
-    "Denteombra",
-    "Ferroduro",
-    "Ambrato",
-    "Mordiroccia",
   ];
 
   String _nomeGenerato = "";
 
-  void _generaNome() {
-    final nome =
-        _prefissi[_random.nextInt(_prefissi.length)] +
-        _suffissi[_random.nextInt(_suffissi.length)];
-    final cognome = _cognomi[_random.nextInt(_cognomi.length)];
+  String get _specie => widget.factory.build().specie;
 
-    final nomeCompleto = "$nome $cognome";
+  void _generaNome() {
+    final nomiSpecie = nomiPerSpecie[_specie];
+    String nomeCompleto;
+
+    if (nomiSpecie != null) {
+      final lista =
+          _genere == _Genere.maschio
+              ? nomiSpecie.maschili
+              : nomiSpecie.femminili;
+      final nome =
+          lista.isNotEmpty
+              ? lista[_random.nextInt(lista.length)]
+              : _generaNomeGenerico();
+      nomeCompleto =
+          nomiSpecie.cognomi.isNotEmpty
+              ? '$nome ${nomiSpecie.cognomi[_random.nextInt(nomiSpecie.cognomi.length)]}'
+              : nome;
+    } else {
+      nomeCompleto =
+          '${_generaNomeGenerico()} ${_cognomiGenerici[_random.nextInt(_cognomiGenerici.length)]}';
+    }
+
     widget.factory.setNome(nomeCompleto); // ✅ salva direttamente nella factory
 
     setState(() {
@@ -79,14 +99,40 @@ class _NameGeneratorScreenState extends State<NameGeneratorScreen> {
     });
   }
 
+  String _generaNomeGenerico() =>
+      _prefissiGenerici[_random.nextInt(_prefissiGenerici.length)] +
+      _suffissiGenerici[_random.nextInt(_suffissiGenerici.length)];
+
   @override
   Widget build(BuildContext context) {
+    final specie = _specie;
+    final haNomiSpecifici = nomiPerSpecie.containsKey(specie);
+
     return MobileScaffold(
       title: "Generatore di Nomi",
       body: Padding(
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           children: [
+            Text(
+              specie.isEmpty
+                  ? 'Nessuna specie selezionata: nomi generici'
+                  : haNomiSpecifici
+                  ? 'Nomi per: $specie'
+                  : 'Nomi generici (nessun elenco specifico per $specie)',
+              style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSpacing.md),
+            SegmentedButton<_Genere>(
+              segments: const [
+                ButtonSegment(value: _Genere.maschio, label: Text('Maschile')),
+                ButtonSegment(value: _Genere.femmina, label: Text('Femminile')),
+              ],
+              selected: {_genere},
+              onSelectionChanged: (sel) => setState(() => _genere = sel.first),
+            ),
+            const SizedBox(height: AppSpacing.lg),
             Text(
               _nomeGenerato.isEmpty ? "Premi per generare" : _nomeGenerato,
               style: Theme.of(context).textTheme.titleLarge,
