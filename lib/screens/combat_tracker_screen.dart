@@ -7,6 +7,7 @@ import '../core/app_theme.dart';
 import '../factory_pg_base.dart';
 import '../providers/saved_characters_provider.dart';
 import '../repositories/json_data_repository.dart';
+import '../utils/encounter_generator.dart';
 import '../widgets/mobile/mobile_scaffold.dart';
 
 /// Combattente in una sessione di combattimento (solo in memoria, non
@@ -98,6 +99,41 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
     );
   }
 
+  Future<void> _mostraGeneraIncontro() async {
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder:
+          (_) => _GeneraIncontroSheet(
+            onGenerato: (incontro) {
+              final random = Random();
+              for (final gruppo in incontro.gruppi) {
+                final mostro = gruppo.mostro;
+                final abilityScores = mostro['ability_scores'] as Map?;
+                final destrezza =
+                    (abilityScores?['dexterity'] as num?)?.toInt() ?? 10;
+                final mod = ((destrezza - 10) / 2).floor();
+                final pf = (mostro['hit_points'] as num?)?.toInt() ?? 10;
+                final nome =
+                    mostro['italian_name'] ?? mostro['name'] ?? 'Mostro';
+                for (var i = 0; i < gruppo.quantita; i++) {
+                  _aggiungiCombattente(
+                    _Combattente(
+                      nome: gruppo.quantita > 1 ? '$nome ${i + 1}' : nome,
+                      iniziativa: random.nextInt(20) + 1 + mod,
+                      pfMax: pf,
+                    ),
+                  );
+                }
+              }
+            },
+          ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final ordinati = _ordinati;
@@ -108,6 +144,11 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
     return MobileScaffold(
       title: 'Tracker Combattimento',
       actions: [
+        IconButton(
+          onPressed: _mostraGeneraIncontro,
+          icon: const Icon(Icons.auto_awesome),
+          tooltip: 'Genera incontro',
+        ),
         IconButton(
           onPressed: _combattenti.isEmpty ? null : _nuovoCombattimento,
           icon: const Icon(Icons.refresh),
@@ -476,6 +517,176 @@ class _AggiungiCombattenteSheetState extends State<_AggiungiCombattenteSheet> {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// Genera un incontro casuale bilanciato per il party indicato e lo
+/// restituisce tramite [onGenerato], da usare per popolare il combattimento.
+class _GeneraIncontroSheet extends StatefulWidget {
+  final void Function(IncontroGenerato) onGenerato;
+
+  const _GeneraIncontroSheet({required this.onGenerato});
+
+  @override
+  State<_GeneraIncontroSheet> createState() => _GeneraIncontroSheetState();
+}
+
+class _GeneraIncontroSheetState extends State<_GeneraIncontroSheet> {
+  int _numeroGiocatori = 4;
+  int _livelloMedio = 1;
+  DifficoltaIncontro _difficolta = DifficoltaIncontro.media;
+  bool _generando = false;
+  IncontroGenerato? _risultato;
+
+  static const _nomiDifficolta = {
+    DifficoltaIncontro.facile: 'Facile',
+    DifficoltaIncontro.media: 'Media',
+    DifficoltaIncontro.difficile: 'Difficile',
+    DifficoltaIncontro.mortale: 'Mortale',
+  };
+
+  Future<void> _genera() async {
+    setState(() => _generando = true);
+    final mostri = await JsonDataRepository.loadMonsters();
+    final incontro = generaIncontro(
+      mostriDisponibili: mostri,
+      numeroGiocatori: _numeroGiocatori,
+      livelloMedio: _livelloMedio,
+      difficolta: _difficolta,
+    );
+    if (!mounted) return;
+    setState(() {
+      _risultato = incontro;
+      _generando = false;
+    });
+  }
+
+  void _conferma() {
+    final risultato = _risultato;
+    if (risultato == null || risultato.vuoto) return;
+    widget.onGenerato(risultato);
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: EdgeInsets.only(
+        left: 20,
+        right: 20,
+        top: 20,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Genera incontro',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Giocatori'),
+                    Slider(
+                      value: _numeroGiocatori.toDouble(),
+                      min: 1,
+                      max: 8,
+                      divisions: 7,
+                      label: '$_numeroGiocatori',
+                      onChanged:
+                          (v) => setState(() => _numeroGiocatori = v.round()),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Livello medio party'),
+                    Slider(
+                      value: _livelloMedio.toDouble(),
+                      min: 1,
+                      max: 20,
+                      divisions: 19,
+                      label: '$_livelloMedio',
+                      onChanged:
+                          (v) => setState(() => _livelloMedio = v.round()),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            children:
+                DifficoltaIncontro.values.map((d) {
+                  return ChoiceChip(
+                    label: Text(_nomiDifficolta[d]!),
+                    selected: _difficolta == d,
+                    onSelected: (_) => setState(() => _difficolta = d),
+                  );
+                }).toList(),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: _generando ? null : _genera,
+              child:
+                  _generando
+                      ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                      : const Text('Genera'),
+            ),
+          ),
+          if (_risultato != null) ...[
+            const SizedBox(height: 16),
+            if (_risultato!.vuoto)
+              const Text('Nessun mostro adatto trovato, riprova.')
+            else ...[
+              for (final gruppo in _risultato!.gruppi)
+                Text(
+                  '${gruppo.quantita}x ${gruppo.mostro['italian_name'] ?? gruppo.mostro['name']} (${gruppo.xpTotale} XP)',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              const SizedBox(height: 4),
+              Text(
+                'Soglia richiesta: ${_risultato!.sogliaRichiesta} XP adeguato',
+                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _conferma,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF8B4513),
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text('Aggiungi al combattimento'),
+                ),
+              ),
+            ],
+          ],
+        ],
+      ),
     );
   }
 }
