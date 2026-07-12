@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../factory_pg_base.dart';
@@ -205,7 +207,7 @@ class _CharacterCard extends StatelessWidget {
               ),
               const SizedBox(height: 2),
               Text(
-                'HP: ${pg.puntiVita}  •  Velocità: ${pg.velocita}m',
+                'PF: ${pg.puntiVitaCorrenti}/${pg.puntiVita}  •  Velocità: ${pg.velocita}m',
                 style: TextStyle(fontSize: 12, color: Colors.grey[600]),
               ),
             ],
@@ -291,7 +293,9 @@ class _SchedaBottomSheet extends StatelessWidget {
                   style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                 ),
                 const Divider(height: 24),
-                _riga('Punti Vita', '${pg.puntiVita} (d${pg.dadoVita})'),
+                _PfSection(pg: pg),
+                const SizedBox(height: 8),
+                _riga('Dado Vita', 'd${pg.dadoVita}'),
                 _riga('Velocità', '${pg.velocita} m'),
                 if (pg.background.isNotEmpty)
                   _riga('Background', pg.background),
@@ -495,4 +499,168 @@ class _DenaroSectionState extends State<_DenaroSection> {
       ),
     );
   }
+}
+
+/// Tracker dei Punti Ferita (correnti/massimi/temporanei) di un personaggio
+/// salvato. I danni consumano prima i PF temporanei, poi quelli correnti.
+class _PfSection extends StatefulWidget {
+  final PGBase pg;
+
+  const _PfSection({required this.pg});
+
+  @override
+  State<_PfSection> createState() => _PfSectionState();
+}
+
+class _PfSectionState extends State<_PfSection> {
+  late PGBase _pg;
+
+  @override
+  void initState() {
+    super.initState();
+    _pg = widget.pg;
+  }
+
+  void _salva() => context.read<SavedCharactersProvider>().save(_pg);
+
+  void _applicaDelta(int delta) {
+    var corrente = _pg.puntiVitaCorrenti;
+    var temp = _pg.puntiVitaTemporanei;
+
+    if (delta < 0) {
+      var danno = -delta;
+      final assorbito = min(danno, temp);
+      temp -= assorbito;
+      danno -= assorbito;
+      corrente = (corrente - danno).clamp(0, _pg.puntiVita);
+    } else {
+      corrente = (corrente + delta).clamp(0, _pg.puntiVita);
+    }
+
+    setState(() {
+      _pg = _pg.copyWith(
+        puntiVitaCorrenti: corrente,
+        puntiVitaTemporanei: temp,
+      );
+    });
+    _salva();
+  }
+
+  void _modificaTemp(int delta) {
+    setState(() {
+      _pg = _pg.copyWith(
+        puntiVitaTemporanei: (_pg.puntiVitaTemporanei + delta).clamp(
+          0,
+          1 << 30,
+        ),
+      );
+    });
+    _salva();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final max = _pg.puntiVita;
+    final corrente = _pg.puntiVitaCorrenti;
+    final temp = _pg.puntiVitaTemporanei;
+    final ratio = max > 0 ? corrente / max : 0.0;
+    final colore =
+        corrente == 0
+            ? Colors.red.shade900
+            : ratio <= 0.25
+            ? Colors.red
+            : ratio <= 0.5
+            ? Colors.orange
+            : Colors.green.shade700;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Punti Ferita',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '$corrente / $max PF${temp > 0 ? ' (+$temp temp)' : ''}',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: colore,
+              ),
+            ),
+            if (corrente == 0)
+              const Text(
+                'MORENTE',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: 6),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(4),
+          child: LinearProgressIndicator(
+            value: max > 0 ? ratio.clamp(0, 1) : 0,
+            minHeight: 8,
+            backgroundColor: Colors.grey.shade200,
+            valueColor: AlwaysStoppedAnimation(colore),
+          ),
+        ),
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            _pfBtn('-5', () => _applicaDelta(-5), Colors.red),
+            _pfBtn('-1', () => _applicaDelta(-1), Colors.red),
+            _pfBtn('+1', () => _applicaDelta(1), Colors.green.shade700),
+            _pfBtn('+5', () => _applicaDelta(5), Colors.green.shade700),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            const Expanded(child: Text('PF temporanei')),
+            IconButton(
+              onPressed: temp > 0 ? () => _modificaTemp(-1) : null,
+              icon: const Icon(Icons.remove_circle_outline),
+              color: const Color(0xFF8B4513),
+            ),
+            SizedBox(
+              width: 32,
+              child: Text(
+                '$temp',
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            IconButton(
+              onPressed: () => _modificaTemp(1),
+              icon: const Icon(Icons.add_circle_outline),
+              color: const Color(0xFF8B4513),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _pfBtn(String label, VoidCallback onTap, Color color) => Expanded(
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: OutlinedButton(
+        onPressed: onTap,
+        style: OutlinedButton.styleFrom(
+          foregroundColor: color,
+          side: BorderSide(color: color),
+        ),
+        child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+      ),
+    ),
+  );
 }
