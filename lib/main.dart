@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
 // === IMPORTAZIONI ===
@@ -12,11 +13,16 @@ import 'screens/combat_tracker_screen.dart'; // Tracker iniziativa/combattimento
 import 'package:dnd_master_aid/factory_pg_base.dart';
 import 'providers/character_provider.dart';
 import 'providers/saved_characters_provider.dart';
+import 'widgets/banner_ad_widget.dart';
 import 'widgets/mobile/mobile_scaffold.dart';
 import 'widgets/mobile/mobile_card.dart';
 import 'pages/database_browser_page.dart';
 
 void main() {
+  if (adsSupportedPlatform) {
+    WidgetsFlutterBinding.ensureInitialized();
+    MobileAds.instance.initialize();
+  }
   runApp(const DnDMasterAidApp());
 }
 
@@ -122,12 +128,19 @@ class HomePage extends StatelessWidget {
           child: Image.asset('assets/icon/icon.png'),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        child:
-            isMobile
-                ? _buildMobileLayout(context, attive, inArrivo)
-                : _buildTabletLayout(context, attive, inArrivo),
+      body: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child:
+                  isMobile
+                      ? _buildMobileLayout(context, attive, inArrivo)
+                      : _buildTabletLayout(context, attive, inArrivo),
+            ),
+          ),
+          const Center(child: BannerAdWidget()),
+        ],
       ),
     );
   }
