@@ -1,9 +1,14 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 // === IMPORTAZIONI ===
 import 'core/app_theme.dart';
+import 'core/logger.dart';
 import 'pg_base/main_pg_base.dart'; // PG Base Wizard
 import 'screens/coming_soon.dart'; // Schermata per funzionalità disattivate
 import 'screens/dice_roller.dart'; // Modulo dadi
@@ -13,6 +18,7 @@ import 'screens/combat_tracker_screen.dart'; // Tracker iniziativa/combattimento
 import 'package:dnd_master_aid/factory_pg_base.dart';
 import 'providers/character_provider.dart';
 import 'providers/saved_characters_provider.dart';
+import 'utils/character_share.dart';
 import 'widgets/banner_ad_widget.dart';
 import 'widgets/mobile/mobile_scaffold.dart';
 import 'widgets/mobile/mobile_card.dart';
@@ -26,8 +32,82 @@ void main() {
   runApp(const DnDMasterAidApp());
 }
 
-class DnDMasterAidApp extends StatelessWidget {
+class DnDMasterAidApp extends StatefulWidget {
   const DnDMasterAidApp({super.key});
+
+  @override
+  State<DnDMasterAidApp> createState() => _DnDMasterAidAppState();
+}
+
+class _DnDMasterAidAppState extends State<DnDMasterAidApp> {
+  final _navigatorKey = GlobalKey<NavigatorState>();
+  StreamSubscription<List<SharedMediaFile>>? _intentSub;
+
+  @override
+  void initState() {
+    super.initState();
+    _avviaAscoltoCondivisione();
+  }
+
+  /// Ascolta i file .dnd ricevuti da altre app (es. aperti da WhatsApp) e
+  /// li importa automaticamente tra "I Miei Personaggi". Il plugin non e'
+  /// implementato su web/desktop: qualunque errore viene ignorato in modo
+  /// da non bloccare l'avvio dell'app su quelle piattaforme.
+  void _avviaAscoltoCondivisione() {
+    if (kIsWeb) return;
+    try {
+      _intentSub = ReceiveSharingIntent.instance.getMediaStream().listen(
+        _gestisciFileCondivisi,
+        onError: (e) => AppLogger.error('Errore stream file condivisi', e),
+      );
+      ReceiveSharingIntent.instance.getInitialMedia().then((value) {
+        _gestisciFileCondivisi(value);
+        ReceiveSharingIntent.instance.reset();
+      });
+    } catch (e) {
+      AppLogger.error('Ricezione file condivisi non disponibile', e);
+    }
+  }
+
+  Future<void> _gestisciFileCondivisi(List<SharedMediaFile> files) async {
+    if (files.isEmpty) return;
+    final file = files.firstWhere(
+      (f) => f.path.endsWith(estensioneFileEsportazione),
+      orElse: () => files.first,
+    );
+
+    final context = _navigatorKey.currentState?.context;
+    if (context == null || !context.mounted) return;
+
+    try {
+      final pg = await importaPersonaggioDaFile(file.path);
+      if (!context.mounted) return;
+      await context.read<SavedCharactersProvider>().save(pg);
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '${pg.nome.isNotEmpty ? pg.nome : "Personaggio"} importato',
+          ),
+        ),
+      );
+    } catch (e) {
+      AppLogger.error('Import da file condiviso fallito', e);
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Il file ricevuto non è una scheda personaggio valida'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _intentSub?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +117,7 @@ class DnDMasterAidApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => SavedCharactersProvider()),
       ],
       child: MaterialApp(
+        navigatorKey: _navigatorKey,
         title: 'D&D Master Aid',
         debugShowCheckedModeBanner: false,
         theme: buildAppTheme(),

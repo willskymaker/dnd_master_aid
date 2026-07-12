@@ -32,7 +32,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:taskAffinity=""
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -49,6 +49,17 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <!-- Apre l'app quando si tocca un file .dnd ricevuto da
+                 un'altra app (es. un personaggio condiviso via WhatsApp).
+                 Vincolato a .dnd tramite pathPattern per non comparire
+                 come opzione "Apri con" su file qualsiasi. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="content" android:mimeType="*/*" android:pathPattern=".*\\.dnd"/>
+                <data android:scheme="file" android:mimeType="*/*" android:pathPattern=".*\\.dnd"/>
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
