@@ -17,7 +17,7 @@ class _Combattente {
   final String id;
   final String nome;
   final bool isPg;
-  final int iniziativa;
+  int iniziativa;
   final int pfMax;
   int pfCorrenti;
 
@@ -67,6 +67,39 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
 
   void _modificaPf(_Combattente c, int delta) {
     setState(() => c.pfCorrenti = (c.pfCorrenti + delta).clamp(0, c.pfMax));
+  }
+
+  Future<void> _modificaIniziativa(_Combattente c) async {
+    final controller = TextEditingController(text: '${c.iniziativa}');
+    final nuovoValore = await showDialog<int>(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: Text('Iniziativa di ${c.nome}'),
+            content: TextField(
+              controller: controller,
+              autofocus: true,
+              keyboardType: const TextInputType.numberWithOptions(signed: true),
+              decoration: const InputDecoration(
+                labelText: 'Tiro + modificatore Destrezza',
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Annulla'),
+              ),
+              TextButton(
+                onPressed:
+                    () => Navigator.pop(context, int.tryParse(controller.text)),
+                child: const Text('Conferma'),
+              ),
+            ],
+          ),
+    );
+    if (nuovoValore != null) {
+      setState(() => c.iniziativa = nuovoValore);
+    }
   }
 
   void _prossimoTurno() {
@@ -250,13 +283,29 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
                             padding: const EdgeInsets.all(AppSpacing.md),
                             child: Row(
                               children: [
-                                SizedBox(
-                                  width: 32,
-                                  child: Text(
-                                    '${c.iniziativa}',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
+                                InkWell(
+                                  onTap: () => _modificaIniziativa(c),
+                                  borderRadius: BorderRadius.circular(
+                                    AppRadius.sm,
+                                  ),
+                                  child: SizedBox(
+                                    width: 32,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          '${c.iniziativa}',
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                        Icon(
+                                          Icons.edit,
+                                          size: 10,
+                                          color: Colors.grey[400],
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
