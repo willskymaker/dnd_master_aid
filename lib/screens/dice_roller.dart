@@ -1,4 +1,6 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'dart:math';
 
@@ -49,6 +51,10 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
   bool _rolling = false;
   int _displayTotale = 0;
 
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  bool _audioAttivo = true;
+  static const _prefAudio = 'dice_roller_audio_attivo';
+
   static const _dadi = [4, 6, 8, 10, 12, 20, 100];
   static const _durataAnimazione = Duration(milliseconds: 650);
 
@@ -62,12 +68,39 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
       vsync: this,
       duration: _durataAnimazione,
     );
+    _caricaPreferenzaAudio();
+  }
+
+  Future<void> _caricaPreferenzaAudio() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!mounted) return;
+    setState(() => _audioAttivo = prefs.getBool(_prefAudio) ?? true);
+  }
+
+  Future<void> _toggleAudio() async {
+    final nuovoValore = !_audioAttivo;
+    setState(() => _audioAttivo = nuovoValore);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_prefAudio, nuovoValore);
+  }
+
+  Future<void> _riproduciSuono(String assetPath) async {
+    if (!_audioAttivo) return;
+    try {
+      await _audioPlayer.stop();
+      await _audioPlayer.play(AssetSource(assetPath));
+    } catch (_) {
+      // L'audio è un dettaglio non essenziale: un fallimento nella
+      // riproduzione (piattaforma non supportata, permessi, ecc.) non
+      // deve interrompere il lancio dei dadi.
+    }
   }
 
   @override
   void dispose() {
     _rollTimer?.cancel();
     _rollController.dispose();
+    _audioPlayer.dispose();
     super.dispose();
   }
 
@@ -139,6 +172,11 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
         _storico.insert(0, _RollRecord(label, somma, dettaglio));
         if (_storico.length > 10) _storico.removeLast();
       });
+      if (_facceDado == 20 && tiri[0] == 20) {
+        _riproduciSuono('audio/dice_crit.wav');
+      } else if (_facceDado == 20 && tiri[0] == 1) {
+        _riproduciSuono('audio/dice_fail.wav');
+      }
     });
   }
 
@@ -188,7 +226,16 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFAF7F2),
-      appBar: AppBar(title: const Text('Tira Dadi')),
+      appBar: AppBar(
+        title: const Text('Tira Dadi'),
+        actions: [
+          IconButton(
+            onPressed: _toggleAudio,
+            icon: Icon(_audioAttivo ? Icons.volume_up : Icons.volume_off),
+            tooltip: _audioAttivo ? 'Disattiva audio' : 'Attiva audio',
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Expanded(
