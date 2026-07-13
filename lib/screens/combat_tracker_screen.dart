@@ -1077,7 +1077,12 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
           icon: Icon(
             _vistaGiocatori ? Icons.visibility : Icons.visibility_outlined,
           ),
-          color: _vistaGiocatori ? AppColors.primary : null,
+          style:
+              _vistaGiocatori
+                  ? IconButton.styleFrom(
+                    backgroundColor: Colors.white.withValues(alpha: 0.25),
+                  )
+                  : null,
           tooltip: 'Vista Giocatori',
         ),
         if (!_vistaGiocatori)
