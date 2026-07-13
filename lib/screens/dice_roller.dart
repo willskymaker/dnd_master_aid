@@ -28,6 +28,42 @@ class _DadoExtra {
   const _DadoExtra(this.numero, this.facce);
 }
 
+/// Skin cosmetica del tiratore: colore principale (bottoni, dado
+/// selezionato) e colore di sfondo. Solo estetica, nessuna meccanica.
+///
+/// Pensata come punto di estensione futuro: un pacchetto di skin a
+/// pagamento venduto altrove potrebbe aggiungere altre voci a una mappa
+/// come questa, senza dover cambiare come le skin vengono usate qui.
+class DiceSkin {
+  final String nome;
+  final Color primario;
+  final Color sfondo;
+
+  const DiceSkin({
+    required this.nome,
+    required this.primario,
+    required this.sfondo,
+  });
+}
+
+const Map<String, DiceSkin> skinDadiDisponibili = {
+  'Classico': DiceSkin(
+    nome: 'Classico',
+    primario: Color(0xFF8B4513),
+    sfondo: Color(0xFFFAF7F2),
+  ),
+  'Smeraldo': DiceSkin(
+    nome: 'Smeraldo',
+    primario: Color(0xFF2E7D32),
+    sfondo: Color(0xFFF1F8F4),
+  ),
+  'Notturno': DiceSkin(
+    nome: 'Notturno',
+    primario: Color(0xFF5E35B1),
+    sfondo: Color(0xFFF3F0FA),
+  ),
+};
+
 class _DiceRollerScreenState extends State<DiceRollerScreen>
     with SingleTickerProviderStateMixin {
   final Random _random = Random();
@@ -55,11 +91,17 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
   bool _audioAttivo = true;
   static const _prefAudio = 'dice_roller_audio_attivo';
 
+  String _skinAttiva = 'Classico';
+  static const _prefSkin = 'dice_roller_skin';
+
   static const _dadi = [4, 6, 8, 10, 12, 20, 100];
   static const _durataAnimazione = Duration(milliseconds: 650);
 
   bool get _mostraVantaggio =>
       _facceDado == 20 && _numeroDadi == 1 && _extra.isEmpty;
+
+  DiceSkin get _skin =>
+      skinDadiDisponibili[_skinAttiva] ?? skinDadiDisponibili.values.first;
 
   @override
   void initState() {
@@ -69,12 +111,28 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
       duration: _durataAnimazione,
     );
     _caricaPreferenzaAudio();
+    _caricaSkin();
   }
 
   Future<void> _caricaPreferenzaAudio() async {
     final prefs = await SharedPreferences.getInstance();
     if (!mounted) return;
     setState(() => _audioAttivo = prefs.getBool(_prefAudio) ?? true);
+  }
+
+  Future<void> _caricaSkin() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!mounted) return;
+    final salvata = prefs.getString(_prefSkin);
+    if (salvata != null && skinDadiDisponibili.containsKey(salvata)) {
+      setState(() => _skinAttiva = salvata);
+    }
+  }
+
+  Future<void> _cambiaSkin(String nome) async {
+    setState(() => _skinAttiva = nome);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_prefSkin, nome);
   }
 
   Future<void> _toggleAudio() async {
@@ -219,16 +277,46 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
     if (_risultati.isEmpty) return Colors.grey;
     if (_facceDado == 20 && _risultati[0] == 20) return Colors.green.shade700;
     if (_facceDado == 20 && _risultati[0] == 1) return Colors.red.shade700;
-    return const Color(0xFF8B4513);
+    return _skin.primario;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAF7F2),
+      backgroundColor: _skin.sfondo,
       appBar: AppBar(
         title: const Text('Tira Dadi'),
         actions: [
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.palette_outlined),
+            tooltip: 'Cambia skin',
+            onSelected: _cambiaSkin,
+            itemBuilder:
+                (context) =>
+                    skinDadiDisponibili.keys.map((nome) {
+                      return PopupMenuItem(
+                        value: nome,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 16,
+                              height: 16,
+                              decoration: BoxDecoration(
+                                color: skinDadiDisponibili[nome]!.primario,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(nome),
+                            if (nome == _skinAttiva) ...[
+                              const Spacer(),
+                              const Icon(Icons.check, size: 18),
+                            ],
+                          ],
+                        ),
+                      );
+                    }).toList(),
+          ),
           IconButton(
             onPressed: _toggleAudio,
             icon: Icon(_audioAttivo ? Icons.volume_up : Icons.volume_off),
@@ -272,15 +360,12 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
                               width: 56,
                               height: 56,
                               decoration: BoxDecoration(
-                                color:
-                                    sel
-                                        ? const Color(0xFF8B4513)
-                                        : Colors.white,
+                                color: sel ? _skin.primario : Colors.white,
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
                                   color:
                                       sel
-                                          ? const Color(0xFF8B4513)
+                                          ? _skin.primario
                                           : Colors.grey.shade300,
                                   width: 2,
                                 ),
@@ -288,9 +373,9 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
                                     sel
                                         ? [
                                           BoxShadow(
-                                            color: const Color(
-                                              0xFF8B4513,
-                                            ).withValues(alpha: 0.3),
+                                            color: _skin.primario.withValues(
+                                              alpha: 0.3,
+                                            ),
                                             blurRadius: 6,
                                             offset: const Offset(0, 2),
                                           ),
@@ -303,10 +388,7 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: f == 100 ? 13 : 16,
-                                    color:
-                                        sel
-                                            ? Colors.white
-                                            : const Color(0xFF8B4513),
+                                    color: sel ? Colors.white : _skin.primario,
                                   ),
                                 ),
                               ),
@@ -553,7 +635,7 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
                     child: ElevatedButton.icon(
                       onPressed: _rolling ? null : _lanciaDadi,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF8B4513),
+                        backgroundColor: _skin.primario,
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
@@ -741,10 +823,10 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
                                 const SizedBox(width: 12),
                                 Text(
                                   '${r.totale}',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFF8B4513),
+                                    color: _skin.primario,
                                   ),
                                 ),
                               ],
