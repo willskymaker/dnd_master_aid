@@ -19,6 +19,7 @@ class NameGeneratorScreen extends StatefulWidget {
 class _NameGeneratorScreenState extends State<NameGeneratorScreen> {
   final _random = Random();
   _Genere _genere = _Genere.maschio;
+  String? _tema; // null = usa la specie del personaggio (comportamento attuale)
 
   // Sillabe generiche, usate solo se la specie non e' ancora nel database
   // dei nomi (lib/data/db_nomi.dart copre le 9 specie base del wizard).
@@ -71,21 +72,20 @@ class _NameGeneratorScreenState extends State<NameGeneratorScreen> {
   String get _specie => widget.factory.build().specie;
 
   void _generaNome() {
-    final nomiSpecie = nomiPerSpecie[_specie];
+    final nomiBase =
+        _tema != null ? nomiPerTema[_tema] : nomiPerSpecie[_specie];
     String nomeCompleto;
 
-    if (nomiSpecie != null) {
+    if (nomiBase != null) {
       final lista =
-          _genere == _Genere.maschio
-              ? nomiSpecie.maschili
-              : nomiSpecie.femminili;
+          _genere == _Genere.maschio ? nomiBase.maschili : nomiBase.femminili;
       final nome =
           lista.isNotEmpty
               ? lista[_random.nextInt(lista.length)]
               : _generaNomeGenerico();
       nomeCompleto =
-          nomiSpecie.cognomi.isNotEmpty
-              ? '$nome ${nomiSpecie.cognomi[_random.nextInt(nomiSpecie.cognomi.length)]}'
+          nomiBase.cognomi.isNotEmpty
+              ? '$nome ${nomiBase.cognomi[_random.nextInt(nomiBase.cognomi.length)]}'
               : nome;
     } else {
       nomeCompleto =
@@ -115,7 +115,9 @@ class _NameGeneratorScreenState extends State<NameGeneratorScreen> {
         child: Column(
           children: [
             Text(
-              specie.isEmpty
+              _tema != null
+                  ? 'Tema: $_tema'
+                  : specie.isEmpty
                   ? 'Nessuna specie selezionata: nomi generici'
                   : haNomiSpecifici
                   ? 'Nomi per: $specie'
@@ -124,6 +126,25 @@ class _NameGeneratorScreenState extends State<NameGeneratorScreen> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppSpacing.md),
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                ChoiceChip(
+                  label: const Text('Specie'),
+                  selected: _tema == null,
+                  onSelected: (_) => setState(() => _tema = null),
+                ),
+                for (final tema in nomiPerTema.keys)
+                  ChoiceChip(
+                    label: Text(tema),
+                    selected: _tema == tema,
+                    onSelected: (_) => setState(() => _tema = tema),
+                  ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.lg),
             SegmentedButton<_Genere>(
               segments: const [
                 ButtonSegment(value: _Genere.maschio, label: Text('Maschile')),
