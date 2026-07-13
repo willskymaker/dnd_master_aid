@@ -63,6 +63,66 @@ List<String> classiConsigliatePerArmatura(String categoria) =>
         .map((c) => c.nome)
         .toList();
 
+/// Pacchetti di equipaggiamento (kit): la scelta e' legata all'opzione
+/// offerta a inizio partita da ciascuna classe nel PHB, non a una
+/// competenza vera e propria - non deriva quindi da db_classi.dart ma da
+/// una mappa curata a mano, come per gli oggetti sotto in questo file.
+const Map<String, List<String>> _classiPerPacco = {
+  "Burglar's Pack": ["Ladro"],
+  "Diplomat's Pack": ["Bardo"],
+  "Dungeoneer's Pack": [
+    "Guerriero",
+    "Monaco",
+    "Ranger",
+    "Ladro",
+    "Stregone",
+    "Warlock",
+  ],
+  "Entertainer's Pack": ["Bardo"],
+  "Explorer's Pack": [
+    "Barbaro",
+    "Chierico",
+    "Druido",
+    "Guerriero",
+    "Monaco",
+    "Paladino",
+    "Ranger",
+    "Ladro",
+    "Stregone",
+    "Mago",
+  ],
+  "Priest's Pack": ["Chierico", "Paladino"],
+  "Scholar's Pack": ["Mago", "Warlock"],
+};
+
+/// Classi consigliate per un pacco importato da equipment.json (chiave:
+/// nome inglese stabile, es. "Priest's Pack").
+List<String> classiConsigliatePerKit(String nomeInglese) =>
+    _classiPerPacco[nomeInglese] ?? const [];
+
+/// Classi consigliate per uno strumento importato da equipment.json.
+/// Gli strumenti musicali sono competenza del Bardo (tre a scelta) e del
+/// Monaco (uno a scelta); gli attrezzi da scasso/erboristeria ricalcano le
+/// competenze specifiche di db_classi.dart. Gli strumenti puramente
+/// artigianali (falegname, fabbro, ecc.) non sono legati a nessuna classe
+/// in particolare e restano disponibili per tutti.
+List<String> classiConsigliatePerStrumento(String nomeInglese) {
+  if (nomeInglese.startsWith('Musical instrument')) {
+    return const ['Bardo', 'Monaco'];
+  }
+  switch (nomeInglese) {
+    case "Thieves' tools":
+    case 'Disguise kit':
+    case 'Forgery kit':
+    case "Poisoner's kit":
+      return const ['Ladro'];
+    case 'Herbalism kit':
+      return const ['Druido', 'Ranger'];
+    default:
+      return const [];
+  }
+}
+
 class OggettoEquip {
   final String nome;
   final String tipo; // "arma", "armatura", "oggetto"
@@ -135,6 +195,7 @@ class OggettoEquip {
       danno: null,
       costoMO: _parseCost(json['cost']),
       pesoKg: 0,
+      classiConsigliate: classiConsigliatePerKit(json['name'] ?? ''),
     );
   }
 
@@ -148,6 +209,7 @@ class OggettoEquip {
       danno: null,
       costoMO: _parseCost(json['cost']),
       pesoKg: _parseWeight(json['weight']),
+      classiConsigliate: classiConsigliatePerStrumento(json['name'] ?? ''),
     );
   }
 
