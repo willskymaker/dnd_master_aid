@@ -11,8 +11,8 @@
 🎯 **Google Play Store**: In fase di pubblicazione (account sviluppatore in verifica)
 
 📥 **Download diretto APK**:
-- [**dnd-master-aid-v1.0.4-balanced.apk**](https://github.com/willskymaker/dnd_master_aid/releases/latest/download/dnd-master-aid-v1.0.4-balanced.apk) (25.8 MB) - **CONSIGLIATA**
-- [**dnd-master-aid-v1.0.4-googleplay-final.apk**](https://github.com/willskymaker/dnd_master_aid/releases/latest/download/dnd-master-aid-v1.0.4-googleplay-final.apk) (25.9 MB) - **Google Play Version**
+- [**dnd-master-aid-v1.0.4-balanced.apk**](https://github.com/willskymaker/master_aid/releases/latest/download/dnd-master-aid-v1.0.4-balanced.apk) (25.8 MB) - **CONSIGLIATA**
+- [**dnd-master-aid-v1.0.4-googleplay-final.apk**](https://github.com/willskymaker/master_aid/releases/latest/download/dnd-master-aid-v1.0.4-googleplay-final.apk) (25.9 MB) - **Google Play Version**
 
 ### 📋 Installazione Android
 

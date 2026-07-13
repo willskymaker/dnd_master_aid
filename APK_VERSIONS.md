@@ -1,4 +1,4 @@
-# 📱 D&D Master Aid - Versioni APK
+# 📱 Master Aid - Versioni APK
 
 ## 🎯 Versione Consigliata
 

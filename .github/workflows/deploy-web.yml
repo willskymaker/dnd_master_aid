@@ -21,7 +21,7 @@ jobs:
         run: flutter pub get
 
       - name: Build Web
-        run: flutter build web --base-href /dnd_master_aid/
+        run: flutter build web --base-href /master_aid/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
