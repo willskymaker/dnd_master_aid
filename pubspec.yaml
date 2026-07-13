@@ -45,6 +45,7 @@ dependencies:
   google_mobile_ads: ^9.0.0
   share_plus: ^13.2.0
   receive_sharing_intent: ^1.9.0
+  audioplayers: ^6.8.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -73,6 +74,7 @@ flutter:
       - assets/images/scheda_pg_blank_base.png
       - assets/data/
       - assets/icon/icon.png
+      - assets/audio/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
