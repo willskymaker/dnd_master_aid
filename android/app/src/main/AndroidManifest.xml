@@ -20,7 +20,7 @@
         tools:node="remove" />
 
     <application
-        android:label="D&amp;D Master Aid"
+        android:label="Master Aid"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:allowBackup="true"

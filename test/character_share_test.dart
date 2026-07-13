@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:dnd_master_aid/factory_pg_base.dart';
-import 'package:dnd_master_aid/utils/character_share.dart';
+import 'package:master_aid/factory_pg_base.dart';
+import 'package:master_aid/utils/character_share.dart';
 
 void main() {
   PGBase creaPersonaggio() => PGBase(
