@@ -11,6 +11,7 @@ import '../data/db_slot_incantesimi.dart';
 import '../factory_pg_base.dart';
 import '../providers/saved_characters_provider.dart';
 import '../repositories/json_data_repository.dart';
+import '../utils/damage_types.dart';
 import '../utils/encounter_generator.dart';
 import '../utils/loot_generator.dart';
 import '../utils/tactical_hints.dart';
@@ -330,6 +331,87 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
         c.tsMorteFallimenti = 0;
       }
     });
+  }
+
+  Future<void> _mostraApplicaDanno(_Combattente c) async {
+    final dannoController = TextEditingController();
+    String? tipoSelezionato;
+
+    final confermato = await showDialog<bool>(
+      context: context,
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (ctx, setDialogState) {
+            return AlertDialog(
+              title: Text('Applica danno a ${c.nome}'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: dannoController,
+                    autofocus: true,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      labelText: 'Quantità di danno',
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  DropdownButtonFormField<String?>(
+                    initialValue: tipoSelezionato,
+                    decoration: const InputDecoration(
+                      labelText: 'Tipo di danno (opzionale)',
+                    ),
+                    items: [
+                      const DropdownMenuItem<String?>(
+                        value: null,
+                        child: Text('Nessuno (danno pieno)'),
+                      ),
+                      for (final tipo in tipiDanno)
+                        DropdownMenuItem<String?>(
+                          value: tipo,
+                          child: Text(tipo),
+                        ),
+                    ],
+                    onChanged: (v) => setDialogState(() => tipoSelezionato = v),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(ctx, false),
+                  child: const Text('Annulla'),
+                ),
+                FilledButton(
+                  onPressed: () => Navigator.pop(ctx, true),
+                  child: const Text('Applica'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+    if (confermato != true) return;
+    final danno = int.tryParse(dannoController.text) ?? 0;
+    if (danno <= 0) return;
+
+    if (tipoSelezionato == null) {
+      _modificaPf(c, -danno);
+      return;
+    }
+
+    final risultato = applicaResistenze(
+      danno: danno,
+      tipoDannoItaliano: tipoSelezionato!,
+      datiMostro: c.datiMostro,
+    );
+    _modificaPf(c, -risultato.dannoApplicato);
+    if (risultato.messaggio != null && mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(risultato.messaggio!)));
+    }
   }
 
   /// Tira un TS contro la morte per un combattente a 0 PF: 20 naturale
@@ -1186,6 +1268,14 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
                                     color: AppColors.primary,
                                     tooltip: 'Slot incantesimo',
                                   ),
+                                IconButton(
+                                  onPressed: () => _mostraApplicaDanno(c),
+                                  icon: const Icon(
+                                    Icons.local_fire_department_outlined,
+                                  ),
+                                  color: Colors.deepOrange,
+                                  tooltip: 'Applica danno tipizzato',
+                                ),
                                 IconButton(
                                   onPressed: () => _modificaPf(c, -1),
                                   icon: const Icon(Icons.remove_circle_outline),
