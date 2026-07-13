@@ -13,6 +13,7 @@ import '../providers/saved_characters_provider.dart';
 import '../repositories/json_data_repository.dart';
 import '../utils/damage_types.dart';
 import '../utils/encounter_generator.dart';
+import '../utils/health_band.dart';
 import '../utils/loot_generator.dart';
 import '../utils/tactical_hints.dart';
 import '../widgets/mobile/mobile_scaffold.dart';
@@ -150,6 +151,7 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
   int _turnoIndex = 0;
   int _round = 1;
   List<_EncounterPreset> _incontriSalvati = [];
+  bool _vistaGiocatori = false;
 
   @override
   void initState() {
@@ -451,6 +453,42 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
   /// Riga compatta dei tiri salvezza contro la morte per un combattente a
   /// 0 PF: pallini per successi/fallimenti e un dado per tirare, oppure
   /// un'etichetta se e' gia' morto o stabilizzato.
+  /// Barra colorata (blu -> giallo -> rosso man mano che i PF scendono),
+  /// senza mostrare alcun numero: solo lo stato relativo di salute, per la
+  /// Vista Giocatori.
+  Widget _barraSalute(InfoFasciaSalute info) {
+    final colore = switch (info.fascia) {
+      FasciaSalute.sano => Colors.blue,
+      FasciaSalute.ferito => Colors.amber.shade700,
+      FasciaSalute.gravementeFerito => Colors.red,
+      FasciaSalute.morente => Colors.grey.shade800,
+    };
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(4),
+          child: LinearProgressIndicator(
+            value: info.frazione,
+            minHeight: 8,
+            backgroundColor: Colors.grey.shade300,
+            valueColor: AlwaysStoppedAnimation(colore),
+          ),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          info.etichetta,
+          style: TextStyle(
+            fontSize: 12,
+            color: colore,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _rigaTsMorte(_Combattente c) {
     if (c.tsMorteFallimenti >= 3) {
       return const Row(
@@ -1079,12 +1117,23 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
           icon: const Icon(Icons.refresh),
           tooltip: 'Nuovo combattimento',
         ),
+        IconButton(
+          onPressed: () => setState(() => _vistaGiocatori = !_vistaGiocatori),
+          icon: Icon(
+            _vistaGiocatori ? Icons.visibility : Icons.visibility_outlined,
+          ),
+          color: _vistaGiocatori ? AppColors.primary : null,
+          tooltip: 'Vista Giocatori',
+        ),
       ],
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _mostraAggiungiCombattente,
-        icon: const Icon(Icons.add),
-        label: const Text('Aggiungi'),
-      ),
+      floatingActionButton:
+          _vistaGiocatori
+              ? null
+              : FloatingActionButton.extended(
+                onPressed: _mostraAggiungiCombattente,
+                icon: const Icon(Icons.add),
+                label: const Text('Aggiungi'),
+              ),
       body: Column(
         children: [
           if (inCorso)
@@ -1186,7 +1235,10 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
                                 ),
                                 Expanded(
                                   child: InkWell(
-                                    onTap: () => _modificaCombattente(c),
+                                    onTap:
+                                        _vistaGiocatori
+                                            ? null
+                                            : () => _modificaCombattente(c),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -1197,16 +1249,30 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        Text(
-                                          '${c.isPg ? "PG" : "Mostro"}'
-                                          '${c.ca != null ? " · CA ${c.ca}" : ""}'
-                                          '${c.cd != null ? " · CD ${c.cd}" : ""}'
-                                          ' · PF ${c.pfCorrenti}/${c.pfMax}',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Colors.grey[600],
+                                        if (_vistaGiocatori && !c.isPg)
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              top: 4,
+                                              bottom: 2,
+                                            ),
+                                            child: _barraSalute(
+                                              fasciaSalute(
+                                                pfCorrenti: c.pfCorrenti,
+                                                pfMax: c.pfMax,
+                                              ),
+                                            ),
+                                          )
+                                        else
+                                          Text(
+                                            '${c.isPg ? "PG" : "Mostro"}'
+                                            '${c.ca != null ? " · CA ${c.ca}" : ""}'
+                                            '${!_vistaGiocatori && c.cd != null ? " · CD ${c.cd}" : ""}'
+                                            ' · PF ${c.pfCorrenti}/${c.pfMax}',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.grey[600],
+                                            ),
                                           ),
-                                        ),
                                         if (c.condizioni.isNotEmpty)
                                           Padding(
                                             padding: const EdgeInsets.only(
@@ -1254,43 +1320,48 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
                                     ),
                                   ),
                                 ),
-                                if (c.datiMostro != null)
+                                if (!_vistaGiocatori) ...[
+                                  if (c.datiMostro != null)
+                                    IconButton(
+                                      onPressed: () => _mostraDettagliMostro(c),
+                                      icon: const Icon(Icons.info_outline),
+                                      color: Colors.grey[700],
+                                      tooltip: 'Dettagli mostro',
+                                    ),
+                                  if (c.eIncantatore)
+                                    IconButton(
+                                      onPressed:
+                                          () => _mostraSlotIncantesimo(c),
+                                      icon: const Icon(Icons.auto_fix_high),
+                                      color: AppColors.primary,
+                                      tooltip: 'Slot incantesimo',
+                                    ),
                                   IconButton(
-                                    onPressed: () => _mostraDettagliMostro(c),
-                                    icon: const Icon(Icons.info_outline),
-                                    color: Colors.grey[700],
-                                    tooltip: 'Dettagli mostro',
+                                    onPressed: () => _mostraApplicaDanno(c),
+                                    icon: const Icon(
+                                      Icons.local_fire_department_outlined,
+                                    ),
+                                    color: Colors.deepOrange,
+                                    tooltip: 'Applica danno tipizzato',
                                   ),
-                                if (c.eIncantatore)
                                   IconButton(
-                                    onPressed: () => _mostraSlotIncantesimo(c),
-                                    icon: const Icon(Icons.auto_fix_high),
-                                    color: AppColors.primary,
-                                    tooltip: 'Slot incantesimo',
+                                    onPressed: () => _modificaPf(c, -1),
+                                    icon: const Icon(
+                                      Icons.remove_circle_outline,
+                                    ),
+                                    color: Colors.red,
                                   ),
-                                IconButton(
-                                  onPressed: () => _mostraApplicaDanno(c),
-                                  icon: const Icon(
-                                    Icons.local_fire_department_outlined,
+                                  IconButton(
+                                    onPressed: () => _modificaPf(c, 1),
+                                    icon: const Icon(Icons.add_circle_outline),
+                                    color: Colors.green,
                                   ),
-                                  color: Colors.deepOrange,
-                                  tooltip: 'Applica danno tipizzato',
-                                ),
-                                IconButton(
-                                  onPressed: () => _modificaPf(c, -1),
-                                  icon: const Icon(Icons.remove_circle_outline),
-                                  color: Colors.red,
-                                ),
-                                IconButton(
-                                  onPressed: () => _modificaPf(c, 1),
-                                  icon: const Icon(Icons.add_circle_outline),
-                                  color: Colors.green,
-                                ),
-                                IconButton(
-                                  onPressed: () => _rimuovi(c),
-                                  icon: const Icon(Icons.close),
-                                  color: Colors.grey,
-                                ),
+                                  IconButton(
+                                    onPressed: () => _rimuovi(c),
+                                    icon: const Icon(Icons.close),
+                                    color: Colors.grey,
+                                  ),
+                                ],
                               ],
                             ),
                           ),
