@@ -102,14 +102,13 @@ class _MostroBlueprint {
     'azioniLeggendarieMax': azioniLeggendarieMax,
   };
 
-  factory _MostroBlueprint.fromJson(Map<String, dynamic> j) =>
-      _MostroBlueprint(
-        nome: j['nome'] as String,
-        pfMax: (j['pfMax'] as num).toInt(),
-        ca: (j['ca'] as num?)?.toInt(),
-        datiMostro: (j['datiMostro'] as Map?)?.cast<String, dynamic>(),
-        azioniLeggendarieMax: (j['azioniLeggendarieMax'] as num?)?.toInt(),
-      );
+  factory _MostroBlueprint.fromJson(Map<String, dynamic> j) => _MostroBlueprint(
+    nome: j['nome'] as String,
+    pfMax: (j['pfMax'] as num).toInt(),
+    ca: (j['ca'] as num?)?.toInt(),
+    datiMostro: (j['datiMostro'] as Map?)?.cast<String, dynamic>(),
+    azioniLeggendarieMax: (j['azioniLeggendarieMax'] as num?)?.toInt(),
+  );
 }
 
 class _EncounterPreset {
@@ -123,18 +122,16 @@ class _EncounterPreset {
     'mostri': mostri.map((m) => m.toJson()).toList(),
   };
 
-  factory _EncounterPreset.fromJson(Map<String, dynamic> j) =>
-      _EncounterPreset(
-        nome: j['nome'] as String,
-        mostri:
-            (j['mostri'] as List)
-                .map(
-                  (m) => _MostroBlueprint.fromJson(
-                    (m as Map).cast<String, dynamic>(),
-                  ),
-                )
-                .toList(),
-      );
+  factory _EncounterPreset.fromJson(Map<String, dynamic> j) => _EncounterPreset(
+    nome: j['nome'] as String,
+    mostri:
+        (j['mostri'] as List)
+            .map(
+              (m) =>
+                  _MostroBlueprint.fromJson((m as Map).cast<String, dynamic>()),
+            )
+            .toList(),
+  );
 }
 
 class CombatTrackerScreen extends StatefulWidget {
@@ -199,7 +196,9 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
             .toList();
     if (mostri.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Aggiungi almeno un mostro prima di salvare')),
+        const SnackBar(
+          content: Text('Aggiungi almeno un mostro prima di salvare'),
+        ),
       );
       return;
     }
