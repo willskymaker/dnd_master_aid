@@ -13,6 +13,7 @@ import '../providers/saved_characters_provider.dart';
 import '../repositories/json_data_repository.dart';
 import '../utils/encounter_generator.dart';
 import '../utils/loot_generator.dart';
+import '../utils/tactical_hints.dart';
 import '../widgets/mobile/mobile_scaffold.dart';
 import 'dice_roller.dart';
 import 'spell_cards_screen.dart';
@@ -683,6 +684,11 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
     final azioni = (dati['actions'] as List?) ?? const [];
     final azioniSpeciali = (dati['special_abilities'] as List?) ?? const [];
     final azioniLeggendarie = (dati['legendary_actions'] as List?) ?? const [];
+    final suggerimenti = suggerimentiTattici(
+      datiMostro: dati,
+      pfCorrenti: c.pfCorrenti,
+      pfMax: c.pfMax,
+    );
 
     const nomiCaratteristiche = {
       'strength': 'FOR',
@@ -749,6 +755,34 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
                                   ],
                                 );
                               }).toList(),
+                        ),
+                      ],
+                      if (suggerimenti.isNotEmpty) ...[
+                        const SizedBox(height: 16),
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Suggerimento',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                              for (final s in suggerimenti)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 4),
+                                  child: Text('• $s'),
+                                ),
+                            ],
+                          ),
                         ),
                       ],
                       if (azioniSpeciali.isNotEmpty) ...[
