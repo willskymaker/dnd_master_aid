@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 
 class DiceRollerScreen extends StatefulWidget {
@@ -26,6 +27,62 @@ class _DadoExtra {
   final int numero;
   final int facce;
   const _DadoExtra(this.numero, this.facce);
+
+  Map<String, dynamic> toJson() => {'numero': numero, 'facce': facce};
+
+  factory _DadoExtra.fromJson(Map<String, dynamic> json) =>
+      _DadoExtra(json['numero'] as int? ?? 1, json['facce'] as int? ?? 6);
+}
+
+/// Configurazione di lancio salvata dall'utente con un nome a scelta (es.
+/// "Palla di fuoco" = 6d6), per richiamarla senza reimpostare tutto ogni
+/// volta. Persistita localmente, un giocatore per dispositivo.
+class _PresetDadi {
+  final String nome;
+  final int numero;
+  final int facce;
+  final List<_DadoExtra> extra;
+  final int modificatore;
+
+  const _PresetDadi({
+    required this.nome,
+    required this.numero,
+    required this.facce,
+    required this.extra,
+    required this.modificatore,
+  });
+
+  /// Etichetta sintetica per l'anteprima (es. "6d6" o "1d20 + 1d6 +3").
+  String get etichetta {
+    var s = '$numero d$facce';
+    for (final e in extra) {
+      s += ' + ${e.numero}d${e.facce}';
+    }
+    if (modificatore != 0) {
+      s += ' ${modificatore > 0 ? '+' : ''}$modificatore';
+    }
+    return s;
+  }
+
+  Map<String, dynamic> toJson() => {
+    'nome': nome,
+    'numero': numero,
+    'facce': facce,
+    'extra': extra.map((e) => e.toJson()).toList(),
+    'modificatore': modificatore,
+  };
+
+  factory _PresetDadi.fromJson(Map<String, dynamic> json) => _PresetDadi(
+    nome: json['nome'] as String? ?? '',
+    numero: json['numero'] as int? ?? 1,
+    facce: json['facce'] as int? ?? 20,
+    extra:
+        (json['extra'] as List?)
+            ?.map((e) => _DadoExtra.fromJson(e as Map<String, dynamic>))
+            .toList() ??
+        [],
+    modificatore: json['modificatore'] as int? ?? 0,
+  );
 }
 
 /// Skin cosmetica del tiratore: colore principale (bottoni, dado
@@ -94,6 +151,9 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
   String _skinAttiva = 'Classico';
   static const _prefSkin = 'dice_roller_skin';
 
+  List<_PresetDadi> _preset = [];
+  static const _prefPreset = 'dice_roller_presets';
+
   static const _dadi = [4, 6, 8, 10, 12, 20, 100];
   static const _durataAnimazione = Duration(milliseconds: 650);
 
@@ -112,6 +172,7 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
     );
     _caricaPreferenzaAudio();
     _caricaSkin();
+    _caricaPreset();
   }
 
   Future<void> _caricaPreferenzaAudio() async {
@@ -133,6 +194,92 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
     setState(() => _skinAttiva = nome);
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_prefSkin, nome);
+  }
+
+  Future<void> _caricaPreset() async {
+    final prefs = await SharedPreferences.getInstance();
+    final raw = prefs.getStringList(_prefPreset) ?? [];
+    if (!mounted) return;
+    setState(() {
+      _preset =
+          raw
+              .map(
+                (s) =>
+                    _PresetDadi.fromJson(jsonDecode(s) as Map<String, dynamic>),
+              )
+              .toList();
+    });
+  }
+
+  Future<void> _salvaPresetSuStorage() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(
+      _prefPreset,
+      _preset.map((p) => jsonEncode(p.toJson())).toList(),
+    );
+  }
+
+  void _caricaConfigurazione(_PresetDadi p) {
+    setState(() {
+      _numeroDadi = p.numero;
+      _facceDado = p.facce;
+      _extra
+        ..clear()
+        ..addAll(p.extra);
+      _modificatore = p.modificatore;
+      if (_facceDado != 20 || _numeroDadi != 1) {
+        _modalita = _VantaggioMode.normale;
+      }
+    });
+  }
+
+  Future<void> _salvaPresetCorrente() async {
+    final controller = TextEditingController();
+    final nome = await showDialog<String>(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Salva preset'),
+            content: TextField(
+              controller: controller,
+              autofocus: true,
+              decoration: const InputDecoration(
+                labelText: 'Nome (es. "Palla di fuoco")',
+              ),
+              onSubmitted: (v) => Navigator.pop(context, v.trim()),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Annulla'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, controller.text.trim()),
+                child: const Text('Salva'),
+              ),
+            ],
+          ),
+    );
+    if (nome == null || nome.isEmpty) return;
+    if (!mounted) return;
+
+    setState(() {
+      _preset.add(
+        _PresetDadi(
+          nome: nome,
+          numero: _numeroDadi,
+          facce: _facceDado,
+          extra: List.of(_extra),
+          modificatore: _modificatore,
+        ),
+      );
+    });
+    await _salvaPresetSuStorage();
+  }
+
+  Future<void> _eliminaPreset(int index) async {
+    setState(() => _preset.removeAt(index));
+    await _salvaPresetSuStorage();
   }
 
   Future<void> _toggleAudio() async {
@@ -332,6 +479,33 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  // Preset salvati (es. "Palla di fuoco" = 6d6)
+                  if (_preset.isNotEmpty) ...[
+                    const Text(
+                      'Preset salvati',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children:
+                          _preset.asMap().entries.map((entry) {
+                            final p = entry.value;
+                            return InputChip(
+                              label: Text('${p.nome} (${p.etichetta})'),
+                              onPressed: () => _caricaConfigurazione(p),
+                              onDeleted: () => _eliminaPreset(entry.key),
+                            );
+                          }).toList(),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+
                   // Selezione dado
                   const Text(
                     'Tipo di dado',
@@ -591,6 +765,15 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
                           }).toList(),
                     ),
                   ],
+                  const SizedBox(height: 8),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton.icon(
+                      onPressed: _salvaPresetCorrente,
+                      icon: const Icon(Icons.bookmark_add_outlined, size: 18),
+                      label: const Text('Salva come preset'),
+                    ),
+                  ),
 
                   // Vantaggio/Svantaggio (solo d20 x1, senza dadi extra)
                   if (_mostraVantaggio) ...[
