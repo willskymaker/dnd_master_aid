@@ -1,6 +1,6 @@
-# D&D Master Aid
+# Master Aid
 
-🎲 **D&D Master Aid** è un'app modulare OPEN SOURCE BETA per la creazione e gestione di personaggi Dungeons & Dragons 5e, pensata per essere leggera, responsive e perfetta sia per nuovi giocatori che per veterani del gioco di ruolo.
+🎲 **Master Aid** è un'app modulare OPEN SOURCE BETA pensata per essere un aiuto concreto ai master di giochi di ruolo. Al momento supporta **Dungeons & Dragons 5e** (creazione e gestione personaggi, scheda viva, tracker di combattimento), con l'obiettivo di aggiungere altri giochi in futuro, uno alla volta.
 
 ⚠️ **VERSIONE BETA** - App in sviluppo attivo con la community! Contributi benvenuti su GitHub.
 
@@ -99,8 +99,8 @@ Per utilizzare l'app, scarica semplicemente l'APK Android! Per lo sviluppo:
 
 ```bash
 # Clone del repository
-git clone https://github.com/tuo-username/DnD_MasterAid.git
-cd DnD_MasterAid
+git clone https://github.com/willskymaker/master_aid.git
+cd master_aid
 
 # Installazione dipendenze
 flutter pub get
@@ -148,7 +148,7 @@ flutter build web --release
 Il progetto è aperto a contributi! Puoi:
 - Aprire una Issue
 - Inviare una Pull Request
-- Segnalare bug o richieste via [GitHub Issues](https://github.com/tuo-username/DnD_MasterAid/issues)
+- Segnalare bug o richieste via [GitHub Issues](https://github.com/willskymaker/master_aid/issues)
 
 🎯 Issue "good first contribution"
 
@@ -205,7 +205,7 @@ Questo progetto è distribuito sotto licenza **MIT**. Consulta il file `LICENSE`
 **Status**: Progetto Open Source in sviluppo attivo
 
 **🔗 Collegamenti**:
-- **GitHub**: https://github.com/willskymaker/dnd_master_aid
+- **GitHub**: https://github.com/willskymaker/master_aid
 - **Google Play Store**: In pubblicazione
 - **FareZero Makers**: Supporto tecnico e community
 - **Licenza**: MIT License - Libero per tutti

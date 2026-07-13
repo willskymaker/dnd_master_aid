@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.dndmasteraid.app"
+    namespace = "com.masteraid.app"
     compileSdk = 35  // Alto per compilazione
     ndkVersion = "27.0.12077973"  // Versione richiesta dai plugin
 
@@ -37,7 +37,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.dndmasteraid.app"
+        applicationId = "com.masteraid.app"
         minSdk = 21
         targetSdk = 35  // Android 15 - richiesto da Google Play
         versionCode = flutter.versionCode

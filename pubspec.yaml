@@ -1,5 +1,5 @@
-name: dnd_master_aid
-description: "D&D Master Aid - Assistente open source offline per Dungeons & Dragons 5e: creazione personaggi, database specie/classi/incantesimi e strumenti per il Master."
+name: master_aid
+description: "Master Aid - Assistente open source offline per Master di giochi di ruolo. Attualmente supporta D&D 5e: creazione personaggi, database specie/classi/incantesimi e strumenti per il Master."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev

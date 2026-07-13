@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "dnd_master_aid" "\0"
+            VALUE "FileDescription", "master_aid" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "dnd_master_aid" "\0"
+            VALUE "InternalName", "master_aid" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "dnd_master_aid.exe" "\0"
-            VALUE "ProductName", "dnd_master_aid" "\0"
+            VALUE "OriginalFilename", "master_aid.exe" "\0"
+            VALUE "ProductName", "master_aid" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

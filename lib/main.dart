@@ -15,7 +15,7 @@ import 'screens/dice_roller.dart'; // Modulo dadi
 import 'screens/name_generator.dart'; // Generatore nomi (standalone)
 import 'screens/saved_characters_screen.dart'; // Lista personaggi salvati
 import 'screens/combat_tracker_screen.dart'; // Tracker iniziativa/combattimento
-import 'package:dnd_master_aid/factory_pg_base.dart';
+import 'factory_pg_base.dart';
 import 'providers/character_provider.dart';
 import 'providers/saved_characters_provider.dart';
 import 'utils/character_share.dart';
@@ -118,7 +118,7 @@ class _DnDMasterAidAppState extends State<DnDMasterAidApp> {
       ],
       child: MaterialApp(
         navigatorKey: _navigatorKey,
-        title: 'D&D Master Aid',
+        title: 'Master Aid',
         debugShowCheckedModeBanner: false,
         theme: buildAppTheme(),
         home: const HomePage(),
@@ -185,7 +185,7 @@ class HomePage extends StatelessWidget {
     final inArrivo = funzioni.where((f) => !(f['attivo'] as bool)).toList();
 
     return MobileScaffold(
-      title: 'D&D Master Aid',
+      title: 'Master Aid',
       showBackButton: false,
       leading: Padding(
         padding: const EdgeInsets.all(AppSpacing.sm),

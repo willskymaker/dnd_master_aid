@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:dnd_master_aid/data/db_equip.dart';
+import 'package:master_aid/data/db_equip.dart';
 
 void main() {
   group('classiConsigliatePerArma', () {

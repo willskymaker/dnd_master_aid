@@ -657,7 +657,7 @@ class _StepExportScreenState extends State<StepExportScreen> {
               pw.Divider(color: borderColor),
               pw.SizedBox(height: 4),
               pw.Text(
-                'D&D Master Aid  •  D&D 5e',
+                'Master Aid  •  D&D 5e',
                 style: pw.TextStyle(fontSize: 8, color: grey),
               ),
             ],
