@@ -1073,51 +1073,6 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
       title: 'Tracker Combattimento',
       actions: [
         IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const DiceRollerScreen()),
-            );
-          },
-          icon: const Icon(Icons.casino),
-          tooltip: 'Tira dadi',
-        ),
-        IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const SpellCardsScreen()),
-            );
-          },
-          icon: const Icon(Icons.auto_stories),
-          tooltip: 'Card incantesimi',
-        ),
-        IconButton(
-          onPressed: _mostraGeneraIncontro,
-          icon: const Icon(Icons.auto_awesome),
-          tooltip: 'Genera incontro',
-        ),
-        IconButton(
-          onPressed: _salvaIncontroCorrente,
-          icon: const Icon(Icons.save_outlined),
-          tooltip: 'Salva incontro',
-        ),
-        IconButton(
-          onPressed: _mostraIncontriSalvati,
-          icon: const Icon(Icons.folder_open_outlined),
-          tooltip: 'Incontri salvati',
-        ),
-        IconButton(
-          onPressed: _mostraGeneraBottino,
-          icon: const Icon(Icons.diamond_outlined),
-          tooltip: 'Genera bottino',
-        ),
-        IconButton(
-          onPressed: _combattenti.isEmpty ? null : _nuovoCombattimento,
-          icon: const Icon(Icons.refresh),
-          tooltip: 'Nuovo combattimento',
-        ),
-        IconButton(
           onPressed: () => setState(() => _vistaGiocatori = !_vistaGiocatori),
           icon: Icon(
             _vistaGiocatori ? Icons.visibility : Icons.visibility_outlined,
@@ -1125,6 +1080,87 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
           color: _vistaGiocatori ? AppColors.primary : null,
           tooltip: 'Vista Giocatori',
         ),
+        if (!_vistaGiocatori)
+          PopupMenuButton<String>(
+            tooltip: 'Altre azioni',
+            onSelected: (azione) {
+              switch (azione) {
+                case 'dadi':
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const DiceRollerScreen()),
+                  );
+                case 'incantesimi':
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const SpellCardsScreen()),
+                  );
+                case 'genera_incontro':
+                  _mostraGeneraIncontro();
+                case 'salva_incontro':
+                  _salvaIncontroCorrente();
+                case 'incontri_salvati':
+                  _mostraIncontriSalvati();
+                case 'genera_bottino':
+                  _mostraGeneraBottino();
+                case 'nuovo_combattimento':
+                  _nuovoCombattimento();
+              }
+            },
+            itemBuilder:
+                (context) => [
+                  const PopupMenuItem(
+                    value: 'dadi',
+                    child: ListTile(
+                      leading: Icon(Icons.casino),
+                      title: Text('Tira dadi'),
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'incantesimi',
+                    child: ListTile(
+                      leading: Icon(Icons.auto_stories),
+                      title: Text('Card incantesimi'),
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'genera_incontro',
+                    child: ListTile(
+                      leading: Icon(Icons.auto_awesome),
+                      title: Text('Genera incontro'),
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'salva_incontro',
+                    child: ListTile(
+                      leading: Icon(Icons.save_outlined),
+                      title: Text('Salva incontro'),
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'incontri_salvati',
+                    child: ListTile(
+                      leading: Icon(Icons.folder_open_outlined),
+                      title: Text('Incontri salvati'),
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'genera_bottino',
+                    child: ListTile(
+                      leading: Icon(Icons.diamond_outlined),
+                      title: Text('Genera bottino'),
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 'nuovo_combattimento',
+                    enabled: _combattenti.isNotEmpty,
+                    child: const ListTile(
+                      leading: Icon(Icons.refresh),
+                      title: Text('Nuovo combattimento'),
+                    ),
+                  ),
+                ],
+          ),
       ],
       floatingActionButton:
           _vistaGiocatori
