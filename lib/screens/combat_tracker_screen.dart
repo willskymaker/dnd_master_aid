@@ -12,6 +12,7 @@ import '../repositories/json_data_repository.dart';
 import '../utils/encounter_generator.dart';
 import '../utils/loot_generator.dart';
 import '../widgets/mobile/mobile_scaffold.dart';
+import 'dice_roller.dart';
 import 'spell_cards_screen.dart';
 
 /// Combattente in una sessione di combattimento (solo in memoria, non
@@ -37,6 +38,8 @@ class _Combattente {
   final Map<String, dynamic>? datiMostro;
   final int? azioniLeggendarieMax;
   int azioniLeggendarieUsate = 0;
+  int tsMorteSuccessi = 0;
+  int tsMorteFallimenti = 0;
 
   _Combattente({
     required this.nome,
@@ -106,7 +109,108 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
   }
 
   void _modificaPf(_Combattente c, int delta) {
-    setState(() => c.pfCorrenti = (c.pfCorrenti + delta).clamp(0, c.pfMax));
+    setState(() {
+      c.pfCorrenti = (c.pfCorrenti + delta).clamp(0, c.pfMax);
+      if (c.pfCorrenti > 0) {
+        c.tsMorteSuccessi = 0;
+        c.tsMorteFallimenti = 0;
+      }
+    });
+  }
+
+  /// Tira un TS contro la morte per un combattente a 0 PF: 20 naturale
+  /// risveglia con 1 PF, 1 naturale conta come 2 fallimenti, 10+ e' un
+  /// successo, il resto un fallimento. 3 successi stabilizzano, 3
+  /// fallimenti significano morte.
+  void _tiraTsMorte(_Combattente c) {
+    final roll = Random().nextInt(20) + 1;
+    final String esito;
+    if (roll == 20) {
+      esito = '20 naturale! ${c.nome} si risveglia con 1 PF';
+    } else if (roll == 1) {
+      esito = '1 naturale: 2 fallimenti per ${c.nome}';
+    } else if (roll >= 10) {
+      esito = '$roll: successo per ${c.nome}';
+    } else {
+      esito = '$roll: fallimento per ${c.nome}';
+    }
+
+    setState(() {
+      if (roll == 20) {
+        c.pfCorrenti = 1;
+        c.tsMorteSuccessi = 0;
+        c.tsMorteFallimenti = 0;
+      } else if (roll == 1) {
+        c.tsMorteFallimenti = (c.tsMorteFallimenti + 2).clamp(0, 3);
+      } else if (roll >= 10) {
+        c.tsMorteSuccessi = (c.tsMorteSuccessi + 1).clamp(0, 3);
+      } else {
+        c.tsMorteFallimenti = (c.tsMorteFallimenti + 1).clamp(0, 3);
+      }
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(esito)));
+  }
+
+  /// Riga compatta dei tiri salvezza contro la morte per un combattente a
+  /// 0 PF: pallini per successi/fallimenti e un dado per tirare, oppure
+  /// un'etichetta se e' gia' morto o stabilizzato.
+  Widget _rigaTsMorte(_Combattente c) {
+    if (c.tsMorteFallimenti >= 3) {
+      return const Row(
+        children: [
+          Icon(Icons.dangerous, color: Colors.red, size: 16),
+          SizedBox(width: 4),
+          Text(
+            'Morto',
+            style: TextStyle(
+              color: Colors.red,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+          ),
+        ],
+      );
+    }
+    if (c.tsMorteSuccessi >= 3) {
+      return const Row(
+        children: [
+          Icon(Icons.check_circle, color: Colors.green, size: 16),
+          SizedBox(width: 4),
+          Text(
+            'Stabilizzato',
+            style: TextStyle(
+              color: Colors.green,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+          ),
+        ],
+      );
+    }
+    return Row(
+      children: [
+        const Text('TS Morte ', style: TextStyle(fontSize: 12)),
+        for (var i = 0; i < 3; i++)
+          Icon(
+            i < c.tsMorteSuccessi ? Icons.circle : Icons.circle_outlined,
+            size: 12,
+            color: Colors.green,
+          ),
+        const SizedBox(width: 6),
+        for (var i = 0; i < 3; i++)
+          Icon(
+            i < c.tsMorteFallimenti ? Icons.circle : Icons.circle_outlined,
+            size: 12,
+            color: Colors.red,
+          ),
+        const SizedBox(width: 8),
+        InkWell(
+          onTap: () => _tiraTsMorte(c),
+          child: const Icon(Icons.casino, size: 18, color: AppColors.primary),
+        ),
+      ],
+    );
   }
 
   Future<void> _modificaCombattente(_Combattente c) async {
@@ -241,6 +345,10 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
         c.pfMax = int.tryParse(pfMaxController.text) ?? c.pfMax;
         c.pfCorrenti = (int.tryParse(pfCorrentiController.text) ?? c.pfCorrenti)
             .clamp(0, c.pfMax);
+        if (c.pfCorrenti > 0) {
+          c.tsMorteSuccessi = 0;
+          c.tsMorteFallimenti = 0;
+        }
         c.ca = int.tryParse(caController.text);
         c.cd = int.tryParse(cdController.text);
         c.condizioni
@@ -601,6 +709,16 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
           onPressed: () {
             Navigator.push(
               context,
+              MaterialPageRoute(builder: (_) => const DiceRollerScreen()),
+            );
+          },
+          icon: const Icon(Icons.casino),
+          tooltip: 'Tira dadi',
+        ),
+        IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
               MaterialPageRoute(builder: (_) => const SpellCardsScreen()),
             );
           },
@@ -785,6 +903,13 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
                                                       )
                                                       .toList(),
                                             ),
+                                          ),
+                                        if (c.isPg && c.pfCorrenti <= 0)
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              top: 4,
+                                            ),
+                                            child: _rigaTsMorte(c),
                                           ),
                                       ],
                                     ),
