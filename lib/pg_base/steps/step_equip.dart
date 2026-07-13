@@ -118,8 +118,8 @@ class _StepEquipScreenState extends State<StepEquipScreen> {
     setState(() {
       armaSelezionata = _casualeCompatibile(armi, classePG);
       armaturaSelezionata = _casualeCompatibile(armature, classePG);
-      kitSelezionato = _casuale(kit);
-      strumentoSelezionato = _casuale(strumenti);
+      kitSelezionato = _casualeCompatibile(kit, classePG);
+      strumentoSelezionato = _casualeCompatibile(strumenti, classePG);
     });
   }
 
