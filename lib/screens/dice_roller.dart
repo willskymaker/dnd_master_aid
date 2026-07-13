@@ -18,6 +18,14 @@ class _RollRecord {
   _RollRecord(this.label, this.totale, this.dettaglio);
 }
 
+/// Un gruppo di dadi extra da tirare insieme al dado principale (es. il
+/// "+1d6" di un attacco con bonus, tirato insieme al dado dell'arma).
+class _DadoExtra {
+  final int numero;
+  final int facce;
+  const _DadoExtra(this.numero, this.facce);
+}
+
 class _DiceRollerScreenState extends State<DiceRollerScreen>
     with SingleTickerProviderStateMixin {
   final Random _random = Random();
@@ -30,6 +38,12 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
   int? _altroD20; // per vantaggio/svantaggio
   final List<_RollRecord> _storico = [];
 
+  // Dadi extra da tirare insieme al dado principale (es. 3d10 + 1d6).
+  final List<_DadoExtra> _extra = [];
+  List<List<int>> _risultatiExtra = [];
+  int _extraNumero = 1;
+  int _extraFacce = 6;
+
   late final AnimationController _rollController;
   Timer? _rollTimer;
   bool _rolling = false;
@@ -38,7 +52,8 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
   static const _dadi = [4, 6, 8, 10, 12, 20, 100];
   static const _durataAnimazione = Duration(milliseconds: 650);
 
-  bool get _mostraVantaggio => _facceDado == 20 && _numeroDadi == 1;
+  bool get _mostraVantaggio =>
+      _facceDado == 20 && _numeroDadi == 1 && _extra.isEmpty;
 
   @override
   void initState() {
@@ -54,6 +69,14 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
     _rollTimer?.cancel();
     _rollController.dispose();
     super.dispose();
+  }
+
+  void _aggiungiExtra() {
+    setState(() => _extra.add(_DadoExtra(_extraNumero, _extraFacce)));
+  }
+
+  void _rimuoviExtra(int index) {
+    setState(() => _extra.removeAt(index));
   }
 
   void _lanciaDadi() {
@@ -73,9 +96,26 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
       }
     }
 
-    final somma = tiri.fold(0, (a, b) => a + b) + _modificatore;
+    final risultatiExtra =
+        _extra
+            .map(
+              (e) =>
+                  List.generate(e.numero, (_) => _random.nextInt(e.facce) + 1),
+            )
+            .toList();
+
+    final sommaPrimaria = tiri.fold(0, (a, b) => a + b);
+    final sommaExtra = risultatiExtra.fold(
+      0,
+      (acc, lista) => acc + lista.fold(0, (a, b) => a + b),
+    );
+    final somma = sommaPrimaria + sommaExtra + _modificatore;
     final label = _buildLabel();
-    final dettaglio = _buildDettaglio(tiri, altroD20);
+    final dettaglio = _buildDettaglio(tiri, altroD20, risultatiExtra);
+
+    final maxPossibile =
+        _facceDado * _numeroDadi +
+        _extra.fold<int>(0, (acc, e) => acc + e.facce * e.numero);
 
     _rollTimer?.cancel();
     setState(() => _rolling = true);
@@ -84,7 +124,7 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
     _rollTimer = Timer.periodic(const Duration(milliseconds: 60), (_) {
       setState(() {
         _displayTotale =
-            _random.nextInt(_facceDado * _numeroDadi) + 1 + _modificatore;
+            _random.nextInt(max(maxPossibile, 1)) + 1 + _modificatore;
       });
     });
 
@@ -95,6 +135,7 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
         _rolling = false;
         _risultati = tiri;
         _altroD20 = altroD20;
+        _risultatiExtra = risultatiExtra;
         _storico.insert(0, _RollRecord(label, somma, dettaglio));
         if (_storico.length > 10) _storico.removeLast();
       });
@@ -103,6 +144,9 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
 
   String _buildLabel() {
     var s = '$_numeroDadi d$_facceDado';
+    for (final e in _extra) {
+      s += ' + ${e.numero}d${e.facce}';
+    }
     if (_modificatore != 0) {
       s += ' ${_modificatore > 0 ? '+' : ''}$_modificatore';
     }
@@ -111,17 +155,27 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
     return s;
   }
 
-  String _buildDettaglio(List<int> tiri, int? altro) {
-    if (tiri.length == 1 && altro != null) {
-      return '[${tiri[0]}, $altro] + mod$_modificatore';
-    }
-    return '[${tiri.join(', ')}] + mod$_modificatore';
+  String _buildDettaglio(List<int> tiri, int? altro, [List<List<int>>? extra]) {
+    final base =
+        tiri.length == 1 && altro != null
+            ? '[${tiri[0]}, $altro]'
+            : '[${tiri.join(', ')}]';
+    final extraStr =
+        (extra ?? _risultatiExtra)
+            .map((lista) => ' + [${lista.join(', ')}]')
+            .join();
+    return '$base$extraStr + mod$_modificatore';
   }
 
-  int get _totale =>
-      _risultati.isEmpty
-          ? 0
-          : _risultati.fold(0, (a, b) => a + b) + _modificatore;
+  int get _totale {
+    if (_risultati.isEmpty) return 0;
+    final sommaPrimaria = _risultati.fold(0, (a, b) => a + b);
+    final sommaExtra = _risultatiExtra.fold(
+      0,
+      (acc, lista) => acc + lista.fold(0, (a, b) => a + b),
+    );
+    return sommaPrimaria + sommaExtra + _modificatore;
+  }
 
   Color _coloreTotale() {
     if (_risultati.isEmpty) return Colors.grey;
@@ -331,7 +385,85 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
                     ],
                   ),
 
-                  // Vantaggio/Svantaggio (solo d20 x1)
+                  // Dadi extra (es. 3d10 + 1d6, tirati insieme)
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Dadi extra (opzionale)',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      _iconBtn(Icons.remove, () {
+                        if (_extraNumero > 1) {
+                          setState(() => _extraNumero--);
+                        }
+                      }),
+                      const SizedBox(width: 8),
+                      Container(
+                        width: 40,
+                        height: 36,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey.shade300),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          '$_extraNumero',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      _iconBtn(Icons.add, () {
+                        if (_extraNumero < 20) {
+                          setState(() => _extraNumero++);
+                        }
+                      }),
+                      const SizedBox(width: 12),
+                      DropdownButton<int>(
+                        value: _extraFacce,
+                        items:
+                            _dadi
+                                .map(
+                                  (f) => DropdownMenuItem(
+                                    value: f,
+                                    child: Text('d$f'),
+                                  ),
+                                )
+                                .toList(),
+                        onChanged: (f) {
+                          if (f != null) setState(() => _extraFacce = f);
+                        },
+                      ),
+                      const SizedBox(width: 12),
+                      TextButton.icon(
+                        onPressed: _aggiungiExtra,
+                        icon: const Icon(Icons.add_circle_outline, size: 18),
+                        label: const Text('Aggiungi'),
+                      ),
+                    ],
+                  ),
+                  if (_extra.isNotEmpty) ...[
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children:
+                          _extra.asMap().entries.map((entry) {
+                            final e = entry.value;
+                            return Chip(
+                              label: Text('${e.numero}d${e.facce}'),
+                              onDeleted: () => _rimuoviExtra(entry.key),
+                            );
+                          }).toList(),
+                    ),
+                  ],
+
+                  // Vantaggio/Svantaggio (solo d20 x1, senza dadi extra)
                   if (_mostraVantaggio) ...[
                     const SizedBox(height: 20),
                     const Text(
@@ -382,7 +514,9 @@ class _DiceRollerScreenState extends State<DiceRollerScreen>
                       ),
                       icon: const Text('🎲', style: TextStyle(fontSize: 22)),
                       label: Text(
-                        'Lancia $_numeroDadi d$_facceDado${_modificatore != 0 ? ' ${_modificatore > 0 ? '+' : ''}$_modificatore' : ''}',
+                        'Lancia $_numeroDadi d$_facceDado'
+                        '${_extra.map((e) => ' + ${e.numero}d${e.facce}').join()}'
+                        '${_modificatore != 0 ? ' ${_modificatore > 0 ? '+' : ''}$_modificatore' : ''}',
                         style: const TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
