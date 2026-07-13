@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/app_theme.dart';
 import '../data/db_condizioni.dart';
@@ -74,6 +76,64 @@ class _Combattente {
   bool get eLeggendario => azioniLeggendarieMax != null;
 }
 
+/// Descrizione di un mostro all'interno di un incontro preparato e salvato:
+/// solo i dati necessari a ricreare un _Combattente da zero (niente stato
+/// di combattimento in corso, quello si genera al ripristino).
+class _MostroBlueprint {
+  final String nome;
+  final int pfMax;
+  final int? ca;
+  final Map<String, dynamic>? datiMostro;
+  final int? azioniLeggendarieMax;
+
+  _MostroBlueprint({
+    required this.nome,
+    required this.pfMax,
+    this.ca,
+    this.datiMostro,
+    this.azioniLeggendarieMax,
+  });
+
+  Map<String, dynamic> toJson() => {
+    'nome': nome,
+    'pfMax': pfMax,
+    'ca': ca,
+    'datiMostro': datiMostro,
+    'azioniLeggendarieMax': azioniLeggendarieMax,
+  };
+
+  factory _MostroBlueprint.fromJson(Map<String, dynamic> j) => _MostroBlueprint(
+    nome: j['nome'] as String,
+    pfMax: (j['pfMax'] as num).toInt(),
+    ca: (j['ca'] as num?)?.toInt(),
+    datiMostro: (j['datiMostro'] as Map?)?.cast<String, dynamic>(),
+    azioniLeggendarieMax: (j['azioniLeggendarieMax'] as num?)?.toInt(),
+  );
+}
+
+class _EncounterPreset {
+  final String nome;
+  final List<_MostroBlueprint> mostri;
+
+  _EncounterPreset({required this.nome, required this.mostri});
+
+  Map<String, dynamic> toJson() => {
+    'nome': nome,
+    'mostri': mostri.map((m) => m.toJson()).toList(),
+  };
+
+  factory _EncounterPreset.fromJson(Map<String, dynamic> j) => _EncounterPreset(
+    nome: j['nome'] as String,
+    mostri:
+        (j['mostri'] as List)
+            .map(
+              (m) =>
+                  _MostroBlueprint.fromJson((m as Map).cast<String, dynamic>()),
+            )
+            .toList(),
+  );
+}
+
 class CombatTrackerScreen extends StatefulWidget {
   const CombatTrackerScreen({super.key});
 
@@ -82,9 +142,12 @@ class CombatTrackerScreen extends StatefulWidget {
 }
 
 class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
+  static const _prefsKeyIncontri = 'combat_tracker_incontri_salvati';
+
   final List<_Combattente> _combattenti = [];
   int _turnoIndex = 0;
   int _round = 1;
+  List<_EncounterPreset> _incontriSalvati = [];
 
   @override
   void initState() {
@@ -92,6 +155,156 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<SavedCharactersProvider>().loadAll();
     });
+    _caricaIncontriSalvati();
+  }
+
+  Future<void> _caricaIncontriSalvati() async {
+    final prefs = await SharedPreferences.getInstance();
+    final raw = prefs.getString(_prefsKeyIncontri);
+    if (raw == null) return;
+    final lista =
+        (jsonDecode(raw) as List)
+            .map(
+              (e) =>
+                  _EncounterPreset.fromJson((e as Map).cast<String, dynamic>()),
+            )
+            .toList();
+    if (mounted) setState(() => _incontriSalvati = lista);
+  }
+
+  Future<void> _persistiIncontriSalvati() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(
+      _prefsKeyIncontri,
+      jsonEncode(_incontriSalvati.map((e) => e.toJson()).toList()),
+    );
+  }
+
+  Future<void> _salvaIncontroCorrente() async {
+    final mostri =
+        _combattenti
+            .where((c) => !c.isPg)
+            .map(
+              (c) => _MostroBlueprint(
+                nome: c.nome,
+                pfMax: c.pfMax,
+                ca: c.ca,
+                datiMostro: c.datiMostro,
+                azioniLeggendarieMax: c.azioniLeggendarieMax,
+              ),
+            )
+            .toList();
+    if (mostri.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Aggiungi almeno un mostro prima di salvare'),
+        ),
+      );
+      return;
+    }
+    final controller = TextEditingController();
+    final nome = await showDialog<String>(
+      context: context,
+      builder:
+          (ctx) => AlertDialog(
+            title: const Text('Salva incontro'),
+            content: TextField(
+              controller: controller,
+              autofocus: true,
+              decoration: const InputDecoration(labelText: 'Nome incontro'),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: const Text('Annulla'),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.pop(ctx, controller.text.trim()),
+                child: const Text('Salva'),
+              ),
+            ],
+          ),
+    );
+    if (nome == null || nome.isEmpty) return;
+    setState(() {
+      _incontriSalvati.removeWhere((e) => e.nome == nome);
+      _incontriSalvati.add(_EncounterPreset(nome: nome, mostri: mostri));
+    });
+    await _persistiIncontriSalvati();
+    if (mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Incontro "$nome" salvato')));
+    }
+  }
+
+  Future<void> _mostraIncontriSalvati() async {
+    if (_incontriSalvati.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Nessun incontro salvato')));
+      return;
+    }
+    await showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder:
+          (ctx) => SafeArea(
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(AppSpacing.lg),
+                  child: Text(
+                    'Incontri salvati',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                for (final preset in _incontriSalvati)
+                  ListTile(
+                    title: Text(preset.nome),
+                    subtitle: Text('${preset.mostri.length} mostri'),
+                    onTap: () {
+                      Navigator.pop(ctx);
+                      _ripristinaIncontro(preset);
+                    },
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete_outline),
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                        _eliminaIncontroSalvato(preset);
+                      },
+                    ),
+                  ),
+              ],
+            ),
+          ),
+    );
+  }
+
+  void _ripristinaIncontro(_EncounterPreset preset) {
+    final random = Random();
+    setState(() {
+      for (final m in preset.mostri) {
+        _combattenti.add(
+          _Combattente(
+            nome: m.nome,
+            iniziativa: random.nextInt(20) + 1,
+            pfMax: m.pfMax,
+            ca: m.ca,
+            datiMostro: m.datiMostro,
+            azioniLeggendarieMax: m.azioniLeggendarieMax,
+          ),
+        );
+      }
+    });
+  }
+
+  Future<void> _eliminaIncontroSalvato(_EncounterPreset preset) async {
+    setState(() => _incontriSalvati.removeWhere((e) => e.nome == preset.nome));
+    await _persistiIncontriSalvati();
   }
 
   List<_Combattente> get _ordinati =>
@@ -729,6 +942,16 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
           onPressed: _mostraGeneraIncontro,
           icon: const Icon(Icons.auto_awesome),
           tooltip: 'Genera incontro',
+        ),
+        IconButton(
+          onPressed: _salvaIncontroCorrente,
+          icon: const Icon(Icons.save_outlined),
+          tooltip: 'Salva incontro',
+        ),
+        IconButton(
+          onPressed: _mostraIncontriSalvati,
+          icon: const Icon(Icons.folder_open_outlined),
+          tooltip: 'Incontri salvati',
         ),
         IconButton(
           onPressed: _mostraGeneraBottino,
