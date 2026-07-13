@@ -1,9 +1,9 @@
-# 🎲 D&D Master Aid - Google Play Store Metadati
+# 🎲 Master Aid - Google Play Store Metadati
 
 ## 📱 Informazioni App
 
-**Nome App**: D&D Master Aid (BETA)
-**Package**: `com.dndmasteraid.app`
+**Nome App**: Master Aid (BETA)
+**Package**: `com.masteraid.app`
 **Versione**: 1.0.4 (Build 4) - VERSIONE BETA
 **Categoria**: Giochi / Ruolo / Strumenti
 **Classificazione**: Tutti (PEGI 3+)
@@ -13,13 +13,13 @@
 ---
 
 ## 📝 Descrizione Breve (50 caratteri)
-**D&D Master Aid BETA - Assistente Open Source**
+**Master Aid BETA - Assistente Open Source**
 
 ---
 
 ## 📖 Descrizione Completa
 
-**🎲 D&D Master Aid BETA - L'assistente Open Source per D&D 5e!**
+**🎲 Master Aid BETA - L'assistente Open Source per D&D 5e!**
 
 ⚠️ **VERSIONE BETA** - App in sviluppo attivo con la community!
 
@@ -81,7 +81,7 @@ Trasforma il tuo dispositivo mobile nel compagno perfetto per le tue avventure d
 Questa è una versione BETA in sviluppo attivo. Contenuti aggiornati regolarmente con nuove opzioni, correzioni e miglioramenti basati sui feedback della community. Il codice sorgente è disponibile su GitHub per contributi e revisioni.
 
 **🔗 GitHub Repository:**
-https://github.com/willskymaker/dnd_master_aid
+https://github.com/willskymaker/master_aid
 
 Scarica, testa e aiutaci a migliorare la tua esperienza D&D! Feedback e contributi benvenuti! 🏹✨
 
@@ -116,7 +116,7 @@ dungeons and dragons, d&d, 5e, rpg, gdr, gioco di ruolo, master, dm, dungeon mas
 - **Sviluppatore**: William Donzelli (alias Willskymaker)
 - **Collaborazione**: APS FareZero Makers FabLab
 - **GitHub**: https://github.com/willskymaker
-- **Repository**: https://github.com/willskymaker/dnd_master_aid
+- **Repository**: https://github.com/willskymaker/master_aid
 - **Email**: [da configurare per Google Play Console]
 - **Tipo**: Progetto Open Source Community-Driven
 - **Privacy Policy**: Inclusa nell'app - nessun dato raccolto

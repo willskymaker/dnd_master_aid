@@ -36,7 +36,7 @@
 ## 📱 STEP 2: Creazione App su Console
 
 ### 2.1 Crea Nuova App
-1. **Nome App**: "D&D Master Aid"
+1. **Nome App**: "Master Aid"
 2. **Lingua Predefinita**: Italiano
 3. **Tipo App**: App (non Gioco - per evitare policy più rigide)
 4. **Gratuita**: Sì
@@ -61,7 +61,7 @@ Dimensioni: 16:9 o 9:16 ratio, minimo 320px
 **Da Creare:**
 1. **Home Screen** (1080x1920)
    - Dashboard principale con menu
-   - Mostra "D&D Master Aid" e icona
+   - Mostra "Master Aid" e icona
 
 2. **Database Specie** (1080x1920)
    - Lista razze con Elfo, Nano, Umano visibili
@@ -94,7 +94,7 @@ Dimensioni: 16:9 o 9:16 ratio, minimo 320px
 
 ### 3.2 Icona Feature Graphic
 - **Dimensione**: 1024x500 px
-- **Contenuto**: Logo + "D&D Master Aid BETA" + "Open Source"
+- **Contenuto**: Logo + "Master Aid BETA" + "Open Source"
 - **Formato**: PNG o JPG
 
 ---
@@ -103,7 +103,7 @@ Dimensioni: 16:9 o 9:16 ratio, minimo 320px
 
 ### 4.1 Descrizione Breve (80 caratteri)
 ```
-D&D Master Aid BETA - Assistente Open Source per Dungeons & Dragons 5e
+Master Aid BETA - Assistente Open Source per Dungeons & Dragons 5e
 ```
 
 ### 4.2 Descrizione Completa (4000 caratteri max)
@@ -122,7 +122,7 @@ strumenti, dadi, open source, beta, github, community
 
 ### 5.1 Privacy Policy
 ```
-D&D Master Aid - Privacy Policy
+Master Aid - Privacy Policy
 
 Ultima modifica: [DATA]
 
@@ -137,7 +137,7 @@ Tutti i dati sono memorizzati localmente sul dispositivo e non vengono mai trasm
 
 ## Contatti
 Sviluppatore: William Donzelli
-GitHub: https://github.com/willskymaker/dnd_master_aid
+GitHub: https://github.com/willskymaker/master_aid
 Email: [TUA EMAIL]
 
 ## Open Source
