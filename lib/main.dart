@@ -13,6 +13,7 @@ import 'pg_base/main_pg_base.dart'; // PG Base Wizard
 import 'screens/coming_soon.dart'; // Schermata per funzionalità disattivate
 import 'screens/dice_roller.dart'; // Modulo dadi
 import 'screens/name_generator.dart'; // Generatore nomi (standalone)
+import 'screens/npc_generator_screen.dart'; // Generatore PNG completo
 import 'screens/saved_characters_screen.dart'; // Lista personaggi salvati
 import 'screens/combat_tracker_screen.dart'; // Tracker iniziativa/combattimento
 import 'factory_pg_base.dart';
@@ -171,6 +172,13 @@ class HomePage extends StatelessWidget {
       'nome': 'Tracker Combattimento',
       'icona': '⚔️',
       'descr': 'Iniziativa e PF per il Master',
+      'attivo': true,
+    },
+    {
+      'id': 'pngGenerator',
+      'nome': 'Generatore PNG',
+      'icona': '🎭',
+      'descr': 'PNG usa e getta per l\'improvvisazione',
       'attivo': true,
     },
   ];
@@ -419,6 +427,9 @@ class HomePage extends StatelessWidget {
         break;
       case 'combattimento':
         page = const CombatTrackerScreen();
+        break;
+      case 'pngGenerator':
+        page = const NpcGeneratorScreen();
         break;
       default:
         page = const ComingSoonScreen(); // 🕒 Placeholder
