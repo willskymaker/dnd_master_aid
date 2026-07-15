@@ -16,9 +16,11 @@ import 'screens/name_generator.dart'; // Generatore nomi (standalone)
 import 'screens/npc_generator_screen.dart'; // Generatore PNG completo
 import 'screens/saved_characters_screen.dart'; // Lista personaggi salvati
 import 'screens/combat_tracker_screen.dart'; // Tracker iniziativa/combattimento
+import 'screens/settings_screen.dart'; // Impostazioni del Master
 import 'factory_pg_base.dart';
 import 'providers/character_provider.dart';
 import 'providers/saved_characters_provider.dart';
+import 'providers/settings_provider.dart';
 import 'utils/character_share.dart';
 import 'widgets/banner_ad_widget.dart';
 import 'widgets/mobile/mobile_scaffold.dart';
@@ -116,6 +118,7 @@ class _DnDMasterAidAppState extends State<DnDMasterAidApp> {
       providers: [
         ChangeNotifierProvider(create: (_) => CharacterProvider()),
         ChangeNotifierProvider(create: (_) => SavedCharactersProvider()),
+        ChangeNotifierProvider(create: (_) => SettingsProvider()..carica()),
       ],
       child: MaterialApp(
         navigatorKey: _navigatorKey,
@@ -202,6 +205,17 @@ class HomePage extends StatelessWidget {
           child: Image.asset('assets/icon/icon.png'),
         ),
       ),
+      actions: [
+        IconButton(
+          onPressed:
+              () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SettingsScreen()),
+              ),
+          icon: const Icon(Icons.settings),
+          tooltip: 'Impostazioni',
+        ),
+      ],
       body: Column(
         children: [
           Expanded(

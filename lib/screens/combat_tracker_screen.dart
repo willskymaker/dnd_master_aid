@@ -10,6 +10,7 @@ import '../data/db_condizioni.dart';
 import '../data/db_slot_incantesimi.dart';
 import '../factory_pg_base.dart';
 import '../providers/saved_characters_provider.dart';
+import '../providers/settings_provider.dart';
 import '../repositories/json_data_repository.dart';
 import '../utils/damage_types.dart';
 import '../utils/encounter_generator.dart';
@@ -1068,24 +1069,28 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
     final inCorso = ordinati.isNotEmpty;
     final turnoCorrente =
         inCorso ? ordinati[_turnoIndex % ordinati.length] : null;
+    final barraSaluteMostriAttiva =
+        context.watch<SettingsProvider>().barraSaluteMostriAttiva;
+    final vistaGiocatori = _vistaGiocatori && barraSaluteMostriAttiva;
 
     return MobileScaffold(
       title: 'Tracker Combattimento',
       actions: [
-        IconButton(
-          onPressed: () => setState(() => _vistaGiocatori = !_vistaGiocatori),
-          icon: Icon(
-            _vistaGiocatori ? Icons.visibility : Icons.visibility_outlined,
+        if (barraSaluteMostriAttiva)
+          IconButton(
+            onPressed: () => setState(() => _vistaGiocatori = !_vistaGiocatori),
+            icon: Icon(
+              vistaGiocatori ? Icons.visibility : Icons.visibility_outlined,
+            ),
+            style:
+                vistaGiocatori
+                    ? IconButton.styleFrom(
+                      backgroundColor: Colors.white.withValues(alpha: 0.25),
+                    )
+                    : null,
+            tooltip: 'Vista Giocatori',
           ),
-          style:
-              _vistaGiocatori
-                  ? IconButton.styleFrom(
-                    backgroundColor: Colors.white.withValues(alpha: 0.25),
-                  )
-                  : null,
-          tooltip: 'Vista Giocatori',
-        ),
-        if (!_vistaGiocatori)
+        if (!vistaGiocatori)
           PopupMenuButton<String>(
             tooltip: 'Altre azioni',
             onSelected: (azione) {
@@ -1168,7 +1173,7 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
           ),
       ],
       floatingActionButton:
-          _vistaGiocatori
+          vistaGiocatori
               ? null
               : FloatingActionButton.extended(
                 onPressed: _mostraAggiungiCombattente,
@@ -1277,7 +1282,7 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
                                 Expanded(
                                   child: InkWell(
                                     onTap:
-                                        _vistaGiocatori
+                                        vistaGiocatori
                                             ? null
                                             : () => _modificaCombattente(c),
                                     child: Column(
@@ -1290,7 +1295,7 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        if (_vistaGiocatori && !c.isPg)
+                                        if (vistaGiocatori && !c.isPg)
                                           Padding(
                                             padding: const EdgeInsets.only(
                                               top: 4,
@@ -1307,7 +1312,7 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
                                           Text(
                                             '${c.isPg ? "PG" : "Mostro"}'
                                             '${c.ca != null ? " · CA ${c.ca}" : ""}'
-                                            '${!_vistaGiocatori && c.cd != null ? " · CD ${c.cd}" : ""}'
+                                            '${!vistaGiocatori && c.cd != null ? " · CD ${c.cd}" : ""}'
                                             ' · PF ${c.pfCorrenti}/${c.pfMax}',
                                             style: TextStyle(
                                               fontSize: 12,
@@ -1361,7 +1366,7 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
                                     ),
                                   ),
                                 ),
-                                if (!_vistaGiocatori) ...[
+                                if (!vistaGiocatori) ...[
                                   if (c.datiMostro != null)
                                     IconButton(
                                       onPressed: () => _mostraDettagliMostro(c),
