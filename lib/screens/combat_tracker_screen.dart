@@ -11,6 +11,7 @@ import '../data/db_slot_incantesimi.dart';
 import '../factory_pg_base.dart';
 import '../providers/saved_characters_provider.dart';
 import '../repositories/json_data_repository.dart';
+import '../services/homebrew_monster_service.dart';
 import '../utils/damage_types.dart';
 import '../utils/encounter_generator.dart';
 import '../utils/health_band.dart';
@@ -1451,9 +1452,23 @@ class _AggiungiCombattenteSheetState extends State<_AggiungiCombattenteSheet> {
       setState(() => _risultatiMostri = []);
       return;
     }
-    final risultati = await JsonDataRepository.searchMonsters(query: query);
+    // Cerca sia nei mostri SRD che in quelli homebrew salvati localmente.
+    final futures = await Future.wait([
+      JsonDataRepository.searchMonsters(query: query),
+      HomebrewMonsterService.caricaComeMaps(),
+    ]);
+    final srd = futures[0];
+    final homebrew =
+        futures[1].where((m) {
+          final q = query.toLowerCase();
+          final nome = (m['italian_name'] as String? ?? '').toLowerCase();
+          final nomeEn = (m['name'] as String? ?? '').toLowerCase();
+          return nome.contains(q) || nomeEn.contains(q);
+        }).toList();
     if (!mounted) return;
-    setState(() => _risultatiMostri = risultati.take(20).toList());
+    // Mostri homebrew in cima, poi SRD (al massimo 20 risultati totali).
+    final tutti = [...homebrew, ...srd];
+    setState(() => _risultatiMostri = tutti.take(20).toList());
   }
 
   void _aggiungiPg(PGBase pg) {
@@ -1609,8 +1624,17 @@ class _AggiungiCombattenteSheetState extends State<_AggiungiCombattenteSheet> {
                     itemCount: _risultatiMostri.length,
                     itemBuilder: (context, index) {
                       final m = _risultatiMostri[index];
+                      final isHomebrew = m['source'] == 'Homebrew';
                       return ListTile(
-                        title: Text(m['italian_name'] ?? m['name'] ?? '?'),
+                        title: Row(
+                          children: [
+                            Text(m['italian_name'] ?? m['name'] ?? '?'),
+                            if (isHomebrew) ...[
+                              const SizedBox(width: 6),
+                              const _HomebrewBadge(),
+                            ],
+                          ],
+                        ),
                         subtitle: Text(
                           'GS ${m['challenge_rating'] ?? '?'} · PF ${m['hit_points'] ?? '?'}',
                         ),
@@ -1822,6 +1846,30 @@ class _GeneraIncontroSheetState extends State<_GeneraIncontroSheet> {
             ],
           ],
         ],
+      ),
+    );
+  }
+}
+
+/// Piccolo badge che segnala un mostro homebrew nella lista di ricerca.
+class _HomebrewBadge extends StatelessWidget {
+  const _HomebrewBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+      decoration: BoxDecoration(
+        color: AppColors.accent,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: const Text(
+        'HB',
+        style: TextStyle(
+          fontSize: 10,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
       ),
     );
   }
