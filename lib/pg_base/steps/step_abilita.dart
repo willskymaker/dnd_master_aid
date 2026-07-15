@@ -1,12 +1,14 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../core/app_theme.dart';
 import '../../factory_pg_base.dart';
 import '../../data/db_abilita.dart';
 import '../../data/db_classi.dart';
 import '../../core/logger.dart';
 import '../../core/exceptions.dart';
+import '../../providers/settings_provider.dart';
 import '../../widgets/mobile/mobile_scaffold.dart';
 
 class StepAbilitaScreen extends StatefulWidget {
@@ -94,6 +96,8 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final randomizzazionePgAttiva =
+        context.watch<SettingsProvider>().randomizzazionePgAttiva;
     final selezionate = abilitaSelezionate.length;
     final completo = selezionate == maxAbilita;
     final coloreCounter =
@@ -207,15 +211,17 @@ class _StepAbilitaScreenState extends State<StepAbilitaScreen> {
             ),
             child: Column(
               children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton.icon(
-                    onPressed: _randomizza,
-                    icon: const Icon(Icons.casino),
-                    label: const Text('Abilità casuali'),
+                if (randomizzazionePgAttiva) ...[
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: _randomizza,
+                      icon: const Icon(Icons.casino),
+                      label: const Text('Abilità casuali'),
+                    ),
                   ),
-                ),
-                const SizedBox(height: AppSpacing.sm),
+                  const SizedBox(height: AppSpacing.sm),
+                ],
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
