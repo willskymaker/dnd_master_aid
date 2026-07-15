@@ -13,11 +13,11 @@ class NpcGeneratorScreen extends StatefulWidget {
 }
 
 class _NpcGeneratorScreenState extends State<NpcGeneratorScreen> {
-  String _tema = nomiPerTema.keys.first;
+  String _fonteNomi = nomiPerSpecie.keys.first;
   Png? _png;
 
   void _genera() {
-    setState(() => _png = generaPng(tema: _tema));
+    setState(() => _png = generaPng(fonteNomi: _fonteNomi));
   }
 
   Widget _sezione(String titolo, String testo) {
@@ -40,6 +40,31 @@ class _NpcGeneratorScreenState extends State<NpcGeneratorScreen> {
     );
   }
 
+  Widget _gruppoChip(String etichetta, Iterable<String> voci) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          etichetta,
+          style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+        ),
+        const SizedBox(height: 4),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            for (final voce in voci)
+              ChoiceChip(
+                label: Text(voce),
+                selected: _fonteNomi == voce,
+                onSelected: (_) => setState(() => _fonteNomi = voce),
+              ),
+          ],
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final png = _png;
@@ -51,18 +76,9 @@ class _NpcGeneratorScreenState extends State<NpcGeneratorScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                for (final tema in nomiPerTema.keys)
-                  ChoiceChip(
-                    label: Text(tema),
-                    selected: _tema == tema,
-                    onSelected: (_) => setState(() => _tema = tema),
-                  ),
-              ],
-            ),
+            _gruppoChip('Specie D&D', nomiPerSpecie.keys),
+            const SizedBox(height: AppSpacing.md),
+            _gruppoChip('Temi extra', nomiPerTema.keys),
             const SizedBox(height: AppSpacing.lg),
             ElevatedButton.icon(
               onPressed: _genera,

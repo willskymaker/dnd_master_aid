@@ -41,6 +41,7 @@ I personaggi creati si salvano localmente sul dispositivo. Da qui puoi:
 Il centro di controllo del master durante un combattimento:
 
 - Ordine di iniziativa, PF, CA/CD, condizioni per ogni combattente
+- **Vista Giocatori**: mostra ai giocatori solo una fascia di salute dei mostri (Sano/Ferito/Gravemente ferito/Morente), senza rivelare i PF esatti (attivabile dalle Impostazioni)
 - Azioni leggendarie e tiri salvezza contro la morte per i PG a 0 PF
 - **Generatore di incontri casuali** in base alla soglia XP del party
 - **Incontri preparati**: salva un gruppo di mostri con un nome e ricaricalo in futuro (utile per incontri ricorrenti)
@@ -57,9 +58,22 @@ Roller completo con supporto a **più tipi di dado contemporaneamente** (es. 1d2
 
 Nomi a tema per PNG e personaggi, con stili diversi oltre alla specie del personaggio.
 
+### 🎭 Generatore PNG
+
+Personaggi non giocanti "usa e getta" per l'improvvisazione al tavolo: genera in un colpo solo nome (specie D&D o tema extra a scelta), aspetto, tratto di personalità, occupazione e un gancio di trama pronto all'uso.
+
 ### 📚 Card incantesimi
 
 Consultazione rapida degli incantesimi in formato scheda.
+
+### ⚙️ Impostazioni
+
+Il Master può disattivare alcune funzioni che rischiano di far somigliare il gioco a un videogioco più che a un gdr classico:
+
+- **Costruzione PG casuale**: nasconde i pulsanti "casuale" nella creazione guidata del personaggio.
+- **Barra vita mostri (Vista Giocatori)**: nasconde la possibilità di mostrare ai giocatori una fascia di salute dei mostri nel tracker, al posto dei PF esatti gestiti a voce.
+
+Entrambe sono disattivate di default: si attivano solo se il tavolo le vuole.
 
 ---
 
