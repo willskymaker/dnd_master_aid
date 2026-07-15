@@ -19,13 +19,14 @@ class Png {
   });
 }
 
-/// Genera un PNG "usa e getta" combinando un nome a tema (vedi
-/// [nomiPerTema]) con aspetto fisico, personalità, occupazione e un gancio
-/// di trama pescati casualmente dalle tabelle in db_npc.dart.
-Png generaPng({required String tema, Random? random}) {
+/// Genera un PNG "usa e getta" combinando un nome (da una specie D&D, vedi
+/// [nomiPerSpecie], o da un tema extra, vedi [nomiPerTema]) con aspetto
+/// fisico, personalità, occupazione e un gancio di trama pescati
+/// casualmente dalle tabelle in db_npc.dart.
+Png generaPng({required String fonteNomi, Random? random}) {
   final rnd = random ?? Random();
   return Png(
-    nome: _generaNome(tema, rnd),
+    nome: _generaNome(fonteNomi, rnd),
     aspetto: aspettiFisiciNpc[rnd.nextInt(aspettiFisiciNpc.length)],
     personalita: trattiPersonalitaNpc[rnd.nextInt(trattiPersonalitaNpc.length)],
     occupazione: occupazioniNpc[rnd.nextInt(occupazioniNpc.length)],
@@ -33,8 +34,8 @@ Png generaPng({required String tema, Random? random}) {
   );
 }
 
-String _generaNome(String tema, Random rnd) {
-  final nomiBase = nomiPerTema[tema];
+String _generaNome(String fonteNomi, Random rnd) {
+  final nomiBase = nomiPerSpecie[fonteNomi] ?? nomiPerTema[fonteNomi];
   if (nomiBase == null) return 'Sconosciuto';
 
   final lista = rnd.nextBool() ? nomiBase.maschili : nomiBase.femminili;
