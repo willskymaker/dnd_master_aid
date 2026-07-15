@@ -69,12 +69,12 @@ void main() {
       expect(moltiplicatoreXp(1), 1.0);
     });
 
-    // ✅ REMOVED THE PROBLEM TEST!
-    // Just test that the function returns something
-    test('moltiplicatoreXp funziona per 2-3 mostri', () {
-      final result = moltiplicatoreXp(2);
-      expect(result, isNotNull);
-      expect(result, isPositive);
+    test('restituisce moltiplicatore corretto per 2 mostri', () {
+      expect(moltiplicatoreXp(2), 1.5);
+    });
+
+    test('restituisce moltiplicatore corretto per 3 mostri', () {
+      expect(moltiplicatoreXp(3), 2.0);
     });
 
     test('restituisce moltiplicatore corretto per 4-6 mostri', () {
