@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:master_aid/factory_pg_base.dart';
 import 'package:master_aid/utils/character_share.dart';
@@ -60,7 +62,29 @@ void main() {
 
   test('esportaPersonaggio produce un codice con il prefisso atteso', () {
     final codice = esportaPersonaggio(creaPersonaggio());
-    expect(codice.startsWith('DNDMA1:'), isTrue);
+    expect(codice.startsWith('DNDMA2:'), isTrue);
+  });
+
+  test(
+    'esportaPersonaggio comprime: il codice e\' piu\' corto del JSON base64 grezzo',
+    () {
+      final pg = creaPersonaggio();
+      final codice = esportaPersonaggio(pg);
+      final grezzo = base64Encode(utf8.encode(jsonEncode(pg.toJson())));
+      expect(codice.length, lessThan(grezzo.length));
+    },
+  );
+
+  test('importaPersonaggio legge ancora i codici v1 (non compressi)', () {
+    final originale = creaPersonaggio();
+    final jsonString = jsonEncode(originale.toJson());
+    final codiceV1 = 'DNDMA1:${base64Encode(utf8.encode(jsonString))}';
+
+    final importato = importaPersonaggio(codiceV1);
+
+    expect(importato.id, originale.id);
+    expect(importato.nome, originale.nome);
+    expect(importato.equipaggiamento, originale.equipaggiamento);
   });
 
   test('importaPersonaggio rifiuta un codice senza prefisso valido', () {
@@ -70,9 +94,16 @@ void main() {
     );
   });
 
-  test('importaPersonaggio rifiuta un base64 corrotto', () {
+  test('importaPersonaggio rifiuta un base64 corrotto (v1)', () {
     expect(
       () => importaPersonaggio('DNDMA1:non-e-base64-valido!!!'),
+      throwsA(isA<FormatException>()),
+    );
+  });
+
+  test('importaPersonaggio rifiuta un base64 corrotto (v2)', () {
+    expect(
+      () => importaPersonaggio('DNDMA2:non-e-base64-valido!!!'),
       throwsA(isA<FormatException>()),
     );
   });
