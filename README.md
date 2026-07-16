@@ -126,7 +126,7 @@ Questo progetto è distribuito sotto licenza **MIT**. Consulta il file [`LICENSE
 **Sviluppatore**: William Donzelli (alias **Willskymaker**)
 **Grafica e design**: Gianluca (alias **Stronka2112**), grafico e master di giochi di ruolo
 **Collaborazione**: **APS FareZero Makers FabLab**
-**Community**: Contributori GitHub e beta testers
+**Community**: Contributori GitHub e testers
 
 **🔗 Collegamenti**:
 - **App Web**: https://willskymaker.github.io/master_aid/
