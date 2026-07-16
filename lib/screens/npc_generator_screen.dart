@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../core/app_theme.dart';
 import '../data/db_nomi.dart';
+import '../services/saved_npc_service.dart';
 import '../utils/npc_generator.dart';
 import '../widgets/mobile/mobile_scaffold.dart';
+import 'saved_npcs_screen.dart';
 
 class NpcGeneratorScreen extends StatefulWidget {
   const NpcGeneratorScreen({super.key});
@@ -15,9 +17,24 @@ class NpcGeneratorScreen extends StatefulWidget {
 class _NpcGeneratorScreenState extends State<NpcGeneratorScreen> {
   String _fonteNomi = nomiPerSpecie.keys.first;
   Png? _png;
+  bool _salvato = false;
 
   void _genera() {
-    setState(() => _png = generaPng(fonteNomi: _fonteNomi));
+    setState(() {
+      _png = generaPng(fonteNomi: _fonteNomi);
+      _salvato = false;
+    });
+  }
+
+  Future<void> _salvaPng() async {
+    final png = _png;
+    if (png == null) return;
+    await SavedNpcService.salva(png);
+    if (!mounted) return;
+    setState(() => _salvato = true);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('${png.nome} salvato tra i PNG della campagna')),
+    );
   }
 
   Widget _sezione(String titolo, String testo) {
@@ -71,6 +88,17 @@ class _NpcGeneratorScreenState extends State<NpcGeneratorScreen> {
 
     return MobileScaffold(
       title: 'Generatore PNG',
+      actions: [
+        IconButton(
+          onPressed:
+              () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SavedNpcsScreen()),
+              ),
+          icon: const Icon(Icons.people_alt_outlined),
+          tooltip: 'PNG salvati',
+        ),
+      ],
       body: Padding(
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
@@ -103,6 +131,18 @@ class _NpcGeneratorScreenState extends State<NpcGeneratorScreen> {
                       _sezione('Personalità', png.personalita),
                       _sezione('Occupazione', png.occupazione),
                       _sezione('Gancio di trama', png.ganceTrama),
+                      const SizedBox(height: AppSpacing.md),
+                      OutlinedButton.icon(
+                        onPressed: _salvato ? null : _salvaPng,
+                        icon: Icon(
+                          _salvato ? Icons.check : Icons.bookmark_add_outlined,
+                        ),
+                        label: Text(
+                          _salvato
+                              ? 'Salvato tra i PNG della campagna'
+                              : 'Salva per riusarlo in altre sessioni',
+                        ),
+                      ),
                     ],
                   ),
                 ),

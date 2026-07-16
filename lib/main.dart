@@ -18,6 +18,7 @@ import 'screens/saved_characters_screen.dart'; // Lista personaggi salvati
 import 'screens/combat_tracker_screen.dart'; // Tracker iniziativa/combattimento
 import 'screens/monster_creator_screen.dart'; // Creatore mostri homebrew
 import 'screens/settings_screen.dart'; // Impostazioni del Master
+import 'screens/side_quest_generator_screen.dart'; // Generatore side quest
 import 'factory_pg_base.dart';
 import 'providers/character_provider.dart';
 import 'providers/saved_characters_provider.dart';
@@ -190,6 +191,10 @@ class HomePage extends StatelessWidget {
       'nome': 'Crea Mostro',
       'icona': '🐉',
       'descr': 'Mostri homebrew con stima GS automatica',
+      'id': 'sideQuest',
+      'nome': 'Generatore Side Quest',
+      'icona': '📜',
+      'descr': 'Missioni secondarie pronte per l\'improvvisazione',
       'attivo': true,
     },
   ];
@@ -455,6 +460,8 @@ class HomePage extends StatelessWidget {
         break;
       case 'creamostro':
         page = const MonsterCreatorScreen();
+      case 'sideQuest':
+        page = const SideQuestGeneratorScreen();
         break;
       default:
         page = const ComingSoonScreen(); // 🕒 Placeholder
