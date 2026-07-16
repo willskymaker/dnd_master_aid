@@ -1,7 +1,7 @@
 import 'package:uuid/uuid.dart';
 
 /// Modello di un mostro homebrew creato dall'utente.
-/// Serializzabile in Map<String, dynamic> compatibile con il formato
+/// Serializzabile in `Map<String, dynamic>` compatibile con il formato
 /// monsters.json per l'integrazione con il combat tracker.
 class HomebrewMonster {
   final String id; // UUID locale generato alla creazione
@@ -182,7 +182,7 @@ class HomebrewMonster {
   // Combat-tracker compatible format (mirrors monsters.json schema)
   // ---------------------------------------------------------------------------
 
-  /// Converte il mostro nel formato Map<String, dynamic> atteso da
+  /// Converte il mostro nel formato `Map<String, dynamic>` atteso da
   /// [_aggiungiMostro] nel combat tracker.
   Map<String, dynamic> toTrackerMap() {
     return {

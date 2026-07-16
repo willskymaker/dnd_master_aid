@@ -70,7 +70,7 @@ class HomebrewMonsterService {
     }
   }
 
-  /// Restituisce i mostri in formato Map<String, dynamic> per il tracker.
+  /// Restituisce i mostri in formato `Map<String, dynamic>` per il tracker.
   static Future<List<Map<String, dynamic>>> caricaComeMaps() async {
     final mostri = await caricaTutti();
     return mostri.map((m) => m.toTrackerMap()).toList();

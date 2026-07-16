@@ -1,5 +1,6 @@
-/// Stima automatica del Grado di Sfida (GS) per mostri homebrew,
-/// seguendo le regole del Dungeon Master's Guide (DMG 5e).
+/// CR Calculator for D&D 5e homebrew monsters.
+/// Uses DMG rules for defensive and offensive CR estimation.
+library cr_calculator;
 
 class _CrEntry {
   final double cr;
@@ -46,81 +47,112 @@ const List<_CrEntry> _hpTable = [
   _CrEntry(30, [806, 850]),
 ];
 
-// Danno/round → Offensive CR table (DMG 5e)
-const List<_CrEntry> _dmgTable = [
-  _CrEntry(0, [0, 5]),
-  _CrEntry(0.125, [6, 8]),
-  _CrEntry(0.25, [9, 14]),
-  _CrEntry(0.5, [15, 20]),
-  _CrEntry(1, [21, 25]),
-  _CrEntry(2, [26, 32]),
-  _CrEntry(3, [33, 38]),
-  _CrEntry(4, [39, 44]),
-  _CrEntry(5, [45, 50]),
-  _CrEntry(6, [51, 56]),
-  _CrEntry(7, [57, 62]),
-  _CrEntry(8, [63, 68]),
-  _CrEntry(9, [69, 74]),
-  _CrEntry(10, [75, 80]),
-  _CrEntry(11, [81, 86]),
-  _CrEntry(12, [87, 92]),
-  _CrEntry(13, [93, 98]),
-  _CrEntry(14, [99, 104]),
-  _CrEntry(15, [105, 110]),
-  _CrEntry(16, [111, 116]),
-  _CrEntry(17, [117, 122]),
-  _CrEntry(18, [123, 128]),
-  _CrEntry(19, [129, 134]),
-  _CrEntry(20, [135, 140]),
-  _CrEntry(21, [141, 146]),
-  _CrEntry(22, [147, 152]),
-  _CrEntry(23, [153, 158]),
-  _CrEntry(24, [159, 164]),
-  _CrEntry(25, [165, 170]),
-  _CrEntry(26, [171, 176]),
-  _CrEntry(27, [177, 182]),
-  _CrEntry(28, [183, 188]),
-  _CrEntry(29, [189, 194]),
-  _CrEntry(30, [195, 200]),
-];
+class CrCalculator {
+  // Correct DMG table for offensive CR
+  static final Map<double, String> _dmgTable = {
+    1.0: 'CR 0',      // 0-1 damage
+    2.0: 'CR 1/8',    // 2-3 damage
+    3.0: 'CR 1/4',    // 4-5 damage
+    4.0: 'CR 1/2',    // 6-8 damage
+    5.0: 'CR 1',      // 9-14 damage
+    6.0: 'CR 2',      // 15-20 damage
+    7.0: 'CR 3',      // 21-26 damage
+    8.0: 'CR 4',      // 27-32 damage
+    9.0: 'CR 5',      // 33-38 damage
+    10.0: 'CR 6',     // 39-44 damage
+    11.0: 'CR 7',     // 45-50 damage
+    12.0: 'CR 8',     // 51-56 damage
+    13.0: 'CR 9',     // 57-62 damage
+    14.0: 'CR 10',    // 63-68 damage
+    15.0: 'CR 11',    // 69-74 damage
+    16.0: 'CR 12',    // 75-80 damage
+    17.0: 'CR 13',    // 81-86 damage
+    18.0: 'CR 14',    // 87-92 damage
+    19.0: 'CR 15',    // 93-98 damage
+    20.0: 'CR 16',    // 99-104 damage
+    21.0: 'CR 17',    // 105-110 damage
+    22.0: 'CR 18',    // 111-116 damage
+    23.0: 'CR 19',    // 117-122 damage
+    24.0: 'CR 20',    // 123-128 damage
+    25.0: 'CR 21',    // 129-134 damage
+    26.0: 'CR 22',    // 135-140 damage
+    27.0: 'CR 23',    // 141-146 damage
+    28.0: 'CR 24',    // 147-152 damage
+    29.0: 'CR 25',    // 153-158 damage
+    30.0: 'CR 26',    // 159-164 damage
+    31.0: 'CR 27',    // 165-170 damage
+    32.0: 'CR 28',    // 171-176 damage
+    33.0: 'CR 29',    // 177-182 damage
+    34.0: 'CR 30',    // 183-188 damage
+  };
 
-// Bonus attacco atteso per CR offensivo (indice allineato a _dmgTable/_hpTable)
-const List<int> _expectedAttackBonus = [
-  3, // CR 0
-  3, // CR 1/8
-  3, // CR 1/4
-  3, // CR 1/2
-  3, // CR 1
-  3, // CR 2
-  4, // CR 3
-  5, // CR 4
-  6, // CR 5
-  6, // CR 6
-  6, // CR 7
-  7, // CR 8
-  7, // CR 9
-  7, // CR 10
-  8, // CR 11
-  8, // CR 12
-  8, // CR 13
-  8, // CR 14
-  8, // CR 15
-  9, // CR 16
-  10, // CR 17
-  10, // CR 18
-  10, // CR 19
-  10, // CR 20
-  10, // CR 21
-  10, // CR 22
-  10, // CR 23
-  10, // CR 24
-  10, // CR 25
-  10, // CR 26
-  10, // CR 27
-  10, // CR 28
-  10, // CR 29
-  10, // CR 30
-];
+  static double calculateOffensiveCR(int damage, int attackBonus) {
+    final int baseRow = _getBaseRow(damage);
+    final int expectedBonus = _getExpectedAttackBonus(baseRow);
+    final int diff = attackBonus - expectedBonus;
+    final int adj = diff ~/ 2;
+    final double finalKey = (baseRow + adj).clamp(1, 34).toDouble();
+    final String crStr = _dmgTable[finalKey]!;
+    return _parseCr(crStr);
+  }
+
+  static int _getBaseRow(int damage) {
+    if (damage <= 1) return 1;
+    if (damage <= 3) return 2;
+    if (damage <= 5) return 3;
+    if (damage <= 8) return 4;
+    if (damage <= 14) return 5;
+    if (damage <= 20) return 6;
+    if (damage <= 26) return 7;
+    if (damage <= 32) return 8;
+    if (damage <= 38) return 9;
+    if (damage <= 44) return 10;
+    if (damage <= 50) return 11;
+    if (damage <= 56) return 12;
+    if (damage <= 62) return 13;
+    if (damage <= 68) return 14;
+    if (damage <= 74) return 15;
+    if (damage <= 80) return 16;
+    if (damage <= 86) return 17;
+    if (damage <= 92) return 18;
+    if (damage <= 98) return 19;
+    if (damage <= 104) return 20;
+    if (damage <= 110) return 21;
+    if (damage <= 116) return 22;
+    if (damage <= 122) return 23;
+    if (damage <= 128) return 24;
+    if (damage <= 134) return 25;
+    if (damage <= 140) return 26;
+    if (damage <= 146) return 27;
+    if (damage <= 152) return 28;
+    if (damage <= 158) return 29;
+    if (damage <= 164) return 30;
+    if (damage <= 170) return 31;
+    if (damage <= 176) return 32;
+    if (damage <= 182) return 33;
+    return 34;
+  }
+
+  static int _getExpectedAttackBonus(int row) {
+    if (row <= 6) return 3;
+    if (row == 7) return 4;
+    if (row == 8) return 5;
+    if (row <= 11) return 6;
+    if (row <= 14) return 7;
+    if (row <= 19) return 8;
+    if (row == 20) return 9;
+    return 10;
+  }
+
+  static double _parseCr(String crStr) {
+    final clean = crStr.replaceFirst('CR ', '').trim();
+    if (clean == '0') return 0.0;
+    if (clean == '1/8') return 0.125;
+    if (clean == '1/4') return 0.25;
+    if (clean == '1/2') return 0.5;
+    return double.parse(clean);
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Classi pubbliche
@@ -182,24 +214,7 @@ double calcolaGsDifensivo(int hp, ResistenzeImmunita resistenze) {
 
 /// Calcola il GS offensivo a partire dal danno medio per round e dal bonus di attacco.
 double calcolaGsOffensivo(int dannoMedioPerRound, int bonusAttacco) {
-  // Trova il GS base nella tabella dei danni.
-  int indiceBase = _dmgTable.length - 1;
-  for (int i = 0; i < _dmgTable.length; i++) {
-    final entry = _dmgTable[i];
-    if (dannoMedioPerRound >= entry.hpRange[0] &&
-        dannoMedioPerRound <= entry.hpRange[1]) {
-      indiceBase = i;
-      break;
-    }
-  }
-
-  // Aggiusta di ±1 passo per ogni 2 punti di differenza dal bonus atteso.
-  final int bonusAtteso = _expectedAttackBonus[indiceBase];
-  final int differenza = bonusAttacco - bonusAtteso;
-  final int aggiustamento = differenza ~/ 2;
-
-  final int indiceFinale = (indiceBase + aggiustamento).clamp(0, 30);
-  return _dmgTable[indiceFinale].cr;
+  return CrCalculator.calculateOffensiveCR(dannoMedioPerRound, bonusAttacco);
 }
 
 /// Calcola il GS finale mediando difensivo e offensivo.

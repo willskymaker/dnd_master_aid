@@ -59,39 +59,34 @@ void main() {
   });
 
   group('calcolaGsOffensivo', () {
-    test('3 danni/round → GS 0', () {
-      expect(calcolaGsOffensivo(3, 3), 0.0);
+    test('calcola CR offensivo per danno medio 23', () {
+      // 23 damage/round → CR 3 (was CR 1)
+      final cr = CrCalculator.calculateOffensiveCR(23, 3);
+      expect(cr, 3.0);
     });
 
-    test('7 danni/round → GS 1/8', () {
-      expect(calcolaGsOffensivo(7, 3), 0.125);
+    test('calcola CR offensivo per danno medio 12', () {
+      // 12 damage/round → CR 1 (was CR 1/4)
+      final cr = CrCalculator.calculateOffensiveCR(12, 3);
+      expect(cr, 1.0);
     });
 
-    test('12 danni/round → GS 1/4', () {
-      expect(calcolaGsOffensivo(12, 3), 0.25);
+    test('calcola CR offensivo per danno medio 18', () {
+      // 18 damage/round → CR 2 (was CR 1/2)
+      final cr = CrCalculator.calculateOffensiveCR(18, 3);
+      expect(cr, 2.0);
     });
-
-    test('18 danni/round → GS 1/2', () {
-      expect(calcolaGsOffensivo(18, 3), 0.5);
-    });
-
-    test(
-      '23 danni/round con bonus +3 → GS 1 (bonus atteso +3, nessun aggiustamento)',
-      () {
-        expect(calcolaGsOffensivo(23, 3), 1.0);
-      },
-    );
   });
 
   group('calcolaGs', () {
-    test('hp=85 dmg=25 bonusAttacco=3 → gsFinale=1.0, gsFormattato="1"', () {
+    test('hp=85 dmg=25 bonusAttacco=3 → gsFinale=2.0, gsFormattato="2"', () {
       final risultato = calcolaGs(
         hp: 85,
         dannoMedioPerRound: 25,
         bonusAttacco: 3,
       );
-      expect(risultato.gsFinale, 1.0);
-      expect(risultato.gsFormattato, '1');
+      expect(risultato.gsFinale, 2.0);
+      expect(risultato.gsFormattato, '2');
     });
   });
 }
