@@ -1434,6 +1434,42 @@ class _AggiungiCombattenteSheet extends StatefulWidget {
       _AggiungiCombattenteSheetState();
 }
 
+const Map<String, List<String>> crRanges = {
+  'All': [],
+  'CR 0': ['0'],
+  'CR 1/8 – 1/2': ['1/8', '1/4', '1/2'],
+  'CR 1 – 4': ['1', '2', '3', '4'],
+  'CR 5 – 10': ['5', '6', '7', '8', '9', '10'],
+  'CR 11+': [
+    '11',
+    '12',
+    '13',
+    '14',
+    '15',
+    '16',
+    '17',
+    '18',
+    '19',
+    '20',
+    '21',
+    '22',
+    '23',
+    '24',
+    '25',
+    '26',
+    '27',
+    '28',
+    '29',
+    '30',
+  ],
+};
+
+bool mostroNelFiltroCr(String challengeRating, String filtro) {
+  if (filtro == 'All') return true;
+  final ammessi = crRanges[filtro] ?? [];
+  return ammessi.contains(challengeRating);
+}
+
 class _AggiungiCombattenteSheetState extends State<_AggiungiCombattenteSheet> {
   _ModalitaAggiunta _modalita = _ModalitaAggiunta.pg;
   final _nomeController = TextEditingController();
@@ -1444,36 +1480,6 @@ class _AggiungiCombattenteSheetState extends State<_AggiungiCombattenteSheet> {
   final _random = Random();
 
   String _selectedCrFilter = 'All';
-
-  final Map<String, List<String>> _crRanges = const {
-    'All': [],
-    'CR 0': ['0'],
-    'CR 1/8 – 1/2': ['1/8', '1/4', '1/2'],
-    'CR 1 – 4': ['1', '2', '3', '4'],
-    'CR 5 – 10': ['5', '6', '7', '8', '9', '10'],
-    'CR 11+': [
-      '11',
-      '12',
-      '13',
-      '14',
-      '15',
-      '16',
-      '17',
-      '18',
-      '19',
-      '20',
-      '21',
-      '22',
-      '23',
-      '24',
-      '25',
-      '26',
-      '27',
-      '28',
-      '29',
-      '30',
-    ],
-  };
 
   @override
   void dispose() {
@@ -1508,11 +1514,10 @@ class _AggiungiCombattenteSheetState extends State<_AggiungiCombattenteSheet> {
 
     // Applica il filtro per GS se selezionato
     if (_selectedCrFilter != 'All') {
-      final allowedCrs = _crRanges[_selectedCrFilter] ?? [];
       tutti =
           tutti.where((m) {
             final cr = m['challenge_rating']?.toString() ?? '';
-            return allowedCrs.contains(cr);
+            return mostroNelFiltroCr(cr, _selectedCrFilter);
           }).toList();
     }
 
@@ -1663,7 +1668,7 @@ class _AggiungiCombattenteSheetState extends State<_AggiungiCombattenteSheet> {
               border: OutlineInputBorder(),
             ),
             items:
-                _crRanges.keys.map((key) {
+                crRanges.keys.map((key) {
                   return DropdownMenuItem(value: key, child: Text(key));
                 }).toList(),
             onChanged: (value) {
