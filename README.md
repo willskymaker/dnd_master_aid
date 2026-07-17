@@ -125,6 +125,7 @@ Questo progetto è distribuito sotto licenza **MIT**. Consulta il file [`LICENSE
 
 **Sviluppatore**: William Donzelli (alias **Willskymaker**)
 **Grafica e design**: Gianluca (alias **Stronka2112**), grafico e master di giochi di ruolo
+**Contributor**: Muhammad Assad Ullah (alias **[assassinaj602](https://github.com/assassinaj602)**) — creatore mostri homebrew con stima automatica del Grado di Sfida
 **Collaborazione**: **APS FareZero Makers FabLab**
 **Community**: Contributori GitHub e testers
 
