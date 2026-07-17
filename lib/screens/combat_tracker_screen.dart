@@ -1489,20 +1489,6 @@ class _AggiungiCombattenteSheetState extends State<_AggiungiCombattenteSheet> {
       setState(() => _risultatiMostri = []);
       return;
     }
-
-    var tutti = await JsonDataRepository.searchMonsters(query: query);
-    if (!mounted) return;
-
-    // Applica il filtro per GS se selezionato
-    if (_selectedCrFilter != 'All') {
-      final allowedCrs = _crRanges[_selectedCrFilter] ?? [];
-      tutti =
-          tutti.where((m) {
-            final cr = m['challenge_rating']?.toString() ?? '';
-            return allowedCrs.contains(cr);
-          }).toList();
-    }
-
     // Cerca sia nei mostri SRD che in quelli homebrew salvati localmente.
     final futures = await Future.wait([
       JsonDataRepository.searchMonsters(query: query),
@@ -1517,8 +1503,19 @@ class _AggiungiCombattenteSheetState extends State<_AggiungiCombattenteSheet> {
           return nome.contains(q) || nomeEn.contains(q);
         }).toList();
     if (!mounted) return;
-    // Mostri homebrew in cima, poi SRD (al massimo 20 risultati totali).
-    final tutti = [...homebrew, ...srd];
+    // Mostri homebrew in cima, poi SRD.
+    var tutti = [...homebrew, ...srd];
+
+    // Applica il filtro per GS se selezionato
+    if (_selectedCrFilter != 'All') {
+      final allowedCrs = _crRanges[_selectedCrFilter] ?? [];
+      tutti =
+          tutti.where((m) {
+            final cr = m['challenge_rating']?.toString() ?? '';
+            return allowedCrs.contains(cr);
+          }).toList();
+    }
+
     setState(() => _risultatiMostri = tutti.take(20).toList());
   }
 
