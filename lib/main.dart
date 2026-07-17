@@ -16,6 +16,7 @@ import 'screens/name_generator.dart'; // Generatore nomi (standalone)
 import 'screens/npc_generator_screen.dart'; // Generatore PNG completo
 import 'screens/saved_characters_screen.dart'; // Lista personaggi salvati
 import 'screens/combat_tracker_screen.dart'; // Tracker iniziativa/combattimento
+import 'screens/monster_creator_screen.dart'; // Creatore mostri homebrew
 import 'screens/settings_screen.dart'; // Impostazioni del Master
 import 'screens/side_quest_generator_screen.dart'; // Generatore side quest
 import 'factory_pg_base.dart';
@@ -183,6 +184,13 @@ class HomePage extends StatelessWidget {
       'nome': 'Generatore PNG',
       'icona': '🎭',
       'descr': 'PNG usa e getta per l\'improvvisazione',
+      'attivo': true,
+    },
+    {
+      'id': 'creamostro',
+      'nome': 'Crea Mostro',
+      'icona': '🐉',
+      'descr': 'Mostri homebrew con stima GS automatica',
       'attivo': true,
     },
     {
@@ -453,6 +461,8 @@ class HomePage extends StatelessWidget {
       case 'pngGenerator':
         page = const NpcGeneratorScreen();
         break;
+      case 'creamostro':
+        page = const MonsterCreatorScreen();
       case 'sideQuest':
         page = const SideQuestGeneratorScreen();
         break;
