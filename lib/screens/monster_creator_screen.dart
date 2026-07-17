@@ -564,7 +564,7 @@ class _MonsterCreatorScreenState extends State<MonsterCreatorScreen> {
           children: [
             Expanded(
               child: DropdownButtonFormField<String>(
-                value: _taglia,
+                initialValue: _taglia,
                 decoration: const InputDecoration(
                   labelText: 'Taglia',
                   border: OutlineInputBorder(),
@@ -579,7 +579,7 @@ class _MonsterCreatorScreenState extends State<MonsterCreatorScreen> {
             const SizedBox(width: AppSpacing.md),
             Expanded(
               child: DropdownButtonFormField<String>(
-                value: _tipo,
+                initialValue: _tipo,
                 decoration: const InputDecoration(
                   labelText: 'Tipo',
                   border: OutlineInputBorder(),

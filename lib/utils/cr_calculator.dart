@@ -1,6 +1,6 @@
 /// CR Calculator for D&D 5e homebrew monsters.
 /// Uses DMG rules for defensive and offensive CR estimation.
-library cr_calculator;
+library;
 
 class _CrEntry {
   final double cr;
@@ -50,40 +50,40 @@ const List<_CrEntry> _hpTable = [
 class CrCalculator {
   // Correct DMG table for offensive CR
   static final Map<double, String> _dmgTable = {
-    1.0: 'CR 0',      // 0-1 damage
-    2.0: 'CR 1/8',    // 2-3 damage
-    3.0: 'CR 1/4',    // 4-5 damage
-    4.0: 'CR 1/2',    // 6-8 damage
-    5.0: 'CR 1',      // 9-14 damage
-    6.0: 'CR 2',      // 15-20 damage
-    7.0: 'CR 3',      // 21-26 damage
-    8.0: 'CR 4',      // 27-32 damage
-    9.0: 'CR 5',      // 33-38 damage
-    10.0: 'CR 6',     // 39-44 damage
-    11.0: 'CR 7',     // 45-50 damage
-    12.0: 'CR 8',     // 51-56 damage
-    13.0: 'CR 9',     // 57-62 damage
-    14.0: 'CR 10',    // 63-68 damage
-    15.0: 'CR 11',    // 69-74 damage
-    16.0: 'CR 12',    // 75-80 damage
-    17.0: 'CR 13',    // 81-86 damage
-    18.0: 'CR 14',    // 87-92 damage
-    19.0: 'CR 15',    // 93-98 damage
-    20.0: 'CR 16',    // 99-104 damage
-    21.0: 'CR 17',    // 105-110 damage
-    22.0: 'CR 18',    // 111-116 damage
-    23.0: 'CR 19',    // 117-122 damage
-    24.0: 'CR 20',    // 123-128 damage
-    25.0: 'CR 21',    // 129-134 damage
-    26.0: 'CR 22',    // 135-140 damage
-    27.0: 'CR 23',    // 141-146 damage
-    28.0: 'CR 24',    // 147-152 damage
-    29.0: 'CR 25',    // 153-158 damage
-    30.0: 'CR 26',    // 159-164 damage
-    31.0: 'CR 27',    // 165-170 damage
-    32.0: 'CR 28',    // 171-176 damage
-    33.0: 'CR 29',    // 177-182 damage
-    34.0: 'CR 30',    // 183-188 damage
+    1.0: 'CR 0', // 0-1 damage
+    2.0: 'CR 1/8', // 2-3 damage
+    3.0: 'CR 1/4', // 4-5 damage
+    4.0: 'CR 1/2', // 6-8 damage
+    5.0: 'CR 1', // 9-14 damage
+    6.0: 'CR 2', // 15-20 damage
+    7.0: 'CR 3', // 21-26 damage
+    8.0: 'CR 4', // 27-32 damage
+    9.0: 'CR 5', // 33-38 damage
+    10.0: 'CR 6', // 39-44 damage
+    11.0: 'CR 7', // 45-50 damage
+    12.0: 'CR 8', // 51-56 damage
+    13.0: 'CR 9', // 57-62 damage
+    14.0: 'CR 10', // 63-68 damage
+    15.0: 'CR 11', // 69-74 damage
+    16.0: 'CR 12', // 75-80 damage
+    17.0: 'CR 13', // 81-86 damage
+    18.0: 'CR 14', // 87-92 damage
+    19.0: 'CR 15', // 93-98 damage
+    20.0: 'CR 16', // 99-104 damage
+    21.0: 'CR 17', // 105-110 damage
+    22.0: 'CR 18', // 111-116 damage
+    23.0: 'CR 19', // 117-122 damage
+    24.0: 'CR 20', // 123-128 damage
+    25.0: 'CR 21', // 129-134 damage
+    26.0: 'CR 22', // 135-140 damage
+    27.0: 'CR 23', // 141-146 damage
+    28.0: 'CR 24', // 147-152 damage
+    29.0: 'CR 25', // 153-158 damage
+    30.0: 'CR 26', // 159-164 damage
+    31.0: 'CR 27', // 165-170 damage
+    32.0: 'CR 28', // 171-176 damage
+    33.0: 'CR 29', // 177-182 damage
+    34.0: 'CR 30', // 183-188 damage
   };
 
   static double calculateOffensiveCR(int damage, int attackBonus) {

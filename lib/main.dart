@@ -191,6 +191,9 @@ class HomePage extends StatelessWidget {
       'nome': 'Crea Mostro',
       'icona': '🐉',
       'descr': 'Mostri homebrew con stima GS automatica',
+      'attivo': true,
+    },
+    {
       'id': 'sideQuest',
       'nome': 'Generatore Side Quest',
       'icona': '📜',

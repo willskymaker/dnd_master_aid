@@ -17,7 +17,6 @@ import '../utils/damage_types.dart';
 import '../utils/encounter_generator.dart';
 import '../utils/health_band.dart';
 import '../utils/loot_generator.dart';
-import '../utils/npc_generator.dart' hide calcolaGs;
 import '../utils/tactical_hints.dart';
 import '../widgets/mobile/mobile_scaffold.dart';
 import 'dice_roller.dart';
