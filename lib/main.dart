@@ -13,11 +13,16 @@ import 'pg_base/main_pg_base.dart'; // PG Base Wizard
 import 'screens/coming_soon.dart'; // Schermata per funzionalità disattivate
 import 'screens/dice_roller.dart'; // Modulo dadi
 import 'screens/name_generator.dart'; // Generatore nomi (standalone)
+import 'screens/npc_generator_screen.dart'; // Generatore PNG completo
 import 'screens/saved_characters_screen.dart'; // Lista personaggi salvati
 import 'screens/combat_tracker_screen.dart'; // Tracker iniziativa/combattimento
+import 'screens/monster_creator_screen.dart'; // Creatore mostri homebrew
+import 'screens/settings_screen.dart'; // Impostazioni del Master
+import 'screens/side_quest_generator_screen.dart'; // Generatore side quest
 import 'factory_pg_base.dart';
 import 'providers/character_provider.dart';
 import 'providers/saved_characters_provider.dart';
+import 'providers/settings_provider.dart';
 import 'utils/character_share.dart';
 import 'widgets/banner_ad_widget.dart';
 import 'widgets/mobile/mobile_scaffold.dart';
@@ -115,6 +120,7 @@ class _DnDMasterAidAppState extends State<DnDMasterAidApp> {
       providers: [
         ChangeNotifierProvider(create: (_) => CharacterProvider()),
         ChangeNotifierProvider(create: (_) => SavedCharactersProvider()),
+        ChangeNotifierProvider(create: (_) => SettingsProvider()..carica()),
       ],
       child: MaterialApp(
         navigatorKey: _navigatorKey,
@@ -173,6 +179,27 @@ class HomePage extends StatelessWidget {
       'descr': 'Iniziativa e PF per il Master',
       'attivo': true,
     },
+    {
+      'id': 'pngGenerator',
+      'nome': 'Generatore PNG',
+      'icona': '🎭',
+      'descr': 'PNG usa e getta per l\'improvvisazione',
+      'attivo': true,
+    },
+    {
+      'id': 'creamostro',
+      'nome': 'Crea Mostro',
+      'icona': '🐉',
+      'descr': 'Mostri homebrew con stima GS automatica',
+      'attivo': true,
+    },
+    {
+      'id': 'sideQuest',
+      'nome': 'Generatore Side Quest',
+      'icona': '📜',
+      'descr': 'Missioni secondarie pronte per l\'improvvisazione',
+      'attivo': true,
+    },
   ];
 
   @override
@@ -194,6 +221,17 @@ class HomePage extends StatelessWidget {
           child: Image.asset('assets/icon/icon.png'),
         ),
       ),
+      actions: [
+        IconButton(
+          onPressed:
+              () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SettingsScreen()),
+              ),
+          icon: const Icon(Icons.settings),
+          tooltip: 'Impostazioni',
+        ),
+      ],
       body: Column(
         children: [
           Expanded(
@@ -419,6 +457,14 @@ class HomePage extends StatelessWidget {
         break;
       case 'combattimento':
         page = const CombatTrackerScreen();
+        break;
+      case 'pngGenerator':
+        page = const NpcGeneratorScreen();
+        break;
+      case 'creamostro':
+        page = const MonsterCreatorScreen();
+      case 'sideQuest':
+        page = const SideQuestGeneratorScreen();
         break;
       default:
         page = const ComingSoonScreen(); // 🕒 Placeholder

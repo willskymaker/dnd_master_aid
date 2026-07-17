@@ -7,44 +7,65 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:archive/archive.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../factory_pg_base.dart';
 
-/// Prefisso che identifica un codice personaggio valido e ne marca la
-/// versione del formato, per poter evolvere il formato in futuro senza
-/// rompere l'import di codici generati da versioni precedenti dell'app.
-const String _prefissoCodice = 'DNDMA1:';
+/// Prefisso dei codici generati dalla v1 dell'app: JSON -> base64, senza
+/// compressione. Non piu' prodotto da [esportaPersonaggio], ma ancora
+/// riconosciuto in importazione per non rompere i codici gia' condivisi
+/// prima dell'introduzione della compressione.
+const String _prefissoCodiceV1 = 'DNDMA1:';
+
+/// Prefisso dei codici correnti: JSON -> deflate (zlib) -> base64. La
+/// compressione riduce sensibilmente la lunghezza del codice (il JSON di
+/// una scheda ha molte chiavi ripetute e campi vuoti/di default), rendendolo
+/// piu' comodo da incollare in chat.
+const String _prefissoCodiceV2 = 'DNDMA2:';
 
 /// Estensione del file esportato: registrata in AndroidManifest.xml cosi'
 /// che, ricevuto ad es. da WhatsApp, un tap sul file apra direttamente
 /// questa app invece di un visualizzatore generico.
 const String estensioneFileEsportazione = '.dnd';
 
-/// Codifica [pg] in un codice testuale da condividere (es. via il pannello
-/// di condivisione nativo). Il codice e' un blob base64 per restare
-/// leggibile/incollabile in qualunque app di messaggistica, senza andare
-/// in conflitto con virgolette o a-capo del JSON sottostante.
+/// Codifica [pg] in un codice testuale compatto da condividere (es. via il
+/// pannello di condivisione nativo). Il JSON viene compresso (zlib) prima
+/// del base64, per restare leggibile/incollabile in qualunque app di
+/// messaggistica senza andare in conflitto con virgolette o a-capo, ma il
+/// piu' corto possibile.
 String esportaPersonaggio(PGBase pg) {
-  final jsonString = jsonEncode(pg.toJson());
-  return _prefissoCodice + base64Encode(utf8.encode(jsonString));
+  final jsonBytes = utf8.encode(jsonEncode(pg.toJson()));
+  final compresso = const ZLibEncoder().encodeBytes(jsonBytes);
+  return _prefissoCodiceV2 + base64Encode(compresso);
 }
 
-/// Decodifica un codice prodotto da [esportaPersonaggio] e ricostruisce il
-/// [PGBase]. Lancia [FormatException] se il codice non e' valido.
+/// Decodifica un codice prodotto da [esportaPersonaggio] (o da una versione
+/// precedente dell'app) e ricostruisce il [PGBase]. Lancia [FormatException]
+/// se il codice non e' valido.
 PGBase importaPersonaggio(String codice) {
   final pulito = codice.trim();
-  if (!pulito.startsWith(_prefissoCodice)) {
-    throw const FormatException(
-      'Codice non riconosciuto: assicurati di aver incollato l\'intero '
-      'codice ricevuto.',
-    );
-  }
-  final base64Body = pulito.substring(_prefissoCodice.length);
   final Map<String, dynamic> json;
   try {
-    final jsonString = utf8.decode(base64Decode(base64Body));
-    json = jsonDecode(jsonString) as Map<String, dynamic>;
+    if (pulito.startsWith(_prefissoCodiceV2)) {
+      final compresso = base64Decode(
+        pulito.substring(_prefissoCodiceV2.length),
+      );
+      final jsonBytes = const ZLibDecoder().decodeBytes(compresso);
+      json = jsonDecode(utf8.decode(jsonBytes)) as Map<String, dynamic>;
+    } else if (pulito.startsWith(_prefissoCodiceV1)) {
+      final jsonString = utf8.decode(
+        base64Decode(pulito.substring(_prefissoCodiceV1.length)),
+      );
+      json = jsonDecode(jsonString) as Map<String, dynamic>;
+    } else {
+      throw const FormatException(
+        'Codice non riconosciuto: assicurati di aver incollato l\'intero '
+        'codice ricevuto.',
+      );
+    }
+  } on FormatException {
+    rethrow;
   } catch (_) {
     throw const FormatException('Codice corrotto o incompleto.');
   }

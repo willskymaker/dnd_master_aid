@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../factory_pg_base.dart';
 import '../../data/db_equip.dart';
+import '../../providers/settings_provider.dart';
 import '../../repositories/json_data_repository.dart';
 
 class StepEquipScreen extends StatefulWidget {
@@ -126,6 +128,8 @@ class _StepEquipScreenState extends State<StepEquipScreen> {
   @override
   Widget build(BuildContext context) {
     final classePG = widget.factory.build().classe;
+    final randomizzazionePgAttiva =
+        context.watch<SettingsProvider>().randomizzazionePgAttiva;
 
     return Scaffold(
       appBar: AppBar(title: const Text("Step: Equipaggiamento")),
@@ -260,15 +264,17 @@ class _StepEquipScreenState extends State<StepEquipScreen> {
                       ),
                       const SizedBox(height: 32),
 
-                      SizedBox(
-                        width: double.infinity,
-                        child: OutlinedButton.icon(
-                          onPressed: _randomizza,
-                          icon: const Icon(Icons.casino),
-                          label: const Text("Equipaggiamento casuale"),
+                      if (randomizzazionePgAttiva) ...[
+                        SizedBox(
+                          width: double.infinity,
+                          child: OutlinedButton.icon(
+                            onPressed: _randomizza,
+                            icon: const Icon(Icons.casino),
+                            label: const Text("Equipaggiamento casuale"),
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 8),
+                        const SizedBox(height: 8),
+                      ],
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(

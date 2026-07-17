@@ -43,7 +43,7 @@ Poi apri una Pull Request su GitHub dal branch appena pushato (GitHub te lo prop
    dart format --output=none --set-exit-if-changed .
    ```
    Se `dart format` segnala differenze, esegui semplicemente `dart format .` per applicarle. La CI blocca la PR se uno di questi tre comandi fallisce.
-5. **Apri la Pull Request**, indicando quale issue chiude (es. `Chiude #123` nella descrizione) e cosa hai cambiato.
+5. **Apri la Pull Request**, indicando quale issue chiude e cosa hai cambiato. Usa la parola chiave in **inglese** nella descrizione (es. `Closes #123`, non `Chiude #123`): solo le keyword inglesi (`closes`, `fixes`, `resolves`) fanno chiudere automaticamente l'issue al merge — GitHub non riconosce l'equivalente italiano.
 6. Un maintainer mergia dopo che la CI (`Analyze & Test`) è verde.
 
 ## Convenzioni
