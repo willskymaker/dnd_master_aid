@@ -1437,6 +1437,38 @@ class _AggiungiCombattenteSheetState extends State<_AggiungiCombattenteSheet> {
   List<Map<String, dynamic>> _risultatiMostri = [];
   final _random = Random();
 
+  String _selectedCrFilter = 'All';
+
+  final Map<String, List<String>> _crRanges = const {
+    'All': [],
+    'CR 0': ['0'],
+    'CR 1/8 – 1/2': ['1/8', '1/4', '1/2'],
+    'CR 1 – 4': ['1', '2', '3', '4'],
+    'CR 5 – 10': ['5', '6', '7', '8', '9', '10'],
+    'CR 11+': [
+      '11',
+      '12',
+      '13',
+      '14',
+      '15',
+      '16',
+      '17',
+      '18',
+      '19',
+      '20',
+      '21',
+      '22',
+      '23',
+      '24',
+      '25',
+      '26',
+      '27',
+      '28',
+      '29',
+      '30',
+    ],
+  };
+
   @override
   void dispose() {
     _nomeController.dispose();
@@ -1447,13 +1479,25 @@ class _AggiungiCombattenteSheetState extends State<_AggiungiCombattenteSheet> {
   }
 
   Future<void> _cercaMostri(String query) async {
-    if (query.trim().isEmpty) {
+    if (query.trim().isEmpty && _selectedCrFilter == 'All') {
       setState(() => _risultatiMostri = []);
       return;
     }
-    final risultati = await JsonDataRepository.searchMonsters(query: query);
+
+    var tutti = await JsonDataRepository.searchMonsters(query: query);
     if (!mounted) return;
-    setState(() => _risultatiMostri = risultati.take(20).toList());
+
+    // Applica il filtro per GS se selezionato
+    if (_selectedCrFilter != 'All') {
+      final allowedCrs = _crRanges[_selectedCrFilter] ?? [];
+      tutti =
+          tutti.where((m) {
+            final cr = m['challenge_rating']?.toString() ?? '';
+            return allowedCrs.contains(cr);
+          }).toList();
+    }
+
+    setState(() => _risultatiMostri = tutti.take(20).toList());
   }
 
   void _aggiungiPg(PGBase pg) {
@@ -1591,19 +1635,50 @@ class _AggiungiCombattenteSheetState extends State<_AggiungiCombattenteSheet> {
   Widget _buildRicercaMostri(ScrollController scrollController) {
     return Column(
       children: [
-        TextField(
-          controller: _searchController,
-          decoration: const InputDecoration(
-            hintText: 'Cerca mostro...',
-            prefixIcon: Icon(Icons.search),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+          child: DropdownButtonFormField<String>(
+            initialValue: _selectedCrFilter,
+            decoration: const InputDecoration(
+              labelText: 'Filtro GS',
+              border: OutlineInputBorder(),
+            ),
+            items:
+                _crRanges.keys.map((key) {
+                  return DropdownMenuItem(value: key, child: Text(key));
+                }).toList(),
+            onChanged: (value) {
+              setState(() {
+                _selectedCrFilter = value ?? 'All';
+                _cercaMostri(_searchController.text);
+              });
+            },
           ),
-          onChanged: _cercaMostri,
+        ),
+        const SizedBox(height: 8),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: TextField(
+            controller: _searchController,
+            decoration: const InputDecoration(
+              hintText: 'Cerca mostro...',
+              prefixIcon: Icon(Icons.search),
+            ),
+            onChanged: _cercaMostri,
+          ),
         ),
         const SizedBox(height: 8),
         Expanded(
           child:
               _risultatiMostri.isEmpty
-                  ? const Center(child: Text('Cerca un mostro per nome'))
+                  ? Center(
+                    child: Text(
+                      (_searchController.text.isNotEmpty ||
+                              _selectedCrFilter != 'All')
+                          ? 'Nessun mostro trovato'
+                          : 'Cerca un mostro per nome o filtra per GS',
+                    ),
+                  )
                   : ListView.builder(
                     controller: scrollController,
                     itemCount: _risultatiMostri.length,
