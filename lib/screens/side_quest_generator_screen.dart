@@ -41,13 +41,16 @@ class _SideQuestGeneratorScreenState extends State<SideQuestGeneratorScreen> {
     buffer.writeln('=== Side Quest Generata ===');
     buffer.writeln();
     buffer.writeln('🎯 Obiettivo: ${quest.obiettivo}');
-    buffer.writeln('👤 Committente: ${quest.committente.nome} (${quest.committente.occupazione})');
+    buffer.writeln(
+      '👤 Committente: ${quest.committente.nome} (${quest.committente.occupazione})',
+    );
     buffer.writeln('⚡ Complicazione: ${quest.complicazione}');
     buffer.writeln('💰 Ricompensa: ${quest.ricompensa}');
     buffer.writeln();
     buffer.writeln('=== Fine Side Quest ===');
     return buffer.toString();
   }
+
   Widget _sezione(String titolo, String testo) {
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.md),
@@ -146,7 +149,8 @@ class _SideQuestGeneratorScreenState extends State<SideQuestGeneratorScreen> {
                             ),
                           ),
                         ],
-                      ),                    ],
+                      ),
+                    ],
                   ),
                 ),
               ),

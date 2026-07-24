@@ -153,7 +153,9 @@ class _NpcGeneratorScreenState extends State<NpcGeneratorScreen> {
                             child: OutlinedButton.icon(
                               onPressed: _salvato ? null : _salvaPng,
                               icon: Icon(
-                                _salvato ? Icons.check : Icons.bookmark_add_outlined,
+                                _salvato
+                                    ? Icons.check
+                                    : Icons.bookmark_add_outlined,
                               ),
                               label: Text(
                                 _salvato
@@ -168,7 +170,11 @@ class _NpcGeneratorScreenState extends State<NpcGeneratorScreen> {
                             tooltip: 'Copia PNG',
                             onPressed: () {
                               final text = _formatNpcText(png);
-                              ClipboardHelper.copyToClipboard(context, text, 'PNG');
+                              ClipboardHelper.copyToClipboard(
+                                context,
+                                text,
+                                'PNG',
+                              );
                             },
                           ),
                         ],
