@@ -34,7 +34,7 @@ Poi apri una Pull Request su GitHub dal branch appena pushato (GitHub te lo prop
 ## Flusso di lavoro
 
 1. **Apri una issue prima di iniziare** (o raccogline una già aperta, magari con la label [`good first issue`](https://github.com/willskymaker/master_aid/labels/good%20first%20issue)). Serve a evitare che due persone lavorino sulla stessa cosa e a discutere l'approccio prima di scrivere codice.
-2. **Crea un branch** dedicato, partendo da `main` aggiornato.
+2. **Crea un branch** dedicato, partendo da `main` aggiornato — **tranne** per le feature grandi che richiedono più PR incrementali prima di essere presentabili (es. l'import scheda da PDF, issue #99): per quelle esiste un branch di integrazione temporaneo (es. `integration/pdf-import`), verso cui vanno le PR intermedie invece che verso `main`. La issue di riferimento indica se è il caso.
 3. **Implementa** la modifica, seguendo lo stile del codice esistente nel file che stai toccando.
 4. **Verifica prima di aprire la PR**:
    ```bash
@@ -45,6 +45,10 @@ Poi apri una Pull Request su GitHub dal branch appena pushato (GitHub te lo prop
    Se `dart format` segnala differenze, esegui semplicemente `dart format .` per applicarle. La CI blocca la PR se uno di questi tre comandi fallisce.
 5. **Apri la Pull Request**, indicando quale issue chiude e cosa hai cambiato. Usa la parola chiave in **inglese** nella descrizione (es. `Closes #123`, non `Chiude #123`): solo le keyword inglesi (`closes`, `fixes`, `resolves`) fanno chiudere automaticamente l'issue al merge — GitHub non riconosce l'equivalente italiano.
 6. Un maintainer mergia dopo che la CI (`Analyze & Test`) è verde.
+
+### Branch di integrazione per feature grandi
+
+`main` resta sempre stabile e deployabile: ogni push ci genera automaticamente il deploy web e serve da base per le release Android. Per una feature che richiede più PR incrementali prima di essere presentabile nel suo insieme, viene aperto un branch temporaneo tipo `integration/<nome-feature>`, con la stessa protezione di `main` (CI obbligatoria). Le PR intermedie puntano lì; quando la feature è matura, un'unica PR la porta su `main` e il branch di integrazione viene eliminato — non è un secondo trunk permanente. La issue collegata indica se un branch così esiste già.
 
 ## Convenzioni
 
