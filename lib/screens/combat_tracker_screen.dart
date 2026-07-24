@@ -10,7 +10,9 @@ import '../data/db_condizioni.dart';
 import '../data/db_slot_incantesimi.dart';
 import '../factory_pg_base.dart';
 import '../providers/saved_characters_provider.dart';
+import '../providers/settings_provider.dart';
 import '../repositories/json_data_repository.dart';
+import '../services/homebrew_monster_service.dart';
 import '../utils/damage_types.dart';
 import '../utils/encounter_generator.dart';
 import '../utils/health_band.dart';
@@ -1068,24 +1070,28 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
     final inCorso = ordinati.isNotEmpty;
     final turnoCorrente =
         inCorso ? ordinati[_turnoIndex % ordinati.length] : null;
+    final barraSaluteMostriAttiva =
+        context.watch<SettingsProvider>().barraSaluteMostriAttiva;
+    final vistaGiocatori = _vistaGiocatori && barraSaluteMostriAttiva;
 
     return MobileScaffold(
       title: 'Tracker Combattimento',
       actions: [
-        IconButton(
-          onPressed: () => setState(() => _vistaGiocatori = !_vistaGiocatori),
-          icon: Icon(
-            _vistaGiocatori ? Icons.visibility : Icons.visibility_outlined,
+        if (barraSaluteMostriAttiva)
+          IconButton(
+            onPressed: () => setState(() => _vistaGiocatori = !_vistaGiocatori),
+            icon: Icon(
+              vistaGiocatori ? Icons.visibility : Icons.visibility_outlined,
+            ),
+            style:
+                vistaGiocatori
+                    ? IconButton.styleFrom(
+                      backgroundColor: Colors.white.withValues(alpha: 0.25),
+                    )
+                    : null,
+            tooltip: 'Vista Giocatori',
           ),
-          style:
-              _vistaGiocatori
-                  ? IconButton.styleFrom(
-                    backgroundColor: Colors.white.withValues(alpha: 0.25),
-                  )
-                  : null,
-          tooltip: 'Vista Giocatori',
-        ),
-        if (!_vistaGiocatori)
+        if (!vistaGiocatori)
           PopupMenuButton<String>(
             tooltip: 'Altre azioni',
             onSelected: (azione) {
@@ -1168,7 +1174,7 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
           ),
       ],
       floatingActionButton:
-          _vistaGiocatori
+          vistaGiocatori
               ? null
               : FloatingActionButton.extended(
                 onPressed: _mostraAggiungiCombattente,
@@ -1277,7 +1283,7 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
                                 Expanded(
                                   child: InkWell(
                                     onTap:
-                                        _vistaGiocatori
+                                        vistaGiocatori
                                             ? null
                                             : () => _modificaCombattente(c),
                                     child: Column(
@@ -1290,7 +1296,7 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        if (_vistaGiocatori && !c.isPg)
+                                        if (vistaGiocatori && !c.isPg)
                                           Padding(
                                             padding: const EdgeInsets.only(
                                               top: 4,
@@ -1307,7 +1313,7 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
                                           Text(
                                             '${c.isPg ? "PG" : "Mostro"}'
                                             '${c.ca != null ? " · CA ${c.ca}" : ""}'
-                                            '${!_vistaGiocatori && c.cd != null ? " · CD ${c.cd}" : ""}'
+                                            '${!vistaGiocatori && c.cd != null ? " · CD ${c.cd}" : ""}'
                                             ' · PF ${c.pfCorrenti}/${c.pfMax}',
                                             style: TextStyle(
                                               fontSize: 12,
@@ -1361,7 +1367,7 @@ class _CombatTrackerScreenState extends State<CombatTrackerScreen> {
                                     ),
                                   ),
                                 ),
-                                if (!_vistaGiocatori) ...[
+                                if (!vistaGiocatori) ...[
                                   if (c.datiMostro != null)
                                     IconButton(
                                       onPressed: () => _mostraDettagliMostro(c),
@@ -1428,6 +1434,42 @@ class _AggiungiCombattenteSheet extends StatefulWidget {
       _AggiungiCombattenteSheetState();
 }
 
+const Map<String, List<String>> crRanges = {
+  'All': [],
+  'CR 0': ['0'],
+  'CR 1/8 – 1/2': ['1/8', '1/4', '1/2'],
+  'CR 1 – 4': ['1', '2', '3', '4'],
+  'CR 5 – 10': ['5', '6', '7', '8', '9', '10'],
+  'CR 11+': [
+    '11',
+    '12',
+    '13',
+    '14',
+    '15',
+    '16',
+    '17',
+    '18',
+    '19',
+    '20',
+    '21',
+    '22',
+    '23',
+    '24',
+    '25',
+    '26',
+    '27',
+    '28',
+    '29',
+    '30',
+  ],
+};
+
+bool mostroNelFiltroCr(String challengeRating, String filtro) {
+  if (filtro == 'All') return true;
+  final ammessi = crRanges[filtro] ?? [];
+  return ammessi.contains(challengeRating);
+}
+
 class _AggiungiCombattenteSheetState extends State<_AggiungiCombattenteSheet> {
   _ModalitaAggiunta _modalita = _ModalitaAggiunta.pg;
   final _nomeController = TextEditingController();
@@ -1436,6 +1478,8 @@ class _AggiungiCombattenteSheetState extends State<_AggiungiCombattenteSheet> {
   final _searchController = TextEditingController();
   List<Map<String, dynamic>> _risultatiMostri = [];
   final _random = Random();
+
+  String _selectedCrFilter = 'All';
 
   @override
   void dispose() {
@@ -1447,13 +1491,37 @@ class _AggiungiCombattenteSheetState extends State<_AggiungiCombattenteSheet> {
   }
 
   Future<void> _cercaMostri(String query) async {
-    if (query.trim().isEmpty) {
+    if (query.trim().isEmpty && _selectedCrFilter == 'All') {
       setState(() => _risultatiMostri = []);
       return;
     }
-    final risultati = await JsonDataRepository.searchMonsters(query: query);
+    // Cerca sia nei mostri SRD che in quelli homebrew salvati localmente.
+    final futures = await Future.wait([
+      JsonDataRepository.searchMonsters(query: query),
+      HomebrewMonsterService.caricaComeMaps(),
+    ]);
+    final srd = futures[0];
+    final homebrew =
+        futures[1].where((m) {
+          final q = query.toLowerCase();
+          final nome = (m['italian_name'] as String? ?? '').toLowerCase();
+          final nomeEn = (m['name'] as String? ?? '').toLowerCase();
+          return nome.contains(q) || nomeEn.contains(q);
+        }).toList();
     if (!mounted) return;
-    setState(() => _risultatiMostri = risultati.take(20).toList());
+    // Mostri homebrew in cima, poi SRD.
+    var tutti = [...homebrew, ...srd];
+
+    // Applica il filtro per GS se selezionato
+    if (_selectedCrFilter != 'All') {
+      tutti =
+          tutti.where((m) {
+            final cr = m['challenge_rating']?.toString() ?? '';
+            return mostroNelFiltroCr(cr, _selectedCrFilter);
+          }).toList();
+    }
+
+    setState(() => _risultatiMostri = tutti.take(20).toList());
   }
 
   void _aggiungiPg(PGBase pg) {
@@ -1591,26 +1659,66 @@ class _AggiungiCombattenteSheetState extends State<_AggiungiCombattenteSheet> {
   Widget _buildRicercaMostri(ScrollController scrollController) {
     return Column(
       children: [
-        TextField(
-          controller: _searchController,
-          decoration: const InputDecoration(
-            hintText: 'Cerca mostro...',
-            prefixIcon: Icon(Icons.search),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+          child: DropdownButtonFormField<String>(
+            initialValue: _selectedCrFilter,
+            decoration: const InputDecoration(
+              labelText: 'Filtro GS',
+              border: OutlineInputBorder(),
+            ),
+            items:
+                crRanges.keys.map((key) {
+                  return DropdownMenuItem(value: key, child: Text(key));
+                }).toList(),
+            onChanged: (value) {
+              setState(() {
+                _selectedCrFilter = value ?? 'All';
+                _cercaMostri(_searchController.text);
+              });
+            },
           ),
-          onChanged: _cercaMostri,
+        ),
+        const SizedBox(height: 8),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: TextField(
+            controller: _searchController,
+            decoration: const InputDecoration(
+              hintText: 'Cerca mostro...',
+              prefixIcon: Icon(Icons.search),
+            ),
+            onChanged: _cercaMostri,
+          ),
         ),
         const SizedBox(height: 8),
         Expanded(
           child:
               _risultatiMostri.isEmpty
-                  ? const Center(child: Text('Cerca un mostro per nome'))
+                  ? Center(
+                    child: Text(
+                      (_searchController.text.isNotEmpty ||
+                              _selectedCrFilter != 'All')
+                          ? 'Nessun mostro trovato'
+                          : 'Cerca un mostro per nome o filtra per GS',
+                    ),
+                  )
                   : ListView.builder(
                     controller: scrollController,
                     itemCount: _risultatiMostri.length,
                     itemBuilder: (context, index) {
                       final m = _risultatiMostri[index];
+                      final isHomebrew = m['source'] == 'Homebrew';
                       return ListTile(
-                        title: Text(m['italian_name'] ?? m['name'] ?? '?'),
+                        title: Row(
+                          children: [
+                            Text(m['italian_name'] ?? m['name'] ?? '?'),
+                            if (isHomebrew) ...[
+                              const SizedBox(width: 6),
+                              const _HomebrewBadge(),
+                            ],
+                          ],
+                        ),
                         subtitle: Text(
                           'GS ${m['challenge_rating'] ?? '?'} · PF ${m['hit_points'] ?? '?'}',
                         ),
@@ -1822,6 +1930,30 @@ class _GeneraIncontroSheetState extends State<_GeneraIncontroSheet> {
             ],
           ],
         ],
+      ),
+    );
+  }
+}
+
+/// Piccolo badge che segnala un mostro homebrew nella lista di ricerca.
+class _HomebrewBadge extends StatelessWidget {
+  const _HomebrewBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+      decoration: BoxDecoration(
+        color: AppColors.accent,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: const Text(
+        'HB',
+        style: TextStyle(
+          fontSize: 10,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
       ),
     );
   }

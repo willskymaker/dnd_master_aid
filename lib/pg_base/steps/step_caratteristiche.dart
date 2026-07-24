@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../core/app_theme.dart';
 import '../../factory_pg_base.dart';
 import '../../data/db_classi.dart';
@@ -8,6 +9,7 @@ import '../utils/pf_helper.dart';
 import '../utils/asi_helper.dart';
 import '../../core/logger.dart';
 import '../../core/exceptions.dart';
+import '../../providers/settings_provider.dart';
 import '../../widgets/mobile/mobile_scaffold.dart';
 
 final List<int> standardArray = [15, 14, 13, 12, 10, 8];
@@ -187,6 +189,8 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final randomizzazionePgAttiva =
+        context.watch<SettingsProvider>().randomizzazionePgAttiva;
     final rimanenti = _puntiRimanenti;
     final coloreRimanenti =
         rimanenti < 0
@@ -252,22 +256,23 @@ class _StepCaratteristicheScreenState extends State<StepCaratteristicheScreen> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              AppSpacing.lg,
-              AppSpacing.sm,
-              AppSpacing.lg,
-              0,
-            ),
-            child: SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: _randomizza,
-                icon: const Icon(Icons.casino),
-                label: const Text('Distribuisci punti casualmente'),
+          if (randomizzazionePgAttiva)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.sm,
+                AppSpacing.lg,
+                0,
+              ),
+              child: SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: _randomizza,
+                  icon: const Icon(Icons.casino),
+                  label: const Text('Distribuisci punti casualmente'),
+                ),
               ),
             ),
-          ),
           // Lista caratteristiche
           Expanded(
             child: ListView(
