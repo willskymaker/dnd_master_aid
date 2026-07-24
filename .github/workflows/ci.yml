@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-      - develop
+      - integration/pdf-import
   pull_request:
     branches:
       - main
-      - develop
+      - integration/pdf-import
 
 jobs:
   analyze-and-test:
