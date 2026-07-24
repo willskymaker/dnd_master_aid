@@ -4,6 +4,7 @@ import '../core/app_theme.dart';
 import '../services/saved_npc_service.dart';
 import '../utils/npc_generator.dart';
 import '../utils/side_quest_generator.dart';
+import '../utils/clipboard_helper.dart';
 import '../widgets/mobile/mobile_scaffold.dart';
 
 class SideQuestGeneratorScreen extends StatefulWidget {
@@ -33,6 +34,21 @@ class _SideQuestGeneratorScreenState extends State<SideQuestGeneratorScreen> {
 
   void _genera() {
     setState(() => _quest = generaSideQuest(committente: _committenteScelto));
+  }
+
+  String _formatSideQuestText(SideQuest quest) {
+    final buffer = StringBuffer();
+    buffer.writeln('=== Side Quest Generata ===');
+    buffer.writeln();
+    buffer.writeln('🎯 Obiettivo: ${quest.obiettivo}');
+    buffer.writeln(
+      '👤 Committente: ${quest.committente.nome} (${quest.committente.occupazione})',
+    );
+    buffer.writeln('⚡ Complicazione: ${quest.complicazione}');
+    buffer.writeln('💰 Ricompensa: ${quest.ricompensa}');
+    buffer.writeln();
+    buffer.writeln('=== Fine Side Quest ===');
+    return buffer.toString();
   }
 
   Widget _sezione(String titolo, String testo) {
@@ -115,6 +131,25 @@ class _SideQuestGeneratorScreenState extends State<SideQuestGeneratorScreen> {
                       ),
                       _sezione('Complicazione', quest.complicazione),
                       _sezione('Ricompensa', quest.ricompensa),
+                      const SizedBox(height: AppSpacing.md),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: OutlinedButton.icon(
+                              onPressed: () {
+                                final text = _formatSideQuestText(quest);
+                                ClipboardHelper.copyToClipboard(
+                                  context,
+                                  text,
+                                  'Side Quest',
+                                );
+                              },
+                              icon: const Icon(Icons.copy),
+                              label: const Text('Copia Side Quest'),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),

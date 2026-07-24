@@ -4,6 +4,7 @@ import '../core/app_theme.dart';
 import '../data/db_nomi.dart';
 import '../services/saved_npc_service.dart';
 import '../utils/npc_generator.dart';
+import '../utils/clipboard_helper.dart';
 import '../widgets/mobile/mobile_scaffold.dart';
 import 'saved_npcs_screen.dart';
 
@@ -35,6 +36,20 @@ class _NpcGeneratorScreenState extends State<NpcGeneratorScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('${png.nome} salvato tra i PNG della campagna')),
     );
+  }
+
+  String _formatNpcText(Png npc) {
+    final buffer = StringBuffer();
+    buffer.writeln('=== PNG Generato ===');
+    buffer.writeln();
+    buffer.writeln('👤 Nome: ${npc.nome}');
+    buffer.writeln('📝 Aspetto: ${npc.aspetto}');
+    buffer.writeln('🎭 Personalità: ${npc.personalita}');
+    buffer.writeln('💼 Occupazione: ${npc.occupazione}');
+    buffer.writeln('🎯 Gancio di Trama: ${npc.ganceTrama}');
+    buffer.writeln();
+    buffer.writeln('=== Fine PNG ===');
+    return buffer.toString();
   }
 
   Widget _sezione(String titolo, String testo) {
@@ -132,16 +147,37 @@ class _NpcGeneratorScreenState extends State<NpcGeneratorScreen> {
                       _sezione('Occupazione', png.occupazione),
                       _sezione('Gancio di trama', png.ganceTrama),
                       const SizedBox(height: AppSpacing.md),
-                      OutlinedButton.icon(
-                        onPressed: _salvato ? null : _salvaPng,
-                        icon: Icon(
-                          _salvato ? Icons.check : Icons.bookmark_add_outlined,
-                        ),
-                        label: Text(
-                          _salvato
-                              ? 'Salvato tra i PNG della campagna'
-                              : 'Salva per riusarlo in altre sessioni',
-                        ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: OutlinedButton.icon(
+                              onPressed: _salvato ? null : _salvaPng,
+                              icon: Icon(
+                                _salvato
+                                    ? Icons.check
+                                    : Icons.bookmark_add_outlined,
+                              ),
+                              label: Text(
+                                _salvato
+                                    ? 'Salvato tra i PNG della campagna'
+                                    : 'Salva per riusarlo in altre sessioni',
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: AppSpacing.sm),
+                          IconButton(
+                            icon: const Icon(Icons.copy),
+                            tooltip: 'Copia PNG',
+                            onPressed: () {
+                              final text = _formatNpcText(png);
+                              ClipboardHelper.copyToClipboard(
+                                context,
+                                text,
+                                'PNG',
+                              );
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   ),
