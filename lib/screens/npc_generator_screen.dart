@@ -146,6 +146,7 @@ class _NpcGeneratorScreenState extends State<NpcGeneratorScreen> {
                       _sezione('Personalità', png.personalita),
                       _sezione('Occupazione', png.occupazione),
                       _sezione('Gancio di trama', png.ganceTrama),
+                      const SizedBox(height: AppSpacing.md),
                       Row(
                         children: [
                           Expanded(

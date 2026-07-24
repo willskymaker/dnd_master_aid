@@ -1,9 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../core/app_theme.dart';
 import '../../factory_pg_base.dart';
 import '../../data/db_classi.dart';
+import '../../providers/settings_provider.dart';
 import '../../widgets/mobile/mobile_scaffold.dart';
 
 final List<String> classiCore = [
@@ -30,22 +32,25 @@ class StepClasseScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final classiDisponibili =
         classiList.where((c) => classiCore.contains(c.nome)).toList();
+    final randomizzazionePgAttiva =
+        context.watch<SettingsProvider>().randomizzazionePgAttiva;
 
     return MobileScaffold(
       title: "Step 2: Scegli la Classe",
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-            child: SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: () => _randomizza(context, classiDisponibili),
-                icon: const Icon(Icons.casino),
-                label: const Text('Classe casuale'),
+          if (randomizzazionePgAttiva)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+              child: SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: () => _randomizza(context, classiDisponibili),
+                  icon: const Icon(Icons.casino),
+                  label: const Text('Classe casuale'),
+                ),
               ),
             ),
-          ),
           Expanded(
             child: ListView.builder(
               itemCount: classiDisponibili.length,

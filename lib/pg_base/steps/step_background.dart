@@ -1,10 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../core/app_theme.dart';
 import '../../factory_pg_base.dart';
 import '../../data/db_background.dart';
 import '../../data/db_allineamenti.dart';
+import '../../providers/settings_provider.dart';
 import '../../widgets/mobile/mobile_scaffold.dart';
 
 class StepBackgroundScreen extends StatefulWidget {
@@ -74,6 +76,9 @@ class _StepBackgroundScreenState extends State<StepBackgroundScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final randomizzazionePgAttiva =
+        context.watch<SettingsProvider>().randomizzazionePgAttiva;
+
     return MobileScaffold(
       title: 'Step: Background e Allineamento',
       body: Column(
@@ -92,15 +97,17 @@ class _StepBackgroundScreenState extends State<StepBackgroundScreen> {
                   style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
                 ),
                 const SizedBox(height: 12),
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton.icon(
-                    onPressed: _randomizza,
-                    icon: const Icon(Icons.casino),
-                    label: const Text('Background e allineamento casuali'),
+                if (randomizzazionePgAttiva) ...[
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: _randomizza,
+                      icon: const Icon(Icons.casino),
+                      label: const Text('Background e allineamento casuali'),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
+                  const SizedBox(height: 16),
+                ],
                 ...backgroundList.map(
                   (bg) => _BackgroundCard(
                     bg: bg,

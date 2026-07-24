@@ -48,7 +48,6 @@ class _SideQuestGeneratorScreenState extends State<SideQuestGeneratorScreen> {
     buffer.writeln('=== Fine Side Quest ===');
     return buffer.toString();
   }
-
   Widget _sezione(String titolo, String testo) {
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.md),
@@ -147,8 +146,7 @@ class _SideQuestGeneratorScreenState extends State<SideQuestGeneratorScreen> {
                             ),
                           ),
                         ],
-                      ),
-                    ],
+                      ),                    ],
                   ),
                 ),
               ),

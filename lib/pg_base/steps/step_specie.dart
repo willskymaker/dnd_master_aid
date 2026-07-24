@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../factory_pg_base.dart';
 import '../../data/db_specie.dart'; //importa il database specie
+import '../../providers/settings_provider.dart';
 import '../../widgets/mobile/mobile_scaffold.dart';
 
 class StepSpecieScreen extends StatelessWidget {
@@ -12,21 +14,25 @@ class StepSpecieScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final randomizzazionePgAttiva =
+        context.watch<SettingsProvider>().randomizzazionePgAttiva;
+
     return MobileScaffold(
       title: "Step 1: Seleziona la Specie",
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-            child: SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: () => _randomizza(context),
-                icon: const Icon(Icons.casino),
-                label: const Text('Specie casuale'),
+          if (randomizzazionePgAttiva)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+              child: SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: () => _randomizza(context),
+                  icon: const Icon(Icons.casino),
+                  label: const Text('Specie casuale'),
+                ),
               ),
             ),
-          ),
           Expanded(
             child: ListView.builder(
               itemCount: specieCoreList.length,

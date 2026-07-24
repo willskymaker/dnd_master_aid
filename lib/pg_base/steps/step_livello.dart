@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../core/app_theme.dart';
 import '../../factory_pg_base.dart';
+import '../../providers/settings_provider.dart';
 import '../../widgets/mobile/mobile_scaffold.dart';
 
 class StepLivelloScreen extends StatefulWidget {
@@ -42,6 +44,9 @@ class _StepLivelloScreenState extends State<StepLivelloScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final randomizzazionePgAttiva =
+        context.watch<SettingsProvider>().randomizzazionePgAttiva;
+
     return MobileScaffold(
       title: "Step: Seleziona il Livello",
       body: Padding(
@@ -69,12 +74,14 @@ class _StepLivelloScreenState extends State<StepLivelloScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: AppSpacing.lg),
-            OutlinedButton.icon(
-              onPressed: _randomizza,
-              icon: const Icon(Icons.casino),
-              label: const Text("Livello casuale"),
-            ),
+            if (randomizzazionePgAttiva) ...[
+              const SizedBox(height: AppSpacing.lg),
+              OutlinedButton.icon(
+                onPressed: _randomizza,
+                icon: const Icon(Icons.casino),
+                label: const Text("Livello casuale"),
+              ),
+            ],
             const SizedBox(height: AppSpacing.lg),
             ElevatedButton(
               onPressed: _conferma,
